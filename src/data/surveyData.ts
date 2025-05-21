@@ -1,178 +1,176 @@
 import { OptionType, QuestionType, ResultCategory, SurveyConfig, SurveySection } from '../types';
 
+import { OptionType, QuestionType, ResultCategory, SurveyConfig, SurveySection } from '../types';
+
 export const surveyData: SurveyConfig = {
   title: "Discover your Solution",
   description: "Discover the perfect ERP features for your business needs.",
   sections: [
     {
-      id: "section-customer-scale",
-      title: "Customer & Transaction Volume",
-      description: "Help us understand your customer handling capacity needs",
+      id: "section-organization-structure",
+      title: "Organization Structure",
+      description: "Tell us about your company's structure and user base.",
       questions: [
         {
-          id: "q3",
-          text: "What is your monthly transaction volume?",
+          id: "q1",
+          text: "How many employees are in your organization?",
           type: "single",
           required: true,
           options: [
-            { id: "q3-o1", text: "Low (< 1,000 transactions)", value: "low" },
-            { id: "q3-o2", text: "Medium (1,000-10,000 transactions)", value: "medium" },
-            { id: "q3-o3", text: "High (10,001-100,000 transactions)", value: "high" },
-            { id: "q3-o4", text: "Very High (100,000+ transactions)", value: "very-high" },
+            { id: "q1-o1", text: "1–10", value: "1-10" },
+            { id: "q1-o2", text: "11–50", value: "11-50" },
+            { id: "q1-o3", text: "51–250", value: "51-250" },
+            { id: "q1-o4", text: "251–1000", value: "251-1000" },
+            { id: "q1-o5", text: "1000+", value: "1000+" }
+          ]
+        },
+        {
+          id: "q2",
+          text: "How many ERP users will access the system concurrently?",
+          type: "single",
+          required: true,
+          options: [
+            { id: "q2-o1", text: "1–10 users", value: "1-10" },
+            { id: "q2-o2", text: "11–50 users", value: "11-50" },
+            { id: "q2-o3", text: "51–250 users", value: "51-250" },
+            { id: "q2-o4", text: "251–1000 users", value: "251-1000" },
+            { id: "q2-o5", text: "1000+ users", value: "1000+" }
+          ]
+        },
+        {
+          id: "q3",
+          text: "Does your organization have multiple branches or locations?",
+          type: "single",
+          required: true,
+          options: [
+            { id: "q3-o1", text: "Yes", value: "yes" },
+            { id: "q3-o2", text: "No", value: "no" }
           ],
           subQuestions: [
             {
               id: "q3-sub1",
-              text: "What types of transactions do you handle?",
-              type: "multiple",
-              required: true,
-              options: [
-                { id: "q3-sub1-o1", text: "Sales Orders", value: "sales" },
-                { id: "q3-sub1-o2", text: "Purchase Orders", value: "purchase" },
-                { id: "q3-sub1-o3", text: "Inventory Movements", value: "inventory" },
-                { id: "q3-sub1-o4", text: "Financial Transactions", value: "financial" },
-                { id: "q3-sub1-o5", text: "Service Requests", value: "service" },
-              ],
-                        subQuestions: [
-            {
-              id: "q3-sub1-sub1",
-              text: "Do you need Sales order approval process?",
+              text: "How many branches or locations do you operate?",
               type: "single",
               required: true,
               options: [
-                { id: "q3-sub1-sub1-o1", text: "Yes", value: "yes" },
-                { id: "q3-sub1-sub1-o2", text: "No", value: "no" },
-                { id: "q3-sub1-sub1-o2", text: "Maybe", value: "maybe" },
-
-              ],
-              
-            },
-          ],
-            },
-          ],
+                { id: "q3-sub1-o1", text: "2–5 branches", value: "2-5" },
+                { id: "q3-sub1-o2", text: "6–20 branches", value: "6-20" },
+                { id: "q3-sub1-o3", text: "21+ branches", value: "21+" }
+              ]
+            }
+          ]
         },
         {
           id: "q4",
-          text: "What is your customer database size?",
-          type: "single",
+          text: "How is your organization structured?",
+          type: "multiple",
           required: true,
           options: [
-            { id: "q4-o1", text: "Small (< 1,000 customers)", value: "small-db" },
-            { id: "q4-o2", text: "Medium (1,000-10,000 customers)", value: "medium-db" },
-            { id: "q4-o3", text: "Large (10,001-100,000 customers)", value: "large-db" },
-            { id: "q4-o4", text: "Enterprise (100,000+ customers)", value: "enterprise-db" },
-          ],
-        },
-      ],
+            { id: "q4-o1", text: "Divisions by product/service", value: "by-product" },
+            { id: "q4-o2", text: "Departments by function (e.g. HR, Finance)", value: "by-function" },
+            { id: "q4-o3", text: "Regions or geographies", value: "by-region" },
+            { id: "q4-o4", text: "Matrix or hybrid structure", value: "hybrid" }
+          ]
+        }
+      ]
     },
     {
-      id: "section-business-scale",
-      title: "Business Scale & Growth",
-      description: "Let's understand your business scale and growth plans",
-      questions: [
-        {
-          id: "q1",
-          text: "What is your current company size?",
-          type: "single",
-          required: true,
-          options: [
-            { id: "q1-o1", text: "Startup (1-10 employees)", value: "startup" },
-            { id: "q1-o2", text: "Small (11-50 employees)", value: "small" },
-            { id: "q1-o3", text: "Medium (51-250 employees)", value: "medium" },
-            { id: "q1-o4", text: "Large (251-1000 employees)", value: "large" },
-            { id: "q1-o5", text: "Enterprise (1000+ employees)", value: "enterprise" },
-          ],
-          subQuestions: [
-            {
-              id: "q1-sub1",
-              text: "What is your expected employee growth rate in the next 2 years?",
-              type: "single",
-              required: true,
-              options: [
-                { id: "q1-sub1-o1", text: "Stable (0-10% growth)", value: "stable" },
-                { id: "q1-sub1-o2", text: "Moderate (11-30% growth)", value: "moderate" },
-                { id: "q1-sub1-o3", text: "Rapid (31-100% growth)", value: "rapid" },
-                { id: "q1-sub1-o4", text: "Hyper-growth (100%+ growth)", value: "hyper" },
-              ],
-            },
-          ],
-        },
-        {
-          id: "q2",
-          text: "How many concurrent system users do you expect?",
-          type: "single",
-          required: true,
-          options: [
-            { id: "q2-o1", text: "Small team (1-20 users)", value: "small-team" },
-            { id: "q2-o2", text: "Medium team (21-100 users)", value: "medium-team" },
-            { id: "q2-o3", text: "Large team (101-500 users)", value: "large-team" },
-            { id: "q2-o4", text: "Enterprise (500+ users)", value: "enterprise-team" },
-          ],
-          subQuestions: [
-            {
-              id: "q2-sub1",
-              text: "What type of user access do you need?",
-              type: "multiple",
-              required: true,
-              options: [
-                { id: "q2-sub1-o1", text: "Role-based access control", value: "rbac" },
-                { id: "q2-sub1-o2", text: "Department-level permissions", value: "department" },
-                { id: "q2-sub1-o3", text: "Custom access policies", value: "custom" },
-                { id: "q2-sub1-o4", text: "Multi-tenant capabilities", value: "multi-tenant" },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "section-operations",
-      title: "Operational Requirements",
-      description: "Tell us about your specific operational needs",
+      id: "section-industry-type",
+      title: "Industry Information",
+      description: "Help us understand your business domain.",
       questions: [
         {
           id: "q5",
-          text: "Which core business functions need automation?",
-          type: "multiple",
+          text: "Which industry does your company primarily belong to?",
+          type: "single",
           required: true,
           options: [
-            { id: "q5-o1", text: "Finance & Accounting", value: "finance" },
-            { id: "q5-o2", text: "Sales & CRM", value: "sales-crm" },
-            { id: "q5-o3", text: "Inventory Management", value: "inventory" },
-            { id: "q5-o4", text: "Human Resources", value: "hr" },
-            { id: "q5-o5", text: "Manufacturing", value: "manufacturing" },
-            { id: "q5-o6", text: "Project Management", value: "project" },
-          ],
-          subQuestions: [
-            {
-              id: "q5-sub1",
-              text: "What level of process automation do you require?",
-              type: "single",
-              required: true,
-              options: [
-                { id: "q5-sub1-o1", text: "Basic (Manual with some automation)", value: "basic" },
-                { id: "q5-sub1-o2", text: "Standard (Automated core processes)", value: "standard" },
-                { id: "q5-sub1-o3", text: "Advanced (AI-driven automation)", value: "advanced" },
-              ],
-            },
-          ],
+            { id: "q5-o1", text: "Manufacturing", value: "manufacturing" },
+            { id: "q5-o2", text: "Retail / eCommerce", value: "retail" },
+            { id: "q5-o3", text: "Services", value: "services" },
+            { id: "q5-o4", text: "Construction", value: "construction" },
+            { id: "q5-o5", text: "Non-Profit / NGO", value: "non-profit" },
+            { id: "q5-o6", text: "Education", value: "education" },
+            { id: "q5-o7", text: "Healthcare", value: "healthcare" },
+            { id: "q5-o8", text: "Other", value: "other" }
+          ]
         },
         {
           id: "q6",
-          text: "What are your data analysis requirements?",
+          text: "Do you require industry-specific compliance or certifications?",
+          type: "single",
+          required: true,
+          options: [
+            { id: "q6-o1", text: "Yes", value: "yes" },
+            { id: "q6-o2", text: "No", value: "no" }
+          ],
+          subQuestions: [
+            {
+              id: "q6-sub1",
+              text: "Which compliance standards must be met?",
+              type: "multiple",
+              required: true,
+              options: [
+                { id: "q6-sub1-o1", text: "ISO", value: "iso" },
+                { id: "q6-sub1-o2", text: "HIPAA", value: "hipaa" },
+                { id: "q6-sub1-o3", text: "GDPR", value: "gdpr" },
+                { id: "q6-sub1-o4", text: "SOX", value: "sox" },
+                { id: "q6-sub1-o5", text: "Other", value: "other" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "section-functional-modules",
+      title: "Modules & Features",
+      description: "Select the functional areas you need.",
+      questions: [
+        {
+          id: "q7",
+          text: "Which core ERP modules do you need?",
           type: "multiple",
           required: true,
           options: [
-            { id: "q6-o1", text: "Real-time dashboards", value: "dashboards" },
-            { id: "q6-o2", text: "Custom report builder", value: "custom-reports" },
-            { id: "q6-o3", text: "Predictive analytics", value: "predictive" },
-            { id: "q6-o4", text: "Business intelligence", value: "bi" },
-            { id: "q6-o5", text: "Data warehousing", value: "warehouse" },
-          ],
+            { id: "q7-o1", text: "Finance & Accounting", value: "finance" },
+            { id: "q7-o2", text: "Inventory Management", value: "inventory" },
+            { id: "q7-o3", text: "Sales & CRM", value: "sales" },
+            { id: "q7-o4", text: "Purchase Management", value: "purchase" },
+            { id: "q7-o5", text: "HR & Payroll", value: "hr" },
+            { id: "q7-o6", text: "Manufacturing / Production", value: "manufacturing" },
+            { id: "q7-o7", text: "Project Management", value: "projects" },
+            { id: "q7-o8", text: "Service Management", value: "service" }
+          ]
+        },
+        {
+          id: "q8",
+          text: "What features do you need within Finance & Accounting?",
+          type: "multiple",
+          required: false,
+          options: [
+            { id: "q8-o1", text: "General Ledger", value: "gl" },
+            { id: "q8-o2", text: "Accounts Payable", value: "ap" },
+            { id: "q8-o3", text: "Accounts Receivable", value: "ar" },
+            { id: "q8-o4", text: "Bank Reconciliation", value: "bank" },
+            { id: "q8-o5", text: "Multi-currency support", value: "multi-currency" },
+            { id: "q8-o6", text: "Tax & VAT Management", value: "tax" }
+          ]
+        },
+        {
+          id: "q9",
+          text: "Do you need custom workflows or automation?",
+          type: "single",
+          required: true,
+          options: [
+            { id: "q9-o1", text: "Yes, fully customizable workflows", value: "custom" },
+            { id: "q9-o2", text: "Basic process templates are enough", value: "basic" },
+            { id: "q9-o3", text: "No workflow automation needed", value: "none" }
+          ]
         }
-      ],
+      ]
     }
-  ],
+  ]
 };
 
 export const resultCategories: ResultCategory[] = [
