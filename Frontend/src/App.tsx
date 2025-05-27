@@ -11,6 +11,13 @@ import Dashboard from "./admin/pages/Dashboard";
 import SurveyTable from "./admin/pages/survey/SurveyTable";
 import { ClipboardCheckIcon } from "lucide-react";
 import SurveyForm from "./admin/pages/survey/SurveyForm";
+import SurveyManagement from "./admin/pages/SurveyManagement";
+import ModuleManager from "./admin/pages/ModuleManager";
+import AppManager from "./admin/pages/AppManager";
+import MenuManager from "./admin/pages/MenuManager";
+import ItemManager from "./admin/pages/ItemManager";
+import SubItemManager from "./admin/pages/SubItemManager";
+import FieldManager from "./admin/pages/FieldManager";
 
 function AppContent() {
   const location = useLocation();
@@ -43,8 +50,13 @@ function AppContent() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="feature-list" element={<SurveyTable />} />
-            <Route path="add" element={<SurveyForm />} />
+            <Route path="feature-list" element={<SurveyManagement />} />
+            <Route path="module-manager" element={<ModuleManager />} />
+            <Route path="app-manager" element={<AppManager />} />
+            <Route path="menu-manager" element={<MenuManager />} />
+            <Route path="item-manager" element={<ItemManager />} />
+            <Route path="sub-item-manager" element={<SubItemManager />} />
+            <Route path="field-manager" element={<FieldManager />} />
           </Route>
         </Routes>
       </main>

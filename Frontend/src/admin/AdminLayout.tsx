@@ -1,11 +1,27 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, ClipboardCheck, Menu as MenuIcon, ClipboardCheckIcon } from 'lucide-react';
+import {
+  LayoutDashboard,
+  ClipboardCheck,
+  Puzzle,
+  AppWindow,
+  List,
+  Layers,
+  ListChecks,
+  ListTree,
+  ClipboardCheckIcon,
+} from 'lucide-react';
+
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
   { label: 'Feature List', path: '/admin/feature-list', icon: <ClipboardCheck size={18} /> },
-//   { label: 'Add New', path: '/admin/add', icon: <ClipboardCheck size={18} /> }, // You can use any icon here
+  { label: 'Module Manager', path: '/admin/module-manager', icon: <Puzzle size={18} /> },
+  { label: 'App Manager', path: '/admin/app-manager', icon: <AppWindow size={18} /> },
+  { label: 'Menu Manager', path: '/admin/menu-manager', icon: <List size={18} /> },
+  { label: 'Item Manager', path: '/admin/item-manager', icon: <Layers size={18} /> },
+  { label: 'Sub-Item Manager', path: '/admin/sub-item-manager', icon: <ListChecks size={18} /> },
+  { label: 'Field Manager', path: '/admin/field-manager', icon: <ListTree size={18} /> },
 ];
 
 const AdminLayout: React.FC = () => {
