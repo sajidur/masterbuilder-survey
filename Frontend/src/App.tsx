@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Survey from "./components/Survey";
 import { SurveyProvider } from "./context/SurveyContext";
-import AdminLayout from "./admin/AdminLayout";
+import AdminLayout from "././admin/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
 import SurveyTable from "./admin/pages/survey/SurveyTable";
 import { ClipboardCheckIcon } from "lucide-react";
