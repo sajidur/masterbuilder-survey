@@ -16,6 +16,7 @@ import MenuManager from "./admin/pages/MenuManager";
 import ItemManager from "./admin/pages/ItemManager";
 import SubItemManager from "./admin/pages/SubItemManager";
 import FieldManager from "./admin/pages/FieldManager";
+import { ToastContainer } from "react-toastify";
 
 function AppContent() {
   const location = useLocation();
@@ -58,6 +59,8 @@ function AppContent() {
           </Route>
         </Routes>
       </main>
+
+      <ToastContainer />
 
       {!isAdminRoute && (
         <footer className="mt-12 text-center text-gray-500 text-sm">
