@@ -19,9 +19,9 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mysql',
-                host: 'localhost',
+                host: 'MYSQL8010.site4now.net',
                 port: 3306,
-                username: 'root',
+                username: 'a66689_mukut',
                 password: 'Root@pass1',
                 database: 'db_a66689_mukut',
                 autoLoadEntities: true,
