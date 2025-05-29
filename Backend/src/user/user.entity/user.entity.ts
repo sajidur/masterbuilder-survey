@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export class UserEntity {}
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 

@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { FeatureModule } from './feature/feature.module';
+import { SurveyModuleModule } from './survey-module/survey-module.module';
+import { ErpModuleModule } from './erp-module/erp-module.module';
 
 @Module({
   imports: [
@@ -13,10 +16,12 @@ import { FeatureModule } from './feature/feature.module';
       password: 'Root@pass1',
       database: 'db_a66689_mukut',
       autoLoadEntities: true,
-      synchronize: true, // disable in production
+      synchronize: false, // disable in production
     }),
     UserModule,
     FeatureModule,
+    SurveyModuleModule,
+    ErpModuleModule
   ],
 })
 export class AppModule {}

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { FeatureService } from './feature.service';
 import { Feature } from './feature.entity/feature.entity';
