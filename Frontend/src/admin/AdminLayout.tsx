@@ -10,6 +10,7 @@ import {
   ListChecks,
   ListTree,
   ClipboardCheckIcon,
+  MessageSquare,
 } from 'lucide-react';
 
 
@@ -22,6 +23,8 @@ const navItems = [
   { label: 'Item Manager', path: '/admin/item-manager', icon: <Layers size={18} /> },
   { label: 'Sub-Item Manager', path: '/admin/sub-item-manager', icon: <ListChecks size={18} /> },
   { label: 'Field Manager', path: '/admin/field-manager', icon: <ListTree size={18} /> },
+    { label: 'Question Manager', path: '/admin/question-manager', icon: <MessageSquare size={18} /> }, 
+
 ];
 
 const AdminLayout: React.FC = () => {
