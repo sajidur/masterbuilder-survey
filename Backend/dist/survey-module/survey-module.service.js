@@ -22,6 +22,7 @@ const menu_entity_1 = require("./survey-module.entity/menu.entity");
 const item_entity_1 = require("./survey-module.entity/item.entity");
 const subitem_entity_1 = require("./survey-module.entity/subitem.entity");
 const field_entity_1 = require("./survey-module.entity/field.entity");
+const subsubitem_entity_1 = require("./survey-module.entity/subsubitem.entity");
 let SurveyModuleService = class SurveyModuleService {
     modulesRepository;
     appRepository;
@@ -29,19 +30,49 @@ let SurveyModuleService = class SurveyModuleService {
     itemRepository;
     subItemRepository;
     fieldRepository;
-    constructor(modulesRepository, appRepository, menuRepository, itemRepository, subItemRepository, fieldRepository) {
+    subSubItemRepository;
+    constructor(modulesRepository, appRepository, menuRepository, itemRepository, subItemRepository, fieldRepository, subSubItemRepository) {
         this.modulesRepository = modulesRepository;
         this.appRepository = appRepository;
         this.menuRepository = menuRepository;
         this.itemRepository = itemRepository;
         this.subItemRepository = subItemRepository;
         this.fieldRepository = fieldRepository;
+        this.subSubItemRepository = subSubItemRepository;
+    }
+    async findAllSubSubItem() {
+        return await this.subSubItemRepository.find({ relations: ['subItem'] });
+    }
+    async findOneSubSubItem(id) {
+        const item = await this.subSubItemRepository.findOne({
+            where: { id },
+            relations: ['subItem'],
+        });
+        if (!item) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${id} not found`);
+        }
+        return item;
+    }
+    async createSubSubItem(data) {
+        const created = this.subSubItemRepository.create(data);
+        return await this.subSubItemRepository.save(created);
+    }
+    async updateSubSubItem(id, data) {
+        await this.findOneSubSubItem(id);
+        await this.subSubItemRepository.update(id, data);
+        return this.findOneSubSubItem(id);
+    }
+    async deleteSubSubItem(id) {
+        const result = await this.subSubItemRepository.delete(id);
+        if (result.affected === 0) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${id} not found`);
+        }
     }
     async findAllFields() {
-        return this.fieldRepository.find({ relations: ['subItem'] });
+        return this.fieldRepository.find({ relations: ['subSubItem'] });
     }
     async findOneField(id) {
-        return this.fieldRepository.findOne({ where: { id }, relations: ['subItem'] });
+        return this.fieldRepository.findOne({ where: { id }, relations: ['subSubItem'] });
     }
     async createField(field) {
         return this.fieldRepository.save(field);
@@ -127,12 +158,12 @@ let SurveyModuleService = class SurveyModuleService {
         await this.modulesRepository.delete(id);
     }
     async findAllApps() {
-        return await this.appRepository.find({ relations: ['module', 'menus'] });
+        return await this.appRepository.find({ relations: ['modules'] });
     }
     async findOneApp(id) {
         return await this.appRepository.findOne({
             where: { id },
-            relations: ['module', 'menus'],
+            relations: ['modules'],
         });
     }
     async createApp(app) {
@@ -177,7 +208,9 @@ exports.SurveyModuleService = SurveyModuleService = __decorate([
     __param(3, (0, typeorm_2.InjectRepository)(item_entity_1.Item)),
     __param(4, (0, typeorm_2.InjectRepository)(subitem_entity_1.SubItem)),
     __param(5, (0, typeorm_2.InjectRepository)(field_entity_1.Field)),
+    __param(6, (0, typeorm_2.InjectRepository)(subsubitem_entity_1.SubSubItem)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
+        typeorm_1.Repository,
         typeorm_1.Repository,
         typeorm_1.Repository,
         typeorm_1.Repository,

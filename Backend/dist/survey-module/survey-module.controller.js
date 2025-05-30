@@ -22,6 +22,7 @@ const menu_entity_1 = require("./survey-module.entity/menu.entity");
 const item_entity_1 = require("./survey-module.entity/item.entity");
 const subitem_entity_1 = require("./survey-module.entity/subitem.entity");
 const field_entity_1 = require("./survey-module.entity/field.entity");
+const subsubitem_entity_1 = require("./survey-module.entity/subsubitem.entity");
 let SurveyModuleController = class SurveyModuleController {
     moduleService;
     constructor(moduleService) {
@@ -132,6 +133,21 @@ let SurveyModuleController = class SurveyModuleController {
     }
     deleteField(id) {
         return this.moduleService.deleteField(id);
+    }
+    findAllSubSubItem() {
+        return this.moduleService.findAllSubSubItem();
+    }
+    findOneSubSubItem(id) {
+        return this.moduleService.findOneSubSubItem(id);
+    }
+    createSubSubItem(data) {
+        return this.moduleService.createSubSubItem(data);
+    }
+    updateSubSubItem(id, data) {
+        return this.moduleService.updateSubSubItem(id, data);
+    }
+    async deleteSubSubItem(id) {
+        return this.moduleService.deleteSubSubItem(id);
     }
 };
 exports.SurveyModuleController = SurveyModuleController;
@@ -386,6 +402,48 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteField", null);
+__decorate([
+    (0, common_1.Get)("allSubSubItems"),
+    (0, swagger_1.ApiResponse)({ status: 200, type: [subsubitem_entity_1.SubSubItem] }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "findAllSubSubItem", null);
+__decorate([
+    (0, common_1.Get)('getSubSubItem:id'),
+    (0, swagger_1.ApiResponse)({ status: 200, type: subsubitem_entity_1.SubSubItem }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "findOneSubSubItem", null);
+__decorate([
+    (0, common_1.Post)('addSubSubItem'),
+    (0, swagger_1.ApiBody)({ type: subsubitem_entity_1.SubSubItem }),
+    (0, swagger_1.ApiResponse)({ status: 201, type: subsubitem_entity_1.SubSubItem }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [subsubitem_entity_1.SubSubItem]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "createSubSubItem", null);
+__decorate([
+    (0, common_1.Put)('updateSubSubItem:id'),
+    (0, swagger_1.ApiBody)({ type: subsubitem_entity_1.SubSubItem }),
+    (0, swagger_1.ApiResponse)({ status: 200, type: subsubitem_entity_1.SubSubItem }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, subsubitem_entity_1.SubSubItem]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "updateSubSubItem", null);
+__decorate([
+    (0, common_1.Delete)('deleteSubSubItem:id'),
+    (0, swagger_1.ApiResponse)({ status: 204, description: 'Deleted successfully' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "deleteSubSubItem", null);
 exports.SurveyModuleController = SurveyModuleController = __decorate([
     (0, swagger_1.ApiTags)('survey-module'),
     (0, common_1.Controller)('survey-module'),

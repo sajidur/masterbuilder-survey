@@ -27,12 +27,16 @@ export class ErpModule {
   menu: string;
 
   @Column({ length: 255 })
-  @ApiProperty({ description: 'Feature name associated with the module' })
-  feature: string;
+  @ApiProperty({ description: 'Item name associated with the module' })
+  item: string;
 
   @Column({ length: 255 })
-  @ApiProperty({ description: 'Sub-feature name associated with the module' })
-  sub_feature: string;
+  @ApiProperty({ description: 'Sub-Item name associated with the module' })
+  subItem: string;
+
+  @Column({ length: 255 })
+  @ApiProperty({ description: 'SubSub-Item name associated with the module' })
+  subSubItem: string;
 
   @Column('text')
   @ApiProperty({ description: 'Field details in text format' })

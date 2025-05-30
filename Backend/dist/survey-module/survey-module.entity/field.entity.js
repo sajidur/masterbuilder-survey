@@ -11,14 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Field = void 0;
 const typeorm_1 = require("typeorm");
-const subitem_entity_1 = require("../survey-module.entity/subitem.entity");
 const swagger_1 = require("@nestjs/swagger");
+const subsubitem_entity_1 = require("./subsubitem.entity");
 let Field = class Field {
     id;
     name;
-    type;
-    subItemId;
-    subItem;
+    subSubItemId;
+    subSubItem;
 };
 exports.Field = Field;
 __decorate([
@@ -31,17 +30,13 @@ __decorate([
     __metadata("design:type", String)
 ], Field.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Type of the field' }),
-    __metadata("design:type", String)
-], Field.prototype, "type", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'SubItem ID' }),
     __metadata("design:type", Number)
-], Field.prototype, "subItemId", void 0);
+], Field.prototype, "subSubItemId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => subitem_entity_1.SubItem, (subItem) => subItem.fields),
-    __metadata("design:type", subitem_entity_1.SubItem)
-], Field.prototype, "subItem", void 0);
+    (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.fields),
+    __metadata("design:type", subsubitem_entity_1.SubSubItem)
+], Field.prototype, "subSubItem", void 0);
 exports.Field = Field = __decorate([
     (0, typeorm_1.Entity)()
 ], Field);

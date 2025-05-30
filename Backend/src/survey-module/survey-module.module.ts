@@ -13,6 +13,7 @@ import { Item } from '../survey-module/survey-module.entity/item.entity';
 import { Field } from '../survey-module/survey-module.entity/field.entity';
 
 import { SubItem } from '../survey-module/survey-module.entity/subitem.entity';
+import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 
 
 @Module({
@@ -23,7 +24,8 @@ import { SubItem } from '../survey-module/survey-module.entity/subitem.entity';
       Menu,
       Item,
       SubItem,
-      Field,
+      SubSubItem,
+      Field
     ]),
   ],
   providers: [SurveyModuleService],

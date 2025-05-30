@@ -5,6 +5,7 @@ import { Menu } from './survey-module.entity/menu.entity';
 import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
+import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 export declare class SurveyModuleController {
     private readonly moduleService;
     constructor(moduleService: SurveyModuleService);
@@ -38,4 +39,9 @@ export declare class SurveyModuleController {
     createField(field: Field): Promise<Field>;
     updateField(id: number, field: Field): Promise<Field>;
     deleteField(id: number): Promise<void>;
+    findAllSubSubItem(): Promise<SubSubItem[]>;
+    findOneSubSubItem(id: number): Promise<SubSubItem>;
+    createSubSubItem(data: SubSubItem): Promise<SubSubItem>;
+    updateSubSubItem(id: number, data: SubSubItem): Promise<SubSubItem>;
+    deleteSubSubItem(id: number): Promise<void>;
 }
