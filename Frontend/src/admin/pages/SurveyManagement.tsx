@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  getAllModules,
+  getAllApps,
+  getAllMenus,
+  getAllItems,
+  getAllSubitems,
+  getAllFields
+} from '../../apiRequest/api';
 
 interface Row {
   id: number;
@@ -9,6 +17,7 @@ interface Row {
   menu: string;
   item: string;
   subItem: string;
+  subSubItem: string;
   field: string;
 }
 
@@ -25,12 +34,60 @@ const SurveyManagement: React.FC = () => {
     menu: "",
     item: "",
     subItem: "",
+    subSubItem: "",
     field: "",
   });
 
   const [showPopup, setShowPopup] = useState(false);
   const [popupType, setPopupType] = useState<keyof Omit<Row, "id"> | null>(null);
   const [popupInput, setPopupInput] = useState("");
+
+  const [dropdownData, setDropdownData] = useState<{
+    modules: string[];
+    apps: string[];
+    menus: string[];
+    items: string[];
+    subItems: string[];
+    subSubItems: string[];
+    fields: string[];
+  }>({
+    modules: [],
+    apps: [],
+    menus: [],
+    items: [],
+    subItems: [],
+    subSubItems: [],
+    fields: []
+  });
+
+  useEffect(() => {
+    const fetchDropdownData = async () => {
+      try {
+        const [modules, apps, menus, items, subItems, fields] = await Promise.all([
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+          getAllItems(),
+          getAllSubitems(),
+          getAllFields()
+        ]);
+
+        setDropdownData({
+          modules: Array.from(new Set(modules.map((m: any) => m.name))),
+          apps: Array.from(new Set(apps.map((a: any) => a.name))),
+          menus: Array.from(new Set(menus.map((m: any) => m.title))),
+          items: Array.from(new Set(items.map((i: any) => i.name))),
+          subItems: Array.from(new Set(subItems.map((s: any) => s.name))),
+          subSubItems: [],
+          fields: Array.from(new Set(fields.map((f: any) => f.name)))
+        });
+      } catch (error) {
+        console.error('Failed to fetch dropdown data:', error);
+      }
+    };
+
+    fetchDropdownData();
+  }, []);
 
   const updateHierarchy = (path: string[], value: any) => {
     setHierarchy((prev: any) => {
@@ -68,36 +125,38 @@ const SurveyManagement: React.FC = () => {
 
     switch (popupType) {
       case "module":
-        setHierarchy((prev: any) => ({
-          ...prev,
-          [value]: {},
-        }));
-        setFormData({ module: value, app: "", menu: "", item: "", subItem: "", field: "" });
+        setHierarchy((prev: any) => ({ ...prev, [value]: {} }));
+        setFormData({ module: value, app: "", menu: "", item: "", subItem: "", subSubItem: "", field: "" });
         break;
       case "app":
         if (!formData.module) return toast.error("Select a module first");
         updateHierarchy([formData.module, value], {});
-        setFormData({ ...formData, app: value, menu: "", item: "", subItem: "", field: "" });
+        setFormData({ ...formData, app: value, menu: "", item: "", subItem: "", subSubItem: "", field: "" });
         break;
       case "menu":
         if (!formData.module || !formData.app) return toast.error("Select module and app first");
         updateHierarchy([formData.module, formData.app, value], {});
-        setFormData({ ...formData, menu: value, item: "", subItem: "", field: "" });
+        setFormData({ ...formData, menu: value, item: "", subItem: "", subSubItem: "", field: "" });
         break;
       case "item":
         if (!formData.module || !formData.app || !formData.menu) return toast.error("Select module, app, and menu first");
         updateHierarchy([formData.module, formData.app, formData.menu, value], {});
-        setFormData({ ...formData, item: value, subItem: "", field: "" });
+        setFormData({ ...formData, item: value, subItem: "", subSubItem: "", field: "" });
         break;
       case "subItem":
         if (!formData.module || !formData.app || !formData.menu || !formData.item) return toast.error("Select module, app, menu, and item first");
-        updateHierarchy([formData.module, formData.app, formData.menu, formData.item, value], []);
-        setFormData({ ...formData, subItem: value, field: "" });
+        updateHierarchy([formData.module, formData.app, formData.menu, formData.item, value], {});
+        setFormData({ ...formData, subItem: value, subSubItem: "", field: "" });
+        break;
+      case "subSubItem":
+        if (!formData.module || !formData.app || !formData.menu || !formData.item || !formData.subItem) return toast.error("Select all previous levels first");
+        updateHierarchy([formData.module, formData.app, formData.menu, formData.item, formData.subItem, value], []);
+        setFormData({ ...formData, subSubItem: value, field: "" });
         break;
       case "field":
-        if (!formData.module || !formData.app || !formData.menu || !formData.item || !formData.subItem) return toast.error("Select all previous levels first");
+        if (!formData.module || !formData.app || !formData.menu || !formData.item || !formData.subItem || !formData.subSubItem) return toast.error("Select all previous levels first");
         updateHierarchy(
-          [formData.module, formData.app, formData.menu, formData.item, formData.subItem],
+          [formData.module, formData.app, formData.menu, formData.item, formData.subItem, formData.subSubItem],
           value
         );
         setFormData({ ...formData, field: value });
@@ -114,61 +173,22 @@ const SurveyManagement: React.FC = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      ...(name === "module" && { app: "", menu: "", item: "", subItem: "", field: "" }),
-      ...(name === "app" && { menu: "", item: "", subItem: "", field: "" }),
-      ...(name === "menu" && { item: "", subItem: "", field: "" }),
-      ...(name === "item" && { subItem: "", field: "" }),
-      ...(name === "subItem" && { field: "" }),
+      ...(name === "module" && { app: "", menu: "", item: "", subItem: "", subSubItem: "", field: "" }),
+      ...(name === "app" && { menu: "", item: "", subItem: "", subSubItem: "", field: "" }),
+      ...(name === "menu" && { item: "", subItem: "", subSubItem: "", field: "" }),
+      ...(name === "item" && { subItem: "", subSubItem: "", field: "" }),
+      ...(name === "subItem" && { subSubItem: "", field: "" }),
+      ...(name === "subSubItem" && { field: "" }),
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowPopup(true);
-    setPopupType(null); // trigger confirmation popup
-  };
-
-  const confirmAddRow = () => {
-    const newRow = { id: Date.now(), ...formData };
-    const updatedRows = [...rows, newRow];
-    setRows(updatedRows);
-    localStorage.setItem("surveyRows", JSON.stringify(updatedRows));
-    setFormData({ module: "", app: "", menu: "", item: "", subItem: "", field: "" });
-    setShowPopup(false);
-  };
-
-  const handleDelete = (id: number) => {
-    const filtered = rows.filter((row) => row.id !== id);
-    setRows(filtered);
-    localStorage.setItem("surveyRows", JSON.stringify(filtered));
-  };
-
-  const getOptions = {
-    app: () => formData.module ? Object.keys(hierarchy[formData.module] || {}) : [],
-    menu: () => formData.app ? Object.keys(hierarchy[formData.module]?.[formData.app] || {}) : [],
-    item: () =>
-      formData.menu
-        ? Object.keys(hierarchy[formData.module]?.[formData.app]?.[formData.menu] || {})
-        : [],
-    subItem: () =>
-      formData.item
-        ? Object.keys(
-            hierarchy[formData.module]?.[formData.app]?.[formData.menu]?.[formData.item] || {}
-          )
-        : [],
-    field: () =>
-      formData.subItem
-        ? hierarchy[formData.module]?.[formData.app]?.[formData.menu]?.[formData.item]?.[formData.subItem] || []
-        : [],
-  };
-
   const renderSelectWithAdd = (
-    name: keyof Omit<Row, "id">,
+    name: keyof Row,
     label: string,
     options: string[],
     value: string
   ) => (
-    <div>
+    <div className="mb-4">
       <label className="block mb-1 font-semibold">{label}</label>
       <div className="flex gap-2 items-center">
         <select
@@ -196,17 +216,43 @@ const SurveyManagement: React.FC = () => {
     </div>
   );
 
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowPopup(true);
+    setPopupType(null);
+  };
+
+  const confirmAddRow = () => {
+    const newRow = { id: Date.now(), ...formData };
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+    localStorage.setItem("surveyRows", JSON.stringify(updatedRows));
+    setFormData({ module: "", app: "", menu: "", item: "", subItem: "", subSubItem: "", field: "" });
+    setShowPopup(false);
+  };
+
+  const handleDelete = (id: number) => {
+    const filtered = rows.filter((row) => row.id !== id);
+    setRows(filtered);
+    localStorage.setItem("surveyRows", JSON.stringify(filtered));
+  };
+
+
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-light mb-6">Survey Module Management</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow rounded p-6 mb-8 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {renderSelectWithAdd("module", "Module", Object.keys(hierarchy), formData.module)}
-          {renderSelectWithAdd("app", "App", getOptions.app(), formData.app)}
-          {renderSelectWithAdd("menu", "Menu", getOptions.menu(), formData.menu)}
-          {renderSelectWithAdd("item", "Item", getOptions.item(), formData.item)}
-          {renderSelectWithAdd("subItem", "Sub Item", getOptions.subItem(), formData.subItem)}
-          {renderSelectWithAdd("field", "Field", getOptions.field(), formData.field)}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {renderSelectWithAdd('module', 'Module', dropdownData.modules, formData.module)}
+          {renderSelectWithAdd('app', 'App', dropdownData.apps, formData.app)}
+          {renderSelectWithAdd('menu', 'Menu', dropdownData.menus, formData.menu)}
+          {renderSelectWithAdd('item', 'Item', dropdownData.items, formData.item)}
+          {renderSelectWithAdd('subItem', 'SubItem', dropdownData.subItems, formData.subItem)}
+          {renderSelectWithAdd('subSubItem', 'SubSubItem', dropdownData.subSubItems, formData.subSubItem)
+}
+          {renderSelectWithAdd('field', 'Field', dropdownData.fields, formData.field)}
         </div>
         <button
           type="submit"
@@ -216,7 +262,6 @@ const SurveyManagement: React.FC = () => {
         </button>
       </form>
 
-      {/* Data Table */}
       <div className="bg-white shadow rounded p-4">
         <h3 className="text-xl font-medium mb-4">Entries</h3>
         {rows.length > 0 ? (
@@ -228,6 +273,7 @@ const SurveyManagement: React.FC = () => {
                 <th className="p-2">Menu</th>
                 <th className="p-2">Item</th>
                 <th className="p-2">Sub Item</th>
+                <th className="p-2">Sub Sub Item</th>
                 <th className="p-2">Field</th>
                 <th className="p-2">Action</th>
               </tr>
@@ -240,6 +286,7 @@ const SurveyManagement: React.FC = () => {
                   <td className="p-2">{row.menu}</td>
                   <td className="p-2">{row.item}</td>
                   <td className="p-2">{row.subItem}</td>
+                  <td className="p-2">{row.subSubItem}</td>
                   <td className="p-2">{row.field}</td>
                   <td className="p-2">
                     <button
@@ -258,7 +305,6 @@ const SurveyManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Popup Modal */}
       {showPopup && popupType && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 shadow-md">
@@ -285,7 +331,6 @@ const SurveyManagement: React.FC = () => {
         </div>
       )}
 
-      {/* Confirmation Popup */}
       {showPopup && !popupType && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 shadow-md">

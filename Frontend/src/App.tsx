@@ -18,6 +18,7 @@ import SubItemManager from "./admin/pages/SubItemManager";
 import FieldManager from "./admin/pages/FieldManager";
 import { ToastContainer } from "react-toastify";
 import SurveyBuilder from "./admin/pages/SurveyBuilder";
+import SubSubItemManager from "./admin/pages/SubSubItemManager";
 
 function AppContent() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function AppContent() {
             <Route path="menu-manager" element={<MenuManager />} />
             <Route path="item-manager" element={<ItemManager />} />
             <Route path="sub-item-manager" element={<SubItemManager />} />
+            <Route path="sub-sub-item-manager" element={<SubSubItemManager />} />
             <Route path="field-manager" element={<FieldManager />} />
             <Route path="question-manager" element={<SurveyBuilder />} />
           </Route>
