@@ -1,128 +1,250 @@
-import React, { useEffect, useState } from 'react';
-import { PlusCircle, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getAllModules, getAllApps } from "../../apiRequest/api";
 
-const MODULE_STORAGE_KEY = 'modules';
-const APP_STORAGE_KEY = 'apps';
-
-type AppEntry = {
+interface Row {
+  id: number;
   module: string;
   app: string;
-};
+}
 
 const AppManager: React.FC = () => {
-  const [modules, setModules] = useState<string[]>([]);
-  const [selectedModule, setSelectedModule] = useState('');
-  const [appName, setAppName] = useState('');
-  const [apps, setApps] = useState<AppEntry[]>([]);
+  const [rows, setRows] = useState<Row[]>(() => {
+    const saved = localStorage.getItem("AppRows");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // Load modules and apps from localStorage
+  const [formData, setFormData] = useState<Omit<Row, "id">>({
+    module: "",
+    app: "",
+  });
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupType, setPopupType] = useState<keyof Omit<Row, "id"> | null>(null);
+  const [popupInput, setPopupInput] = useState("");
+
+  const [dropdownData, setDropdownData] = useState<{
+    modules: string[];
+    apps: string[];
+  }>({
+    modules: [],
+    apps: [],
+  });
+
   useEffect(() => {
-    const storedModules = localStorage.getItem(MODULE_STORAGE_KEY);
-    const storedApps = localStorage.getItem(APP_STORAGE_KEY);
+    const fetchDropdownData = async () => {
+      try {
+        const [modules, apps] = await Promise.all([getAllModules(), getAllApps()]);
+        setDropdownData({
+          modules: Array.from(new Set(modules.map((m: any) => m.name))),
+          apps: Array.from(new Set(apps.map((a: any) => a.name))),
+        });
+      } catch (error) {
+        console.error("Failed to fetch dropdown data:", error);
+        toast.error("Error loading dropdown data.");
+      }
+    };
 
-    if (storedModules) setModules(JSON.parse(storedModules));
-    if (storedApps) setApps(JSON.parse(storedApps));
+    fetchDropdownData();
   }, []);
 
-  const handleAddApp = () => {
-    const trimmedApp = appName.trim();
-    if (!selectedModule || !trimmedApp) return;
-
-    const exists = apps.some(
-      (entry) => entry.module === selectedModule && entry.app === trimmedApp
-    );
-    if (!exists) {
-      const updated = [...apps, { module: selectedModule, app: trimmedApp }];
-      setApps(updated);
-      localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(updated));
-      setAppName('');
-    }
+  const triggerPopup = (type: keyof Omit<Row, "id">) => {
+    setPopupType(type);
+    setPopupInput("");
+    setShowPopup(true);
   };
 
-  const handleDelete = (target: AppEntry) => {
-    const updated = apps.filter(
-      (entry) => !(entry.module === target.module && entry.app === target.app)
-    );
-    setApps(updated);
-    localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(updated));
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  return (
-    <section className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
-      <header className="mb-6">
-        <h2 className="text-2xl font-light text-gray-800">🧩 Manage Apps</h2>
-        <p className="text-sm text-gray-500">Each app belongs to a module. Select a module before adding apps.</p>
-      </header>
-
-      {/* Module Selection */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Select Module</label>
+  const renderSelectWithAdd = (
+    name: keyof Row,
+    label: string,
+    options: string[],
+    value: string
+  ) => (
+    <div className="mb-4">
+      <label className="block mb-1 font-semibold">{label}</label>
+      <div className="flex gap-2 items-center">
         <select
-          value={selectedModule}
-          onChange={(e) => setSelectedModule(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          name={name}
+          value={value}
+          onChange={handleChange}
+          className="border border-gray-300 rounded-md px-4 py-2 w-2/3"
         >
-          <option value="">-- Select a Module --</option>
-          {modules.map((module) => (
-            <option key={module} value={module}>
-              {module}
+          <option value="">Select {label}</option>
+          {options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
             </option>
           ))}
         </select>
-      </div>
-
-      {/* App Name Input */}
-      <div className="flex items-center space-x-3 mb-6">
-        <input
-          value={appName}
-          onChange={(e) => setAppName(e.target.value)}
-          placeholder="e.g. HR, CRM, Finance"
-          disabled={!selectedModule}
-          className="flex-1 border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm disabled:opacity-50"
-        />
         <button
-          onClick={handleAddApp}
-          disabled={!selectedModule || !appName.trim()}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50"
+          type="button"
+          onClick={() => triggerPopup(name)}
+          className="px-3 py-1 bg-blue-500 text-white rounded"
+          title={`Add new ${label}`}
         >
-          <PlusCircle size={18} />
-          Add
+          +
         </button>
       </div>
+    </div>
+  );
 
-      {/* Apps Table */}
-      {apps.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left text-gray-600">
-            <thead className="bg-gray-100 text-gray-700">
-              <tr>
-                <th className="px-4 py-2">Module</th>
-                <th className="px-4 py-2">App</th>
-                <th className="px-4 py-2 text-right">Action</th>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPopupType(null);
+    setShowPopup(true); // Confirmation popup
+  };
+
+  const confirmAddRow = () => {
+    const newRow: Row = { id: Date.now(), ...formData };
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+    localStorage.setItem("AppRows", JSON.stringify(updatedRows));
+    setFormData({ module: "", app: "" });
+    setShowPopup(false);
+    toast.success("Entry added successfully!");
+  };
+
+  const handleDelete = (id: number) => {
+    const filtered = rows.filter((row) => row.id !== id);
+    setRows(filtered);
+    localStorage.setItem("AppRows", JSON.stringify(filtered));
+    toast.info("Entry deleted.");
+  };
+
+  const handleAddFromPopup = () => {
+    if (!popupInput.trim() || !popupType) {
+      toast.warn("Please enter a value.");
+      return;
+    }
+
+    const key = popupType + "s" as keyof typeof dropdownData;
+
+    if (!dropdownData[key].includes(popupInput)) {
+      setDropdownData((prev) => ({
+        ...prev,
+        [key]: [...prev[key], popupInput],
+      }));
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [popupType]: popupInput,
+    }));
+
+    setShowPopup(false);
+    setPopupInput("");
+    setPopupType(null);
+    toast.success(`${popupType} added!`);
+  };
+
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-light mb-6">App Management</h2>
+      <form onSubmit={handleSubmit} className="bg-white shadow rounded p-6 mb-8 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {renderSelectWithAdd("module", "Module", dropdownData.modules, formData.module)}
+          {renderSelectWithAdd("app", "App", dropdownData.apps, formData.app)}
+        </div>
+        <button
+          type="submit"
+          className="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Add Entry
+        </button>
+      </form>
+
+      <div className="bg-white shadow rounded p-4">
+        <h3 className="text-xl font-medium mb-4">Entries</h3>
+        {rows.length > 0 ? (
+          <table className="w-full border border-gray-200">
+            <thead>
+              <tr className="bg-gray-100 text-left">
+                <th className="p-2">Module</th>
+                <th className="p-2">App</th>
+                <th className="p-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              {apps.map((entry, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2">{entry.module}</td>
-                  <td className="px-4 py-2">{entry.app}</td>
-                  <td className="px-4 py-2 text-right">
+              {rows.map((row) => (
+                <tr key={row.id} className="border-t">
+                  <td className="p-2">{row.module}</td>
+                  <td className="p-2">{row.app}</td>
+                  <td className="p-2">
                     <button
-                      onClick={() => handleDelete(entry)}
+                      onClick={() => handleDelete(row.id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      <Trash2 size={18} />
+                      Delete
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        ) : (
+          <p>No entries added yet.</p>
+        )}
+      </div>
+
+      {/* Add New Popup */}
+      {showPopup && popupType && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 shadow-md">
+            <h3 className="text-xl font-semibold mb-4">Add New {popupType}</h3>
+            <input
+              type="text"
+              className="w-full border px-3 py-2 rounded mb-4"
+              value={popupInput}
+              onChange={(e) => setPopupInput(e.target.value)}
+              placeholder={`Enter new ${popupType}`}
+            />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setShowPopup(false)} className="text-gray-600 px-4 py-2">
+                Cancel
+              </button>
+              <button
+                onClick={handleAddFromPopup}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Add
+              </button>
+            </div>
+          </div>
         </div>
-      ) : (
-        <p className="text-gray-500 italic text-sm">No apps added yet.</p>
       )}
-    </section>
+
+      {/* Confirm Add Entry Popup */}
+      {showPopup && !popupType && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 shadow-md">
+            <h3 className="text-lg font-medium mb-4">Confirm Add Entry</h3>
+            <p className="mb-4">Are you sure you want to add this entry?</p>
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setShowPopup(false)} className="text-gray-600 px-4 py-2">
+                Cancel
+              </button>
+              <button
+                onClick={confirmAddRow}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer />
+    </div>
   );
 };
 

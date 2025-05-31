@@ -9,7 +9,6 @@ import { SurveyProvider } from "./context/SurveyContext";
 import AdminLayout from "././admin/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
 import { ClipboardCheckIcon } from "lucide-react";
-import SurveyManagement from "./admin/pages/SurveyManagement";
 import ModuleManager from "./admin/pages/ModuleManager";
 import AppManager from "./admin/pages/AppManager";
 import MenuManager from "./admin/pages/MenuManager";
@@ -51,7 +50,6 @@ function AppContent() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="feature-list" element={<SurveyManagement />} />
             <Route path="module-manager" element={<ModuleManager />} />
             <Route path="app-manager" element={<AppManager />} />
             <Route path="menu-manager" element={<MenuManager />} />

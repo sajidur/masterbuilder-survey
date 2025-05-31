@@ -17,7 +17,6 @@ import {
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
-  { label: 'Feature List', path: '/admin/feature-list', icon: <ClipboardCheck size={18} /> },
   { label: 'Module Manager', path: '/admin/module-manager', icon: <Puzzle size={18} /> },
   { label: 'App Manager', path: '/admin/app-manager', icon: <AppWindow size={18} /> },
   { label: 'Menu Manager', path: '/admin/menu-manager', icon: <List size={18} /> },
