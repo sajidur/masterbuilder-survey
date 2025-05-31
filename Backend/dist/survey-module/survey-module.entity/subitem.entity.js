@@ -12,14 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubItem = void 0;
 const typeorm_1 = require("typeorm");
 const item_entity_1 = require("../survey-module.entity/item.entity");
-const field_entity_1 = require("../survey-module.entity/field.entity");
 const swagger_1 = require("@nestjs/swagger");
+const subsubitem_entity_1 = require("./subsubitem.entity");
 let SubItem = class SubItem {
     id;
     label;
     itemId;
     item;
-    fields;
+    subSubItems;
 };
 exports.SubItem = SubItem;
 __decorate([
@@ -40,9 +40,9 @@ __decorate([
     __metadata("design:type", item_entity_1.Item)
 ], SubItem.prototype, "item", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subItem),
+    (0, typeorm_1.OneToMany)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.subItem),
     __metadata("design:type", Array)
-], SubItem.prototype, "fields", void 0);
+], SubItem.prototype, "subSubItems", void 0);
 exports.SubItem = SubItem = __decorate([
     (0, typeorm_1.Entity)()
 ], SubItem);

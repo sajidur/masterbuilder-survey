@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { SubItem } from '../survey-module.entity/subitem.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { SubSubItem } from './subsubitem.entity';
 
 @Entity()
 export class Field {
@@ -13,12 +13,10 @@ export class Field {
   @ApiProperty({ description: 'Name of the field' })
   name: string;
 
-  @ApiProperty({ description: 'Type of the field' })
-  type: string;
-
   @ApiProperty({ description: 'SubItem ID' })
-  subItemId: number;
+  subSubItemId: number;
 
-  @ManyToOne(() => SubItem, (subItem) => subItem.fields)
-  subItem: SubItem;
+  @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.fields)
+  subSubItem: SubSubItem;
+
 }

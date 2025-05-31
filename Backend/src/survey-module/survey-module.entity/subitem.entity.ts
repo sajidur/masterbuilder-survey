@@ -1,10 +1,13 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Item } from '../survey-module.entity/item.entity';
 import { Field } from '../survey-module.entity/field.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { SubSubItem } from './subsubitem.entity';
 
 @Entity()
 export class SubItem {
@@ -22,7 +25,8 @@ export class SubItem {
 item: Item;
 
 
-  @OneToMany(() => Field, (field) => field.subItem)
-  fields: Field[];
+  @OneToMany(() => SubSubItem, (subSubItem) => subSubItem.subItem)
+  subSubItems: SubSubItem[];
+    
 
 }

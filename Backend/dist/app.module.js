@@ -13,6 +13,7 @@ const user_module_1 = require("./user/user.module");
 const feature_module_1 = require("./feature/feature.module");
 const survey_module_module_1 = require("./survey-module/survey-module.module");
 const erp_module_module_1 = require("./erp-module/erp-module.module");
+const survey_config_module_1 = require("./survey-config/survey-config.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,11 +29,13 @@ exports.AppModule = AppModule = __decorate([
                 database: 'db_a66689_mukut',
                 autoLoadEntities: true,
                 synchronize: false,
+                connectTimeout: 20000,
             }),
             user_module_1.UserModule,
             feature_module_1.FeatureModule,
             survey_module_module_1.SurveyModuleModule,
-            erp_module_module_1.ErpModuleModule
+            erp_module_module_1.ErpModuleModule,
+            survey_config_module_1.SurveyConfigModule
         ],
     })
 ], AppModule);

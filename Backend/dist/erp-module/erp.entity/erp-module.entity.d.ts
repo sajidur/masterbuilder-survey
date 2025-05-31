@@ -3,8 +3,9 @@ export declare class ErpModule {
     module: string;
     app: string;
     menu: string;
-    feature: string;
-    sub_feature: string;
+    item: string;
+    subItem: string;
+    subSubItem: string;
     field: string;
     remarks: string;
     created_at: Date;

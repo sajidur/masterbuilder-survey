@@ -12,6 +12,7 @@ import { Menu } from './survey-module.entity/menu.entity';
 import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
+import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 @Injectable()
 export class SurveyModuleService {
   constructor(
@@ -21,14 +22,48 @@ export class SurveyModuleService {
     @InjectRepository(Item) private readonly itemRepository: Repository<Item>,
     @InjectRepository(SubItem) private readonly subItemRepository: Repository<SubItem>,
     @InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
+    @InjectRepository(SubSubItem) private readonly subSubItemRepository: Repository<SubSubItem>,
   ) {}
+  //subsubitem
+   async findAllSubSubItem(): Promise<SubSubItem[]> {
+    return await this.subSubItemRepository.find({ relations: ['subItem'] });
+  }
+
+  async findOneSubSubItem(id: number): Promise<SubSubItem> {
+    const item = await this.subSubItemRepository.findOne({
+      where: { id },
+      relations: ['subItem'],
+    });
+    if (!item) {
+      throw new NotFoundException(`SubSubItem with ID ${id} not found`);
+    }
+    return item;
+  }
+
+  async createSubSubItem(data: SubSubItem): Promise<SubSubItem> {
+    const created = this.subSubItemRepository.create(data);
+    return await this.subSubItemRepository.save(created);
+  }
+
+  async updateSubSubItem(id: number, data: SubSubItem): Promise<SubSubItem> {
+    await this.findOneSubSubItem(id); // to throw NotFound if not exists
+    await this.subSubItemRepository.update(id, data);
+    return this.findOneSubSubItem(id);
+  }
+
+  async deleteSubSubItem(id: number): Promise<void> {
+    const result = await this.subSubItemRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`SubSubItem with ID ${id} not found`);
+    }
+  }
   //field
    async findAllFields(): Promise<Field[]> {
-    return this.fieldRepository.find({ relations: ['subItem'] });
+    return this.fieldRepository.find({ relations: ['subSubItem'] });
   }
 
   async findOneField(id: number): Promise<Field | null> {
-    return this.fieldRepository.findOne({ where: { id }, relations: ['subItem'] });
+    return this.fieldRepository.findOne({ where: { id }, relations: ['subSubItem'] });
   }
 
   async createField(field: Field): Promise<Field> {
@@ -50,7 +85,7 @@ export class SurveyModuleService {
       throw new NotFoundException(`Field with ID ${id} not found`);
     }
   }
-  //sunitem
+  //subitem
     async findAllSubItems(): Promise<SubItem[]> {
     return this.subItemRepository.find({ relations: ['item', 'fields'] });
   }
@@ -131,13 +166,13 @@ export class SurveyModuleService {
   }
    // ---------- APP METHODS ----------
   async findAllApps(): Promise<App[]> {
-    return await this.appRepository.find({ relations: ['module', 'menus'] });
+    return await this.appRepository.find({ relations: ['modules'] });
   }
 
   async findOneApp(id: number): Promise<App | null> {
   return await this.appRepository.findOne({
     where: { id },
-    relations: ['module', 'menus'],
+    relations: ['modules'],
   });
 }
 

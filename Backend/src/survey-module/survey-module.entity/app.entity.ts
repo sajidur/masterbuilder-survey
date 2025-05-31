@@ -13,7 +13,7 @@ export class App {
   id: number
 
   @Column()
- @ApiProperty({ description: 'Name of the app' })
+  @ApiProperty({ description: 'Name of the app' })
   name: string;
 
   @ApiProperty({ description: 'Module ID' })

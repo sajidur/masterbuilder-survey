@@ -17,8 +17,9 @@ let ErpModule = class ErpModule {
     module;
     app;
     menu;
-    feature;
-    sub_feature;
+    item;
+    subItem;
+    subSubItem;
     field;
     remarks;
     created_at;
@@ -46,14 +47,19 @@ __decorate([
 ], ErpModule.prototype, "menu", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 255 }),
-    (0, swagger_1.ApiProperty)({ description: 'Feature name associated with the module' }),
+    (0, swagger_1.ApiProperty)({ description: 'Item name associated with the module' }),
     __metadata("design:type", String)
-], ErpModule.prototype, "feature", void 0);
+], ErpModule.prototype, "item", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 255 }),
-    (0, swagger_1.ApiProperty)({ description: 'Sub-feature name associated with the module' }),
+    (0, swagger_1.ApiProperty)({ description: 'Sub-Item name associated with the module' }),
     __metadata("design:type", String)
-], ErpModule.prototype, "sub_feature", void 0);
+], ErpModule.prototype, "subItem", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 255 }),
+    (0, swagger_1.ApiProperty)({ description: 'SubSub-Item name associated with the module' }),
+    __metadata("design:type", String)
+], ErpModule.prototype, "subSubItem", void 0);
 __decorate([
     (0, typeorm_1.Column)('text'),
     (0, swagger_1.ApiProperty)({ description: 'Field details in text format' }),

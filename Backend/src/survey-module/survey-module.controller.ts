@@ -12,9 +12,10 @@ import { Menu } from './survey-module.entity/menu.entity';
 import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
+import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 @ApiTags('survey-module')
 @Controller('survey-module')
-export class SurveyModuleController {
+export class SurveyModuleController { 
 
   constructor(private readonly moduleService: SurveyModuleService) {}
   //subitems
@@ -105,7 +106,6 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<App> {
 }
 
   @Post('addApps')
- 
   @ApiBody({ type: App })
   @ApiResponse({ status: 201, type: App })
   createApp(@Body() app: App): Promise<App> {
@@ -240,4 +240,37 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<App> {
   deleteField(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.moduleService.deleteField(id);
   }
+  //subsubItem
+  @Get("allSubSubItems")
+  @ApiResponse({ status: 200, type: [SubSubItem] })
+  findAllSubSubItem(): Promise<SubSubItem[]> {
+    return this.moduleService.findAllSubSubItem();
+  }
+
+  @Get('getSubSubItem:id')
+  @ApiResponse({ status: 200, type: SubSubItem })
+  findOneSubSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubSubItem> {
+    return this.moduleService.findOneSubSubItem(id);
+  }
+
+  @Post('addSubSubItem')
+  @ApiBody({ type: SubSubItem })
+  @ApiResponse({ status: 201, type: SubSubItem })
+  createSubSubItem(@Body() data: SubSubItem): Promise<SubSubItem> {
+    return this.moduleService.createSubSubItem(data);
+  }
+
+  @Put('updateSubSubItem:id')
+  @ApiBody({ type: SubSubItem })
+  @ApiResponse({ status: 200, type: SubSubItem })
+  updateSubSubItem(@Param('id', ParseIntPipe) id: number, @Body() data: SubSubItem): Promise<SubSubItem> {
+    return this.moduleService.updateSubSubItem(id, data);
+  }
+
+  @Delete('deleteSubSubItem:id')
+  @ApiResponse({ status: 204, description: 'Deleted successfully' })
+  async deleteSubSubItem(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.moduleService.deleteSubSubItem(id);
+  }
+
 }

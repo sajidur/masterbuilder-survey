@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { FeatureModule } from './feature/feature.module';
 import { SurveyModuleModule } from './survey-module/survey-module.module';
 import { ErpModuleModule } from './erp-module/erp-module.module';
+import { SurveyConfigModule } from './survey-config/survey-config.module';
 
 @Module({
   imports: [
@@ -17,11 +18,13 @@ import { ErpModuleModule } from './erp-module/erp-module.module';
       database: 'db_a66689_mukut',
       autoLoadEntities: true,
       synchronize: false, // disable in production
+      connectTimeout: 20000,
     }),
     UserModule,
     FeatureModule,
     SurveyModuleModule,
-    ErpModuleModule
+    ErpModuleModule,
+    SurveyConfigModule
   ],
 })
 export class AppModule {}

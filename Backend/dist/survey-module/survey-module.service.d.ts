@@ -5,6 +5,7 @@ import { Menu } from './survey-module.entity/menu.entity';
 import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
+import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 export declare class SurveyModuleService {
     private readonly modulesRepository;
     private readonly appRepository;
@@ -12,7 +13,13 @@ export declare class SurveyModuleService {
     private readonly itemRepository;
     private readonly subItemRepository;
     private readonly fieldRepository;
-    constructor(modulesRepository: Repository<Modules>, appRepository: Repository<App>, menuRepository: Repository<Menu>, itemRepository: Repository<Item>, subItemRepository: Repository<SubItem>, fieldRepository: Repository<Field>);
+    private readonly subSubItemRepository;
+    constructor(modulesRepository: Repository<Modules>, appRepository: Repository<App>, menuRepository: Repository<Menu>, itemRepository: Repository<Item>, subItemRepository: Repository<SubItem>, fieldRepository: Repository<Field>, subSubItemRepository: Repository<SubSubItem>);
+    findAllSubSubItem(): Promise<SubSubItem[]>;
+    findOneSubSubItem(id: number): Promise<SubSubItem>;
+    createSubSubItem(data: SubSubItem): Promise<SubSubItem>;
+    updateSubSubItem(id: number, data: SubSubItem): Promise<SubSubItem>;
+    deleteSubSubItem(id: number): Promise<void>;
     findAllFields(): Promise<Field[]>;
     findOneField(id: number): Promise<Field | null>;
     createField(field: Field): Promise<Field>;

@@ -17,6 +17,7 @@ const menu_entity_1 = require("../survey-module/survey-module.entity/menu.entity
 const item_entity_1 = require("../survey-module/survey-module.entity/item.entity");
 const field_entity_1 = require("../survey-module/survey-module.entity/field.entity");
 const subitem_entity_1 = require("../survey-module/survey-module.entity/subitem.entity");
+const subsubitem_entity_1 = require("./survey-module.entity/subsubitem.entity");
 let SurveyModuleModule = class SurveyModuleModule {
 };
 exports.SurveyModuleModule = SurveyModuleModule;
@@ -29,7 +30,8 @@ exports.SurveyModuleModule = SurveyModuleModule = __decorate([
                 menu_entity_1.Menu,
                 item_entity_1.Item,
                 subitem_entity_1.SubItem,
-                field_entity_1.Field,
+                subsubitem_entity_1.SubSubItem,
+                field_entity_1.Field
             ]),
         ],
         providers: [survey_module_service_1.SurveyModuleService],
