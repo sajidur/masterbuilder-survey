@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SurveyConfigModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const survey_config_entity_1 = require("./survey-config.entity/survey-config.entity");
 const questionGroup_entity_1 = require("./survey-config.entity/questionGroup.entity");
 const question_entity_1 = require("./survey-config.entity/question.entity");
 ;
@@ -19,12 +18,13 @@ const question_model_entity_1 = require("./survey-config.entity/question-model.e
 ;
 const survey_config_controller_1 = require("./survey-config.controller");
 const survey_config_service_1 = require("./survey-config.service");
+const survey_entity_1 = require("./survey-config.entity/survey.entity");
 let SurveyConfigModule = class SurveyConfigModule {
 };
 exports.SurveyConfigModule = SurveyConfigModule;
 exports.SurveyConfigModule = SurveyConfigModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([survey_config_entity_1.SurveyConfig, questionGroup_entity_1.QuestionGroup, question_entity_1.Question, option_entity_1.Option, question_model_entity_1.QuestionModel])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([survey_entity_1.Survey, questionGroup_entity_1.QuestionGroup, question_entity_1.Question, option_entity_1.Option, question_model_entity_1.QuestionModel])],
         controllers: [survey_config_controller_1.SurveyConfigController],
         providers: [survey_config_controller_1.SurveyConfigController, survey_config_service_1.SurveyConfigService],
     })

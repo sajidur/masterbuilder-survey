@@ -157,20 +157,35 @@ let SurveyModuleService = class SurveyModuleService {
     async remove(id) {
         await this.modulesRepository.delete(id);
     }
+    async toDto(app) {
+        const module = await this.modulesRepository.findOne({
+            where: { id: app.moduleId },
+        });
+        if (!module) {
+            throw new Error(`Module with ID ${app.moduleId} not found`);
+        }
+        return {
+            id: app.id,
+            name: app.name,
+            Module: module,
+        };
+    }
     async findAllApps() {
-        return await this.appRepository.find({ relations: ['modules'] });
+        const apps = await this.appRepository.find();
+        const dtoPromises = apps.map(app => this.toDto(app));
+        return await Promise.all(dtoPromises);
     }
     async findOneApp(id) {
-        return await this.appRepository.findOne({
-            where: { id },
-            relations: ['modules'],
-        });
+        const app = await this.appRepository.findOne({ where: { id } });
+        return app ? await this.toDto(app) : null;
     }
     async createApp(app) {
-        return await this.appRepository.save(app);
+        const created = await this.appRepository.save(app);
+        return await this.toDto(created);
     }
     async updateApp(id, app) {
-        return await this.appRepository.save({ ...app, id });
+        const updated = await this.appRepository.save({ ...app, id });
+        return await this.toDto(updated);
     }
     async deleteApp(id) {
         await this.appRepository.delete(id);

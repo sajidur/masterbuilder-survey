@@ -9,39 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SurveyConfig = void 0;
+exports.Survey = void 0;
 const typeorm_1 = require("typeorm");
 const questionGroup_entity_1 = require("./questionGroup.entity");
-const swagger_1 = require("@nestjs/swagger");
-let SurveyConfig = class SurveyConfig {
+let Survey = class Survey {
     id;
     title;
     description;
     questionGroups;
 };
-exports.SurveyConfig = SurveyConfig;
+exports.Survey = Survey;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
-    __metadata("design:type", String)
-], SurveyConfig.prototype, "id", void 0);
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Survey.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Title of the survey configuration' }),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], SurveyConfig.prototype, "title", void 0);
+], Survey.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Description of the survey configuration' }),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], SurveyConfig.prototype, "description", void 0);
+], Survey.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => questionGroup_entity_1.QuestionGroup, questionGroup => questionGroup.surveyConfig, {
-        cascade: true,
-        eager: true,
-    }),
+    (0, typeorm_1.OneToMany)(() => questionGroup_entity_1.QuestionGroup, qg => qg.survey, { cascade: true, eager: true }),
     __metadata("design:type", Array)
-], SurveyConfig.prototype, "questionGroups", void 0);
-exports.SurveyConfig = SurveyConfig = __decorate([
-    (0, typeorm_1.Entity)('survey_configs')
-], SurveyConfig);
-//# sourceMappingURL=survey-config.entity.js.map
+], Survey.prototype, "questionGroups", void 0);
+exports.Survey = Survey = __decorate([
+    (0, typeorm_1.Entity)('survey-configs')
+], Survey);
+//# sourceMappingURL=survey.entity.js.map

@@ -29,29 +29,33 @@ __decorate([
     __metadata("design:type", String)
 ], Option.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Text of the option' }),
+    (0, swagger_1.ApiProperty)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Option.prototype, "text", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Value associated with the option' }),
+    (0, swagger_1.ApiProperty)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Option.prototype, "value", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Related question, if the option belongs directly to a question', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Associated Question ID', required: false }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Option.prototype, "questionId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => question_entity_1.Question, question => question.options, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => question_entity_1.Question, question => question.options, { nullable: true, onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'questionId' }),
     __metadata("design:type", question_entity_1.Question)
 ], Option.prototype, "question", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Related question model, if the option belongs to a sub-question or question model', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Associated QuestionModel ID', required: false }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Option.prototype, "questionModelId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => question_model_entity_1.QuestionModel, questionModel => questionModel.options, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => question_model_entity_1.QuestionModel, qm => qm.options, { nullable: true, onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'questionModelId' }),
     __metadata("design:type", question_model_entity_1.QuestionModel)
 ], Option.prototype, "questionModel", void 0);
 exports.Option = Option = __decorate([

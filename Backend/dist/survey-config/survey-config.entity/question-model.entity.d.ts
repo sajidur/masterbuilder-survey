@@ -5,7 +5,6 @@ export declare class QuestionModel {
     text: string;
     type: 'single' | 'multiple';
     required: boolean;
-    parentQuestionId: string;
     parentQuestion: Question;
     options: Option[];
 }

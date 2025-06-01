@@ -17,8 +17,8 @@ import { SurveyConfigModule } from './survey-config/survey-config.module';
       password: 'Root@pass1',
       database: 'db_a66689_mukut',
       autoLoadEntities: true,
-      synchronize: false, // disable in production
-      connectTimeout: 20000,
+      synchronize: false // disable in production
+    
     }),
     UserModule,
     FeatureModule,

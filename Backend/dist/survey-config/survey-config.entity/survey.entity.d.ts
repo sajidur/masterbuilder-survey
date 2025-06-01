@@ -1,7 +1,7 @@
 import { QuestionGroup } from './questionGroup.entity';
-export declare class SurveyConfig {
-    id: string;
+export declare class Survey {
+    id: number;
     title: string;
-    description: string;
+    description?: string;
     questionGroups: QuestionGroup[];
 }

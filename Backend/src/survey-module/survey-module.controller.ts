@@ -13,6 +13,7 @@ import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
+import { AppDto } from './survey-module.dto/App.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController { 
@@ -88,16 +89,16 @@ export class SurveyModuleController {
    // ---------- APPS CRUD ----------
   @Get('allApps')
   
-  @ApiResponse({ status: 200, type: [App] })
-  findAllApps(): Promise<App[]> {
+  @ApiResponse({ status: 200, type: [AppDto] })
+  findAllApps(): Promise<AppDto[]> {
     return this.moduleService.findAllApps();
   }
 
   
  @Get('getApps/:id')
-@ApiResponse({ status: 200, type: App })
+@ApiResponse({ status: 200, type: AppDto })
 
-async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<App> {
+async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
   const app = await this.moduleService.findOneApp(id);
   if (!app) {
     throw new NotFoundException(`App with ID ${id} not found`);
@@ -107,16 +108,16 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<App> {
 
   @Post('addApps')
   @ApiBody({ type: App })
-  @ApiResponse({ status: 201, type: App })
-  createApp(@Body() app: App): Promise<App> {
+  @ApiResponse({ status: 201, type: AppDto })
+  createApp(@Body() app: App): Promise<AppDto> {
     return this.moduleService.createApp(app);
   }
 
   @Put('updateApps/:id')
  
   @ApiBody({ type: App })
-  @ApiResponse({ status: 200, type: App })
-  updateApp(@Param('id', ParseIntPipe) id: number, @Body() app: App): Promise<App> {
+  @ApiResponse({ status: 200, type: AppDto })
+  updateApp(@Param('id', ParseIntPipe) id: number, @Body() app: App): Promise<AppDto> {
     return this.moduleService.updateApp(id, app);
   }
 

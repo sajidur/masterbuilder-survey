@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { OptionType, QuestionType, ResultCategory, SurveyConfig, SurveySection } from '../types';
 
 import { OptionType, QuestionType, ResultCategory, SurveyConfig, SurveySection } from '../types';

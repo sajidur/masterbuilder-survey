@@ -1,10 +1,17 @@
 /* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Question } from './question.entity';
 import { Option } from './option.entity';
@@ -27,14 +34,32 @@ export class QuestionModel {
   @Column({ default: false })
   required: boolean;
 
-  @ManyToOne(() => Question, question => question.questionModels)
-   @ApiProperty({ description: 'ParentQuestion Id' })
-   parentQuestionId:string
+  @ManyToOne(() => Question, question => question.questionModels, { nullable: false })
+  @JoinColumn({ name: 'parentQuestionId' })
   parentQuestion: Question;
 
-  @OneToMany(() => Option, option => option.question, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(() => Option, option => option.questionModel, { cascade: true, eager: true })
   options: Option[];
 }
+
+// question-model.entity.ts
+// @Entity('question_models')
+// export class QuestionModel {
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string;
+
+//   @Column()
+//   text: string;
+
+//   @Column()
+//   type: 'single' | 'multiple';
+
+//   @Column({ default: false })
+//   required: boolean;
+
+//   @ManyToOne(() => Question, question => question.questionModels)
+//   parentQuestion: Question;
+
+//   @OneToMany(() => Option, option => option.questionModel, { cascade: true, eager: true })
+//   options: Option[];
+// }

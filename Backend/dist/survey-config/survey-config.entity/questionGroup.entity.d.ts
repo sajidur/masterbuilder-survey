@@ -1,10 +1,9 @@
-import { SurveyConfig } from './survey-config.entity';
 import { Question } from './question.entity';
+import { Survey } from './survey.entity';
 export declare class QuestionGroup {
     id: string;
     title: string;
     description: string;
-    surveyConfigId: string;
-    surveyConfig: SurveyConfig;
+    survey: Survey;
     questions: Question[];
 }

@@ -11,15 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionGroup = void 0;
 const typeorm_1 = require("typeorm");
-const survey_config_entity_1 = require("./survey-config.entity");
 const question_entity_1 = require("./question.entity");
 const swagger_1 = require("@nestjs/swagger");
+const survey_entity_1 = require("./survey.entity");
 let QuestionGroup = class QuestionGroup {
     id;
     title;
     description;
-    surveyConfigId;
-    surveyConfig;
+    survey;
     questions;
 };
 exports.QuestionGroup = QuestionGroup;
@@ -28,28 +27,22 @@ __decorate([
     __metadata("design:type", String)
 ], QuestionGroup.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Title of the question group' }),
+    (0, swagger_1.ApiProperty)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], QuestionGroup.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Description of the question group' }),
+    (0, swagger_1.ApiProperty)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], QuestionGroup.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'SurveyConfig ID' }),
-    __metadata("design:type", String)
-], QuestionGroup.prototype, "surveyConfigId", void 0);
+    (0, typeorm_1.ManyToOne)(() => survey_entity_1.Survey, survey => survey.questionGroups, { onDelete: 'CASCADE', nullable: false }),
+    (0, typeorm_1.JoinColumn)({ name: 'surveyId' }),
+    __metadata("design:type", survey_entity_1.Survey)
+], QuestionGroup.prototype, "survey", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => survey_config_entity_1.SurveyConfig, survey => survey.questionGroups),
-    __metadata("design:type", survey_config_entity_1.SurveyConfig)
-], QuestionGroup.prototype, "surveyConfig", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => question_entity_1.Question, question => question.questionGroup, {
-        cascade: true,
-        eager: true,
-    }),
+    (0, typeorm_1.OneToMany)(() => question_entity_1.Question, q => q.questionGroup, { cascade: true, eager: true }),
     __metadata("design:type", Array)
 ], QuestionGroup.prototype, "questions", void 0);
 exports.QuestionGroup = QuestionGroup = __decorate([

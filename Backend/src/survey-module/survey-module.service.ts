@@ -13,6 +13,7 @@ import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
+import { AppDto } from './survey-module.dto/App.dto';
 @Injectable()
 export class SurveyModuleService {
   constructor(
@@ -165,26 +166,43 @@ export class SurveyModuleService {
     await this.modulesRepository.delete(id);
   }
    // ---------- APP METHODS ----------
-  async findAllApps(): Promise<App[]> {
-    return await this.appRepository.find({ relations: ['modules'] });
+   private async toDto(app: App): Promise<AppDto> {
+  const module = await this.modulesRepository.findOne({
+    where: { id: app.moduleId },
+  });
+
+  if (!module) {
+    throw new Error(`Module with ID ${app.moduleId} not found`);
   }
 
-  async findOneApp(id: number): Promise<App | null> {
-  return await this.appRepository.findOne({
-    where: { id },
-    relations: ['modules'],
-  });
+  return {
+    id: app.id,
+    name: app.name,
+    Module: module,
+  };
+}
+
+  async findAllApps(): Promise<AppDto[]> {
+    const apps = await this.appRepository.find(); // No need for relations
+    const dtoPromises = apps.map(app => this.toDto(app));
+    return await Promise.all(dtoPromises); // Wait for all async mapping
+  }
+
+  async findOneApp(id: number): Promise<AppDto | null> {
+  const app = await this.appRepository.findOne({ where: { id } });
+  return app ? await this.toDto(app) : null;
 }
 
 
-  async createApp(app: App): Promise<App> {
-    return await this.appRepository.save(app);
+  async createApp(app: App): Promise<AppDto> {
+    const created = await this.appRepository.save(app);
+    return await this.toDto(created);
   }
 
-  async updateApp(id: number, app: App): Promise<App> {
-    return await this.appRepository.save({ ...app, id });
+  async updateApp(id: number, app: App): Promise<AppDto> {
+    const updated = await this.appRepository.save({ ...app, id });
+    return await this.toDto(updated);
   }
-
   async deleteApp(id: number): Promise<void> {
     await this.appRepository.delete(id);
   }

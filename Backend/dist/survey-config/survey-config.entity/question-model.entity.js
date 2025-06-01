@@ -19,7 +19,6 @@ let QuestionModel = class QuestionModel {
     text;
     type;
     required;
-    parentQuestionId;
     parentQuestion;
     options;
 };
@@ -44,15 +43,12 @@ __decorate([
     __metadata("design:type", Boolean)
 ], QuestionModel.prototype, "required", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => question_entity_1.Question, question => question.questionModels),
-    (0, swagger_1.ApiProperty)({ description: 'ParentQuestion Id' }),
-    __metadata("design:type", String)
-], QuestionModel.prototype, "parentQuestionId", void 0);
+    (0, typeorm_1.ManyToOne)(() => question_entity_1.Question, question => question.questionModels, { nullable: false }),
+    (0, typeorm_1.JoinColumn)({ name: 'parentQuestionId' }),
+    __metadata("design:type", question_entity_1.Question)
+], QuestionModel.prototype, "parentQuestion", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => option_entity_1.Option, option => option.question, {
-        cascade: true,
-        eager: true,
-    }),
+    (0, typeorm_1.OneToMany)(() => option_entity_1.Option, option => option.questionModel, { cascade: true, eager: true }),
     __metadata("design:type", Array)
 ], QuestionModel.prototype, "options", void 0);
 exports.QuestionModel = QuestionModel = __decorate([

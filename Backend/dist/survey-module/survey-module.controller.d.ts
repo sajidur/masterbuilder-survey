@@ -6,6 +6,7 @@ import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
+import { AppDto } from './survey-module.dto/App.dto';
 export declare class SurveyModuleController {
     private readonly moduleService;
     constructor(moduleService: SurveyModuleService);
@@ -19,10 +20,10 @@ export declare class SurveyModuleController {
     create(module: Modules): Promise<Modules>;
     update(id: number, module: Modules): Promise<Modules>;
     remove(id: string): Promise<void>;
-    findAllApps(): Promise<App[]>;
-    findOneApp(id: number): Promise<App>;
-    createApp(app: App): Promise<App>;
-    updateApp(id: number, app: App): Promise<App>;
+    findAllApps(): Promise<AppDto[]>;
+    findOneApp(id: number): Promise<AppDto>;
+    createApp(app: App): Promise<AppDto>;
+    updateApp(id: number, app: App): Promise<AppDto>;
     deleteApp(id: number): Promise<void>;
     findAllMenus(): Promise<Menu[]>;
     findOneMenu(id: number): Promise<Menu>;

@@ -1,9 +1,12 @@
 /* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Question } from './question.entity';
 import { QuestionModel } from './question-model.entity';
@@ -14,21 +17,45 @@ export class Option {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ description: 'Text of the option' })
+  @ApiProperty()
   @Column()
   text: string;
 
-  @ApiProperty({ description: 'Value associated with the option' })
+  @ApiProperty()
   @Column()
   value: string;
 
-  @ApiProperty({ description: 'Related question, if the option belongs directly to a question', required: false })
-  questionId?:string
-  @ManyToOne(() => Question, question => question.options, { nullable: true })
+  @ApiProperty({ description: 'Associated Question ID', required: false })
+  @Column({ nullable: true })
+  questionId?: string;
+
+  @ManyToOne(() => Question, question => question.options, { nullable: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'questionId' })
   question?: Question;
 
-  @ApiProperty({ description: 'Related question model, if the option belongs to a sub-question or question model', required: false })
-  questionModelId?:string
-  @ManyToOne(() => QuestionModel, questionModel => questionModel.options, { nullable: true })
+  @ApiProperty({ description: 'Associated QuestionModel ID', required: false })
+  @Column({ nullable: true })
+  questionModelId?: string;
+
+  @ManyToOne(() => QuestionModel, qm => qm.options, { nullable: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'questionModelId' })
   questionModel?: QuestionModel;
 }
+// option.entity.ts
+// @Entity('options')
+// export class Option {
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string;
+
+//   @Column()
+//   text: string;
+
+//   @Column()
+//   value: string;
+
+//   @ManyToOne(() => Question, question => question.options, { nullable: true })
+//   question: Question;
+
+//   @ManyToOne(() => QuestionModel, model => model.options, { nullable: true })
+//   questionModel: QuestionModel;
+// }

@@ -5,43 +5,68 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { QuestionGroup } from './questionGroup.entity';
 import { Option } from './option.entity';
 import { QuestionModel } from './question-model.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
+
 @Entity('questions')
 export class Question {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ description: 'Question text' })
+  @ApiProperty()
   @Column()
   text: string;
 
-  @ApiProperty({ description: 'Type of the question', enum: ['single', 'multiple'] })
+  @ApiProperty()
+  @Column({ nullable: true })
+  answer?: string;
+
+  @ApiProperty({ enum: ['single', 'multiple'] })
   @Column()
   type: 'single' | 'multiple';
 
-  @ApiProperty({ description: 'Whether the question is required or not', default: false })
+  @ApiProperty()
   @Column({ default: false })
   required: boolean;
 
-   @ApiProperty({ description: 'questionGroupId' })
-   questionGroupId:string
-  @ManyToOne(() => QuestionGroup, questionGroup => questionGroup.questions)
+  @ManyToOne(() => QuestionGroup, qg => qg.questions, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'questionGroupId' }) // <-- crucial to explicitly define FK name
   questionGroup: QuestionGroup;
 
-  @OneToMany(() => Option, option => option.question, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(() => Option, o => o.question, { cascade: true, eager: true })
   options: Option[];
 
-  @OneToMany(() => QuestionModel, sub => sub.parentQuestion, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(() => QuestionModel, qm => qm.parentQuestion, { cascade: true, eager: true })
   questionModels: QuestionModel[];
 }
+
+// question.entity.ts
+// @Entity('questions')
+// export class Question {
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string;
+
+//   @Column()
+//   text: string;
+
+//   @Column()
+//   type: 'single' | 'multiple';
+
+//   @Column({ default: false })
+//   required: boolean;
+//   @Column()
+//   answer: string;
+//   @ManyToOne(() => QuestionGroup, group => group.questions)
+//   questionGroup: QuestionGroup;
+
+//   @OneToMany(() => Option, option => option.question, { cascade: true, eager: true })
+//   options: Option[];
+
+//   @OneToMany(() => QuestionModel, model => model.parentQuestion, { cascade: true, eager: true })
+//   questionModels: QuestionModel[];
+// }
