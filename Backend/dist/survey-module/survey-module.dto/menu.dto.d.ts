@@ -1,8 +1,10 @@
-import { App } from "supertest/types";
-import { Modules } from "../survey-module.entity/modules.entity";
+import { AppDto } from '../survey-module.dto/App.dto';
+export declare class CreateMenuDto {
+    title: string;
+    appId: number;
+}
 export declare class MenuDto {
     id: number;
     title: string;
-    app: App;
-    module: Modules;
+    app: AppDto | null;
 }

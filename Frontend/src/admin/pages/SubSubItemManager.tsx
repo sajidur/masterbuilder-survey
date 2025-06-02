@@ -5,6 +5,7 @@ import {
   getAllMenus,
   getAllItems,
   getAllSubitems,
+  getAllSubSubitems
 } from '../../apiRequest/api';
 
 
@@ -16,9 +17,10 @@ interface Row {
   menu: string;
   item: string;
   subItem: string;
+  subSubItems: string;
 }
 
-const SubItemManager: React.FC = () => {
+const SubSubItemManager: React.FC = () => {
   const [rows, setRows] = useState<Row[]>(() => {
     const saved = localStorage.getItem("SubItemRows");
     return saved ? JSON.parse(saved) : [];
@@ -30,6 +32,7 @@ const SubItemManager: React.FC = () => {
     menu: "",
     item: "",
     subItem: "",
+    subSubItems: "",
   });
 
   const [showPopup, setShowPopup] = useState(false);
@@ -42,12 +45,14 @@ const SubItemManager: React.FC = () => {
     menus: string[];
     items: string[];
     subItems: string[];
+    subSubItems: string[];
   }>({
     modules: [],
     apps: [],
     menus: [],
     items: [],
     subItems: [],
+    subSubItems: [],
   });
 
   
@@ -55,12 +60,13 @@ const SubItemManager: React.FC = () => {
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const [modules, apps, menus, items, subItems] = await Promise.all([
+        const [modules, apps, menus, items, subItems, subSubItems] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
           getAllItems(),
           getAllSubitems(),
+          getAllSubSubitems(),
         ]);
 
         setDropdownData({
@@ -69,6 +75,7 @@ const SubItemManager: React.FC = () => {
           menus: Array.from(new Set(menus.map((m: any) => m.title))),
           items: Array.from(new Set(items.map((i: any) => i.name))),
           subItems: Array.from(new Set(subItems.map((s: any) => s.name))),
+          subSubItems: Array.from(new Set(subSubItems.map((s: any) => s.name))),
         });
       } catch (error) {
         console.error("Failed to fetch dropdown data:", error);
@@ -177,7 +184,7 @@ const SubItemManager: React.FC = () => {
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
     localStorage.setItem("SubItemRows", JSON.stringify(updatedRows));
-    setFormData({ module: "", app: "", menu: "", item: "", subItem: "" });
+    setFormData({ module: "", app: "", menu: "", item: "", subItem: "", subSubItems: "" });
     setShowPopup(false);
   };
 
@@ -220,6 +227,12 @@ const SubItemManager: React.FC = () => {
             dropdownData.subItems,
             formData.subItem
           )}
+          {renderSelectWithAdd(
+            "subSubItems",
+            "subSubItems",
+            dropdownData.subSubItems,
+            formData.subSubItem
+          )}
         </div>
         <button
           type="submit"
@@ -240,6 +253,7 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2">Menu</th>
                 <th className="p-2">Item</th>
                 <th className="p-2">Sub Item</th>
+                <th className="p-2">Sub SubItem</th>
 
                 <th className="p-2">Action</th>
               </tr>
@@ -252,6 +266,7 @@ const SubItemManager: React.FC = () => {
                   <td className="p-2">{row.menu}</td>
                   <td className="p-2">{row.item}</td>
                   <td className="p-2">{row.subItem}</td>
+                  <td className="p-2">{row.subSubItem}</td>
 
                   <td className="p-2">
                     <button
@@ -325,4 +340,4 @@ const SubItemManager: React.FC = () => {
   );
 };
 
-export default SubItemManager;
+export default SubSubItemManager;

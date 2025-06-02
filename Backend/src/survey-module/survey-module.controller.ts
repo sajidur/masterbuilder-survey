@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+ 
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
@@ -14,43 +16,53 @@ import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 import { AppDto } from './survey-module.dto/App.dto';
+import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
+import { ItemDto } from './survey-module.dto/item.dto';
+import { SubItemDto } from './survey-module.dto/subiItem.dto';
+import { SubSubItemDto } from './survey-module.dto/subSubItem.dto';
+import { FieldDto } from './survey-module.dto/field.dto';
+import { CreateModuleDto, UpdateModuleDto } from './survey-module.dto/create-module.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController { 
 
   constructor(private readonly moduleService: SurveyModuleService) {}
   //subitems
-    @Get('allSubitems')
-  @ApiResponse({ status: 200, type: [SubItem] })
-  findAllSubItems(): Promise<SubItem[]> {
-    return this.moduleService.findAllSubItems();
-  }
+   @Get('allSubitems')
+@ApiResponse({ status: 200, type: [SubItemDto] })
+async findAllSubItems(): Promise<SubItemDto[]> {
+  const subItems = await this.moduleService.findAllSubItems();
+  return Promise.all(subItems.map((s) => this.moduleService.toSubItemDto(s)));
+}
 
-  @Get('getSubitem/:id')
-  @ApiResponse({ status: 200, type: SubItem })
-  @ApiParam({ name: 'id', type: Number, description: 'SubItem ID' })
-  async findOneSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubItem> {
-    const subItem = await this.moduleService.findOneSubItem(id);
-    if (!subItem) throw new NotFoundException(`SubItem with ID ${id} not found`);
-    return subItem;
-  }
+@Get('getSubitem/:id')
+@ApiResponse({ status: 200, type: SubItemDto })
+@ApiParam({ name: 'id', type: Number, description: 'SubItem ID' })
+async findOneSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubItemDto> {
+  const subItem = await this.moduleService.findOneSubItem(id);
+  if (!subItem) throw new NotFoundException(`SubItem with ID ${id} not found`);
+  return this.moduleService.toSubItemDto(subItem);
+}
 
-  @Post('addSubitems')
-  @ApiBody({ type: SubItem })
-  @ApiResponse({ status: 201, type: SubItem })
-  createSubItem(@Body() subItem: SubItem): Promise<SubItem> {
-    return this.moduleService.createSubItem(subItem);
-  }
+@Post('addSubitems')
+@ApiBody({ type: SubItem })
+@ApiResponse({ status: 201, type: SubItemDto })
+async createSubItem(@Body() subItem: SubItem): Promise<SubItemDto> {
+  const created = await this.moduleService.createSubItem(subItem);
+  return this.moduleService.toSubItemDto(created);
+}
 
-  @Put('updateSubitems/:id')
-  @ApiBody({ type: SubItem })
-  @ApiResponse({ status: 200, type: SubItem })
-  updateSubItem(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() subItem: SubItem,
-  ): Promise<SubItem> {
-    return this.moduleService.updateSubItem(id, subItem);
-  }
+@Put('updateSubitems/:id')
+@ApiBody({ type: SubItem })
+@ApiResponse({ status: 200, type: SubItemDto })
+async updateSubItem(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() subItem: SubItem,
+): Promise<SubItemDto> {
+  const updated = await this.moduleService.updateSubItem(id, subItem);
+  return this.moduleService.toSubItemDto(updated);
+}
+
 
   @Delete('deleteSubitems/:id')
   @ApiResponse({ status: 204, description: 'SubItem deleted' })
@@ -68,19 +80,23 @@ export class SurveyModuleController {
     return this.moduleService.findOne(+id);
   }
 
+@Post('addModule')
+@ApiBody({ type: CreateModuleDto })
+@ApiResponse({ status: 201, description: 'Module created', type: Modules })
+create(@Body() moduleDto: CreateModuleDto): Promise<Modules> {
+  return this.moduleService.create(moduleDto);
+}
 
-   @Post('addModule')
-  @ApiBody({ type: Modules })
-  @ApiResponse({ status: 201, description: 'Module created', type: Modules })
-  create(@Body() module: Modules): Promise<Modules> {
-    return this.moduleService.create(module);
-  }
-   @Put('updateModule:id')
-  @ApiBody({ type: Modules })
-  @ApiResponse({ status: 200, description: 'Module updated', type: Modules })
-  update(@Param('id', ParseIntPipe) id: number, @Body() module: Modules): Promise<Modules> {
-    return this.moduleService.update(id, module);
-  }
+@Put('updateModule/:id') // ✅ Corrected route
+@ApiBody({ type: UpdateModuleDto }) // ✅ Use DTO
+@ApiResponse({ status: 200, description: 'Module updated', type: Modules })
+update(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() moduleDto: UpdateModuleDto
+): Promise<Modules> {
+  return this.moduleService.update(id, moduleDto);
+}
+
   @Delete('deleteModule:id')
   remove(@Param('id') id: string): Promise<void> {
     return this.moduleService.remove(+id);
@@ -128,37 +144,37 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
     return this.moduleService.deleteApp(id);
   }
   //manu
-   @Get('allMenus')
-  @ApiResponse({ status: 200, type: [Menu] })
-  findAllMenus(): Promise<Menu[]> {
-    return this.moduleService.findAllMenus();
-  }
+  @Get('allMenus')
+@ApiResponse({ status: 200, type: [MenuDto] })
+findAllMenus(): Promise<MenuDto[]> {
+  return this.moduleService.findAllMenus();
+}
 
-  @Get('getMenu/:id')
-  @ApiResponse({ status: 200, type: Menu })
+@Get('getMenu/:id')
+@ApiResponse({ status: 200, type: MenuDto })
+async findOneMenu(@Param('id', ParseIntPipe) id: number): Promise<MenuDto> {
+  const menu = await this.moduleService.findOneMenu(id);
+  if (!menu) throw new NotFoundException(`Menu with ID ${id} not found`);
+  return menu;
+}
 
-  async findOneMenu(@Param('id', ParseIntPipe) id: number): Promise<Menu> {
-    const menu = await this.moduleService.findOneMenu(id);
-    if (!menu) throw new NotFoundException(`Menu with ID ${id} not found`);
-    return menu;
-  }
+@Post('addMenu')
+@ApiBody({ type: CreateMenuDto })
+@ApiResponse({ status: 201, type: MenuDto })
+createMenu(@Body() menuDto: CreateMenuDto): Promise<MenuDto> {
+  return this.moduleService.createMenu(menuDto);
+}
 
-  @Post('addMenu')
-  @ApiBody({ type: Menu })
-  @ApiResponse({ status: 201, type: Menu })
-  createMenu(@Body() menu: Menu): Promise<Menu> {
-    return this.moduleService.createMenu(menu);
-  }
+@Put('updateMenu/:id')
+@ApiBody({ type: CreateMenuDto })
+@ApiResponse({ status: 200, type: MenuDto })
+updateMenu(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() menuDto: CreateMenuDto,
+): Promise<MenuDto> {
+  return this.moduleService.updateMenu(id, menuDto);
+}
 
-  @Put('updateMenu/:id')
-  @ApiBody({ type: Menu })
-  @ApiResponse({ status: 200, type: Menu })
-  updateMenu(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() menu: Menu,
-  ): Promise<Menu> {
-    return this.moduleService.updateMenu(id, menu);
-  }
 
   @Delete('deleteMenu/:id')
   @ApiResponse({ status: 204, description: 'Menu deleted' })
@@ -166,36 +182,36 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
     return this.moduleService.deleteMenu(id);
   }
   //item
-   @Get('allItems')
-  @ApiResponse({ status: 200, type: [Item] })
-  findAllItems(): Promise<Item[]> {
-    return this.moduleService.findAllItems();
-  }
+ @Get('allItems')
+@ApiResponse({ status: 200, type: [ItemDto] })
+findAllItems(): Promise<ItemDto[]> {
+  return this.moduleService.findAllItems();
+}
 
-  @Get('getItem/:id')
-  @ApiResponse({ status: 200, type: Item })
-  async findOneItem(@Param('id', ParseIntPipe) id: number): Promise<Item> {
-    const item = await this.moduleService.findOneItem(id);
-    if (!item) throw new NotFoundException(`Item with ID ${id} not found`);
-    return item;
-  }
+@Get('getItem/:id')
+@ApiResponse({ status: 200, type: ItemDto })
+async findOneItem(@Param('id', ParseIntPipe) id: number): Promise<ItemDto> {
+  const item = await this.moduleService.findOneItem(id);
+  if (!item) throw new NotFoundException(`Item with ID ${id} not found`);
+  return item;
+}
 
-  @Post('addiItem')
-  @ApiBody({ type: Item })
-  @ApiResponse({ status: 201, type: Item })
-  createItem(@Body() item: Item): Promise<Item> {
-    return this.moduleService.createItem(item);
-  }
+@Post('addItem') // fixed typo: was "addiItem"
+@ApiBody({ type: Item })
+@ApiResponse({ status: 201, type: ItemDto })
+createItem(@Body() item: Item): Promise<ItemDto> {
+  return this.moduleService.createItem(item);
+}
 
-  @Put('updateItem/:id')
-  @ApiBody({ type: Item })
-  @ApiResponse({ status: 200, type: Item })
-  updateItem(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() item: Item,
-  ): Promise<Item> {
-    return this.moduleService.updateItem(id, item);
-  }
+@Put('updateItem/:id')
+@ApiBody({ type: Item })
+@ApiResponse({ status: 200, type: ItemDto })
+updateItem(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() item: Item,
+): Promise<ItemDto> {
+  return this.moduleService.updateItem(id, item);
+}
 
   @Delete('deleteItem/:id')
   @ApiResponse({ status: 204, description: 'Item deleted' })
@@ -203,38 +219,37 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
     return this.moduleService.deleteItem(id);
   }
    // ---------- FIELD CRUD ----------
+@Get('allFields')
+@ApiResponse({ status: 200, type: [FieldDto] })
+async findAllFields(): Promise<FieldDto[]> {
+  return this.moduleService.findAllFields();
+}
 
-  @Get('allFields')
-  @ApiResponse({ status: 200, type: [Field] })
-  findAllFields(): Promise<Field[]> {
-    return this.moduleService.findAllFields();
-  }
+@Get('getField/:id')
+@ApiResponse({ status: 200, type: FieldDto })
+@ApiParam({ name: 'id', type: Number, description: 'Field ID' })
+async findOneField(@Param('id', ParseIntPipe) id: number): Promise<FieldDto> {
+  const field = await this.moduleService.findOneField(id);
+  if (!field) throw new NotFoundException(`Field with ID ${id} not found`);
+  return field;
+}
 
-  @Get('getfField/:id')
-  @ApiResponse({ status: 200, type: Field })
-  @ApiParam({ name: 'id', type: Number, description: 'Field ID' })
-  async findOneField(@Param('id', ParseIntPipe) id: number): Promise<Field> {
-    const field = await this.moduleService.findOneField(id);
-    if (!field) throw new NotFoundException(`Field with ID ${id} not found`);
-    return field;
-  }
+@Post('addField')
+@ApiBody({ type: Field }) // Or CreateFieldDto if defined
+@ApiResponse({ status: 201, type: FieldDto })
+async createField(@Body() field: Field): Promise<FieldDto> {
+  return this.moduleService.createField(field);
+}
 
-  @Post('addField')
-  @ApiBody({ type: Field })
-  @ApiResponse({ status: 201, type: Field })
-  createField(@Body() field: Field): Promise<Field> {
-    return this.moduleService.createField(field);
-  }
-
-  @Put('updateField/:id')
-  @ApiBody({ type: Field })
-  @ApiResponse({ status: 200, type: Field })
-  updateField(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() field: Field,
-  ): Promise<Field> {
-    return this.moduleService.updateField(id, field);
-  }
+@Put('updateField/:id')
+@ApiBody({ type: Field })
+@ApiResponse({ status: 200, type: FieldDto })
+async updateField(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() field: Field,
+): Promise<FieldDto> {
+  return this.moduleService.updateField(id, field);
+}
 
   @Delete('deleteField/:id')
   @ApiResponse({ status: 204, description: 'Field deleted' })
@@ -242,31 +257,36 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
     return this.moduleService.deleteField(id);
   }
   //subsubItem
-  @Get("allSubSubItems")
-  @ApiResponse({ status: 200, type: [SubSubItem] })
-  findAllSubSubItem(): Promise<SubSubItem[]> {
-    return this.moduleService.findAllSubSubItem();
-  }
+ @Get('allSubSubItems')
+@ApiResponse({ status: 200, type: [SubSubItemDto] })
+async findAllSubSubItems(): Promise<SubSubItemDto[]> {
+  return this.moduleService.findAllSubSubItem();
+}
 
-  @Get('getSubSubItem:id')
-  @ApiResponse({ status: 200, type: SubSubItem })
-  findOneSubSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubSubItem> {
-    return this.moduleService.findOneSubSubItem(id);
-  }
+@Get('getSubSubItem/:id')
+@ApiResponse({ status: 200, type: SubSubItemDto })
+async findOneSubSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubSubItemDto> {
+  return this.moduleService.findOneSubSubItem(id);
+}
 
-  @Post('addSubSubItem')
-  @ApiBody({ type: SubSubItem })
-  @ApiResponse({ status: 201, type: SubSubItem })
-  createSubSubItem(@Body() data: SubSubItem): Promise<SubSubItem> {
-    return this.moduleService.createSubSubItem(data);
-  }
+@Post('addSubSubItem')
+@ApiBody({ type: SubSubItem })
+@ApiResponse({ status: 201, type: SubSubItemDto })
+async createSubSubItem(@Body() data: SubSubItem): Promise<SubSubItemDto> {
+  return this.moduleService.createSubSubItem(data);
+}
 
-  @Put('updateSubSubItem:id')
-  @ApiBody({ type: SubSubItem })
-  @ApiResponse({ status: 200, type: SubSubItem })
-  updateSubSubItem(@Param('id', ParseIntPipe) id: number, @Body() data: SubSubItem): Promise<SubSubItem> {
-    return this.moduleService.updateSubSubItem(id, data);
-  }
+@Put('updateSubSubItem/:id')
+@ApiBody({ type: SubSubItem })
+@ApiResponse({ status: 200, type: SubSubItemDto })
+async updateSubSubItem(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() data: SubSubItem,
+): Promise<SubSubItemDto> {
+  return this.moduleService.updateSubSubItem(id, data);
+}
+
+
 
   @Delete('deleteSubSubItem:id')
   @ApiResponse({ status: 204, description: 'Deleted successfully' })

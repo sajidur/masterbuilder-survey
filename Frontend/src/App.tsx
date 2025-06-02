@@ -9,7 +9,6 @@ import { SurveyProvider } from "./context/SurveyContext";
 import AdminLayout from "././admin/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
 import { ClipboardCheckIcon } from "lucide-react";
-import SurveyManagement from "./admin/pages/SurveyManagement";
 import ModuleManager from "./admin/pages/ModuleManager";
 import AppManager from "./admin/pages/AppManager";
 import MenuManager from "./admin/pages/MenuManager";
@@ -18,6 +17,7 @@ import SubItemManager from "./admin/pages/SubItemManager";
 import FieldManager from "./admin/pages/FieldManager";
 import { ToastContainer } from "react-toastify";
 import SurveyBuilder from "./admin/pages/SurveyBuilder";
+import SubSubItemManager from "./admin/pages/SubSubItemManager";
 
 function AppContent() {
   const location = useLocation();
@@ -50,12 +50,12 @@ function AppContent() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="feature-list" element={<SurveyManagement />} />
             <Route path="module-manager" element={<ModuleManager />} />
             <Route path="app-manager" element={<AppManager />} />
             <Route path="menu-manager" element={<MenuManager />} />
             <Route path="item-manager" element={<ItemManager />} />
             <Route path="sub-item-manager" element={<SubItemManager />} />
+            <Route path="sub-sub-item-manager" element={<SubSubItemManager />} />
             <Route path="field-manager" element={<FieldManager />} />
             <Route path="question-manager" element={<SurveyBuilder />} />
           </Route>

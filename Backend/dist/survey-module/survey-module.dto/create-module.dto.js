@@ -9,28 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MenuDto = exports.CreateMenuDto = void 0;
+exports.ModuleDto = exports.UpdateModuleDto = exports.CreateModuleDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateMenuDto {
-    title;
-    appId;
+class CreateModuleDto {
+    name;
 }
-exports.CreateMenuDto = CreateMenuDto;
+exports.CreateModuleDto = CreateModuleDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Title of the menu' }),
+    (0, swagger_1.ApiProperty)({ description: 'Name of the module' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateMenuDto.prototype, "title", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'App ID' }),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateMenuDto.prototype, "appId", void 0);
-class MenuDto {
-    id;
-    title;
-    app;
+], CreateModuleDto.prototype, "name", void 0);
+class UpdateModuleDto {
+    name;
 }
-exports.MenuDto = MenuDto;
-//# sourceMappingURL=menu.dto.js.map
+exports.UpdateModuleDto = UpdateModuleDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)({ description: 'Name of the module' }),
+    __metadata("design:type", String)
+], UpdateModuleDto.prototype, "name", void 0);
+class ModuleDto {
+    id;
+    name;
+}
+exports.ModuleDto = ModuleDto;
+//# sourceMappingURL=create-module.dto.js.map

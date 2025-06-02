@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 
-import { Modules } from "../survey-module.entity/modules.entity";
+import { ModuleDto } from "./create-module.dto";
 
 export class AppDto {
   id: number;
 
   name: string;
  
-  Module: Modules|null;
+  Module: ModuleDto|null;
 }
