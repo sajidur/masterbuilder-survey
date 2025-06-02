@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
  
@@ -21,6 +23,7 @@ import { ItemDto } from './survey-module.dto/item.dto';
 import { SubItemDto } from './survey-module.dto/subiItem.dto';
 import { SubSubItemDto } from './survey-module.dto/subSubItem.dto';
 import { FieldDto } from './survey-module.dto/field.dto';
+import { Module } from '@nestjs/core/injector/module';
 @Injectable()
 export class SurveyModuleService {
   constructor(
@@ -412,28 +415,33 @@ private async toMenuDto(menu: Menu): Promise<MenuDto> {
       })
     : null;
 
-  const module = app?.moduleId
-    ? await this.modulesRepository.findOne({
-        where: { id: app.moduleId },
-      })
+  let module: Modules | null = null;
+  if (app?.moduleId) {
+    module = await this.modulesRepository.findOne({
+      where: { id: app.moduleId },
+    });
+  }
+
+  const appDto: AppDto | null = app
+    ? {
+        id: app.id,
+        name: app.name,
+        Module: module
+          ? {
+              id: module.id,
+              name: module.name,
+            }
+          : null,
+      }
     : null;
 
-  return {
+  const menuDto: MenuDto = {
     id: menu.id,
     title: menu.title,
-    app: app
-      ? {
-          id: app.id,
-          name: app.name,
-          Module: module    // Use capital 'Module' here to match AppDto
-            ? {
-                id: module.id,
-                name: module.name,
-              }
-            : null,
-        }
-      : null,
+    app: appDto,
   };
+
+  return menuDto;
 }
 
 

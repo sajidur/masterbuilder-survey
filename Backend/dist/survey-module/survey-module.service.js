@@ -349,27 +349,30 @@ let SurveyModuleService = class SurveyModuleService {
                 where: { id: menu.appId },
             })
             : null;
-        const module = app?.moduleId
-            ? await this.modulesRepository.findOne({
+        let module = null;
+        if (app?.moduleId) {
+            module = await this.modulesRepository.findOne({
                 where: { id: app.moduleId },
-            })
+            });
+        }
+        const appDto = app
+            ? {
+                id: app.id,
+                name: app.name,
+                Module: module
+                    ? {
+                        id: module.id,
+                        name: module.name,
+                    }
+                    : null,
+            }
             : null;
-        return {
+        const menuDto = {
             id: menu.id,
             title: menu.title,
-            app: app
-                ? {
-                    id: app.id,
-                    name: app.name,
-                    Module: module
-                        ? {
-                            id: module.id,
-                            name: module.name,
-                        }
-                        : null,
-                }
-                : null,
+            app: appDto,
         };
+        return menuDto;
     }
     async findAllMenus() {
         const menus = await this.menuRepository.find({ relations: ['app'] });

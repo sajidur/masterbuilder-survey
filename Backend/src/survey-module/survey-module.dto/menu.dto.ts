@@ -31,6 +31,6 @@ export class MenuDto {
   id: number;
   title: string;
   app: AppDto|null;
- // module: Modules; // Consider creating a ModuleDto if you want consistency
+ 
 }
 
