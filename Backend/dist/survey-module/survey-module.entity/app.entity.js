@@ -32,6 +32,7 @@ __decorate([
     __metadata("design:type", String)
 ], App.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     __metadata("design:type", Number)
 ], App.prototype, "moduleId", void 0);

@@ -4,3 +4,11 @@ export declare class AppDto {
     name: string;
     Module: ModuleDto | null;
 }
+export declare class CreateAppDto {
+    name: string;
+    moduleId: number;
+}
+export declare class UpdateAppDto {
+    name: string;
+    moduleId: number;
+}

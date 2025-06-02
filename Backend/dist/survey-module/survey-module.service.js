@@ -324,13 +324,21 @@ let SurveyModuleService = class SurveyModuleService {
         const app = await this.appRepository.findOne({ where: { id } });
         return app ? await this.toDto(app) : null;
     }
-    async createApp(app) {
+    async createApp(createAppDto) {
+        const app = this.appRepository.create({
+            name: createAppDto.name,
+            moduleId: createAppDto.moduleId,
+        });
         const created = await this.appRepository.save(app);
-        return await this.toDto(created);
+        return this.toDto(created);
     }
     async updateApp(id, app) {
-        const updated = await this.appRepository.save({ ...app, id });
-        return await this.toDto(updated);
+        const existing = await this.appRepository.preload({ id, ...app });
+        if (!existing) {
+            throw new common_1.NotFoundException(`App with ID ${id} not found`);
+        }
+        const updated = await this.appRepository.save(existing);
+        return this.toDto(updated);
     }
     async deleteApp(id) {
         await this.appRepository.delete(id);

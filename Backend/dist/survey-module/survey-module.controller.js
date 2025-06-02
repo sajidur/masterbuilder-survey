@@ -259,11 +259,11 @@ __decorate([
 ], SurveyModuleController.prototype, "findOneApp", null);
 __decorate([
     (0, common_1.Post)('addApps'),
-    (0, swagger_1.ApiBody)({ type: app_entity_1.App }),
+    (0, swagger_1.ApiBody)({ type: App_dto_1.CreateAppDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: App_dto_1.AppDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [app_entity_1.App]),
+    __metadata("design:paramtypes", [App_dto_1.CreateAppDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createApp", null);
 __decorate([
@@ -273,7 +273,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, app_entity_1.App]),
+    __metadata("design:paramtypes", [Number, App_dto_1.UpdateAppDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateApp", null);
 __decorate([
