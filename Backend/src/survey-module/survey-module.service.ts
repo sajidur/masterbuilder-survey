@@ -15,7 +15,7 @@ import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
-import { AppDto } from './survey-module.dto/App.dto';
+import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
 import { ItemDto } from './survey-module.dto/item.dto';
 import { SubItemDto } from './survey-module.dto/subiItem.dto';
@@ -371,15 +371,35 @@ async updateItem(id: number, updatedItem: Item): Promise<ItemDto> {
 }
 
 
-  async createApp(app: App): Promise<AppDto> {
+ async createApp(createAppDto: CreateAppDto): Promise<AppDto> {
+    // const module = await this.modulesRepository.findOne({
+    //   where: { id: createAppDto.moduleId },
+    // });
+
+    // if (!module) {
+    //   throw new NotFoundException(`Module with ID ${createAppDto.moduleId} not found`);
+    // }
+
+    const app = this.appRepository.create({
+      name: createAppDto.name,
+      moduleId:createAppDto.moduleId,
+    });
+
     const created = await this.appRepository.save(app);
-    return await this.toDto(created);
+    return this.toDto(created);
   }
 
-  async updateApp(id: number, app: App): Promise<AppDto> {
-    const updated = await this.appRepository.save({ ...app, id });
-    return await this.toDto(updated);
+  async updateApp(id: number, app: UpdateAppDto): Promise<AppDto> {
+  const existing = await this.appRepository.preload({ id, ...app });
+
+  if (!existing) {
+    throw new NotFoundException(`App with ID ${id} not found`);
   }
+
+  const updated = await this.appRepository.save(existing);
+  return this.toDto(updated);
+}
+
   async deleteApp(id: number): Promise<void> {
     await this.appRepository.delete(id);
   }

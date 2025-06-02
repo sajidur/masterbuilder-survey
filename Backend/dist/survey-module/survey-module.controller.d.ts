@@ -1,11 +1,10 @@
 import { SurveyModuleService } from './survey-module.service';
 import { Modules } from './survey-module.entity/modules.entity';
-import { App } from './survey-module.entity/app.entity';
 import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
-import { AppDto } from './survey-module.dto/App.dto';
+import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
 import { ItemDto } from './survey-module.dto/item.dto';
 import { SubItemDto } from './survey-module.dto/subiItem.dto';
@@ -27,8 +26,8 @@ export declare class SurveyModuleController {
     remove(id: string): Promise<void>;
     findAllApps(): Promise<AppDto[]>;
     findOneApp(id: number): Promise<AppDto>;
-    createApp(app: App): Promise<AppDto>;
-    updateApp(id: number, app: App): Promise<AppDto>;
+    createApp(app: CreateAppDto): Promise<AppDto>;
+    updateApp(id: number, app: UpdateAppDto): Promise<AppDto>;
     deleteApp(id: number): Promise<void>;
     findAllMenus(): Promise<MenuDto[]>;
     findOneMenu(id: number): Promise<MenuDto>;

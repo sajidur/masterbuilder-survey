@@ -15,7 +15,7 @@ import { Item } from './survey-module.entity/item.entity';
 import { SubItem } from './survey-module.entity/subitem.entity';
 import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
-import { AppDto } from './survey-module.dto/App.dto';
+import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
 import { ItemDto } from './survey-module.dto/item.dto';
 import { SubItemDto } from './survey-module.dto/subiItem.dto';
@@ -123,17 +123,17 @@ async findOneApp(@Param('id', ParseIntPipe) id: number): Promise<AppDto> {
 }
 
   @Post('addApps')
-  @ApiBody({ type: App })
-  @ApiResponse({ status: 201, type: AppDto })
-  createApp(@Body() app: App): Promise<AppDto> {
-    return this.moduleService.createApp(app);
-  }
+@ApiBody({ type: CreateAppDto }) // Better to use CreateAppDto for input
+@ApiResponse({ status: 201, type: AppDto })
+createApp(@Body() app: CreateAppDto): Promise<AppDto> {
+  return this.moduleService.createApp(app);
+}
 
   @Put('updateApps/:id')
  
   @ApiBody({ type: App })
   @ApiResponse({ status: 200, type: AppDto })
-  updateApp(@Param('id', ParseIntPipe) id: number, @Body() app: App): Promise<AppDto> {
+  updateApp(@Param('id', ParseIntPipe) id: number, @Body() app: UpdateAppDto): Promise<AppDto> {
     return this.moduleService.updateApp(id, app);
   }
 
