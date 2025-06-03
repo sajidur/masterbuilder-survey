@@ -21,18 +21,24 @@ const option_entity_1 = require("./survey-config.entity/option.entity");
 const question_model_entity_1 = require("./survey-config.entity/question-model.entity");
 const common_1 = require("@nestjs/common");
 const survey_entity_1 = require("./survey-config.entity/survey.entity");
+const answer_entity_1 = require("./survey-config.entity/answer.entity");
+const subSubItemAnswer_entity_1 = require("./survey-config.entity/subSubItemAnswer.entity");
 let SurveyConfigService = class SurveyConfigService {
     questionGroupRepo;
     questionRepo;
     optionRepository;
     questionModelRepository;
     surveyRepository;
-    constructor(questionGroupRepo, questionRepo, optionRepository, questionModelRepository, surveyRepository) {
+    answerRepository;
+    subSubItemAnswerRepository;
+    constructor(questionGroupRepo, questionRepo, optionRepository, questionModelRepository, surveyRepository, answerRepository, subSubItemAnswerRepository) {
         this.questionGroupRepo = questionGroupRepo;
         this.questionRepo = questionRepo;
         this.optionRepository = optionRepository;
         this.questionModelRepository = questionModelRepository;
         this.surveyRepository = surveyRepository;
+        this.answerRepository = answerRepository;
+        this.subSubItemAnswerRepository = subSubItemAnswerRepository;
     }
     async create(createSurveyDto) {
         try {
@@ -83,13 +89,145 @@ let SurveyConfigService = class SurveyConfigService {
         return survey;
     }
     async update(id, updateSurveyDto) {
-        const survey = await this.findOne(id);
-        Object.assign(survey, updateSurveyDto);
-        return this.surveyRepository.save(survey);
+        const existingSurvey = await this.surveyRepository.findOne({
+            where: { id },
+            relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'],
+        });
+        if (!existingSurvey) {
+            throw new common_1.NotFoundException(`Survey with ID ${id} not found`);
+        }
+        await this.surveyRepository.update(id, {
+            title: updateSurveyDto.title,
+            description: updateSurveyDto.description,
+            questionGroups: [],
+        });
+        const updatedSurvey = this.surveyRepository.create({
+            id,
+            title: updateSurveyDto.title,
+            description: updateSurveyDto.description,
+            questionGroups: updateSurveyDto.questionGroups.map(groupDto => ({
+                title: groupDto.title,
+                description: groupDto.description,
+                questions: groupDto.questions.map(questionDto => ({
+                    text: questionDto.text,
+                    type: questionDto.type,
+                    required: questionDto.required,
+                    answer: questionDto.answer,
+                    options: questionDto.options?.map(optionDto => ({
+                        text: optionDto.text,
+                        value: optionDto.value,
+                    })) || [],
+                    questionModels: questionDto.questionModels?.map(modelDto => ({
+                        text: modelDto.text,
+                        type: modelDto.type,
+                        required: modelDto.required,
+                        options: modelDto.options?.map(opt => ({
+                            text: opt.text,
+                            value: opt.value,
+                        })) || [],
+                    })) || [],
+                })),
+            })),
+        });
+        return await this.surveyRepository.save(updatedSurvey);
     }
     async remove(id) {
         const survey = await this.findOne(id);
         return this.surveyRepository.remove(survey);
+    }
+    async createanswer(createAnswerDto) {
+        const answer = new answer_entity_1.Answer();
+        answer.userId = createAnswerDto.userId;
+        answer.text = createAnswerDto.text ?? null;
+        answer.selectedOptionIds = createAnswerDto.selectedOptionIds ?? [];
+        if (createAnswerDto.questionId) {
+            const question = await this.questionRepo.findOneBy({ id: createAnswerDto.questionId });
+            if (!question)
+                throw new common_1.NotFoundException('Question not found');
+            answer.question = question;
+        }
+        if (createAnswerDto.questionModelId) {
+            const model = await this.questionModelRepository.findOneBy({ id: createAnswerDto.questionModelId });
+            if (!model)
+                throw new common_1.NotFoundException('Question Model not found');
+            answer.questionModel = model;
+        }
+        return this.answerRepository.save(answer);
+    }
+    async findOneAnswer(id) {
+        const answer = await this.answerRepository.findOne({
+            where: { id },
+            relations: ['question', 'questionModel'],
+        });
+        if (!answer) {
+            throw new common_1.NotFoundException(`Answer with ID ${id} not found`);
+        }
+        return answer;
+    }
+    async updateAnswer(id, updateDto) {
+        const answer = await this.answerRepository.findOne({ where: { id } });
+        if (!answer) {
+            throw new common_1.NotFoundException(`Answer with ID ${id} not found`);
+        }
+        answer.userId = updateDto.userId;
+        answer.text = updateDto.text ?? null;
+        answer.selectedOptionIds = updateDto.selectedOptionIds ?? [];
+        if (updateDto.questionId) {
+            const question = await this.questionRepo.findOneBy({ id: updateDto.questionId });
+            if (!question)
+                throw new common_1.NotFoundException('Question not found');
+            answer.question = question;
+        }
+        if (updateDto.questionModelId) {
+            const model = await this.questionModelRepository.findOneBy({ id: updateDto.questionModelId });
+            if (!model)
+                throw new common_1.NotFoundException('Question Model not found');
+            answer.questionModel = model;
+        }
+        return await this.answerRepository.save(answer);
+    }
+    async removeAnswer(id) {
+        const result = await this.answerRepository.delete(id);
+        if (result.affected === 0) {
+            throw new common_1.NotFoundException(`Answer with ID ${id} not found`);
+        }
+    }
+    async createSubAns(dto) {
+        const subSubItem = await this.subSubItemAnswerRepository.findOne({ where: { id: dto.subSubItemId } });
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${dto.subSubItemId} not found`);
+        }
+        const answer = await this.answerRepository.findOne({ where: { id: dto.answerId } });
+        if (!answer) {
+            throw new common_1.NotFoundException(`Answer with ID ${dto.answerId} not found`);
+        }
+        const entity = this.subSubItemAnswerRepository.create({
+            subSubItem,
+            answer,
+        });
+        return this.subSubItemAnswerRepository.save(entity);
+    }
+    async findAllSubAns() {
+        return this.subSubItemAnswerRepository.find({
+            relations: ['subSubItem', 'answer'],
+            order: { createdAt: 'DESC' },
+        });
+    }
+    async findByIdSubAns(id) {
+        const entry = await this.subSubItemAnswerRepository.findOne({
+            where: { id },
+            relations: ['subSubItem', 'answer'],
+        });
+        if (!entry) {
+            throw new common_1.NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
+        }
+        return entry;
+    }
+    async deleteSubAns(id) {
+        const result = await this.subSubItemAnswerRepository.delete(id);
+        if (result.affected === 0) {
+            throw new common_1.NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
+        }
     }
 };
 exports.SurveyConfigService = SurveyConfigService;
@@ -99,7 +237,11 @@ exports.SurveyConfigService = SurveyConfigService = __decorate([
     __param(2, (0, typeorm_1.InjectRepository)(option_entity_1.Option)),
     __param(3, (0, typeorm_1.InjectRepository)(question_model_entity_1.QuestionModel)),
     __param(4, (0, typeorm_1.InjectRepository)(survey_entity_1.Survey)),
+    __param(5, (0, typeorm_1.InjectRepository)(answer_entity_1.Answer)),
+    __param(6, (0, typeorm_1.InjectRepository)(subSubItemAnswer_entity_1.SubSubItemAnswer)),
     __metadata("design:paramtypes", [Repository_1.Repository,
+        Repository_1.Repository,
+        Repository_1.Repository,
         Repository_1.Repository,
         Repository_1.Repository,
         Repository_1.Repository,

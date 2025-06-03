@@ -1,6 +1,7 @@
 import { QuestionGroup } from './questionGroup.entity';
 import { Option } from './option.entity';
 import { QuestionModel } from './question-model.entity';
+import { Answer } from './answer.entity';
 export declare class Question {
     id: string;
     text: string;
@@ -10,4 +11,5 @@ export declare class Question {
     questionGroup: QuestionGroup;
     options: Option[];
     questionModels: QuestionModel[];
+    answers: Answer[];
 }

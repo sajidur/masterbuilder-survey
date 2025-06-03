@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const survey_config_service_1 = require("./survey-config.service");
 const swagger_1 = require("@nestjs/swagger");
 const survey_dto_1 = require("./survey-config.dto/survey.dto");
+const create_answer_dto_1 = require("./survey-config.dto/create-answer.dto");
+const CreateSubSubItemAnswer_dto_1 = require("./survey-config.dto/CreateSubSubItemAnswer.dto");
 let SurveyConfigController = class SurveyConfigController {
     surveyService;
     constructor(surveyService) {
@@ -42,6 +44,52 @@ let SurveyConfigController = class SurveyConfigController {
     }
     remove(id) {
         return this.surveyService.remove(+id);
+    }
+    async createAnswer(createAnswerDto) {
+        return this.surveyService.createanswer(createAnswerDto);
+    }
+    async findOneAnswer(id) {
+        return await this.surveyService.findOneAnswer(id);
+    }
+    async updateAnswer(id, updateAnswerDto) {
+        return await this.surveyService.updateAnswer(id, updateAnswerDto);
+    }
+    async removeAnswer(id) {
+        return this.surveyService.removeAnswer(id);
+    }
+    async createSubAns(dto) {
+        const entity = await this.surveyService.createSubAns(dto);
+        return {
+            id: entity.id,
+            subSubItemId: entity.subSubItem.id,
+            answerId: entity.answer.id,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        };
+    }
+    async findAllSubAns() {
+        const entities = await this.surveyService.findAllSubAns();
+        return entities.map((entity) => ({
+            id: entity.id,
+            subSubItemId: entity.subSubItem.id,
+            answerId: entity.answer.id,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        }));
+    }
+    async findByIdSubAns(id) {
+        const entity = await this.surveyService.findByIdSubAns(id);
+        return {
+            id: entity.id,
+            subSubItemId: entity.subSubItem.id,
+            answerId: entity.answer.id,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        };
+    }
+    async deleteSubAns(id) {
+        await this.surveyService.deleteSubAns(id);
+        return { message: `SubSubItemAnswer with ID ${id} deleted successfully.` };
     }
 };
 exports.SurveyConfigController = SurveyConfigController;
@@ -71,7 +119,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, survey_dto_1.UpdateSurveyDto]),
+    __metadata("design:paramtypes", [String, survey_dto_1.CreateSurveyDto]),
     __metadata("design:returntype", void 0)
 ], SurveyConfigController.prototype, "update", null);
 __decorate([
@@ -81,6 +129,68 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SurveyConfigController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)('addAnswer'),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Answer created successfully' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_answer_dto_1.CreateAnswerDto]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "createAnswer", null);
+__decorate([
+    (0, common_1.Get)('getAnswer/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get answer by ID' }),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "findOneAnswer", null);
+__decorate([
+    (0, common_1.Put)('updateAnswer/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Update answer by ID' }),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, create_answer_dto_1.UpdateAnswerDto]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "updateAnswer", null);
+__decorate([
+    (0, common_1.Delete)('deleteAnswer:id'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete an answer by ID' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "removeAnswer", null);
+__decorate([
+    (0, common_1.Post)("addSubSubItemAnswer"),
+    (0, swagger_1.ApiResponse)({ status: 201, type: CreateSubSubItemAnswer_dto_1.SubSubItemAnswerResponseDto }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [CreateSubSubItemAnswer_dto_1.CreateSubSubItemAnswerDto]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "createSubAns", null);
+__decorate([
+    (0, common_1.Get)("getAllSubSubItemAnswer"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "findAllSubAns", null);
+__decorate([
+    (0, common_1.Get)('getSubSubItemAnswer:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "findByIdSubAns", null);
+__decorate([
+    (0, common_1.Delete)('deleteSubSubItemAnswer:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], SurveyConfigController.prototype, "deleteSubAns", null);
 exports.SurveyConfigController = SurveyConfigController = __decorate([
     (0, swagger_1.ApiTags)('Surveys'),
     (0, common_1.Controller)('surveyConfig'),

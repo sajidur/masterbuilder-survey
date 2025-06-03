@@ -16,6 +16,7 @@ import {
 import { Question } from './question.entity';
 import { Option } from './option.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Answer } from './answer.entity';
 
 @Entity('question-models')
 export class QuestionModel {
@@ -40,6 +41,9 @@ export class QuestionModel {
 
   @OneToMany(() => Option, option => option.questionModel, { cascade: true, eager: true })
   options: Option[];
+   // NEW
+  @OneToMany(() => Answer, answer => answer.question, { cascade: true })
+  answers: Answer[];
 }
 
 // question-model.entity.ts

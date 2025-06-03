@@ -15,6 +15,7 @@ const questionGroup_entity_1 = require("./questionGroup.entity");
 const option_entity_1 = require("./option.entity");
 const question_model_entity_1 = require("./question-model.entity");
 const swagger_1 = require("@nestjs/swagger");
+const answer_entity_1 = require("./answer.entity");
 let Question = class Question {
     id;
     text;
@@ -24,6 +25,7 @@ let Question = class Question {
     questionGroup;
     options;
     questionModels;
+    answers;
 };
 exports.Question = Question;
 __decorate([
@@ -63,6 +65,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => question_model_entity_1.QuestionModel, qm => qm.parentQuestion, { cascade: true, eager: true }),
     __metadata("design:type", Array)
 ], Question.prototype, "questionModels", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => answer_entity_1.Answer, answer => answer.question, { cascade: true }),
+    __metadata("design:type", Array)
+], Question.prototype, "answers", void 0);
 exports.Question = Question = __decorate([
     (0, typeorm_1.Entity)('questions')
 ], Question);

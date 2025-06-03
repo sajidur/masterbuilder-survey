@@ -345,43 +345,33 @@ let SurveyModuleService = class SurveyModuleService {
     }
     async toMenuDto(menu) {
         const app = menu.appId
-            ? await this.appRepository.findOne({
-                where: { id: menu.appId },
-            })
+            ? await this.appRepository.findOne({ where: { id: menu.appId } })
             : null;
-        let module = null;
-        if (app?.moduleId) {
-            module = await this.modulesRepository.findOne({
-                where: { id: app.moduleId },
-            });
-        }
-        const appDto = app
-            ? {
-                id: app.id,
-                name: app.name,
-                Module: module
-                    ? {
-                        id: module.id,
-                        name: module.name,
-                    }
-                    : null,
-            }
+        const module = app?.moduleId
+            ? await this.modulesRepository.findOne({ where: { id: app.moduleId } })
             : null;
-        const menuDto = {
+        const moduleDto = module && {
+            id: module.id,
+            name: module.name,
+        };
+        const appDto = app && {
+            id: app.id,
+            name: app.name,
+            Module: moduleDto,
+        };
+        return {
             id: menu.id,
             title: menu.title,
             app: appDto,
         };
-        return menuDto;
     }
     async findAllMenus() {
-        const menus = await this.menuRepository.find({ relations: ['app'] });
+        const menus = await this.menuRepository.find();
         return Promise.all(menus.map(menu => this.toMenuDto(menu)));
     }
     async findOneMenu(id) {
         const menu = await this.menuRepository.findOne({
             where: { id },
-            relations: ['app'],
         });
         return menu ? await this.toMenuDto(menu) : null;
     }
@@ -390,14 +380,15 @@ let SurveyModuleService = class SurveyModuleService {
         const saved = await this.menuRepository.save(created);
         const completeMenu = await this.menuRepository.findOne({
             where: { id: saved.id },
-            relations: ['app'],
         });
+        if (!completeMenu) {
+            throw new common_1.NotFoundException(`Menu with ID ${saved.id} not found after creation.`);
+        }
         return await this.toMenuDto(completeMenu);
     }
     async updateMenu(id, updateDto) {
         const existing = await this.menuRepository.findOne({
             where: { id },
-            relations: ['app'],
         });
         if (!existing) {
             throw new common_1.NotFoundException(`Menu with ID ${id} not found`);

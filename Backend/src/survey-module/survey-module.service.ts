@@ -24,6 +24,7 @@ import { SubItemDto } from './survey-module.dto/subiItem.dto';
 import { SubSubItemDto } from './survey-module.dto/subSubItem.dto';
 import { FieldDto } from './survey-module.dto/field.dto';
 import { Module } from '@nestjs/core/injector/module';
+import { ModuleDto } from './survey-module.dto/create-module.dto';
 @Injectable()
 export class SurveyModuleService {
   constructor(
@@ -410,77 +411,81 @@ async updateItem(id: number, updatedItem: Item): Promise<ItemDto> {
 //manu 
 private async toMenuDto(menu: Menu): Promise<MenuDto> {
   const app = menu.appId
-    ? await this.appRepository.findOne({
-        where: { id: menu.appId },
-      })
+    ? await this.appRepository.findOne({ where: { id: menu.appId } })
     : null;
 
-  let module: Modules | null = null;
-  if (app?.moduleId) {
-    module = await this.modulesRepository.findOne({
-      where: { id: app.moduleId },
-    });
-  }
-
-  const appDto: AppDto | null = app
-    ? {
-        id: app.id,
-        name: app.name,
-        Module: module
-          ? {
-              id: module.id,
-              name: module.name,
-            }
-          : null,
-      }
+  const module = app?.moduleId
+    ? await this.modulesRepository.findOne({ where: { id: app.moduleId } })
     : null;
 
-  const menuDto: MenuDto = {
+  const moduleDto: ModuleDto | null = module && {
+    id: module.id,
+    name: module.name,
+  };
+
+  const appDto: AppDto | null = app && {
+    id: app.id,
+    name: app.name,
+    Module: moduleDto,
+  };
+
+  return {
     id: menu.id,
     title: menu.title,
     app: appDto,
   };
-
-  return menuDto;
 }
 
 
+
 async findAllMenus(): Promise<MenuDto[]> {
-  const menus = await this.menuRepository.find({ relations: ['app'] });
+  const menus = await this.menuRepository.find();
   return Promise.all(menus.map(menu => this.toMenuDto(menu)));
 }
 
 async findOneMenu(id: number): Promise<MenuDto | null> {
   const menu = await this.menuRepository.findOne({
     where: { id },
-    relations: ['app'],
   });
   return menu ? await this.toMenuDto(menu) : null;
 }
 
 async createMenu(menuDto: CreateMenuDto): Promise<MenuDto> {
+  // Create entity instance from DTO
   const created = this.menuRepository.create(menuDto);
+
+  // Save entity to DB
   const saved = await this.menuRepository.save(created);
+
+  // Fetch full menu with any relations if needed
   const completeMenu = await this.menuRepository.findOne({
     where: { id: saved.id },
-    relations: ['app'],
   });
-  return await this.toMenuDto(completeMenu!);
+
+  if (!completeMenu) {
+    throw new NotFoundException(`Menu with ID ${saved.id} not found after creation.`);
+  }
+
+  return await this.toMenuDto(completeMenu);
 }
 
 async updateMenu(id: number, updateDto: CreateMenuDto): Promise<MenuDto> {
+  // Find existing menu by id
   const existing = await this.menuRepository.findOne({
     where: { id },
-    relations: ['app'],
   });
 
   if (!existing) {
     throw new NotFoundException(`Menu with ID ${id} not found`);
   }
 
+  // Merge updated data into existing entity
   const merged = this.menuRepository.merge(existing, updateDto);
+
+  // Save updated entity
   const saved = await this.menuRepository.save(merged);
 
+  // Convert to DTO and return
   return await this.toMenuDto(saved);
 }
 
