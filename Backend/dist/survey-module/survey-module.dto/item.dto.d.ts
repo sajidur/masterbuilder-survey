@@ -4,3 +4,7 @@ export declare class ItemDto {
     name: string;
     menu: MenuDto | null;
 }
+export declare class CreateItemDto {
+    name: string;
+    menuId: number;
+}

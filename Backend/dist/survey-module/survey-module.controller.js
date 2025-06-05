@@ -18,9 +18,6 @@ const swagger_1 = require("@nestjs/swagger");
 const survey_module_service_1 = require("./survey-module.service");
 const modules_entity_1 = require("./survey-module.entity/modules.entity");
 const app_entity_1 = require("./survey-module.entity/app.entity");
-const item_entity_1 = require("./survey-module.entity/item.entity");
-const subitem_entity_1 = require("./survey-module.entity/subitem.entity");
-const field_entity_1 = require("./survey-module.entity/field.entity");
 const subsubitem_entity_1 = require("./survey-module.entity/subsubitem.entity");
 const App_dto_1 = require("./survey-module.dto/App.dto");
 const menu_dto_1 = require("./survey-module.dto/menu.dto");
@@ -46,10 +43,12 @@ let SurveyModuleController = class SurveyModuleController {
     }
     async createSubItem(subItem) {
         const created = await this.moduleService.createSubItem(subItem);
+        console.log("subItem label " + created.label);
         return this.moduleService.toSubItemDto(created);
     }
     async updateSubItem(id, subItem) {
         const updated = await this.moduleService.updateSubItem(id, subItem);
+        console.log("update subitem label " + updated.label);
         return this.moduleService.toSubItemDto(updated);
     }
     deleteSubItem(id) {
@@ -178,21 +177,21 @@ __decorate([
 ], SurveyModuleController.prototype, "findOneSubItem", null);
 __decorate([
     (0, common_1.Post)('addSubitems'),
-    (0, swagger_1.ApiBody)({ type: subitem_entity_1.SubItem }),
+    (0, swagger_1.ApiBody)({ type: subiItem_dto_1.CreateSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: subiItem_dto_1.SubItemDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [subitem_entity_1.SubItem]),
+    __metadata("design:paramtypes", [subiItem_dto_1.CreateSubItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createSubItem", null);
 __decorate([
     (0, common_1.Put)('updateSubitems/:id'),
-    (0, swagger_1.ApiBody)({ type: subitem_entity_1.SubItem }),
+    (0, swagger_1.ApiBody)({ type: subiItem_dto_1.CreateSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: subiItem_dto_1.SubItemDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, subitem_entity_1.SubItem]),
+    __metadata("design:paramtypes", [Number, subiItem_dto_1.CreateSubItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateSubItem", null);
 __decorate([
@@ -343,21 +342,21 @@ __decorate([
 ], SurveyModuleController.prototype, "findOneItem", null);
 __decorate([
     (0, common_1.Post)('addItem'),
-    (0, swagger_1.ApiBody)({ type: item_entity_1.Item }),
+    (0, swagger_1.ApiBody)({ type: item_dto_1.CreateItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: item_dto_1.ItemDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [item_entity_1.Item]),
+    __metadata("design:paramtypes", [item_dto_1.CreateItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createItem", null);
 __decorate([
     (0, common_1.Put)('updateItem/:id'),
-    (0, swagger_1.ApiBody)({ type: item_entity_1.Item }),
+    (0, swagger_1.ApiBody)({ type: item_dto_1.CreateItemDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: item_dto_1.ItemDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, item_entity_1.Item]),
+    __metadata("design:paramtypes", [Number, item_dto_1.CreateItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateItem", null);
 __decorate([
@@ -386,21 +385,21 @@ __decorate([
 ], SurveyModuleController.prototype, "findOneField", null);
 __decorate([
     (0, common_1.Post)('addField'),
-    (0, swagger_1.ApiBody)({ type: field_entity_1.Field }),
+    (0, swagger_1.ApiBody)({ type: field_dto_1.CreateFieldDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: field_dto_1.FieldDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [field_entity_1.Field]),
+    __metadata("design:paramtypes", [field_dto_1.CreateFieldDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createField", null);
 __decorate([
     (0, common_1.Put)('updateField/:id'),
-    (0, swagger_1.ApiBody)({ type: field_entity_1.Field }),
+    (0, swagger_1.ApiBody)({ type: field_dto_1.CreateFieldDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: field_dto_1.FieldDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, field_entity_1.Field]),
+    __metadata("design:paramtypes", [Number, field_dto_1.CreateFieldDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateField", null);
 __decorate([
@@ -428,11 +427,11 @@ __decorate([
 ], SurveyModuleController.prototype, "findOneSubSubItem", null);
 __decorate([
     (0, common_1.Post)('addSubSubItem'),
-    (0, swagger_1.ApiBody)({ type: subsubitem_entity_1.SubSubItem }),
+    (0, swagger_1.ApiBody)({ type: subSubItem_dto_1.CreateSubSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: subSubItem_dto_1.SubSubItemDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [subsubitem_entity_1.SubSubItem]),
+    __metadata("design:paramtypes", [subSubItem_dto_1.CreateSubSubItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createSubSubItem", null);
 __decorate([

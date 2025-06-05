@@ -13,7 +13,6 @@ exports.Menu = void 0;
 const typeorm_1 = require("typeorm");
 const item_entity_1 = require("../survey-module.entity/item.entity");
 const app_entity_1 = require("../survey-module.entity/app.entity");
-const swagger_1 = require("@nestjs/swagger");
 let Menu = class Menu {
     id;
     title;
@@ -28,11 +27,10 @@ __decorate([
 ], Menu.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, swagger_1.ApiProperty)({ description: 'Title of the menu' }),
     __metadata("design:type", String)
 ], Menu.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'App ID' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Menu.prototype, "appId", void 0);
 __decorate([

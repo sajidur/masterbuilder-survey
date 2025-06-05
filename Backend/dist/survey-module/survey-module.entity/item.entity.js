@@ -32,6 +32,7 @@ __decorate([
     __metadata("design:type", String)
 ], Item.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'Menu ID' }),
     __metadata("design:type", Number)
 ], Item.prototype, "menuId", void 0);

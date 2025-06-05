@@ -12,7 +12,7 @@ export class Item {
   @Column()
  @ApiProperty({ description: 'Name of the item' })
   name: string;
-
+  @Column()
   @ApiProperty({ description: 'Menu ID' })
   menuId: number;
   @ManyToOne(() => Menu, (menu) => menu.items)

@@ -30,6 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], Field.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'SubItem ID' }),
     __metadata("design:type", Number)
 ], Field.prototype, "subSubItemId", void 0);

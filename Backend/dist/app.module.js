@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 password: 'Root@pass1',
                 database: 'db_a66689_mukut',
                 autoLoadEntities: true,
-                synchronize: true
+                synchronize: false
             }),
             user_module_1.UserModule,
             feature_module_1.FeatureModule,

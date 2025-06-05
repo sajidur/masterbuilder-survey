@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+ 
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { SubSubItem } from './subsubitem.entity';
@@ -13,6 +13,7 @@ export class Field {
   @ApiProperty({ description: 'Name of the field' })
   name: string;
 
+  @Column()
   @ApiProperty({ description: 'SubItem ID' })
   subSubItemId: number;
 

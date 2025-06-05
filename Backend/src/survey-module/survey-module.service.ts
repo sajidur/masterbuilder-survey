@@ -1,4 +1,8 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable prefer-const */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-var */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
  
@@ -7,7 +11,7 @@
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Modules } from './survey-module.entity/modules.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,10 +23,10 @@ import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
-import { ItemDto } from './survey-module.dto/item.dto';
-import { SubItemDto } from './survey-module.dto/subiItem.dto';
-import { SubSubItemDto } from './survey-module.dto/subSubItem.dto';
-import { FieldDto } from './survey-module.dto/field.dto';
+import { CreateItemDto, ItemDto } from './survey-module.dto/item.dto';
+import { CreateSubItemDto, SubItemDto } from './survey-module.dto/subiItem.dto';
+import { CreateSubSubItemDto, SubSubItemDto } from './survey-module.dto/subSubItem.dto';
+import { CreateFieldDto, FieldDto } from './survey-module.dto/field.dto';
 import { Module } from '@nestjs/core/injector/module';
 import { ModuleDto } from './survey-module.dto/create-module.dto';
 @Injectable()
@@ -39,39 +43,31 @@ export class SurveyModuleService {
   //subsubitem
 async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
   let subItemDto: SubItemDto | null = null;
-
-  if (subSubItem.subItem) {
-    // Use the toSubItemDto method here
-    subItemDto = await this.toSubItemDto(subSubItem.subItem);
-  } else if (subSubItem.subItemId) {
     const subItem = await this.subItemRepository.findOne({
-      where: { id: subSubItem.subItemId },
-      relations: ['item', 'item.menu', 'item.menu.app', 'item.menu.app.module'], // Ensure all nested relations loaded
+      where: { id: subSubItem.subItemId }
     });
-    if (subItem) {
-      subItemDto = await this.toSubItemDto(subItem);
+    if(!subItem){
+        throw new NotFoundException(`SubItem with ID ${subSubItem.subItemId} not found`);
     }
-  }
 
   return {
     id: subSubItem.id,
     label: subSubItem.label,
-    subItemId: subSubItem.subItemId?.toString() || '',
-    subItem: subItemDto,
+    subItemId: subSubItem?.subItemId,
+    subItem: await this.toSubItemDto(subItem),
   };
 }
 
 
 
  async findAllSubSubItem(): Promise<SubSubItemDto[]> {
-  const items = await this.subSubItemRepository.find({ relations: ['subItem'] });
+  const items = await this.subSubItemRepository.find();
   return Promise.all(items.map(item => this.toSubSubItemDto(item)));
 }
 
 async findOneSubSubItem(id: number): Promise<SubSubItemDto> {
   const item = await this.subSubItemRepository.findOne({
-    where: { id },
-    relations: ['subItem'],
+    where: { id }
   });
   if (!item) {
     throw new NotFoundException(`SubSubItem with ID ${id} not found`);
@@ -79,20 +75,23 @@ async findOneSubSubItem(id: number): Promise<SubSubItemDto> {
   return this.toSubSubItemDto(item);
 }
 
-async createSubSubItem(data: SubSubItem): Promise<SubSubItemDto> {
-  const created = this.subSubItemRepository.create(data);
-  const saved = await this.subSubItemRepository.save(created);
+async createSubSubItem(data: CreateSubSubItemDto): Promise<SubSubItemDto> {
+  var subSubItem=new SubSubItem();
+  subSubItem.label=data.label;
+  subSubItem.subItemId=data.subItemId;
+  const saved = await this.subSubItemRepository.save(subSubItem);
   return this.toSubSubItemDto(saved);
 }
 
-async updateSubSubItem(id: number, data: SubSubItem): Promise<SubSubItemDto> {
-  await this.findOneSubSubItem(id); // throws if not found
-  await this.subSubItemRepository.update(id, data);
-  const updated = await this.subSubItemRepository.findOne({
-    where: { id },
-    relations: ['subItem'],
-  });
-  return this.toSubSubItemDto(updated!);
+async updateSubSubItem(id: number, data: CreateSubSubItemDto): Promise<SubSubItemDto> {
+    const existing = await this.subSubItemRepository.findOneBy({ id });
+  if (!existing) {
+    throw new NotFoundException(`SubSubItem with ID ${id} not found`);
+  }
+ existing.label=data.label;
+ existing.subItemId=data.subItemId;
+ var updatedData=await this.subSubItemRepository.save(existing);
+  return this.toSubSubItemDto(updatedData);
 }
 
   async deleteSubSubItem(id: number): Promise<void> {
@@ -103,73 +102,50 @@ async updateSubSubItem(id: number, data: SubSubItem): Promise<SubSubItemDto> {
   }
   //field
   async toFieldDto(field: Field): Promise<FieldDto> {
-  const subSubItem = field.subSubItem;
-
-  const subSubItemDto: SubSubItemDto | null = subSubItem
-    ? {
-        id: subSubItem.id,
-        label: subSubItem.label,
-        subItemId: subSubItem.subItemId?.toString() || '',
-        subItem: subSubItem.subItem
-          ? await this.toSubItemDto(subSubItem.subItem)
-          : null,
-      }
-    : null;
-
+  const subSubItem1 = await this.subSubItemRepository.findOneBy({id:field.subSubItemId});
+  if(!subSubItem1){
+       throw new NotFoundException(`SubSubItem with ID ${field.subSubItemId} not found`);
+  }
   return {
     id: field.id,
     name: field.name,
     subSubItemId: field.subSubItemId,
-    subSubItem: subSubItemDto,
+    subSubItem:await this.toSubSubItemDto(subSubItem1),
   };
 }
 
 
   async findAllFields(): Promise<FieldDto[]> {
-  const fields = await this.fieldRepository.find({
-    relations: [
-      'subSubItem',
-      'subSubItem.subItem',
-      'subSubItem.subItem.item',
-      'subSubItem.subItem.item.menu',
-      'subSubItem.subItem.item.menu.app',
-      'subSubItem.subItem.item.menu.app.module',
-    ],
-  });
-
+  const fields = await this.fieldRepository.find();
   return Promise.all(fields.map((field) => this.toFieldDto(field)));
 }
 
 async findOneField(id: number): Promise<FieldDto | null> {
   const field = await this.fieldRepository.findOne({
-    where: { id },
-    relations: [
-      'subSubItem',
-      'subSubItem.subItem',
-      'subSubItem.subItem.item',
-      'subSubItem.subItem.item.menu',
-      'subSubItem.subItem.item.menu.app',
-      'subSubItem.subItem.item.menu.app.module',
-    ],
+    where: { id }
   });
 
   return field ? this.toFieldDto(field) : null;
 }
 
-async createField(field: Field): Promise<FieldDto> {
-  const created = await this.fieldRepository.save(field);
-  return this.findOneField(created.id) as Promise<FieldDto>;
+async createField(field: CreateFieldDto): Promise<FieldDto> {
+  var newField=new Field();
+  newField.name=field.name;
+  newField.subSubItemId=field.subSubItemId;
+  const data = await this.fieldRepository.save(newField);
+  return await this.toFieldDto(data);
 }
 
-async updateField(id: number, updated: Field): Promise<FieldDto> {
+async updateField(id: number, updated: CreateFieldDto): Promise<FieldDto> {
   const existing = await this.fieldRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`Field with ID ${id} not found`);
   }
 
-  const merged = this.fieldRepository.merge(existing, updated);
-  const saved = await this.fieldRepository.save(merged);
-  return this.findOneField(saved.id) as Promise<FieldDto>;
+ existing.name=updated.name;
+ existing.subSubItemId=updated.subSubItemId;
+  const saved = await this.fieldRepository.save(existing);
+  return await this.toFieldDto(saved);
 }
 
 
@@ -181,82 +157,60 @@ async updateField(id: number, updated: Field): Promise<FieldDto> {
   }
   //subitem
    async findAllSubItems(): Promise<SubItem[]> {
-  return this.subItemRepository.find({ relations: ['item'] });
+  return this.subItemRepository.find();
 }
 
 async findOneSubItem(id: number): Promise<SubItem | null> {
-  return this.subItemRepository.findOne({ where: { id }, relations: ['item'] });
+  return this.subItemRepository.findOne({ where: { id } });
 }
 
-async createSubItem(subItem: SubItem): Promise<SubItem> {
-  return this.subItemRepository.save(subItem);
+async createSubItem(subItem: CreateSubItemDto): Promise<SubItem> {
+var newSubItem=new SubItem();
+newSubItem.label=subItem.label;
+newSubItem.itemId=subItem.itemId;
+  return this.subItemRepository.save(newSubItem);
 }
 
-async updateSubItem(id: number, updated: SubItem): Promise<SubItem> {
+async updateSubItem(id: number, updated: CreateSubItemDto): Promise<SubItem> {
   const existing = await this.subItemRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`SubItem with ID ${id} not found`);
   }
-  const merged = this.subItemRepository.merge(existing, updated);
-  return this.subItemRepository.save(merged);
+  existing.label=updated.label;
+  existing.itemId=updated.itemId;
+  return this.subItemRepository.save(existing);
 }
 
 // Helper to convert SubItem -> SubItemDto
+
 async toSubItemDto(subItem: SubItem): Promise<SubItemDto> {
   let itemDto: ItemDto | null = null;
 
-  if (subItem.item) {
-    const item = subItem.item;
-    itemDto = {
-      id: item.id,
-      name: item.name,
-      menu: item.menu
-        ? {
-            id: item.menu.id,
-            title: item.menu.title,
-            app: item.menu.app
-              ? {
-                  id: item.menu.app.id,
-                  name: item.menu.app.name,
-                  Module: item.menu.app.module ?? null,  // ensure Module is present
-                }
-              : null,
-          }
-        : null,
-    };
-  } else if (subItem.itemId) {
-    const item = await this.itemRepository.findOne({
-      where: { id: subItem.itemId },
-      relations: ['menu', 'menu.app', 'menu.app.module'], // load module relation too
-    });
-    if (item) {
-      itemDto = {
-        id: item.id,
-        name: item.name,
-        menu: item.menu
-          ? {
-              id: item.menu.id,
-              title: item.menu.title,
-              app: item.menu.app
-                ? {
-                    id: item.menu.app.id,
-                    name: item.menu.app.name,
-                    Module: item.menu.app.module ?? null,
-                  }
-                : null,
-            }
-          : null,
-      };
-    }
+  const itemId = subItem?.itemId;
+
+  if (itemId === undefined||itemId==null) {
+    throw new BadRequestException('SubItem must have a valid itemId');
   }
+
+  const item = await this.itemRepository.findOne({
+    where: { id: itemId },
+  });
+
+  if (!item) {
+    throw new NotFoundException(`Item with ID ${itemId} not found`);
+  }
+
+  itemDto = await this.toItemDto(item);
 
   return {
     id: subItem.id,
     label: subItem.label,
-    itemId: subItem.itemId?.toString() || '',
+    itemId: itemId, // Now guaranteed to be number
     item: itemDto,
   };
 }
+
+
 
 
 
@@ -269,10 +223,10 @@ async toSubItemDto(subItem: SubItem): Promise<SubItemDto> {
   //item
   private async toItemDto(item: Item): Promise<ItemDto> {
   const menu = await this.menuRepository.findOne({
-    where: { id: item.menuId },
-    relations: ['app'],
+    where: { id: item.menuId }
+ 
   });
-
+   console.log("menu title "+menu?.title);
   if (!menu) {
     throw new NotFoundException(`Menu with ID ${item.menuId} not found`);
   }
@@ -296,18 +250,22 @@ async findOneItem(id: number): Promise<ItemDto | null> {
   return item ? await this.toItemDto(item) : null;
 }
 
-async createItem(item: Item): Promise<ItemDto> {
-  const created = await this.itemRepository.save(item);
+async createItem(item: CreateItemDto): Promise<ItemDto> {
+  var newItem=new Item();
+newItem.name=item.name;
+newItem.menuId=item.menuId;
+  const created = await this.itemRepository.save(newItem);
   return this.toItemDto(created);
 }
 
-async updateItem(id: number, updatedItem: Item): Promise<ItemDto> {
+async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
   const existing = await this.itemRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`Item with ID ${id} not found`);
   }
-  const merged = this.itemRepository.merge(existing, updatedItem);
-  const saved = await this.itemRepository.save(merged);
+  existing.menuId=updatedItem.menuId;
+  existing.name=updatedItem.name;
+  const saved = await this.itemRepository.save(existing);
   return this.toItemDto(saved);
 }
 
@@ -413,11 +371,12 @@ private async toMenuDto(menu: Menu): Promise<MenuDto> {
   const app = menu.appId
     ? await this.appRepository.findOne({ where: { id: menu.appId } })
     : null;
-
+    console.log("menu appId "+menu.appId);
+console.log("app name "+app?.moduleId);
   const module = app?.moduleId
     ? await this.modulesRepository.findOne({ where: { id: app.moduleId } })
     : null;
-
+console.log("Module name "+module?.name);
   const moduleDto: ModuleDto | null = module && {
     id: module.id,
     name: module.name,
@@ -437,11 +396,19 @@ private async toMenuDto(menu: Menu): Promise<MenuDto> {
 }
 
 
-
 async findAllMenus(): Promise<MenuDto[]> {
   const menus = await this.menuRepository.find();
+
+  if (menus.length === 0) {
+    console.log("No menus found.");
+    return [];
+  }
+
+  //console.log("First menu appId:", menus[0]?.appId); // use optional chaining for safety
+
   return Promise.all(menus.map(menu => this.toMenuDto(menu)));
 }
+
 
 async findOneMenu(id: number): Promise<MenuDto | null> {
   const menu = await this.menuRepository.findOne({
@@ -452,21 +419,14 @@ async findOneMenu(id: number): Promise<MenuDto | null> {
 
 async createMenu(menuDto: CreateMenuDto): Promise<MenuDto> {
   // Create entity instance from DTO
-  const created = this.menuRepository.create(menuDto);
-
+  //const created = this.menuRepository.create(menuDto);
+  var menu=new Menu();
+  menu.appId=menuDto.appId;
+  menu.title=menuDto.title;
   // Save entity to DB
-  const saved = await this.menuRepository.save(created);
-
-  // Fetch full menu with any relations if needed
-  const completeMenu = await this.menuRepository.findOne({
-    where: { id: saved.id },
-  });
-
-  if (!completeMenu) {
-    throw new NotFoundException(`Menu with ID ${saved.id} not found after creation.`);
-  }
-
-  return await this.toMenuDto(completeMenu);
+  const saved = await this.menuRepository.save(menu);
+  console.log("menu appId "+saved.appId);
+  return await this.toMenuDto(saved);
 }
 
 async updateMenu(id: number, updateDto: CreateMenuDto): Promise<MenuDto> {

@@ -17,10 +17,10 @@ import { Field } from './survey-module.entity/field.entity';
 import { SubSubItem } from './survey-module.entity/subsubitem.entity';
 import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
-import { ItemDto } from './survey-module.dto/item.dto';
-import { SubItemDto } from './survey-module.dto/subiItem.dto';
-import { SubSubItemDto } from './survey-module.dto/subSubItem.dto';
-import { FieldDto } from './survey-module.dto/field.dto';
+import { CreateItemDto, ItemDto } from './survey-module.dto/item.dto';
+import { CreateSubItemDto, SubItemDto } from './survey-module.dto/subiItem.dto';
+import { CreateSubSubItemDto, SubSubItemDto } from './survey-module.dto/subSubItem.dto';
+import { CreateFieldDto, FieldDto } from './survey-module.dto/field.dto';
 import { CreateModuleDto, UpdateModuleDto } from './survey-module.dto/create-module.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
@@ -45,21 +45,23 @@ async findOneSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubItemDto>
 }
 
 @Post('addSubitems')
-@ApiBody({ type: SubItem })
+@ApiBody({ type: CreateSubItemDto })
 @ApiResponse({ status: 201, type: SubItemDto })
-async createSubItem(@Body() subItem: SubItem): Promise<SubItemDto> {
+async createSubItem(@Body() subItem: CreateSubItemDto): Promise<SubItemDto> {
   const created = await this.moduleService.createSubItem(subItem);
+  console.log("subItem label "+created.label);
   return this.moduleService.toSubItemDto(created);
 }
 
 @Put('updateSubitems/:id')
-@ApiBody({ type: SubItem })
+@ApiBody({ type:  CreateSubItemDto})
 @ApiResponse({ status: 200, type: SubItemDto })
 async updateSubItem(
   @Param('id', ParseIntPipe) id: number,
-  @Body() subItem: SubItem,
+  @Body() subItem: CreateSubItemDto,
 ): Promise<SubItemDto> {
   const updated = await this.moduleService.updateSubItem(id, subItem);
+  console.log("update subitem label "+updated.label);
   return this.moduleService.toSubItemDto(updated);
 }
 
@@ -197,18 +199,18 @@ async findOneItem(@Param('id', ParseIntPipe) id: number): Promise<ItemDto> {
 }
 
 @Post('addItem') // fixed typo: was "addiItem"
-@ApiBody({ type: Item })
+@ApiBody({ type: CreateItemDto })
 @ApiResponse({ status: 201, type: ItemDto })
-createItem(@Body() item: Item): Promise<ItemDto> {
+createItem(@Body() item: CreateItemDto): Promise<ItemDto> {
   return this.moduleService.createItem(item);
 }
 
 @Put('updateItem/:id')
-@ApiBody({ type: Item })
+@ApiBody({ type: CreateItemDto })
 @ApiResponse({ status: 200, type: ItemDto })
 updateItem(
   @Param('id', ParseIntPipe) id: number,
-  @Body() item: Item,
+  @Body() item: CreateItemDto,
 ): Promise<ItemDto> {
   return this.moduleService.updateItem(id, item);
 }
@@ -235,18 +237,18 @@ async findOneField(@Param('id', ParseIntPipe) id: number): Promise<FieldDto> {
 }
 
 @Post('addField')
-@ApiBody({ type: Field }) // Or CreateFieldDto if defined
+@ApiBody({ type: CreateFieldDto }) // Or CreateFieldDto if defined
 @ApiResponse({ status: 201, type: FieldDto })
-async createField(@Body() field: Field): Promise<FieldDto> {
+async createField(@Body() field: CreateFieldDto): Promise<FieldDto> {
   return this.moduleService.createField(field);
 }
 
 @Put('updateField/:id')
-@ApiBody({ type: Field })
+@ApiBody({ type: CreateFieldDto })
 @ApiResponse({ status: 200, type: FieldDto })
 async updateField(
   @Param('id', ParseIntPipe) id: number,
-  @Body() field: Field,
+  @Body() field: CreateFieldDto,
 ): Promise<FieldDto> {
   return this.moduleService.updateField(id, field);
 }
@@ -270,9 +272,9 @@ async findOneSubSubItem(@Param('id', ParseIntPipe) id: number): Promise<SubSubIt
 }
 
 @Post('addSubSubItem')
-@ApiBody({ type: SubSubItem })
+@ApiBody({ type: CreateSubSubItemDto })
 @ApiResponse({ status: 201, type: SubSubItemDto })
-async createSubSubItem(@Body() data: SubSubItem): Promise<SubSubItemDto> {
+async createSubSubItem(@Body() data: CreateSubSubItemDto): Promise<SubSubItemDto> {
   return this.moduleService.createSubSubItem(data);
 }
 

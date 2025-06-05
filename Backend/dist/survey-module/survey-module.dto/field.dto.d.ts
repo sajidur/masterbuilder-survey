@@ -5,3 +5,7 @@ export declare class FieldDto {
     subSubItemId: number;
     subSubItem?: SubSubItemDto | null;
 }
+export declare class CreateFieldDto {
+    name: string;
+    subSubItemId: number;
+}

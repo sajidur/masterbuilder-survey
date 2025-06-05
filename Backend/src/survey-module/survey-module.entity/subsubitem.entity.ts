@@ -13,10 +13,9 @@ export class SubSubItem {
   id: number;
 
   @Column()
-  @ApiProperty({ description: 'Label of the subsubitem' })
   label: string;
-
-  @ApiProperty({ description: 'SubItem ID', required: false })
+  
+  @Column()
   subItemId?: number;
 
 @ManyToOne(() => SubItem, (subItem) => subItem.subSubItems, { nullable: true })

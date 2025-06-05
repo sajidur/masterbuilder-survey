@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubItem = void 0;
 const typeorm_1 = require("typeorm");
 const item_entity_1 = require("../survey-module.entity/item.entity");
-const swagger_1 = require("@nestjs/swagger");
 const subsubitem_entity_1 = require("./subsubitem.entity");
 let SubItem = class SubItem {
     id;
@@ -28,11 +27,10 @@ __decorate([
 ], SubItem.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, swagger_1.ApiProperty)({ description: 'Label of the subitem' }),
     __metadata("design:type", String)
 ], SubItem.prototype, "label", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Item ID', required: false }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], SubItem.prototype, "itemId", void 0);
 __decorate([
