@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn} from 'typeorm';
-import { Item } from '../survey-module.entity/item.entity';
-import { App } from '../survey-module.entity/app.entity';
+import { Item } from './item.entity';
+import { App } from './app.entity';
 @Entity()
 export class Menu {
   @PrimaryGeneratedColumn()

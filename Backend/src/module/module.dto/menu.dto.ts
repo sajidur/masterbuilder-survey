@@ -6,7 +6,7 @@
 
 // menu.dto.ts
 
-import { AppDto } from '../survey-module.dto/App.dto';
+import { AppDto } from './App.dto';
 
 
 import { ApiProperty } from '@nestjs/swagger';

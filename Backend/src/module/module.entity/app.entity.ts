@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Modules } from './modules.entity';
-import { Menu } from '../survey-module.entity/menu.entity';
+import { Menu } from './menu.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 

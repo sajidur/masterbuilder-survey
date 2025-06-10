@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { FeatureModule } from './feature/feature.module';
-import { SurveyModuleModule } from './survey-module/survey-module.module';
-import { ErpModuleModule } from './erp-module/erp-module.module';
+import { SurveyModuleModule } from './module/survey-module.module';
+import { ErpModuleModule } from './module/module.module';
 import { SurveyConfigModule } from './survey-config/survey-config.module';
 
 @Module({

@@ -8,20 +8,20 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {SurveyModuleService} from './survey-module.service';
-import { Modules } from './survey-module.entity/modules.entity';
-import { App } from './survey-module.entity/app.entity';
-import { Menu } from './survey-module.entity/menu.entity';
-import { Item } from './survey-module.entity/item.entity';
-import { SubItem } from './survey-module.entity/subitem.entity';
-import { Field } from './survey-module.entity/field.entity';
-import { SubSubItem } from './survey-module.entity/subsubitem.entity';
-import { AppDto, CreateAppDto, UpdateAppDto } from './survey-module.dto/App.dto';
-import { CreateMenuDto, MenuDto } from './survey-module.dto/menu.dto';
-import { CreateItemDto, ItemDto } from './survey-module.dto/item.dto';
-import { CreateSubItemDto, SubItemDto } from './survey-module.dto/subiItem.dto';
-import { CreateSubSubItemDto, SubSubItemDto } from './survey-module.dto/subSubItem.dto';
-import { CreateFieldDto, FieldDto } from './survey-module.dto/field.dto';
-import { CreateModuleDto, UpdateModuleDto } from './survey-module.dto/create-module.dto';
+import { Modules } from './module.entity/modules.entity';
+import { App } from './module.entity/app.entity';
+import { Menu } from './module.entity/menu.entity';
+import { Item } from './module.entity/item.entity';
+import { SubItem } from './module.entity/subitem.entity';
+import { Field } from './module.entity/field.entity';
+import { SubSubItem } from './module.entity/subsubitem.entity';
+import { AppDto, CreateAppDto, UpdateAppDto } from './module.dto/App.dto';
+import { CreateMenuDto, MenuDto } from './module.dto/menu.dto';
+import { CreateItemDto, ItemDto } from './module.dto/item.dto';
+import { CreateSubItemDto, SubItemDto } from './module.dto/subiItem.dto';
+import { CreateSubSubItemDto, SubSubItemDto } from './module.dto/subSubItem.dto';
+import { CreateFieldDto, FieldDto } from './module.dto/field.dto';
+import { CreateModuleDto, UpdateModuleDto } from './module.dto/create-module.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController { 
