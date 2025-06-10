@@ -222,7 +222,9 @@ let SurveyConfigService = class SurveyConfigService {
         const result = [];
         for (const entry of entries) {
             const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+            console.log(subSubItem);
             const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+            console.log(answer);
             if (subSubItem && answer) {
                 result.push({
                     id: entry.id,
@@ -243,6 +245,7 @@ let SurveyConfigService = class SurveyConfigService {
             throw new common_1.NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
         }
         const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+        console.log(subSubItem);
         if (!subSubItem) {
             throw new common_1.NotFoundException(`SubSubItem with ID ${entry.subSubItemId} not found`);
         }
@@ -250,6 +253,7 @@ let SurveyConfigService = class SurveyConfigService {
         if (!answer) {
             throw new common_1.NotFoundException(`Answer with ID ${entry.answerId} not found`);
         }
+        console.log(answer);
         return {
             id: entry.id,
             subSubItem: subSubItem,
