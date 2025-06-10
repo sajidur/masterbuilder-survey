@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Menu } from '../survey-module.entity/menu.entity';
-import { SubItem } from '../survey-module.entity/subitem.entity';
+import { Menu } from './menu.entity';
+import { SubItem } from './subitem.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()

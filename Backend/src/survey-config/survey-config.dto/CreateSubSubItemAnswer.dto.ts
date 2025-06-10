@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { IsUUID, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
+import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 import { Answer } from '../survey-config.entity/answer.entity';
 
 export class CreateSubSubItemAnswerDto {

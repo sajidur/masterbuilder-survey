@@ -2,8 +2,8 @@
  
 /* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { SubItem } from '../survey-module.entity/subitem.entity';
-import { Field } from '../survey-module.entity/field.entity';
+import { SubItem } from './subitem.entity';
+import { Field } from './field.entity';
 //import { ApiProperty } from '@nestjs/swagger';
 //import { SubSubItemAnswer } from 'src/survey-config/survey-config.entity/subSubItemAnswer.entity';
 

@@ -12,7 +12,7 @@ import { SurveyConfigService } from './survey-config.service';
 import { Survey } from './survey-config.entity/survey.entity';
 import { Answer } from './survey-config.entity/answer.entity';
 import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
-import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
+import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([SubSubItem,Survey,QuestionGroup, Question, Option, QuestionModel,Answer,SubSubItemAnswer])],
   controllers: [SurveyConfigController],

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
-import { SubItemDto } from "../survey-module.dto/subiItem.dto";
+import { SubItemDto } from "./subiItem.dto";
 
 export class SubSubItemDto {
   id: number;
