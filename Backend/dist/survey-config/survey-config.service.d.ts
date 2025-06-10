@@ -8,16 +8,18 @@ import { CreateSurveyDto } from './survey-config.dto/survey.dto';
 import { Answer } from './survey-config.entity/answer.entity';
 import { CreateAnswerDto, UpdateAnswerDto } from './survey-config.dto/create-answer.dto';
 import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
-import { CreateSubSubItemAnswerDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { CreateSubSubItemAnswerDto, SubSubItemAnswerResponseDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
 export declare class SurveyConfigService {
     private questionGroupRepo;
+    private subSubItemRepo;
     private readonly questionRepo;
     private readonly optionRepository;
     private readonly questionModelRepository;
     private surveyRepository;
     private readonly answerRepository;
     private readonly subSubItemAnswerRepository;
-    constructor(questionGroupRepo: Repository<QuestionGroup>, questionRepo: Repository<Question>, optionRepository: Repository<Option>, questionModelRepository: Repository<QuestionModel>, surveyRepository: Repository<Survey>, answerRepository: Repository<Answer>, subSubItemAnswerRepository: Repository<SubSubItemAnswer>);
+    constructor(questionGroupRepo: Repository<QuestionGroup>, subSubItemRepo: Repository<SubSubItem>, questionRepo: Repository<Question>, optionRepository: Repository<Option>, questionModelRepository: Repository<QuestionModel>, surveyRepository: Repository<Survey>, answerRepository: Repository<Answer>, subSubItemAnswerRepository: Repository<SubSubItemAnswer>);
     create(createSurveyDto: CreateSurveyDto): Promise<Survey>;
     findAll(): Promise<Survey[]>;
     findOne(id: number): Promise<Survey>;
@@ -27,8 +29,8 @@ export declare class SurveyConfigService {
     findOneAnswer(id: string): Promise<Answer>;
     updateAnswer(id: string, updateDto: UpdateAnswerDto): Promise<Answer>;
     removeAnswer(id: string): Promise<void>;
-    createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswer>;
-    findAllSubAns(): Promise<SubSubItemAnswer[]>;
-    findByIdSubAns(id: number): Promise<SubSubItemAnswer>;
+    createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto>;
+    findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]>;
+    findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto>;
     deleteSubAns(id: number): Promise<void>;
 }

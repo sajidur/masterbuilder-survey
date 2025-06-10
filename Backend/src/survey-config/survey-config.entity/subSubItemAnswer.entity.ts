@@ -1,20 +1,20 @@
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
-import { SubSubItem } from "src/survey-module/survey-module.entity/subsubitem.entity";
-import { Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Answer } from "./answer.entity";
+//import { SubSubItem } from "src/survey-module/survey-module.entity/subsubitem.entity";
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+//import { Answer } from "./answer.entity";
 
 @Entity()
 export class SubSubItemAnswer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.subSubItemAnswers, { onDelete: 'CASCADE' })
-  subSubItem: SubSubItem;
+ // @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.subSubItemAnswers, { onDelete: 'CASCADE' })
+  subSubItemId: number;
 
-  @ManyToOne(() => Answer, (answer) => answer.subSubItemAnswers, { onDelete: 'CASCADE' })
-  answer: Answer;
+  //@ManyToOne(() => Answer, (answer) => answer.subSubItemAnswers, { onDelete: 'CASCADE' })
+  answerId: string;
 
   @CreateDateColumn()
   createdAt: Date;

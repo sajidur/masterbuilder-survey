@@ -13,14 +13,12 @@ exports.SubSubItem = void 0;
 const typeorm_1 = require("typeorm");
 const subitem_entity_1 = require("../survey-module.entity/subitem.entity");
 const field_entity_1 = require("../survey-module.entity/field.entity");
-const subSubItemAnswer_entity_1 = require("../../survey-config/survey-config.entity/subSubItemAnswer.entity");
 let SubSubItem = class SubSubItem {
     id;
     label;
     subItemId;
     subItem;
     fields;
-    subSubItemAnswers;
 };
 exports.SubSubItem = SubSubItem;
 __decorate([
@@ -43,10 +41,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subSubItem),
     __metadata("design:type", Array)
 ], SubSubItem.prototype, "fields", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => subSubItemAnswer_entity_1.SubSubItemAnswer, (ssa) => ssa.subSubItem),
-    __metadata("design:type", Array)
-], SubSubItem.prototype, "subSubItemAnswers", void 0);
 exports.SubSubItem = SubSubItem = __decorate([
     (0, typeorm_1.Entity)()
 ], SubSubItem);

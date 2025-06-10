@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { IsUUID, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
+import { Answer } from '../survey-config.entity/answer.entity';
 
 export class CreateSubSubItemAnswerDto {
   @ApiProperty({ description: 'ID of the SubSubItem', example: 1 })
@@ -18,18 +20,10 @@ export class CreateSubSubItemAnswerDto {
   // status?: string;
 }
 export class SubSubItemAnswerResponseDto {
-  @ApiProperty({ description: 'Unique identifier of the relationship' })
+  
   id: number;
-
-  @ApiProperty({ description: 'SubSubItem ID' })
-  subSubItemId: number;
-
-  @ApiProperty({ description: 'Answer ID' })
-  answerId: string;
-
-  @ApiProperty({ description: 'Creation timestamp' })
+  subSubItem: SubSubItem;
+  answer: Answer;
   createdAt: Date;
-
-  @ApiProperty({ description: 'Last updated timestamp' })
   updatedAt: Date;
 }

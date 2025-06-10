@@ -10,13 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubSubItemAnswer = void 0;
-const subsubitem_entity_1 = require("../../survey-module/survey-module.entity/subsubitem.entity");
 const typeorm_1 = require("typeorm");
-const answer_entity_1 = require("./answer.entity");
 let SubSubItemAnswer = class SubSubItemAnswer {
     id;
-    subSubItem;
-    answer;
+    subSubItemId;
+    answerId;
     createdAt;
     updatedAt;
 };
@@ -25,14 +23,6 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], SubSubItemAnswer.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.subSubItemAnswers, { onDelete: 'CASCADE' }),
-    __metadata("design:type", subsubitem_entity_1.SubSubItem)
-], SubSubItemAnswer.prototype, "subSubItem", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => answer_entity_1.Answer, (answer) => answer.subSubItemAnswers, { onDelete: 'CASCADE' }),
-    __metadata("design:type", answer_entity_1.Answer)
-], SubSubItemAnswer.prototype, "answer", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

@@ -1,5 +1,9 @@
 /* eslint-disable prettier/prettier */
  
+ 
+/* eslint-disable no-var */
+/* eslint-disable prettier/prettier */
+ 
 /* eslint-disable prettier/prettier */
  
  
@@ -28,13 +32,16 @@ import { CreateSurveyDto, UpdateSurveyDto } from './survey-config.dto/survey.dto
 import { Answer } from './survey-config.entity/answer.entity';
 import { CreateAnswerDto, UpdateAnswerDto } from './survey-config.dto/create-answer.dto';
 import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
-import { CreateSubSubItemAnswerDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { CreateSubSubItemAnswerDto, SubSubItemAnswerResponseDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
 
 export class SurveyConfigService {
   
   
  constructor(
      @InjectRepository(QuestionGroup) private questionGroupRepo: Repository<QuestionGroup>,
+          @InjectRepository(SubSubItem) private subSubItemRepo: Repository<SubSubItem>,
+
      @InjectRepository(Question) private readonly questionRepo: Repository<Question>,
      @InjectRepository(Option) private readonly optionRepository: Repository<Option>,
      @InjectRepository(QuestionModel) private readonly questionModelRepository: Repository<QuestionModel>,
@@ -232,8 +239,8 @@ if (!answer) {
       throw new NotFoundException(`Answer with ID ${id} not found`);
     }
   }
- async createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswer> {
-    const subSubItem = await this.subSubItemAnswerRepository.findOne({ where: { id: dto.subSubItemId } });
+ async createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto> {
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id: dto.subSubItemId } });
     if (!subSubItem) {
       throw new NotFoundException(`SubSubItem with ID ${dto.subSubItemId} not found`);
     }
@@ -244,29 +251,66 @@ if (!answer) {
     }
 
     const entity = this.subSubItemAnswerRepository.create({
-      subSubItem,
-      answer,
+      subSubItemId:subSubItem.id,
+      answerId:answer.id
     });
-
-    return this.subSubItemAnswerRepository.save(entity);
+  var data=this.subSubItemAnswerRepository.save(entity);
+     return {
+          id: entity.id,
+          subSubItem:subSubItem,
+          answer: answer,
+          createdAt: entity.createdAt,
+          updatedAt: entity.updatedAt,
+        };
   }
 
-  async findAllSubAns(): Promise<SubSubItemAnswer[]> {
-    return this.subSubItemAnswerRepository.find({
-      relations: ['subSubItem', 'answer'],
-      order: { createdAt: 'DESC' },
-    });
+ async findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]> {
+  const entries = await this.subSubItemAnswerRepository.find();
+
+  const result: SubSubItemAnswerResponseDto[] = [];
+
+  for (const entry of entries) {
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+    const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+
+    if (subSubItem && answer) {
+      result.push({
+        id: entry.id,
+        subSubItem,
+        answer,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+      });
+    }
   }
 
-  async findByIdSubAns(id: number): Promise<SubSubItemAnswer> {
+  return result;
+}
+
+  async findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto> {
     const entry = await this.subSubItemAnswerRepository.findOne({
-      where: { id },
-      relations: ['subSubItem', 'answer'],
+      where: { id }
     });
     if (!entry) {
       throw new NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
     }
-    return entry;
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id:entry.subSubItemId } });
+    if (!subSubItem) {
+      throw new NotFoundException(`SubSubItem with ID ${entry.subSubItemId} not found`);
+    }
+
+    const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+    if (!answer) {
+      throw new NotFoundException(`Answer with ID ${entry.answerId} not found`);
+    }
+      return {
+    id: entry.id,
+    subSubItem: subSubItem,
+    answer: answer,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt,
+  };
+  
   }
 
   async deleteSubAns(id: number): Promise<void> {

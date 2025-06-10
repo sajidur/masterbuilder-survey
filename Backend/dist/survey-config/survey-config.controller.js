@@ -59,33 +59,15 @@ let SurveyConfigController = class SurveyConfigController {
     }
     async createSubAns(dto) {
         const entity = await this.surveyService.createSubAns(dto);
-        return {
-            id: entity.id,
-            subSubItemId: entity.subSubItem.id,
-            answerId: entity.answer.id,
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt,
-        };
+        return entity;
     }
     async findAllSubAns() {
         const entities = await this.surveyService.findAllSubAns();
-        return entities.map((entity) => ({
-            id: entity.id,
-            subSubItemId: entity.subSubItem.id,
-            answerId: entity.answer.id,
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt,
-        }));
+        return entities;
     }
     async findByIdSubAns(id) {
         const entity = await this.surveyService.findByIdSubAns(id);
-        return {
-            id: entity.id,
-            subSubItemId: entity.subSubItem.id,
-            answerId: entity.answer.id,
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt,
-        };
+        return entity;
     }
     async deleteSubAns(id) {
         await this.surveyService.deleteSubAns(id);

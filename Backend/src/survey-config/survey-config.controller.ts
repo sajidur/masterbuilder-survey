@@ -53,6 +53,7 @@ import {
 } from './survey-config.dto/create-answer.dto';
 import { Answer } from './survey-config.entity/answer.entity';
 import { SubSubItemAnswerResponseDto, CreateSubSubItemAnswerDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
 @ApiTags('Surveys')
 @Controller('surveyConfig')
 export class SurveyConfigController {
@@ -125,39 +126,21 @@ async updateAnswer(
   @ApiResponse({ status: 201, type: SubSubItemAnswerResponseDto })
   async createSubAns(@Body() dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto> {
     const entity = await this.surveyService.createSubAns(dto);
-    return {
-      id: entity.id,
-      subSubItemId: entity.subSubItem.id,
-      answerId: entity.answer.id,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    };
+   return entity;
   }
 
   @Get("getAllSubSubItemAnswer")
   
   async findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]> {
     const entities = await this.surveyService.findAllSubAns();
-    return entities.map((entity) => ({
-      id: entity.id,
-      subSubItemId: entity.subSubItem.id,
-      answerId: entity.answer.id,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    }));
+    return entities;
   }
 
   @Get('getSubSubItemAnswer:id')
  
   async findByIdSubAns(@Param('id', ParseIntPipe) id: number): Promise<SubSubItemAnswerResponseDto> {
     const entity = await this.surveyService.findByIdSubAns(id);
-    return {
-      id: entity.id,
-      subSubItemId: entity.subSubItem.id,
-      answerId: entity.answer.id,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    };
+    return entity;
   }
 
   @Delete('deleteSubSubItemAnswer:id')

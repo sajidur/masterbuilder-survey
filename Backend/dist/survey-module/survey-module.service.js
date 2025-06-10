@@ -42,20 +42,17 @@ let SurveyModuleService = class SurveyModuleService {
     }
     async toSubSubItemDto(subSubItem) {
         let subItemDto = null;
-        if (subSubItem.subItemId) {
-            const subItem = await this.subItemRepository.findOne({
-                where: { id: subSubItem.subItemId }
-            });
-            console.log("subItem label " + subItem?.label);
-            if (subItem) {
-                subItemDto = await this.toSubItemDto(subItem);
-            }
+        const subItem = await this.subItemRepository.findOne({
+            where: { id: subSubItem.subItemId }
+        });
+        if (!subItem) {
+            throw new common_1.NotFoundException(`SubItem with ID ${subSubItem.subItemId} not found`);
         }
         return {
             id: subSubItem.id,
             label: subSubItem.label,
             subItemId: subSubItem?.subItemId,
-            subItem: subItemDto,
+            subItem: await this.toSubItemDto(subItem),
         };
     }
     async findAllSubSubItem() {
@@ -95,22 +92,15 @@ let SurveyModuleService = class SurveyModuleService {
         }
     }
     async toFieldDto(field) {
-        const subSubItem = await this.subSubItemRepository.findOneBy({ id: field.subSubItemId });
-        const subSubItemDto = subSubItem
-            ? {
-                id: subSubItem.id,
-                label: subSubItem.label,
-                subItemId: subSubItem.subItemId,
-                subItem: subSubItem.subItem
-                    ? await this.toSubItemDto(subSubItem.subItem)
-                    : null,
-            }
-            : null;
+        const subSubItem1 = await this.subSubItemRepository.findOneBy({ id: field.subSubItemId });
+        if (!subSubItem1) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${field.subSubItemId} not found`);
+        }
         return {
             id: field.id,
             name: field.name,
             subSubItemId: field.subSubItemId,
-            subSubItem: subSubItemDto,
+            subSubItem: await this.toSubSubItemDto(subSubItem1),
         };
     }
     async findAllFields() {

@@ -23,16 +23,19 @@ const common_1 = require("@nestjs/common");
 const survey_entity_1 = require("./survey-config.entity/survey.entity");
 const answer_entity_1 = require("./survey-config.entity/answer.entity");
 const subSubItemAnswer_entity_1 = require("./survey-config.entity/subSubItemAnswer.entity");
+const subsubitem_entity_1 = require("../survey-module/survey-module.entity/subsubitem.entity");
 let SurveyConfigService = class SurveyConfigService {
     questionGroupRepo;
+    subSubItemRepo;
     questionRepo;
     optionRepository;
     questionModelRepository;
     surveyRepository;
     answerRepository;
     subSubItemAnswerRepository;
-    constructor(questionGroupRepo, questionRepo, optionRepository, questionModelRepository, surveyRepository, answerRepository, subSubItemAnswerRepository) {
+    constructor(questionGroupRepo, subSubItemRepo, questionRepo, optionRepository, questionModelRepository, surveyRepository, answerRepository, subSubItemAnswerRepository) {
         this.questionGroupRepo = questionGroupRepo;
+        this.subSubItemRepo = subSubItemRepo;
         this.questionRepo = questionRepo;
         this.optionRepository = optionRepository;
         this.questionModelRepository = questionModelRepository;
@@ -193,7 +196,7 @@ let SurveyConfigService = class SurveyConfigService {
         }
     }
     async createSubAns(dto) {
-        const subSubItem = await this.subSubItemAnswerRepository.findOne({ where: { id: dto.subSubItemId } });
+        const subSubItem = await this.subSubItemRepo.findOne({ where: { id: dto.subSubItemId } });
         if (!subSubItem) {
             throw new common_1.NotFoundException(`SubSubItem with ID ${dto.subSubItemId} not found`);
         }
@@ -202,26 +205,58 @@ let SurveyConfigService = class SurveyConfigService {
             throw new common_1.NotFoundException(`Answer with ID ${dto.answerId} not found`);
         }
         const entity = this.subSubItemAnswerRepository.create({
-            subSubItem,
-            answer,
+            subSubItemId: subSubItem.id,
+            answerId: answer.id
         });
-        return this.subSubItemAnswerRepository.save(entity);
+        var data = this.subSubItemAnswerRepository.save(entity);
+        return {
+            id: entity.id,
+            subSubItem: subSubItem,
+            answer: answer,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        };
     }
     async findAllSubAns() {
-        return this.subSubItemAnswerRepository.find({
-            relations: ['subSubItem', 'answer'],
-            order: { createdAt: 'DESC' },
-        });
+        const entries = await this.subSubItemAnswerRepository.find();
+        const result = [];
+        for (const entry of entries) {
+            const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+            const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+            if (subSubItem && answer) {
+                result.push({
+                    id: entry.id,
+                    subSubItem,
+                    answer,
+                    createdAt: entry.createdAt,
+                    updatedAt: entry.updatedAt,
+                });
+            }
+        }
+        return result;
     }
     async findByIdSubAns(id) {
         const entry = await this.subSubItemAnswerRepository.findOne({
-            where: { id },
-            relations: ['subSubItem', 'answer'],
+            where: { id }
         });
         if (!entry) {
             throw new common_1.NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
         }
-        return entry;
+        const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${entry.subSubItemId} not found`);
+        }
+        const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+        if (!answer) {
+            throw new common_1.NotFoundException(`Answer with ID ${entry.answerId} not found`);
+        }
+        return {
+            id: entry.id,
+            subSubItem: subSubItem,
+            answer: answer,
+            createdAt: entry.createdAt,
+            updatedAt: entry.updatedAt,
+        };
     }
     async deleteSubAns(id) {
         const result = await this.subSubItemAnswerRepository.delete(id);
@@ -233,13 +268,15 @@ let SurveyConfigService = class SurveyConfigService {
 exports.SurveyConfigService = SurveyConfigService;
 exports.SurveyConfigService = SurveyConfigService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(questionGroup_entity_1.QuestionGroup)),
-    __param(1, (0, typeorm_1.InjectRepository)(question_entity_1.Question)),
-    __param(2, (0, typeorm_1.InjectRepository)(option_entity_1.Option)),
-    __param(3, (0, typeorm_1.InjectRepository)(question_model_entity_1.QuestionModel)),
-    __param(4, (0, typeorm_1.InjectRepository)(survey_entity_1.Survey)),
-    __param(5, (0, typeorm_1.InjectRepository)(answer_entity_1.Answer)),
-    __param(6, (0, typeorm_1.InjectRepository)(subSubItemAnswer_entity_1.SubSubItemAnswer)),
+    __param(1, (0, typeorm_1.InjectRepository)(subsubitem_entity_1.SubSubItem)),
+    __param(2, (0, typeorm_1.InjectRepository)(question_entity_1.Question)),
+    __param(3, (0, typeorm_1.InjectRepository)(option_entity_1.Option)),
+    __param(4, (0, typeorm_1.InjectRepository)(question_model_entity_1.QuestionModel)),
+    __param(5, (0, typeorm_1.InjectRepository)(survey_entity_1.Survey)),
+    __param(6, (0, typeorm_1.InjectRepository)(answer_entity_1.Answer)),
+    __param(7, (0, typeorm_1.InjectRepository)(subSubItemAnswer_entity_1.SubSubItemAnswer)),
     __metadata("design:paramtypes", [Repository_1.Repository,
+        Repository_1.Repository,
         Repository_1.Repository,
         Repository_1.Repository,
         Repository_1.Repository,

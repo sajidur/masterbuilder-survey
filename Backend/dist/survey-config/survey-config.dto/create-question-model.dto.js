@@ -13,6 +13,7 @@ exports.CreateQuestionModelDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const create_option_dto_1 = require("./create-option.dto");
+const swagger_1 = require("@nestjs/swagger");
 class CreateQuestionModelDto {
     text;
     type;
@@ -21,19 +22,23 @@ class CreateQuestionModelDto {
 }
 exports.CreateQuestionModelDto = CreateQuestionModelDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Text of the sub-question', example: 'Rate the analytics feature' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateQuestionModelDto.prototype, "text", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Type of the sub-question', enum: ['single', 'multiple'], example: 'single' }),
     (0, class_validator_1.IsEnum)(['single', 'multiple']),
     __metadata("design:type", String)
 ], CreateQuestionModelDto.prototype, "type", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Whether the sub-question is required', example: true }),
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], CreateQuestionModelDto.prototype, "required", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Options for the sub-question', type: [create_option_dto_1.CreateOptionDto] }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ValidateNested)({ each: true }),
     (0, class_transformer_1.Type)(() => create_option_dto_1.CreateOptionDto),

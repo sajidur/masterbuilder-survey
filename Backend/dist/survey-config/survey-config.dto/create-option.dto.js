@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateOptionDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateOptionDto {
     text;
@@ -17,11 +18,13 @@ class CreateOptionDto {
 }
 exports.CreateOptionDto = CreateOptionDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Display text of the option', example: 'Very satisfied' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateOptionDto.prototype, "text", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Value submitted for the option', example: 'very_satisfied' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)

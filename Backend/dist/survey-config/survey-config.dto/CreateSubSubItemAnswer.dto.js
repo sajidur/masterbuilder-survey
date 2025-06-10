@@ -29,30 +29,10 @@ __decorate([
 ], CreateSubSubItemAnswerDto.prototype, "answerId", void 0);
 class SubSubItemAnswerResponseDto {
     id;
-    subSubItemId;
-    answerId;
+    subSubItem;
+    answer;
     createdAt;
     updatedAt;
 }
 exports.SubSubItemAnswerResponseDto = SubSubItemAnswerResponseDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Unique identifier of the relationship' }),
-    __metadata("design:type", Number)
-], SubSubItemAnswerResponseDto.prototype, "id", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'SubSubItem ID' }),
-    __metadata("design:type", Number)
-], SubSubItemAnswerResponseDto.prototype, "subSubItemId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Answer ID' }),
-    __metadata("design:type", String)
-], SubSubItemAnswerResponseDto.prototype, "answerId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Creation timestamp' }),
-    __metadata("design:type", Date)
-], SubSubItemAnswerResponseDto.prototype, "createdAt", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Last updated timestamp' }),
-    __metadata("design:type", Date)
-], SubSubItemAnswerResponseDto.prototype, "updatedAt", void 0);
 //# sourceMappingURL=CreateSubSubItemAnswer.dto.js.map
