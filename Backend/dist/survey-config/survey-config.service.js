@@ -23,7 +23,7 @@ const common_1 = require("@nestjs/common");
 const survey_entity_1 = require("./survey-config.entity/survey.entity");
 const answer_entity_1 = require("./survey-config.entity/answer.entity");
 const subSubItemAnswer_entity_1 = require("./survey-config.entity/subSubItemAnswer.entity");
-const subsubitem_entity_1 = require("../survey-module/survey-module.entity/subsubitem.entity");
+const subsubitem_entity_1 = require("../module/module.entity/subsubitem.entity");
 let SurveyConfigService = class SurveyConfigService {
     questionGroupRepo;
     subSubItemRepo;

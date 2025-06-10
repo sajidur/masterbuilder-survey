@@ -9,7 +9,7 @@ import { Answer } from './survey-config.entity/answer.entity';
 import { CreateAnswerDto, UpdateAnswerDto } from './survey-config.dto/create-answer.dto';
 import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
 import { CreateSubSubItemAnswerDto, SubSubItemAnswerResponseDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
-import { SubSubItem } from 'src/survey-module/survey-module.entity/subsubitem.entity';
+import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 export declare class SurveyConfigService {
     private questionGroupRepo;
     private subSubItemRepo;

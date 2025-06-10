@@ -21,7 +21,7 @@ const survey_config_service_1 = require("./survey-config.service");
 const survey_entity_1 = require("./survey-config.entity/survey.entity");
 const answer_entity_1 = require("./survey-config.entity/answer.entity");
 const subSubItemAnswer_entity_1 = require("./survey-config.entity/subSubItemAnswer.entity");
-const subsubitem_entity_1 = require("../survey-module/survey-module.entity/subsubitem.entity");
+const subsubitem_entity_1 = require("../module/module.entity/subsubitem.entity");
 let SurveyConfigModule = class SurveyConfigModule {
 };
 exports.SurveyConfigModule = SurveyConfigModule;
