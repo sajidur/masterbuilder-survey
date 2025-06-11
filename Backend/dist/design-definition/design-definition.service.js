@@ -107,8 +107,7 @@ let DesignDefinitionService = class DesignDefinitionService {
     }
     async findOne(id) {
         const designDef = await this.designDefRepo.findOne({
-            where: { id },
-            relations: ['subSubItem'],
+            where: { id }
         });
         if (!designDef) {
             throw new common_1.NotFoundException(`DesignDefinition with ID ${id} not found`);

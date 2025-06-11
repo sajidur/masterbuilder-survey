@@ -15,7 +15,7 @@
  
  
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UploadedFile, UseInterceptors,Req, BadRequestException} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors,Req, BadRequestException} from '@nestjs/common';
 //import { DesignDefinitionService } from './design-definition.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 //import { DesignDefinition } from './design-defination.entity/design-definition.entity';
@@ -126,22 +126,22 @@ export class DesignDefinitionController {
 
   @Get('get:id')
   @ApiOperation({ summary: 'Get a Design Definition by ID' })
-  async findOne(@Param('id', ParseIntPipe) id: string): Promise<DesignDefinitionResponseDto> {
+  async findOne(@Param('id') id: string): Promise<DesignDefinitionResponseDto> {
     return this.designDefService.findOne(id);
   }
 
   @Put('update:id')
   @ApiOperation({ summary: 'Update a Design Definition by ID' })
   async update(
-    @Param('id', ParseIntPipe) id: string,
-    @Body() dto: Partial<CreateDesignDefinitionDto>,
-  ): Promise<DesignDefinitionResponseDto> {
+    @Param('id') id: string,
+     @Body() dto: CreateDesignDefinitionDto,
+  ): Promise<DesignDefinitionResponseDto>  {
     return this.designDefService.update(id, dto);
   }
 
   @Delete('delete:id')
   @ApiOperation({ summary: 'Delete a Design Definition by ID' })
-  async remove(@Param('id', ParseIntPipe) id:string): Promise<void> {
+  async remove(@Param('id') id:string): Promise<void> {
     return this.designDefService.remove(id);
   }
  }

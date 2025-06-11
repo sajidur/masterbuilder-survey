@@ -119,6 +119,7 @@ let SurveyModuleController = class SurveyModuleController {
         return this.moduleService.createItem(item);
     }
     updateItem(id, item) {
+        console.log(App_dto_1.CreateAppDto.name);
         return this.moduleService.updateItem(id, item);
     }
     deleteItem(id) {
@@ -169,8 +170,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getSubitem/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: subiItem_dto_1.SubItemDto }),
-    (0, swagger_1.ApiParam)({ name: 'id', type: Number, description: 'SubItem ID' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, swagger_1.ApiParam)({ name: 'id', type: String, description: 'SubItem ID' }),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -188,7 +189,7 @@ __decorate([
     (0, common_1.Put)('updateSubitems/:id'),
     (0, swagger_1.ApiBody)({ type: subiItem_dto_1.CreateSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: subiItem_dto_1.SubItemDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, subiItem_dto_1.CreateSubItemDto]),
@@ -197,7 +198,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteSubitems/:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'SubItem deleted' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -228,7 +229,7 @@ __decorate([
     (0, common_1.Put)('updateModule/:id'),
     (0, swagger_1.ApiBody)({ type: create_module_dto_1.UpdateModuleDto }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Module updated', type: modules_entity_1.Modules }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, create_module_dto_1.UpdateModuleDto]),
@@ -251,7 +252,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getApps/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: App_dto_1.AppDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -269,7 +270,7 @@ __decorate([
     (0, common_1.Put)('updateApps/:id'),
     (0, swagger_1.ApiBody)({ type: app_entity_1.App }),
     (0, swagger_1.ApiResponse)({ status: 200, type: App_dto_1.AppDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, App_dto_1.UpdateAppDto]),
@@ -278,7 +279,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteApps/:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'App deleted' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -293,7 +294,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getMenu/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: menu_dto_1.MenuDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -311,7 +312,7 @@ __decorate([
     (0, common_1.Put)('updateMenu/:id'),
     (0, swagger_1.ApiBody)({ type: menu_dto_1.CreateMenuDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: menu_dto_1.MenuDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, menu_dto_1.CreateMenuDto]),
@@ -320,7 +321,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteMenu/:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Menu deleted' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -335,7 +336,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getItem/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: item_dto_1.ItemDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -353,7 +354,7 @@ __decorate([
     (0, common_1.Put)('updateItem/:id'),
     (0, swagger_1.ApiBody)({ type: item_dto_1.CreateItemDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: item_dto_1.ItemDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, item_dto_1.CreateItemDto]),
@@ -362,7 +363,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteItem/:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Item deleted' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -377,8 +378,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getField/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: field_dto_1.FieldDto }),
-    (0, swagger_1.ApiParam)({ name: 'id', type: Number, description: 'Field ID' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, swagger_1.ApiParam)({ name: 'id', type: String, description: 'Field ID' }),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -396,7 +397,7 @@ __decorate([
     (0, common_1.Put)('updateField/:id'),
     (0, swagger_1.ApiBody)({ type: field_dto_1.CreateFieldDto }),
     (0, swagger_1.ApiResponse)({ status: 200, type: field_dto_1.FieldDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, field_dto_1.CreateFieldDto]),
@@ -405,7 +406,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteField/:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Field deleted' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -420,7 +421,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('getSubSubItem/:id'),
     (0, swagger_1.ApiResponse)({ status: 200, type: subSubItem_dto_1.SubSubItemDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -438,7 +439,7 @@ __decorate([
     (0, common_1.Put)('updateSubSubItem/:id'),
     (0, swagger_1.ApiBody)({ type: subsubitem_entity_1.SubSubItem }),
     (0, swagger_1.ApiResponse)({ status: 200, type: subSubItem_dto_1.SubSubItemDto }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, subsubitem_entity_1.SubSubItem]),
@@ -447,7 +448,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteSubSubItem:id'),
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Deleted successfully' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

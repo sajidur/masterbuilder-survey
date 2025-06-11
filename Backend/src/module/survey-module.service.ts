@@ -260,12 +260,14 @@ newItem.menuId=item.menuId;
 
 async updateItem(id: string, updatedItem: CreateItemDto): Promise<ItemDto> {
   const existing = await this.itemRepository.findOneBy({ id });
+  console.log(existing?.name);
   if (!existing) {
     throw new NotFoundException(`Item with ID ${id} not found`);
   }
   existing.menuId=updatedItem.menuId;
   existing.name=updatedItem.name;
   const saved = await this.itemRepository.save(existing);
+  console.log(saved.name);
   return this.toItemDto(saved);
 }
 

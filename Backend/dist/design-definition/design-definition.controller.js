@@ -127,7 +127,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('get:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Get a Design Definition by ID' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -135,16 +135,16 @@ __decorate([
 __decorate([
     (0, common_1.Put)('update:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Update a Design Definition by ID' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, design_dto_1.CreateDesignDefinitionDto]),
     __metadata("design:returntype", Promise)
 ], DesignDefinitionController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)('delete:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Delete a Design Definition by ID' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

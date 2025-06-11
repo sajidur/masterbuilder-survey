@@ -1,11 +1,13 @@
 /* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {SurveyModuleService} from './survey-module.service';
 import { Modules } from './module.entity/modules.entity';
@@ -37,8 +39,8 @@ async findAllSubItems(): Promise<SubItemDto[]> {
 
 @Get('getSubitem/:id')
 @ApiResponse({ status: 200, type: SubItemDto })
-@ApiParam({ name: 'id', type: Number, description: 'SubItem ID' })
-async findOneSubItem(@Param('id', ParseIntPipe) id: string): Promise<SubItemDto> {
+@ApiParam({ name: 'id', type: String, description: 'SubItem ID' })
+async findOneSubItem(@Param('id') id: string): Promise<SubItemDto> {
   const subItem = await this.moduleService.findOneSubItem(id);
   if (!subItem) throw new NotFoundException(`SubItem with ID ${id} not found`);
   return this.moduleService.toSubItemDto(subItem);
@@ -57,7 +59,7 @@ async createSubItem(@Body() subItem: CreateSubItemDto): Promise<SubItemDto> {
 @ApiBody({ type:  CreateSubItemDto})
 @ApiResponse({ status: 200, type: SubItemDto })
 async updateSubItem(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() subItem: CreateSubItemDto,
 ): Promise<SubItemDto> {
   const updated = await this.moduleService.updateSubItem(id, subItem);
@@ -68,7 +70,7 @@ async updateSubItem(
 
   @Delete('deleteSubitems/:id')
   @ApiResponse({ status: 204, description: 'SubItem deleted' })
-  deleteSubItem(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  deleteSubItem(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteSubItem(id);
   }
   //modules
@@ -93,7 +95,7 @@ create(@Body() moduleDto: CreateModuleDto): Promise<Modules> {
 @ApiBody({ type: UpdateModuleDto }) // ✅ Use DTO
 @ApiResponse({ status: 200, description: 'Module updated', type: Modules })
 update(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() moduleDto: UpdateModuleDto
 ): Promise<Modules> {
   return this.moduleService.update(id, moduleDto);
@@ -116,7 +118,7 @@ update(
  @Get('getApps/:id')
 @ApiResponse({ status: 200, type: AppDto })
 
-async findOneApp(@Param('id', ParseIntPipe) id: string): Promise<AppDto> {
+async findOneApp(@Param('id') id: string): Promise<AppDto> {
   const app = await this.moduleService.findOneApp(id);
   if (!app) {
     throw new NotFoundException(`App with ID ${id} not found`);
@@ -135,14 +137,14 @@ createApp(@Body() app: CreateAppDto): Promise<AppDto> {
  
   @ApiBody({ type: App })
   @ApiResponse({ status: 200, type: AppDto })
-  updateApp(@Param('id', ParseIntPipe) id: string, @Body() app: UpdateAppDto): Promise<AppDto> {
+  updateApp(@Param('id') id: string, @Body() app: UpdateAppDto): Promise<AppDto> {
     return this.moduleService.updateApp(id, app);
   }
 
   @Delete('deleteApps/:id')
  
   @ApiResponse({ status: 204, description: 'App deleted' })
-  deleteApp(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  deleteApp(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteApp(id);
   }
   //manu
@@ -154,7 +156,7 @@ findAllMenus(): Promise<MenuDto[]> {
 
 @Get('getMenu/:id')
 @ApiResponse({ status: 200, type: MenuDto })
-async findOneMenu(@Param('id', ParseIntPipe) id: string): Promise<MenuDto> {
+async findOneMenu(@Param('id') id: string): Promise<MenuDto> {
   const menu = await this.moduleService.findOneMenu(id);
   if (!menu) throw new NotFoundException(`Menu with ID ${id} not found`);
   return menu;
@@ -171,7 +173,7 @@ createMenu(@Body() menuDto: CreateMenuDto): Promise<MenuDto> {
 @ApiBody({ type: CreateMenuDto })
 @ApiResponse({ status: 200, type: MenuDto })
 updateMenu(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() menuDto: CreateMenuDto,
 ): Promise<MenuDto> {
   return this.moduleService.updateMenu(id, menuDto);
@@ -180,7 +182,7 @@ updateMenu(
 
   @Delete('deleteMenu/:id')
   @ApiResponse({ status: 204, description: 'Menu deleted' })
-  deleteMenu(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  deleteMenu(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteMenu(id);
   }
   //item
@@ -192,7 +194,7 @@ findAllItems(): Promise<ItemDto[]> {
 
 @Get('getItem/:id')
 @ApiResponse({ status: 200, type: ItemDto })
-async findOneItem(@Param('id', ParseIntPipe) id: string): Promise<ItemDto> {
+async findOneItem(@Param('id') id: string): Promise<ItemDto> {
   const item = await this.moduleService.findOneItem(id);
   if (!item) throw new NotFoundException(`Item with ID ${id} not found`);
   return item;
@@ -209,15 +211,16 @@ createItem(@Body() item: CreateItemDto): Promise<ItemDto> {
 @ApiBody({ type: CreateItemDto })
 @ApiResponse({ status: 200, type: ItemDto })
 updateItem(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() item: CreateItemDto,
 ): Promise<ItemDto> {
+  console.log(CreateAppDto.name);
   return this.moduleService.updateItem(id, item);
 }
 
   @Delete('deleteItem/:id')
   @ApiResponse({ status: 204, description: 'Item deleted' })
-  deleteItem(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  deleteItem(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteItem(id);
   }
    // ---------- FIELD CRUD ----------
@@ -229,8 +232,8 @@ async findAllFields(): Promise<FieldDto[]> {
 
 @Get('getField/:id')
 @ApiResponse({ status: 200, type: FieldDto })
-@ApiParam({ name: 'id', type: Number, description: 'Field ID' })
-async findOneField(@Param('id', ParseIntPipe) id: string): Promise<FieldDto> {
+@ApiParam({ name: 'id', type: String, description: 'Field ID' })
+async findOneField(@Param('id') id: string): Promise<FieldDto> {
   const field = await this.moduleService.findOneField(id);
   if (!field) throw new NotFoundException(`Field with ID ${id} not found`);
   return field;
@@ -247,7 +250,7 @@ async createField(@Body() field: CreateFieldDto): Promise<FieldDto> {
 @ApiBody({ type: CreateFieldDto })
 @ApiResponse({ status: 200, type: FieldDto })
 async updateField(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() field: CreateFieldDto,
 ): Promise<FieldDto> {
   return this.moduleService.updateField(id, field);
@@ -255,7 +258,7 @@ async updateField(
 
   @Delete('deleteField/:id')
   @ApiResponse({ status: 204, description: 'Field deleted' })
-  deleteField(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  deleteField(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteField(id);
   }
   //subsubItem
@@ -267,7 +270,7 @@ async findAllSubSubItems(): Promise<SubSubItemDto[]> {
 
 @Get('getSubSubItem/:id')
 @ApiResponse({ status: 200, type: SubSubItemDto })
-async findOneSubSubItem(@Param('id', ParseIntPipe) id: string): Promise<SubSubItemDto> {
+async findOneSubSubItem(@Param('id') id: string): Promise<SubSubItemDto> {
   return this.moduleService.findOneSubSubItem(id);
 }
 
@@ -282,7 +285,7 @@ async createSubSubItem(@Body() data: CreateSubSubItemDto): Promise<SubSubItemDto
 @ApiBody({ type: SubSubItem })
 @ApiResponse({ status: 200, type: SubSubItemDto })
 async updateSubSubItem(
-  @Param('id', ParseIntPipe) id: string,
+  @Param('id') id: string,
   @Body() data: SubSubItem,
 ): Promise<SubSubItemDto> {
   return this.moduleService.updateSubSubItem(id, data);
@@ -292,7 +295,7 @@ async updateSubSubItem(
 
   @Delete('deleteSubSubItem:id')
   @ApiResponse({ status: 204, description: 'Deleted successfully' })
-  async deleteSubSubItem(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  async deleteSubSubItem(@Param('id') id: string): Promise<void> {
     return this.moduleService.deleteSubSubItem(id);
   }
 

@@ -28,15 +28,15 @@ __decorate([
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "contentTypeId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "contentTypeName", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "fileType", void 0);
 __decorate([
@@ -47,7 +47,7 @@ __decorate([
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "type", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "title", void 0);
 __decorate([
@@ -55,11 +55,11 @@ __decorate([
     __metadata("design:type", Object)
 ], DesignDefinition.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "imageUrl", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "notes", void 0);
 exports.DesignDefinition = DesignDefinition = __decorate([

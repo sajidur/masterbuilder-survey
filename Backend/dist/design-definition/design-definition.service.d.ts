@@ -25,6 +25,6 @@ export declare class DesignDefinitionService {
     create(dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
     findAll(): Promise<DesignDefinitionResponseDto[]>;
     findOne(id: string): Promise<DesignDefinitionResponseDto>;
-    update(id: string, dto: Partial<CreateDesignDefinitionDto>): Promise<DesignDefinitionResponseDto>;
+    update(id: string, dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
     remove(id: string): Promise<void>;
 }

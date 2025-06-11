@@ -115,8 +115,7 @@ async findAll(): Promise<DesignDefinitionResponseDto[]> {
 
 async findOne(id: string): Promise<DesignDefinitionResponseDto> {
   const designDef = await this.designDefRepo.findOne({
-    where: { id },
-    relations: ['subSubItem'],
+    where: { id }
   });
 
   if (!designDef) {
@@ -138,7 +137,7 @@ async findOne(id: string): Promise<DesignDefinitionResponseDto> {
 
 async update(
   id: string,
-  dto: Partial<CreateDesignDefinitionDto>,
+  dto: CreateDesignDefinitionDto,
 ): Promise<DesignDefinitionResponseDto> {
   const designDef = await this.designDefRepo.findOne({ where: { id } });
 

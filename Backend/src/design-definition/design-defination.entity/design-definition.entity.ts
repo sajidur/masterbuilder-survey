@@ -8,13 +8,13 @@ export class DesignDefinition {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' }) // Correct type for MySQL
+  @Column() // Correct type for MySQL
   contentTypeId: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   contentTypeName: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   fileType: string;
 
   @Column({
@@ -23,15 +23,15 @@ export class DesignDefinition {
   })
   type: 'CLASS' | 'ACTION' | 'ACTIVITY_DIAGRAM' | 'CLASS_DIAGRAM';
 
-  @Column({ type: 'varchar' })
+  @Column()
   title: string;
 
   @Column({ type: 'json' }) // MySQL supports JSON
   content: any;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ nullable: true })
   imageUrl?: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({  nullable: true })
   notes?: string;
 }

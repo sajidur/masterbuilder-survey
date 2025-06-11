@@ -214,12 +214,14 @@ let SurveyModuleService = class SurveyModuleService {
     }
     async updateItem(id, updatedItem) {
         const existing = await this.itemRepository.findOneBy({ id });
+        console.log(existing?.name);
         if (!existing) {
             throw new common_1.NotFoundException(`Item with ID ${id} not found`);
         }
         existing.menuId = updatedItem.menuId;
         existing.name = updatedItem.name;
         const saved = await this.itemRepository.save(existing);
+        console.log(saved.name);
         return this.toItemDto(saved);
     }
     async deleteItem(id) {
