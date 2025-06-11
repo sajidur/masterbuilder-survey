@@ -1,5 +1,14 @@
 /* eslint-disable prettier/prettier */
  
+ 
+/* eslint-disable no-var */
+/* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
+ 
+ 
+/* eslint-disable prettier/prettier */
+ 
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
@@ -20,16 +29,25 @@ import { CreateQuestionGroupDto } from './survey-config.dto/create-question-grou
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Survey } from './survey-config.entity/survey.entity';
 import { CreateSurveyDto, UpdateSurveyDto } from './survey-config.dto/survey.dto';
+import { Answer } from './survey-config.entity/answer.entity';
+import { CreateAnswerDto, UpdateAnswerDto } from './survey-config.dto/create-answer.dto';
+import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
+import { CreateSubSubItemAnswerDto, SubSubItemAnswerResponseDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 
 export class SurveyConfigService {
   
   
  constructor(
      @InjectRepository(QuestionGroup) private questionGroupRepo: Repository<QuestionGroup>,
-       @InjectRepository(Question) private readonly questionRepo: Repository<Question>,
-        @InjectRepository(Option) private readonly optionRepository: Repository<Option>,
-        @InjectRepository(QuestionModel) private readonly questionModelRepository: Repository<QuestionModel>,
-         @InjectRepository(Survey) private surveyRepository: Repository<Survey>,
+          @InjectRepository(SubSubItem) private subSubItemRepo: Repository<SubSubItem>,
+
+     @InjectRepository(Question) private readonly questionRepo: Repository<Question>,
+     @InjectRepository(Option) private readonly optionRepository: Repository<Option>,
+     @InjectRepository(QuestionModel) private readonly questionModelRepository: Repository<QuestionModel>,
+     @InjectRepository(Survey) private surveyRepository: Repository<Survey>,
+     @InjectRepository(Answer) private readonly answerRepository: Repository<Answer>,
+      @InjectRepository(SubSubItemAnswer) private readonly subSubItemAnswerRepository: Repository<SubSubItemAnswer>,
   ) {}
 async create(createSurveyDto: CreateSurveyDto): Promise<Survey> {
   try {
@@ -82,16 +100,229 @@ async create(createSurveyDto: CreateSurveyDto): Promise<Survey> {
     return survey;
   }
 
-  async update(id: number, updateSurveyDto: UpdateSurveyDto) {
-    const survey = await this.findOne(id);
-    Object.assign(survey, updateSurveyDto);
-    return this.surveyRepository.save(survey);
+async update(id: number, updateSurveyDto: CreateSurveyDto): Promise<Survey> {
+  const existingSurvey = await this.surveyRepository.findOne({
+    where: { id },
+    relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'],
+  });
+
+  if (!existingSurvey) {
+    throw new NotFoundException(`Survey with ID ${id} not found`);
   }
+
+  // Remove old question groups (cascade delete should be enabled in entity)
+  await this.surveyRepository.update(id, {
+    title: updateSurveyDto.title,
+    description: updateSurveyDto.description,
+    questionGroups: [],
+  });
+
+  // Build updated structure
+  const updatedSurvey = this.surveyRepository.create({
+    id,
+    title: updateSurveyDto.title,
+    description: updateSurveyDto.description,
+    questionGroups: updateSurveyDto.questionGroups.map(groupDto => ({
+      title: groupDto.title,
+      description: groupDto.description,
+      questions: groupDto.questions.map(questionDto => ({
+        text: questionDto.text,
+        type: questionDto.type,
+        required: questionDto.required,
+        answer: questionDto.answer,
+        options: questionDto.options?.map(optionDto => ({
+          text: optionDto.text,
+          value: optionDto.value,
+        })) || [],
+        questionModels: questionDto.questionModels?.map(modelDto => ({
+          text: modelDto.text,
+          type: modelDto.type,
+          required: modelDto.required,
+          options: modelDto.options?.map(opt => ({
+            text: opt.text,
+            value: opt.value,
+          })) || [],
+        })) || [],
+      })),
+    })),
+  });
+
+  return await this.surveyRepository.save(updatedSurvey);
+}
+
 
   async remove(id: number) {
     const survey = await this.findOne(id);
     return this.surveyRepository.remove(survey);
   }
+
+ async createanswer(createAnswerDto: CreateAnswerDto): Promise<Answer> {
+  const answer = new Answer();
+  answer.userId = createAnswerDto.userId;
+  answer.text = createAnswerDto.text ?? null;  // Entity allows null
+  answer.selectedOptionIds = createAnswerDto.selectedOptionIds ?? [];
+
+  if (createAnswerDto.questionId) {
+    const question = await this.questionRepo.findOneBy({ id: createAnswerDto.questionId });
+    if (!question) throw new NotFoundException('Question not found');
+    answer.question = question;
+  }
+
+  if (createAnswerDto.questionModelId) {
+    const model = await this.questionModelRepository.findOneBy({ id: createAnswerDto.questionModelId });
+    if (!model) throw new NotFoundException('Question Model not found');
+    answer.questionModel = model;
+  }
+
+  return this.answerRepository.save(answer);
+}
+
+
+ async findOneAnswer(id: string): Promise<Answer> {
+  const answer = await this.answerRepository.findOne({
+    where: { id },
+    relations: ['question', 'questionModel'], // preload relations if configured
+  });
+
+  if (!answer) {
+    throw new NotFoundException(`Answer with ID ${id} not found`);
+  }
+
+  // If question relation exists but not loaded
+  // if (!answer.question && answer['questionId']) {
+  //   const question = await this.questionRepo.findOneBy({ id: answer['questionId'] });
+  //   if (!question) {
+  //     throw new NotFoundException(`Question with ID ${answer['questionId']} not found`);
+  //   }
+  //   answer.question = question;
+  // }
+
+  // // If questionModel relation exists but not loaded
+  // if (!answer.questionModel && answer['questionModelId']) {
+  //   const questionModel = await this.questionModelRepository.findOneBy({ id: answer['questionModelId'] });
+  //   if (!questionModel) {
+  //     throw new NotFoundException(`Question Model with ID ${answer['questionModelId']} not found`);
+  //   }
+  //   answer.questionModel = questionModel;
+  // }
+
+  return answer;
+}
+
+
+async updateAnswer(id: string, updateDto: UpdateAnswerDto): Promise<Answer> {
+  const answer = await this.answerRepository.findOne({ where: { id } });
+if (!answer) {
+    throw new NotFoundException(`Answer with ID ${id} not found`);
+  }
+  answer.userId = updateDto.userId;
+  answer.text = updateDto.text ?? null;  // Entity allows null
+  answer.selectedOptionIds = updateDto.selectedOptionIds ?? [];
+
+  if (updateDto.questionId) {
+    const question = await this.questionRepo.findOneBy({ id: updateDto.questionId });
+    if (!question) throw new NotFoundException('Question not found');
+    answer.question = question;
+  }
+
+  if (updateDto.questionModelId) {
+    const model = await this.questionModelRepository.findOneBy({ id: updateDto.questionModelId });
+    if (!model) throw new NotFoundException('Question Model not found');
+    answer.questionModel = model;
+  }
+  return await this.answerRepository.save(answer);
+}
+
+  async removeAnswer(id: string): Promise<void> {
+    const result = await this.answerRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Answer with ID ${id} not found`);
+    }
+  }
+ async createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto> {
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id: dto.subSubItemId } });
+    if (!subSubItem) {
+      throw new NotFoundException(`SubSubItem with ID ${dto.subSubItemId} not found`);
+    }
+
+    const answer = await this.answerRepository.findOne({ where: { id: dto.answerId } });
+    if (!answer) {
+      throw new NotFoundException(`Answer with ID ${dto.answerId} not found`);
+    }
+
+    const entity = this.subSubItemAnswerRepository.create({
+      subSubItemId:subSubItem.id,
+      answerId:answer.id
+    });
+  var data=this.subSubItemAnswerRepository.save(entity);
+     return {
+          id: entity.id,
+          subSubItem:subSubItem,
+          answer: answer,
+          createdAt: entity.createdAt,
+          updatedAt: entity.updatedAt,
+        };
+  }
+
+ async findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]> {
+  const entries = await this.subSubItemAnswerRepository.find();
+
+  const result: SubSubItemAnswerResponseDto[] = [];
+
+  for (const entry of entries) {
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+    console.log(subSubItem);
+    const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+   console.log(answer);
+    if (subSubItem && answer) {
+      result.push({
+        id: entry.id,
+        subSubItem,
+        answer,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+      });
+    }
+  }
+
+  return result;
+}
+
+  async findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto> {
+    const entry = await this.subSubItemAnswerRepository.findOne({
+      where: { id }
+    });
+    if (!entry) {
+      throw new NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
+    }
+    const subSubItem = await this.subSubItemRepo.findOne({ where: { id:entry.subSubItemId } });
+    console.log(subSubItem);
+    if (!subSubItem) {
+      throw new NotFoundException(`SubSubItem with ID ${entry.subSubItemId} not found`);
+    }
+
+    const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+    if (!answer) {
+      throw new NotFoundException(`Answer with ID ${entry.answerId} not found`);
+    }
+    console.log(answer);
+      return {
+    id: entry.id,
+    subSubItem: subSubItem,
+    answer: answer,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt,
+  };
+  
+  }
+
+  async deleteSubAns(id: number): Promise<void> {
+    const result = await this.subSubItemAnswerRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
+    }
+  }
+
 
 //   async getSurvey(): Promise<QuestionGroup[]> {
 //     return this.questionGroupRepo.find();

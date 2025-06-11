@@ -11,9 +11,9 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_module_1 = require("./user/user.module");
 const feature_module_1 = require("./feature/feature.module");
-const survey_module_module_1 = require("./survey-module/survey-module.module");
-const erp_module_module_1 = require("./erp-module/erp-module.module");
+const survey_module_module_1 = require("./module/survey-module.module");
 const survey_config_module_1 = require("./survey-config/survey-config.module");
+const design_definition_module_1 = require("./design-definition/design-definition.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,8 +32,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             user_module_1.UserModule,
             feature_module_1.FeatureModule,
+            design_definition_module_1.DesignDefinitionModule,
             survey_module_module_1.SurveyModuleModule,
-            erp_module_module_1.ErpModuleModule,
             survey_config_module_1.SurveyConfigModule
         ],
     })

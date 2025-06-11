@@ -10,10 +10,12 @@ import { QuestionModel } from './survey-config.entity/question-model.entity';;
 import { SurveyConfigController } from './survey-config.controller';
 import { SurveyConfigService } from './survey-config.service';
 import { Survey } from './survey-config.entity/survey.entity';
-
+import { Answer } from './survey-config.entity/answer.entity';
+import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
+import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([Survey,QuestionGroup, Question, Option, QuestionModel])],
+  imports: [TypeOrmModule.forFeature([SubSubItem,Survey,QuestionGroup, Question, Option, QuestionModel,Answer,SubSubItemAnswer])],
   controllers: [SurveyConfigController],
-  providers: [SurveyConfigController, SurveyConfigService],
+  providers: [ SurveyConfigService],
 })
 export class SurveyConfigModule {}
