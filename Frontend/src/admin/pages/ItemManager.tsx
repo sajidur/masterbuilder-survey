@@ -22,17 +22,15 @@ interface AppItem {
 
 interface MenuItem {
   id: number;
-  name: string;
-  App: AppItem;
-  Module: Module;
+  title: string;
+  app: AppItem;
 }
 
 interface Item {
   id: number;
   name: string;
-  Menu: MenuItem;
-  App: AppItem;
-  Module: Module;
+  menu: MenuItem;
+
 }
 
 const ItemManager: React.FC = () => {
@@ -83,15 +81,10 @@ const ItemManager: React.FC = () => {
   // Filtered lists based on selections
   const filteredApps = apps.filter(app => app.Module?.name === selectedModule);
   const filteredMenus = menus.filter(menu => 
-    menu.Module?.name === selectedModule && menu.App?.name === selectedApp
+    menu.app.Module?.name === selectedModule && menu.app?.name === selectedApp
   );
 
-  // Filter items for display based on all three selections
-  const filteredItems = items.filter(item =>
-    item.Module?.name === selectedModule &&
-    item.App?.name === selectedApp &&
-    item.Menu?.name === selectedMenu
-  );
+
 
   const handleAddItem = async () => {
     if (!selectedModule || !selectedApp || !selectedMenu) {
@@ -108,7 +101,7 @@ const ItemManager: React.FC = () => {
     // Find selected objects for reference
     const selectedMod = modules.find(m => m.name === selectedModule);
     const selectedAppObj = apps.find(a => a.name === selectedApp);
-    const selectedMenuObj = menus.find(m => m.name === selectedMenu);
+    const selectedMenuObj = menus.find(m => m.title === selectedMenu);
 
     if (!selectedMod || !selectedAppObj || !selectedMenuObj) {
       toast.error("Invalid selection for module/app/menu.");
@@ -127,9 +120,8 @@ const ItemManager: React.FC = () => {
       const newItem: Item = {
         id: Date.now(), // temp id
         name: trimmedItemName,
-        Menu: selectedMenuObj,
-        App: selectedAppObj,
-        Module: selectedMod,
+        menu: selectedMenuObj,
+
       };
 
       setItems(prev => [...prev, newItem]);
@@ -198,7 +190,7 @@ const ItemManager: React.FC = () => {
           >
             <option value="">-- Select Menu --</option>
             {filteredMenus.map(menu => (
-              <option key={menu.id} value={menu.name}>{menu.name}</option>
+              <option key={menu.id} value={menu.title}>{menu.title}</option>
             ))}
           </select>
         </div>
@@ -239,7 +231,7 @@ const ItemManager: React.FC = () => {
       <div className="bg-white p-6 rounded shadow">
         <h3 className="text-xl font-semibold mb-4">Items List</h3>
 
-        {filteredItems.length === 0 ? (
+        {items.length === 0 ? (
           <p>No items available for selected module/app/menu.</p>
         ) : (
           <table className="w-full border border-gray-300">
@@ -252,11 +244,11 @@ const ItemManager: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredItems.map(item => (
+              {items.map(item => (
                 <tr key={item.id} className="border-t border-gray-300">
-                  <td className="p-2">{item.Module?.name || "—"}</td>
-                  <td className="p-2">{item.App?.name || "—"}</td>
-                  <td className="p-2">{item.Menu?.name || "—"}</td>
+                  <td className="p-2">{item.menu.app?.Module?.name || "—"}</td>
+                  <td className="p-2">{item.menu.app?.name || "—"}</td>
+                  <td className="p-2">{item.menu?.title || "—"}</td>
                   <td className="p-2">{item.name}</td>
                 </tr>
               ))}

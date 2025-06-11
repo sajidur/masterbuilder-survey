@@ -71,7 +71,6 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Design content in JSON format',
-        example: { nodes: [], edges: [] },
         type: Object,
     }),
     (0, class_validator_1.IsObject)(),

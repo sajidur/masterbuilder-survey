@@ -21,9 +21,8 @@ interface AppItem {
 
 interface MenuItem {
   id: number;
-  name: string;
-  App: AppItem;
-  Module: Module;
+  title: string;
+  app: AppItem;
 }
 
 const MenuManager: React.FC = () => {
@@ -87,14 +86,14 @@ const MenuManager: React.FC = () => {
       toast.success("Menu added successfully!");
 
       const newMenu: MenuItem = {
-        id: Date.now(), // temporary ID
-        name: trimmedMenuName,
-        App: selectedAppObj,
-        Module: selectedMod,
+        id: Date.now(),
+        title: trimmedMenuName,
+        app: selectedAppObj,
       };
 
       setMenus((prev) => [...prev, newMenu]);
       setMenuName("");
+      window.location.reload()
     } catch (error) {
       console.error("Failed to add menu:", error);
       toast.error("Failed to add menu.");
@@ -205,8 +204,8 @@ const MenuManager: React.FC = () => {
             <tbody>
               {menus.map((menu) => (
                 <tr key={menu.id} className="border-t border-gray-300">
-                  <td className="p-2">{menu.Module?.name || "—"}</td>
-                  <td className="p-2">{menu.App?.name || "—"}</td>
+                  <td className="p-2">{menu.app.Module?.name || "—"}</td>
+                  <td className="p-2">{menu.app?.name || "—"}</td>
                   <td className="p-2">{menu.title}</td>
                 </tr>
               ))}

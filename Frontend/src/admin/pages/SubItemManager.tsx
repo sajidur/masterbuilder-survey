@@ -23,23 +23,21 @@ interface AppItem {
 
 interface MenuItem {
   id: number;
-  name: string;
-  App: AppItem;
-  Module: Module;
+  title: string;
+  app: AppItem;
 }
 
 interface Item {
   id: number;
   name: string;
-  Menu: MenuItem;
-  App: AppItem;
-  Module: Module;
+  menu: MenuItem;
+
 }
 
 interface SubItem {
   id: number;
   name: string;
-  Item: Item;
+  item: Item;
 }
 
 const SubItemManager: React.FC = () => {
@@ -113,7 +111,7 @@ const SubItemManager: React.FC = () => {
         {
           id: Date.now(),
           name: trimmedName,
-          Item: itemObj,
+          item: itemObj,
         },
       ]);
 
@@ -195,10 +193,10 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Menu</option>
             {menus
-              .filter((m) => m.App?.name === selectedApp)
+              .filter((m) => m.app?.name === selectedApp)
               .map((m) => (
-                <option key={m.id} value={m.name}>
-                  {m.name}
+                <option key={m.id} value={m.title}>
+                  {m.title}
                 </option>
               ))}
           </select>
@@ -216,13 +214,18 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Item</option>
             {items
-              .filter((i) => i.Menu?.name === selectedMenu)
+              .filter((i) => {
+                const selectedMenuObj = menus.find((m) => m.title === selectedMenu);
+                return i.menu?.id === selectedMenuObj?.id;
+              })
               .map((i) => (
                 <option key={i.id} value={i.name}>
                   {i.name}
                 </option>
               ))}
+
           </select>
+
         </div>
 
         {/* SubItem Name */}
@@ -266,10 +269,10 @@ const SubItemManager: React.FC = () => {
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
-                  <td className="p-2">{s.Item?.Module?.name || "—"}</td>
-                  <td className="p-2">{s.Item?.App?.name || "—"}</td>
-                  <td className="p-2">{s.Item?.Menu?.name || "—"}</td>
-                  <td className="p-2">{s.Item?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.app?.Module?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.title || "—"}</td>
+                  <td className="p-2">{s.item?.name || "—"}</td>
                   <td className="p-2">{s.name}</td>
                 </tr>
               ))}
