@@ -3,18 +3,19 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { SubSubItem } from '../../module/module.entity/subsubitem.entity';
 
-@Entity("DesignDefinitions")
+@Entity('DesignDefinitions')
 export class DesignDefinition {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  // @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.designDefinitions, {
-  //   onDelete: 'CASCADE',
-  // })
+  @Column({ type: 'varchar' }) // Correct type for MySQL
+  contentTypeId: string;
 
+  @Column({ type: 'varchar' })
+  contentTypeName: string;
 
-   @Column({ type: 'int' })
-  subSubItemId: number;
+  @Column({ type: 'varchar' })
+  fileType: string;
 
   @Column({
     type: 'enum',
@@ -22,15 +23,15 @@ export class DesignDefinition {
   })
   type: 'CLASS' | 'ACTION' | 'ACTIVITY_DIAGRAM' | 'CLASS_DIAGRAM';
 
-  @Column()
+  @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'json' }) // For MySQL, use 'json' instead of 'jsonb' which is PostgreSQL only
+  @Column({ type: 'json' }) // MySQL supports JSON
   content: any;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   imageUrl?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   notes?: string;
 }

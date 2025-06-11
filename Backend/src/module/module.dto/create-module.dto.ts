@@ -18,7 +18,7 @@ export class UpdateModuleDto {
 
 }
 export class ModuleDto {
-  id: number;
+  id: string;
   name: string;
 }
 

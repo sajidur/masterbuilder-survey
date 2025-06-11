@@ -1,11 +1,11 @@
 import { ItemDto } from './item.dto';
 export declare class SubItemDto {
-    id: number;
-    label: string;
-    itemId: number;
+    id: string;
+    name: string;
+    itemId: string;
     item?: ItemDto | null;
 }
 export declare class CreateSubItemDto {
-    label: string;
-    itemId?: number;
+    name: string;
+    itemId?: string;
 }

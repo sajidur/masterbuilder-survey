@@ -37,13 +37,13 @@ let SurveyConfigController = class SurveyConfigController {
         return this.surveyService.findAll();
     }
     findOne(id) {
-        return this.surveyService.findOne(+id);
+        return this.surveyService.findOne(id);
     }
     update(id, updateSurveyDto) {
-        return this.surveyService.update(+id, updateSurveyDto);
+        return this.surveyService.update(id, updateSurveyDto);
     }
     remove(id) {
-        return this.surveyService.remove(+id);
+        return this.surveyService.remove(id);
     }
     async createAnswer(createAnswerDto) {
         return this.surveyService.createanswer(createAnswerDto);
@@ -163,14 +163,14 @@ __decorate([
     (0, common_1.Get)('getSubSubItemAnswer:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "findByIdSubAns", null);
 __decorate([
     (0, common_1.Delete)('deleteSubSubItemAnswer:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "deleteSubAns", null);
 exports.SurveyConfigController = SurveyConfigController = __decorate([

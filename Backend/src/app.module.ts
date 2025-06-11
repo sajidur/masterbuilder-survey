@@ -18,7 +18,7 @@ import { DesignDefinitionModule } from './design-definition/design-definition.mo
       password: 'Root@pass1',
       database: 'db_a66689_mukut',
       autoLoadEntities: true,
-      synchronize: false // disable in production
+      synchronize: true // disable in production
     
     }),
     UserModule,

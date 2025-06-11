@@ -21,8 +21,8 @@ let Field = class Field {
 };
 exports.Field = Field;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], Field.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -32,7 +32,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'SubItem ID' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Field.prototype, "subSubItemId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.fields),

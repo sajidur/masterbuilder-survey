@@ -7,8 +7,8 @@ import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
 export class Modules  {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   @ApiProperty({ description: 'Name of the module' })

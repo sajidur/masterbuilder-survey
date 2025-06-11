@@ -1,7 +1,7 @@
 import { SubSubItem } from './subsubitem.entity';
 export declare class Field {
-    id: number;
+    id: string;
     name: string;
-    subSubItemId: number;
+    subSubItemId: string;
     subSubItem: SubSubItem;
 }

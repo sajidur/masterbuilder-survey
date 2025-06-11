@@ -18,8 +18,8 @@ export declare class SurveyConfigController {
     removeAnswer(id: string): Promise<void>;
     createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto>;
     findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]>;
-    findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto>;
-    deleteSubAns(id: number): Promise<{
+    findByIdSubAns(id: string): Promise<SubSubItemAnswerResponseDto>;
+    deleteSubAns(id: string): Promise<{
         message: string;
     }>;
 }

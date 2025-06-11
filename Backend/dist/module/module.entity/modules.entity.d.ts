@@ -1,6 +1,6 @@
 import { App } from './app.entity';
 export declare class Modules {
-    id: number;
+    id: string;
     name: string;
     apps: App[];
 }

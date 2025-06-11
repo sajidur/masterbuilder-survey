@@ -91,7 +91,7 @@ async create(createSurveyDto: CreateSurveyDto): Promise<Survey> {
     return this.surveyRepository.find({ relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'] });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const survey = await this.surveyRepository.findOne({
       where: { id },
       relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options']
@@ -100,7 +100,7 @@ async create(createSurveyDto: CreateSurveyDto): Promise<Survey> {
     return survey;
   }
 
-async update(id: number, updateSurveyDto: CreateSurveyDto): Promise<Survey> {
+async update(id: string, updateSurveyDto: CreateSurveyDto): Promise<Survey> {
   const existingSurvey = await this.surveyRepository.findOne({
     where: { id },
     relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'],
@@ -151,7 +151,7 @@ async update(id: number, updateSurveyDto: CreateSurveyDto): Promise<Survey> {
 }
 
 
-  async remove(id: number) {
+  async remove(id: string) {
     const survey = await this.findOne(id);
     return this.surveyRepository.remove(survey);
   }
@@ -288,7 +288,7 @@ if (!answer) {
   return result;
 }
 
-  async findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto> {
+  async findByIdSubAns(id: string): Promise<SubSubItemAnswerResponseDto> {
     const entry = await this.subSubItemAnswerRepository.findOne({
       where: { id }
     });
@@ -316,7 +316,7 @@ if (!answer) {
   
   }
 
-  async deleteSubAns(id: number): Promise<void> {
+  async deleteSubAns(id: string): Promise<void> {
     const result = await this.subSubItemAnswerRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`SubSubItemAnswer with ID ${id} not found`);

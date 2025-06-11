@@ -80,17 +80,17 @@ export class SurveyConfigController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.surveyService.findOne(+id);
+    return this.surveyService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateSurveyDto: CreateSurveyDto) {
-    return this.surveyService.update(+id, updateSurveyDto);
+    return this.surveyService.update(id, updateSurveyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.surveyService.remove(+id);
+    return this.surveyService.remove(id);
   }
   //answer
   @Post('addAnswer')
@@ -138,14 +138,14 @@ async updateAnswer(
 
   @Get('getSubSubItemAnswer:id')
  
-  async findByIdSubAns(@Param('id', ParseIntPipe) id: number): Promise<SubSubItemAnswerResponseDto> {
+  async findByIdSubAns(@Param('id', ParseIntPipe) id: string): Promise<SubSubItemAnswerResponseDto> {
     const entity = await this.surveyService.findByIdSubAns(id);
     return entity;
   }
 
   @Delete('deleteSubSubItemAnswer:id')
 
-  async deleteSubAns(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+  async deleteSubAns(@Param('id', ParseIntPipe) id: string): Promise<{ message: string }> {
     await this.surveyService.deleteSubAns(id);
     return { message: `SubSubItemAnswer with ID ${id} deleted successfully.` };
   }

@@ -1,6 +1,7 @@
-import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 export declare class CreateDesignDefinitionDto {
-    subSubItemId: number;
+    contentTypeId: string;
+    contentTypeName: string;
+    fileType: string;
     type: 'CLASS' | 'ACTION' | 'ACTIVITY_DIAGRAM' | 'CLASS_DIAGRAM';
     title: string;
     content: any;
@@ -8,8 +9,10 @@ export declare class CreateDesignDefinitionDto {
     notes?: string;
 }
 export declare class DesignDefinitionResponseDto {
-    id: number;
-    subSubItem: SubSubItem | null;
+    id: string;
+    contentTypeId: string;
+    contentTypeName: string;
+    fileType: string;
     type: 'CLASS' | 'ACTION' | 'ACTIVITY_DIAGRAM' | 'CLASS_DIAGRAM';
     title: string;
     content: any;

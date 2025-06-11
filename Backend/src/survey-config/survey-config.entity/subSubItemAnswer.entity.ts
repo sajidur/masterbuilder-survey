@@ -7,11 +7,11 @@ import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } fr
 
 @Entity()
 export class SubSubItemAnswer {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
  // @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.subSubItemAnswers, { onDelete: 'CASCADE' })
-  subSubItemId: number;
+  subSubItemId: string;
 
   //@ManyToOne(() => Answer, (answer) => answer.subSubItemAnswers, { onDelete: 'CASCADE' })
   answerId: string;

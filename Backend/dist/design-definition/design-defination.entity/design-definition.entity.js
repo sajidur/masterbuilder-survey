@@ -13,7 +13,9 @@ exports.DesignDefinition = void 0;
 const typeorm_1 = require("typeorm");
 let DesignDefinition = class DesignDefinition {
     id;
-    subSubItemId;
+    contentTypeId;
+    contentTypeName;
+    fileType;
     type;
     title;
     content;
@@ -22,13 +24,21 @@ let DesignDefinition = class DesignDefinition {
 };
 exports.DesignDefinition = DesignDefinition;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], DesignDefinition.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
-    __metadata("design:type", Number)
-], DesignDefinition.prototype, "subSubItemId", void 0);
+    (0, typeorm_1.Column)({ type: 'varchar' }),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "contentTypeId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar' }),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "contentTypeName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar' }),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "fileType", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
@@ -37,7 +47,7 @@ __decorate([
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "type", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "title", void 0);
 __decorate([
@@ -45,14 +55,14 @@ __decorate([
     __metadata("design:type", Object)
 ], DesignDefinition.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "imageUrl", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "notes", void 0);
 exports.DesignDefinition = DesignDefinition = __decorate([
-    (0, typeorm_1.Entity)("DesignDefinitions")
+    (0, typeorm_1.Entity)('DesignDefinitions')
 ], DesignDefinition);
 //# sourceMappingURL=design-definition.entity.js.map

@@ -3,10 +3,10 @@
 
 import { ApiProperty } from "@nestjs/swagger";
 import { ModuleDto } from "./create-module.dto";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class AppDto {
-  id: number;
+  id: string;
   
   name: string;
   
@@ -22,8 +22,8 @@ export class CreateAppDto {
 
   @ApiProperty({ description: 'Module ID' })
   @IsNotEmpty()
-  @IsNumber()
-  moduleId: number;
+  @IsString()
+  moduleId: string;
 
 }
 export class UpdateAppDto {
@@ -35,7 +35,7 @@ export class UpdateAppDto {
 
   @ApiProperty({ description: 'Module ID' })
   @IsNotEmpty()
-  @IsNumber()
-  moduleId: number;
+  @IsString()
+  moduleId: string;
 
 }

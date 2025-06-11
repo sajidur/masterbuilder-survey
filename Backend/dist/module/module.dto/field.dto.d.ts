@@ -1,11 +1,11 @@
 import { SubSubItemDto } from './subSubItem.dto';
 export declare class FieldDto {
-    id: number;
+    id: string;
     name: string;
-    subSubItemId: number;
+    subSubItemId: string;
     subSubItem?: SubSubItemDto | null;
 }
 export declare class CreateFieldDto {
     name: string;
-    subSubItemId: number;
+    subSubItemId: string;
 }

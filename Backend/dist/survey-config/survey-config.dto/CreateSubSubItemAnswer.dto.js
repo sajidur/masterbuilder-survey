@@ -20,7 +20,7 @@ exports.CreateSubSubItemAnswerDto = CreateSubSubItemAnswerDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID of the SubSubItem', example: 1 }),
     (0, class_validator_1.IsInt)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], CreateSubSubItemAnswerDto.prototype, "subSubItemId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID of the Answer', example: 'a1b2c3d4-5678-9101-1121-314151617181' }),

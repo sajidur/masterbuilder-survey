@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty} from 'class-validator';
 import { SubSubItemDto } from './subSubItem.dto'; // Adjust path as needed
 export class FieldDto {
  
-  id: number;
+  id: string;
   name: string;
-  subSubItemId: number;
+  subSubItemId: string;
   subSubItem?: SubSubItemDto | null;
 }
 export class CreateFieldDto {
@@ -16,6 +16,6 @@ export class CreateFieldDto {
   name: string;
 
   @ApiProperty({ description: 'SubSubItem ID' })
-  @IsNumber()
-  subSubItemId: number;
+  @IsString()
+  subSubItemId: string;
 }

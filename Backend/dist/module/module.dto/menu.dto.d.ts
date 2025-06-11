@@ -1,10 +1,10 @@
 import { AppDto } from './App.dto';
 export declare class CreateMenuDto {
     title: string;
-    appId: number;
+    appId: string;
 }
 export declare class MenuDto {
-    id: number;
+    id: string;
     title: string;
     app: AppDto | null;
 }

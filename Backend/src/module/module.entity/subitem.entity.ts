@@ -11,14 +11,14 @@ import { SubSubItem } from './subsubitem.entity';
 
 @Entity()
 export class SubItem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  label: string;
+  name: string;
   
   @Column()
-  itemId?: number;
+  itemId?: string;
 
 @ManyToOne(() => Item, (item) => item.subItems, { nullable: true })
 item: Item;

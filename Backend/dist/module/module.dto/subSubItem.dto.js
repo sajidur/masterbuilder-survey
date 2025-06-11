@@ -14,13 +14,13 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class SubSubItemDto {
     id;
-    label;
+    name;
     subItemId;
     subItem;
 }
 exports.SubSubItemDto = SubSubItemDto;
 class CreateSubSubItemDto {
-    label;
+    name;
     subItemId;
 }
 exports.CreateSubSubItemDto = CreateSubSubItemDto;
@@ -29,11 +29,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateSubSubItemDto.prototype, "label", void 0);
+], CreateSubSubItemDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'SubItem ID' }),
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], CreateSubSubItemDto.prototype, "subItemId", void 0);
 //# sourceMappingURL=subSubItem.dto.js.map

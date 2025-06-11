@@ -6,8 +6,8 @@ import { SubSubItem } from './subsubitem.entity';
 
 @Entity()
 export class Field {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   @ApiProperty({ description: 'Name of the field' })
@@ -15,7 +15,7 @@ export class Field {
 
   @Column()
   @ApiProperty({ description: 'SubItem ID' })
-  subSubItemId: number;
+  subSubItemId: string;
 
   @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.fields)
   subSubItem: SubSubItem;

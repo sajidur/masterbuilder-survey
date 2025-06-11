@@ -22,15 +22,15 @@ export declare class SurveyConfigService {
     constructor(questionGroupRepo: Repository<QuestionGroup>, subSubItemRepo: Repository<SubSubItem>, questionRepo: Repository<Question>, optionRepository: Repository<Option>, questionModelRepository: Repository<QuestionModel>, surveyRepository: Repository<Survey>, answerRepository: Repository<Answer>, subSubItemAnswerRepository: Repository<SubSubItemAnswer>);
     create(createSurveyDto: CreateSurveyDto): Promise<Survey>;
     findAll(): Promise<Survey[]>;
-    findOne(id: number): Promise<Survey>;
-    update(id: number, updateSurveyDto: CreateSurveyDto): Promise<Survey>;
-    remove(id: number): Promise<Survey>;
+    findOne(id: string): Promise<Survey>;
+    update(id: string, updateSurveyDto: CreateSurveyDto): Promise<Survey>;
+    remove(id: string): Promise<Survey>;
     createanswer(createAnswerDto: CreateAnswerDto): Promise<Answer>;
     findOneAnswer(id: string): Promise<Answer>;
     updateAnswer(id: string, updateDto: UpdateAnswerDto): Promise<Answer>;
     removeAnswer(id: string): Promise<void>;
     createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto>;
     findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]>;
-    findByIdSubAns(id: number): Promise<SubSubItemAnswerResponseDto>;
-    deleteSubAns(id: number): Promise<void>;
+    findByIdSubAns(id: string): Promise<SubSubItemAnswerResponseDto>;
+    deleteSubAns(id: string): Promise<void>;
 }
