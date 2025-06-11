@@ -31,6 +31,9 @@ const MenuManager: React.FC = () => {
   const [apps, setApps] = useState<AppItem[]>([]);
   const [menus, setMenus] = useState<MenuItem[]>([]);
 
+  console.log({menus});
+  
+
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [menuName, setMenuName] = useState<string>("");
@@ -205,9 +208,9 @@ const MenuManager: React.FC = () => {
             <tbody>
               {menus.map((menu) => (
                 <tr key={menu.id} className="border-t border-gray-300">
-                  <td className="p-2">{menu.Module?.name || "—"}</td>
-                  <td className="p-2">{menu.App?.name || "—"}</td>
-                  <td className="p-2">{menu.title}</td>
+                  <td className="p-2">{menu?.app.Module?.name || "—"}</td>
+                  <td className="p-2">{menu?.app?.name || "—"}</td>
+                  <td className="p-2">{menu?.title}</td>
                 </tr>
               ))}
             </tbody>

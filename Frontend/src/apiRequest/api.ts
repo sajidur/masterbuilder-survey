@@ -24,7 +24,7 @@ export const addModule = async (data: { name: string }) => {
 };
 
 // Add App
-export const addApp = async (data: { name: string; moduleId: number }) => {
+export const addApp = async (data: { name: string; moduleId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addApps', data);
     return response.data;
@@ -35,7 +35,7 @@ export const addApp = async (data: { name: string; moduleId: number }) => {
 };
 
 // Add Menu
-export const addMenu = async (data: { title: string; appId: number }) => {
+export const addMenu = async (data: { title: string; appId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addMenu', data);
     return response.data;
@@ -46,7 +46,7 @@ export const addMenu = async (data: { title: string; appId: number }) => {
 };
 
 // Add Item
-export const addItem = async (data: { name: string; menuId: number }) => {
+export const addItem = async (data: { name: string; menuId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addItem', data);
     return response.data;
@@ -57,7 +57,7 @@ export const addItem = async (data: { name: string; menuId: number }) => {
 };
 
 // Add Subitem
-export const addSubitem = async (data: { label: string; itemId: number }) => {
+export const addSubitem = async (data: { label: string; itemId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubitems', data);
     return response.data;
@@ -68,7 +68,7 @@ export const addSubitem = async (data: { label: string; itemId: number }) => {
 };
 
 // Add Sub-Subitem
-export const addSubSubitem = async (data: { label: string; subItemId: number }) => {
+export const addSubSubitem = async (data: { label: string; subItemId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubItem', data);
     return response.data;
@@ -79,7 +79,7 @@ export const addSubSubitem = async (data: { label: string; subItemId: number }) 
 };
 
 // Add Field
-export const addField = async (data: { name: string; subSubItemId: number }) => {
+export const addField = async (data: { name: string; subSubItemId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addField', data);
     return response.data;
