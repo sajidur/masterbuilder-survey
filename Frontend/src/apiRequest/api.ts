@@ -183,3 +183,20 @@ export const getAllFields = async () => {
     throw error;
   }
 };
+
+
+
+//demo
+export const uploadDocument = async (formData: FormData) => {
+  return await axios.post("/api/documents/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const getUploadedDocuments = async () => {
+  const res = await fetch("/api/documents"); // update with your actual endpoint
+  if (!res.ok) throw new Error("Failed to fetch");
+  return res.json();
+};

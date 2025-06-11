@@ -1,296 +1,273 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   getAllModules,
   getAllApps,
   getAllMenus,
   getAllItems,
-
+  addItem,
 } from '../../apiRequest/api';
 
-interface Row {
+interface Module {
   id: number;
-  module: string;
-  app: string;
-  menu: string;
-  item: string;
+  name: string;
+}
 
+interface AppItem {
+  id: number;
+  name: string;
+  Module: Module;
+}
+
+interface MenuItem {
+  id: number;
+  name: string;
+  App: AppItem;
+  Module: Module;
+}
+
+interface Item {
+  id: number;
+  name: string;
+  Menu: MenuItem;
+  App: AppItem;
+  Module: Module;
 }
 
 const ItemManager: React.FC = () => {
-  const [rows, setRows] = useState<Row[]>(() => {
-    const saved = localStorage.getItem("ItemRows");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [modules, setModules] = useState<Module[]>([]);
+  const [apps, setApps] = useState<AppItem[]>([]);
+  const [menus, setMenus] = useState<MenuItem[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
 
-  const [formData, setFormData] = useState<Omit<Row, "id">>({
-    module: "",
-    app: "",
-    menu: "",
-    item: "",
-
-  });
-
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupType, setPopupType] = useState<keyof Omit<Row, "id"> | null>(null);
-  const [popupInput, setPopupInput] = useState("");
-
-  const [dropdownData, setDropdownData] = useState<{
-    modules: string[];
-    apps: string[];
-    menus: string[];
-    items: string[];
-
-  }>({
-    modules: [],
-    apps: [],
-    menus: [],
-    items: [],
-
-  });
+  const [selectedModule, setSelectedModule] = useState<string>("");
+  const [selectedApp, setSelectedApp] = useState<string>("");
+  const [selectedMenu, setSelectedMenu] = useState<string>("");
+  const [itemName, setItemName] = useState<string>("");
 
   useEffect(() => {
-    const fetchDropdownData = async () => {
+    // Load all data initially
+    const fetchData = async () => {
       try {
-        const [modules, apps, menus, items] = await Promise.all([
+        const [modulesData, appsData, menusData, itemsData] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
-          getAllItems(),
+          getAllItems()
         ]);
 
-        setDropdownData({
-          modules: Array.from(new Set(modules.map((m: any) => m.name))),
-          apps: Array.from(new Set(apps.map((a: any) => a.name))),
-          menus: Array.from(new Set(menus.map((m: any) => m.name))),
-          items: Array.from(new Set(items.map((i: any) => i.name))),
-        });
+        setModules(modulesData);
+        setApps(appsData);
+        setMenus(menusData);
+        setItems(itemsData);
       } catch (error) {
-        console.error('Failed to fetch dropdown data:', error);
+        console.error("Failed to fetch data:", error);
+        toast.error("Failed to load data.");
       }
     };
 
-    fetchDropdownData();
+    fetchData();
   }, []);
 
+  // Reset dependent dropdowns on change
+  useEffect(() => {
+    setSelectedApp("");
+    setSelectedMenu("");
+  }, [selectedModule]);
 
-  const triggerPopup = (type: keyof Omit<Row, "id">) => {
-    setPopupType(type);
-    setPopupInput("");
-    setShowPopup(true);
-  };
+  useEffect(() => {
+    setSelectedMenu("");
+  }, [selectedApp]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === "module" && { app: "", menu: "", item: "", subItem: "", subSubItem: "", field: "" }),
-      ...(name === "app" && { menu: "", item: "", subItem: "", subSubItem: "", field: "" }),
-      ...(name === "menu" && { item: "", subItem: "", subSubItem: "", field: "" }),
-      ...(name === "item" && { subItem: "", subSubItem: "", field: "" }),
-
-    }));
-  };
-
-  const renderSelectWithAdd = (
-    name: keyof Row,
-    label: string,
-    options: string[],
-    value: string
-  ) => (
-    <div className="mb-4">
-      <label className="block mb-1 font-semibold">{label}</label>
-      <div className="flex gap-2 items-center">
-        <select
-          name={name}
-          value={value}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md px-4 py-2 w-2/3"
-        >
-          <option value="">Select {label}</option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          onClick={() => triggerPopup(name)}
-          className="px-3 py-1 bg-blue-500 text-white rounded"
-          title={`Add new ${label}`}
-        >
-          +
-        </button>
-      </div>
-    </div>
+  // Filtered lists based on selections
+  const filteredApps = apps.filter(app => app.Module?.name === selectedModule);
+  const filteredMenus = menus.filter(menu => 
+    menu.Module?.name === selectedModule && menu.App?.name === selectedApp
   );
 
+  // Filter items for display based on all three selections
+  const filteredItems = items.filter(item =>
+    item.Module?.name === selectedModule &&
+    item.App?.name === selectedApp &&
+    item.Menu?.name === selectedMenu
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowPopup(true);
-    setPopupType(null);
+  const handleAddItem = async () => {
+    if (!selectedModule || !selectedApp || !selectedMenu) {
+      toast.warn("Please select module, app, and menu.");
+      return;
+    }
+
+    const trimmedItemName = itemName.trim();
+    if (!trimmedItemName) {
+      toast.warn("Please enter an item name.");
+      return;
+    }
+
+    // Find selected objects for reference
+    const selectedMod = modules.find(m => m.name === selectedModule);
+    const selectedAppObj = apps.find(a => a.name === selectedApp);
+    const selectedMenuObj = menus.find(m => m.name === selectedMenu);
+
+    if (!selectedMod || !selectedAppObj || !selectedMenuObj) {
+      toast.error("Invalid selection for module/app/menu.");
+      return;
+    }
+
+    try {
+      // Call API to add new Item (assuming API expects {name, menuId} or similar)
+      await addItem({
+        name: trimmedItemName,
+        menuId: selectedMenuObj.id,
+      });
+
+      toast.success("Item added successfully!");
+
+      const newItem: Item = {
+        id: Date.now(), // temp id
+        name: trimmedItemName,
+        Menu: selectedMenuObj,
+        App: selectedAppObj,
+        Module: selectedMod,
+      };
+
+      setItems(prev => [...prev, newItem]);
+      setItemName("");
+    } catch (error) {
+      console.error("Failed to add item:", error);
+      toast.error("Failed to add item.");
+    }
   };
-
-  const confirmAddRow = () => {
-    const newRow = { id: Date.now(), ...formData };
-    const updatedRows = [...rows, newRow];
-    setRows(updatedRows);
-    localStorage.setItem("ItemRows", JSON.stringify(updatedRows));
-    setFormData({ module: "", app: "", menu: "", item: "" });
-    setShowPopup(false);
-  };
-
-  const handleDelete = (id: number) => {
-    const filtered = rows.filter((row) => row.id !== id);
-    setRows(filtered);
-    localStorage.setItem("ItemRows", JSON.stringify(filtered));
-  };
-  const handleAddFromPopup = () => {
-  if (!popupType || !popupInput.trim()) {
-    toast.error("Input cannot be empty.");
-    return;
-  }
-
-  // Because dropdownData keys are plural, add 's' to popupType
-  const key = (popupType + "s") as keyof typeof dropdownData;
-
-  // Check if the popupInput already exists in the dropdown list
-  if (!dropdownData[key].includes(popupInput.trim())) {
-    const updatedDropdown = {
-      ...dropdownData,
-      [key]: [...dropdownData[key], popupInput.trim()],
-    };
-
-    setDropdownData(updatedDropdown);
-    setFormData((prev) => ({
-      ...prev,
-      [popupType]: popupInput.trim(),
-    }));
-
-    toast.success(`${popupType} added successfully!`);
-  } else {
-    toast.warning(`${popupType} already exists.`);
-  }
-
-  setPopupInput("");
-  setShowPopup(false);
-  setPopupType(null);
-};
-
-
-
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-light mb-6">Survey Module Management</h2>
-      <form onSubmit={handleSubmit} className="bg-white shadow rounded p-6 mb-8 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {renderSelectWithAdd('module', 'Module', dropdownData.modules, formData.module)}
-          {renderSelectWithAdd('app', 'App', dropdownData.apps, formData.app)}
-          {renderSelectWithAdd('menu', 'Menu', dropdownData.menus, formData.menu)}
-          {renderSelectWithAdd('item', 'Item', dropdownData.items, formData.item)}
+    <div className="p-4 ">
+      <h2 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2">
+        <span className="text-green-600 text-2xl">📁</span> Item Manager
+      </h2>
 
+      <div className="flex flex-col sm:flex-row sm:items-end gap-4 pb-6">
+        {/* Module Dropdown */}
+        <div className="w-full sm:w-1/4">
+          <label htmlFor="module" className="block mb-2 text-sm font-semibold text-gray-700">
+            Select Module
+          </label>
+          <select
+            id="module"
+            value={selectedModule}
+            onChange={(e) => setSelectedModule(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">-- Select Module --</option>
+            {modules.map(mod => (
+              <option key={mod.id} value={mod.name}>{mod.name}</option>
+            ))}
+          </select>
         </div>
-        <button
-          type="submit"
-          className="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Add Entry
-        </button>
-      </form>
 
-      <div className="bg-white shadow rounded p-4">
-        <h3 className="text-xl font-medium mb-4">Entries</h3>
-        {rows.length > 0 ? (
-          <table className="w-full border border-gray-200">
+        {/* App Dropdown */}
+        <div className="w-full sm:w-1/4">
+          <label htmlFor="app" className="block mb-2 text-sm font-semibold text-gray-700">
+            Select App
+          </label>
+          <select
+            id="app"
+            value={selectedApp}
+            onChange={(e) => setSelectedApp(e.target.value)}
+            disabled={!selectedModule}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
+          >
+            <option value="">-- Select App --</option>
+            {filteredApps.map(app => (
+              <option key={app.id} value={app.name}>{app.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Menu Dropdown */}
+        <div className="w-full sm:w-1/4">
+          <label htmlFor="menu" className="block mb-2 text-sm font-semibold text-gray-700">
+            Select Menu
+          </label>
+          <select
+            id="menu"
+            value={selectedMenu}
+            onChange={(e) => setSelectedMenu(e.target.value)}
+            disabled={!selectedApp}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
+          >
+            <option value="">-- Select Menu --</option>
+            {filteredMenus.map(menu => (
+              <option key={menu.id} value={menu.name}>{menu.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Item Input */}
+        <div className="w-full sm:w-1/4">
+          <label htmlFor="itemName" className="block mb-2 text-sm font-semibold text-gray-700">
+            Item Name
+          </label>
+          <input
+            id="itemName"
+            type="text"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            placeholder="Enter item name"
+            disabled={!selectedMenu}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
+          />
+        </div>
+
+        {/* Add Button */}
+        <div className="w-full sm:w-[8%]">
+          <button
+            onClick={handleAddItem}
+            disabled={!itemName.trim() || !selectedMenu}
+            className={`w-full py-2.5 text-white font-semibold rounded-md shadow transition-colors ${
+              !itemName.trim() || !selectedMenu
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            + Add
+          </button>
+        </div>
+      </div>
+
+      {/* Items List */}
+      <div className="bg-white p-6 rounded shadow">
+        <h3 className="text-xl font-semibold mb-4">Items List</h3>
+
+        {filteredItems.length === 0 ? (
+          <p>No items available for selected module/app/menu.</p>
+        ) : (
+          <table className="w-full border border-gray-300">
             <thead>
-              <tr className="bg-gray-100 text-left">
-                <th className="p-2">Module</th>
-                <th className="p-2">App</th>
-                <th className="p-2">Menu</th>
-                <th className="p-2">Item</th>
-
-                <th className="p-2">Action</th>
+              <tr className="bg-gray-100">
+                <th className="p-2 border-b border-gray-300 text-left">Module</th>
+                <th className="p-2 border-b border-gray-300 text-left">App</th>
+                <th className="p-2 border-b border-gray-300 text-left">Menu</th>
+                <th className="p-2 border-b border-gray-300 text-left">Item</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr key={row.id} className="border-t">
-                  <td className="p-2">{row.module}</td>
-                  <td className="p-2">{row.app}</td>
-                  <td className="p-2">{row.menu}</td>
-                  <td className="p-2">{row.item}</td>
-
-                  <td className="p-2">
-                    <button
-                      onClick={() => handleDelete(row.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      Delete
-                    </button>
-                  </td>
+              {filteredItems.map(item => (
+                <tr key={item.id} className="border-t border-gray-300">
+                  <td className="p-2">{item.Module?.name || "—"}</td>
+                  <td className="p-2">{item.App?.name || "—"}</td>
+                  <td className="p-2">{item.Menu?.name || "—"}</td>
+                  <td className="p-2">{item.name}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        ) : (
-          <p>No entries added yet.</p>
         )}
       </div>
 
-      {showPopup && popupType && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Add New {popupType}</h3>
-            <input
-              type="text"
-              className="w-full border px-3 py-2 rounded mb-4"
-              value={popupInput}
-              onChange={(e) => setPopupInput(e.target.value)}
-              placeholder={`Enter new ${popupType}`}
-            />
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowPopup(false)} className="text-gray-600 px-4 py-2">
-                Cancel
-              </button>
-              <button
-                onClick={handleAddFromPopup}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showPopup && !popupType && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-md">
-            <h3 className="text-lg font-medium mb-4">Confirm Add Entry</h3>
-            <p className="mb-4">Are you sure you want to add this entry?</p>
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowPopup(false)} className="text-gray-600 px-4 py-2">
-                Cancel
-              </button>
-              <button
-                onClick={confirmAddRow}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ToastContainer />
     </div>
   );
 };
-
-
 
 export default ItemManager;
