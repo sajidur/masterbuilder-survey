@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAllModules, getAllApps, addMenu, getAllMenus } from "../../apiRequest/api";
+import {
+  getAllModules,
+  getAllApps,
+  addMenu,
+  getAllMenus,
+} from "../../apiRequest/api";
 
 interface Module {
   id: number;
@@ -34,16 +39,15 @@ const MenuManager: React.FC = () => {
     const fetchData = async () => {
       try {
         const [modulesData, appsData, menusData] = await Promise.all([
-        getAllModules(),
-        getAllApps(),
-        getAllMenus(),
-      ]);
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+        ]);
 
-      setModules(modulesData);
-      setApps(appsData);
-      setMenus(menusData);
-      console.log(menus);
-      
+        setModules(modulesData);
+        setApps(appsData);
+        setMenus(menusData);
+        console.log(menus);
       } catch (error) {
         console.error("Failed to fetch data:", error);
         toast.error("Failed to load data.");
@@ -51,7 +55,7 @@ const MenuManager: React.FC = () => {
     };
 
     fetchData();
-     setSelectedApp("");
+    setSelectedApp("");
   }, [selectedModule]);
 
   const handleAddMenu = async () => {
@@ -106,7 +110,10 @@ const MenuManager: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-end gap-4 pb-6">
         {/* Module Dropdown */}
         <div className="w-full sm:w-1/3">
-          <label htmlFor="module" className="block mb-2 text-sm font-semibold text-gray-700">
+          <label
+            htmlFor="module"
+            className="block mb-2 text-sm font-semibold text-gray-700"
+          >
             Select Module
           </label>
           <select
@@ -125,31 +132,36 @@ const MenuManager: React.FC = () => {
         </div>
 
         {/* App Dropdown */}
-<div className="w-full sm:w-1/3">
-  <label htmlFor="app" className="block mb-2 text-sm font-semibold text-gray-700">
-    Select App
-  </label>
-  <select
-    id="app"
-    value={selectedApp}
-    onChange={(e) => setSelectedApp(e.target.value)}
-    className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  >
-    <option value="">-- Select App --</option>
-    {apps
-      .filter((app) => app.Module?.name === selectedModule)
-      .map((app) => (
-        <option key={app.id} value={app.name}>
-          {app.name}
-        </option>
-      ))}
-  </select>
-</div>
-
+        <div className="w-full sm:w-1/3">
+          <label
+            htmlFor="app"
+            className="block mb-2 text-sm font-semibold text-gray-700"
+          >
+            Select App
+          </label>
+          <select
+            id="app"
+            value={selectedApp}
+            onChange={(e) => setSelectedApp(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">-- Select App --</option>
+            {apps
+              .filter((app) => app.Module?.name === selectedModule)
+              .map((app) => (
+                <option key={app.id} value={app.name}>
+                  {app.name}
+                </option>
+              ))}
+          </select>
+        </div>
 
         {/* Menu Input */}
         <div className="w-full sm:w-1/4">
-          <label htmlFor="menuName" className="block mb-2 text-sm font-semibold text-gray-700">
+          <label
+            htmlFor="menuName"
+            className="block mb-2 text-sm font-semibold text-gray-700"
+          >
             Menu Name
           </label>
           <input
@@ -183,7 +195,9 @@ const MenuManager: React.FC = () => {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 border-b border-gray-300 text-left">Module</th>
+                <th className="p-2 border-b border-gray-300 text-left">
+                  Module
+                </th>
                 <th className="p-2 border-b border-gray-300 text-left">App</th>
                 <th className="p-2 border-b border-gray-300 text-left">Menu</th>
               </tr>
@@ -195,7 +209,6 @@ const MenuManager: React.FC = () => {
                   <td className="p-2">{menu.App?.name || "—"}</td>
                   <td className="p-2">{menu.title}</td>
                 </tr>
-
               ))}
             </tbody>
           </table>
