@@ -12,6 +12,7 @@ import {
   uploadDocument,
   getUploadedDocuments,
 } from "../../apiRequest/api";
+import { useNavigate } from "react-router-dom";
 
 const demoUploadedDocuments = [
   {
@@ -54,6 +55,7 @@ const demoUploadedDocuments = [
 
 
 const DocumentUploader: React.FC = () => {
+  const navigate = useNavigate();
   const [modules, setModules] = useState<any[]>([]);
   const [apps, setApps] = useState<any[]>([]);
   const [menus, setMenus] = useState<any[]>([]);
@@ -111,7 +113,7 @@ const DocumentUploader: React.FC = () => {
 
   const fetchUploadedDocuments = async () => {
     try {
-      const response = await getUploadedDocuments(); // you must define this in `apiRequest/api`
+      const response = await getUploadedDocuments(); 
       setUploadedDocuments(response);
     } catch (error) {
       toast.error("Failed to load uploaded documents.");
@@ -345,14 +347,13 @@ const DocumentUploader: React.FC = () => {
                     <td className="px-4 py-2 border">{doc.fileType}</td>
                     <td className="px-4 py-2 border">{doc.details}</td>
                     <td className="px-4 py-2 border">
-                      <a
-                        href={doc.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 underline"
+                      <button
+                        onClick={() => navigate("/admin/document-details", { state: { document: doc } })}
+                        className="text-blue-600 hover:underline"
                       >
                         View
-                      </a>
+                      </button>
+
                     </td>
                   </tr>
                 ))}

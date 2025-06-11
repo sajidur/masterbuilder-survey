@@ -24,7 +24,8 @@ const navItems = [
   { label: 'Sub-Item Manager', path: '/admin/sub-item-manager', icon: <ListChecks size={18} /> },
   { label: 'Sub-Sub-Item Manager', path: '/admin/sub-sub-item-manager', icon: <ListPlus  size={18} /> },
   { label: 'Field Manager', path: '/admin/field-manager', icon: <ListTree size={18} /> },
-    { label: 'Question Manager', path: '/admin/question-manager', icon: <MessageSquare size={18} /> }, 
+  { label: 'Document Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> }, 
+  { label: 'Question Manager', path: '/admin/question-manager', icon: <MessageSquare size={18} /> }, 
 
 ];
 
