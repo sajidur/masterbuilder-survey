@@ -52,7 +52,6 @@ export class CreateDesignDefinitionDto {
 
   @ApiProperty({
     description: 'Design content in JSON format',
-    example: { nodes: [], edges: [] },
     type: Object,
   })
   @IsObject()

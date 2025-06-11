@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable prettier/prettier */
+ 
  
 /* eslint-disable prettier/prettier */
  
@@ -24,137 +26,151 @@ export class DesignDefinitionService {
  constructor(
     @InjectRepository(DesignDefinition)
     private readonly designDefRepo: Repository<DesignDefinition>,
-  //  @InjectRepository(Modules) private readonly modulesRepository: Repository<Modules>,
-  //   @InjectRepository(App) private readonly appRepository: Repository<App>,
-  //   @InjectRepository(Menu) private readonly menuRepository: Repository<Menu>,
-  //   @InjectRepository(Item) private readonly itemRepository: Repository<Item>,
-  //   @InjectRepository(SubItem) private readonly subItemRepository: Repository<SubItem>,
-  //   @InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
-  //   @InjectRepository(SubSubItem) private readonly subSubItemRepository: Repository<SubSubItem>,
+   @InjectRepository(Modules) private readonly modulesRepository: Repository<Modules>,
+    @InjectRepository(App) private readonly appRepository: Repository<App>,
+    @InjectRepository(Menu) private readonly menuRepository: Repository<Menu>,
+    @InjectRepository(Item) private readonly itemRepository: Repository<Item>,
+    @InjectRepository(SubItem) private readonly subItemRepository: Repository<SubItem>,
+    @InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
+    @InjectRepository(SubSubItem) private readonly subSubItemRepository: Repository<SubSubItem>,
   ) {} 
-//   async create(dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto> {
-//   const subSubItem = await this.subSubItemRepo.findOne({
-//     where: { id: dto.subSubItemId },
-//   });
+async findByContentTypeIdAndName(
+  contentTypeId: string,
+  contentTypeName: string,
+): Promise<{ source: string; data: any }> {
+  const sources: { repo: Repository<any>; name: string }[] = [
+    { repo: this.modulesRepository, name: 'Modules' },
+    { repo: this.appRepository, name: 'App' },
+    { repo: this.menuRepository, name: 'Menu' },
+    { repo: this.itemRepository, name: 'Item' },
+    { repo: this.subItemRepository, name: 'SubItem' },
+    { repo: this.fieldRepository, name: 'Field' },
+    { repo: this.subSubItemRepository, name: 'SubSubItem' },
+  ];
 
-//   if (!subSubItem) {
-//     throw new NotFoundException('SubSubItem not found');
-//   }
+  for (const source of sources) {
+    const match = await source.repo.findOne({
+      where: {
+        id: contentTypeId,
+        name: contentTypeName,
+      },
+    });
 
-//   const designDefinition = this.designDefRepo.create({
-//     type: dto.type,
-//     title: dto.title,
-//     content: dto.content,
-//     imageUrl: dto.imageUrl,
-//     notes: dto.notes,
-//     subSubItem, // Establish relation directly
-//   });
+    if (match) {
+      return { source: source.name, data: match };
+    }
+  }
 
-//   const saved = await this.designDefRepo.save(designDefinition);
-
-//   return {
-//     id: saved.id,
-//     type: saved.type,
-//     title: saved.title,
-//     content: saved.content,
-//     imageUrl: saved.imageUrl,
-//     notes: saved.notes,
-//     subSubItem: subSubItem,
-//   };
-// }
-
-//  async findAll(): Promise<DesignDefinitionResponseDto[]> {
-//   const data = await this.designDefRepo.find();
-
-//   return Promise.all(
-//     data.map(async (designDef) => {
-//       const subSubItem = await this.subSubItemRepo.findOne({
-//         where: { id: designDef.subSubItemId },
-//       });
-
-//       return {
-//         id: designDef.id,
-//         title: designDef.title,
-//         type: designDef.type,
-//         content: designDef.content,
-//         imageUrl: designDef.imageUrl,
-//         notes: designDef.notes,
-//         subSubItem:subSubItem, // full object manually loaded
-//       };
-//     }),
-//   );
-// }
+  throw new NotFoundException(
+    `No entity found with id = ${contentTypeId} and name = ${contentTypeName}`,
+  );
+}
 
 
-//   async findOne(id: string): Promise<DesignDefinitionResponseDto> {
-//     const designDef = await this.designDefRepo.findOne({
-//       where: { id },
-//       relations: ['subSubItem'],
-//     });
-//     if (!designDef) {
-//       throw new NotFoundException(`DesignDefinition with ID ${id} not found`);
-//     }
-//     const subSubItem = await this.subSubItemRepo.findOne({
-//       where: { id: designDef.subSubItemId },
-//     });
+async create(dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto> {
+  // Validate the content type before creating the design
+  await this.findByContentTypeIdAndName(dto.contentTypeId, dto.contentTypeName);
 
-//     if (!subSubItem) {
-//       throw new NotFoundException('SubSubItem not found');
-//     }
-//   return {
-//       id: designDef.id,
-//       title: designDef.title,
-//       type: designDef.type,
-//       content: designDef.content,
-//       imageUrl: designDef.imageUrl,
-//       notes: designDef.notes,
-    
-//     };
-//   }
+  const designDefinition = this.designDefRepo.create({
+    type: dto.type,
+    title: dto.title,
+    content: dto.content,
+    imageUrl: dto.imageUrl,
+    notes: dto.notes,
+    contentTypeId: dto.contentTypeId,
+    contentTypeName: dto.contentTypeName,
+    fileType: dto.fileType,
+  });
 
-//   async update(
-//     id: string,
-//     dto: Partial<CreateDesignDefinitionDto>,
-//   ): Promise<DesignDefinitionResponseDto> {
-//     const designDef = await this.designDefRepo.findOne({
-//       where: { id }
-//     });
+  const saved = await this.designDefRepo.save(designDefinition);
 
-//     if (!designDef) {
-//       throw new NotFoundException('DesignDefinition not found');
-//     }
-//    const subSubItem = await this.subSubItemRepo.findOne({
-//       where: { id: designDef.subSubItemId },
-//     });
+  return {
+    id: saved.id,
+    type: saved.type,
+    title: saved.title,
+    content: saved.content,
+    imageUrl: saved.imageUrl,
+    notes: saved.notes,
+    contentTypeId: saved.contentTypeId,
+    contentTypeName: saved.contentTypeName,
+    fileType: saved.fileType,
+  };
+}
 
-//     if (!subSubItem) {
-//       throw new NotFoundException('SubSubItem not found');
-//     }
-//     designDef.subSubItemId = subSubItem.id;
-    
+async findAll(): Promise<DesignDefinitionResponseDto[]> {
+  const data = await this.designDefRepo.find();
 
-//     Object.assign(designDef, dto);
-//     const updated = await this.designDefRepo.save(designDef);
+  return data.map((designDef) => ({
+    id: designDef.id,
+    title: designDef.title,
+    type: designDef.type,
+    content: designDef.content,
+    imageUrl: designDef.imageUrl,
+    notes: designDef.notes,
+    contentTypeId: designDef.contentTypeId,
+    contentTypeName: designDef.contentTypeName,
+    fileType: designDef.fileType,
+  }));
+}
 
-//     return {
-//       id: updated.id,
-//       title: updated.title,
-//       type: updated.type,
-//       content: updated.content,
-//       imageUrl: updated.imageUrl,
-//       notes: updated.notes,
-//       subSubItem: subSubItem
-//     };
-//   }
+async findOne(id: string): Promise<DesignDefinitionResponseDto> {
+  const designDef = await this.designDefRepo.findOne({
+    where: { id },
+    relations: ['subSubItem'],
+  });
 
-//   async remove(id: string): Promise<void> {
-//     const designDef = await this.designDefRepo.findOne({
-//       where: { id }
-//     });
-//     if(designDef){
-//     await this.designDefRepo.remove(designDef);
-//     }
-//   }
+  if (!designDef) {
+    throw new NotFoundException(`DesignDefinition with ID ${id} not found`);
+  }
+
+  return {
+    id: designDef.id,
+    title: designDef.title,
+    type: designDef.type,
+    content: designDef.content,
+    imageUrl: designDef.imageUrl,
+    notes: designDef.notes,
+    contentTypeId: designDef.contentTypeId,
+    contentTypeName: designDef.contentTypeName,
+    fileType: designDef.fileType,
+  };
+}
+
+async update(
+  id: string,
+  dto: Partial<CreateDesignDefinitionDto>,
+): Promise<DesignDefinitionResponseDto> {
+  const designDef = await this.designDefRepo.findOne({ where: { id } });
+
+  if (!designDef) {
+    throw new NotFoundException('DesignDefinition not found');
+  }
+
+  Object.assign(designDef, dto);
+  const updated = await this.designDefRepo.save(designDef);
+
+  return {
+    id: updated.id,
+    title: updated.title,
+    type: updated.type,
+    content: updated.content,
+    imageUrl: updated.imageUrl,
+    notes: updated.notes,
+    contentTypeId: updated.contentTypeId,
+    contentTypeName: updated.contentTypeName,
+    fileType: updated.fileType,
+  };
+}
+
+
+  async remove(id: string): Promise<void> {
+    const designDef = await this.designDefRepo.findOne({
+      where: { id }
+    });
+    if(designDef){
+    await this.designDefRepo.remove(designDef);
+    }
+  }
 
 
 }
