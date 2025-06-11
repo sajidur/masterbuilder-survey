@@ -32,8 +32,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
 ], CreateAppDto.prototype, "moduleId", void 0);
 class UpdateAppDto {
     name;
@@ -49,7 +49,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
 ], UpdateAppDto.prototype, "moduleId", void 0);
 //# sourceMappingURL=App.dto.js.map

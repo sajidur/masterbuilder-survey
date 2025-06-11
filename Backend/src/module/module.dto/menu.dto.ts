@@ -10,7 +10,7 @@ import { AppDto } from './App.dto';
 
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber } from 'class-validator';
+import { IsString} from 'class-validator';
 
 
 
@@ -20,15 +20,15 @@ export class CreateMenuDto {
   title: string;
 
   @ApiProperty({ description: 'App ID' })
-  @IsNumber()
-  appId: number;
+  @IsString()
+  appId: string;
 
   
 
 }
 
 export class MenuDto {
-  id: number;
+  id: string;
   title: string;
   app: AppDto|null;
  

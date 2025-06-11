@@ -5,6 +5,6 @@ export declare class UpdateModuleDto {
     name?: string;
 }
 export declare class ModuleDto {
-    id: number;
+    id: string;
     name: string;
 }

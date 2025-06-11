@@ -22,8 +22,8 @@ let Menu = class Menu {
 };
 exports.Menu = Menu;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], Menu.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -31,7 +31,7 @@ __decorate([
 ], Menu.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Menu.prototype, "appId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => app_entity_1.App, (app) => app.menus),

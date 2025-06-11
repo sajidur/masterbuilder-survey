@@ -7,8 +7,8 @@ import { QuestionGroup } from './questionGroup.entity';
 
 @Entity('survey-configs')
 export class Survey {
-  @PrimaryGeneratedColumn()
-  id: number;
+ @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;

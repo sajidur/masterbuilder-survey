@@ -3,14 +3,13 @@ import { Module } from '@nestjs/common';
 import { DesignDefinitionController } from './design-definition.controller';
 import { DesignDefinitionService } from './design-definition.service';
 import { DesignDefinition } from './design-defination.entity/design-definition.entity';
-import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
+//import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 
 @Module({
    imports: [
       TypeOrmModule.forFeature([
-       DesignDefinition,
-       SubSubItem    
+       DesignDefinition  
       ]),
     ],
   controllers: [DesignDefinitionController],

@@ -13,7 +13,9 @@ exports.DesignDefinitionResponseDto = exports.CreateDesignDefinitionDto = void 0
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class CreateDesignDefinitionDto {
-    subSubItemId;
+    contentTypeId;
+    contentTypeName;
+    fileType;
     type;
     title;
     content;
@@ -23,13 +25,31 @@ class CreateDesignDefinitionDto {
 exports.CreateDesignDefinitionDto = CreateDesignDefinitionDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID of the related SubSubItem',
-        example: 42,
+        description: 'Content type ID as a string UUID',
+        example: 'df82427e-4b99-4d6e-b839-8e5e99c2a9c2',
     }),
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreateDesignDefinitionDto.prototype, "subSubItemId", void 0);
+    __metadata("design:type", String)
+], CreateDesignDefinitionDto.prototype, "contentTypeId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Content type name',
+        example: 'Flowchart',
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateDesignDefinitionDto.prototype, "contentTypeName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'File type or format (e.g., svg, png, json)',
+        example: 'json',
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateDesignDefinitionDto.prototype, "fileType", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Type of the design definition',
@@ -42,7 +62,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Title of the design',
-        example: 'User Authentication Flow',
+        example: 'Login Flow Design',
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -52,6 +72,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Design content in JSON format',
         example: { nodes: [], edges: [] },
+        type: Object,
     }),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -60,16 +81,16 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'Public URL of the uploaded image or photo',
-        example: 'https://cdn.example.com/images/design123.png',
+        example: 'https://cdn.example.com/uploads/design1.png',
     }),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateDesignDefinitionDto.prototype, "imageUrl", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'Additional notes or comments for the design',
-        example: 'Initial draft version for review',
+        example: 'Needs review from the frontend team',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -77,7 +98,9 @@ __decorate([
 ], CreateDesignDefinitionDto.prototype, "notes", void 0);
 class DesignDefinitionResponseDto {
     id;
-    subSubItem;
+    contentTypeId;
+    contentTypeName;
+    fileType;
     type;
     title;
     content;
@@ -85,4 +108,79 @@ class DesignDefinitionResponseDto {
     notes;
 }
 exports.DesignDefinitionResponseDto = DesignDefinitionResponseDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'UUID of the design definition',
+        example: 'a1b2c3d4-5678-90ab-cdef-1234567890ab',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Content type ID associated with the design',
+        example: 'df82427e-4b99-4d6e-b839-8e5e99c2a9c2',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "contentTypeId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Content type name associated with the design',
+        example: 'Flowchart',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "contentTypeName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'File type or format of the design',
+        example: 'json',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "fileType", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Type of the design definition',
+        enum: ['CLASS', 'ACTION', 'ACTIVITY_DIAGRAM', 'CLASS_DIAGRAM'],
+        example: 'CLASS',
+    }),
+    (0, class_validator_1.IsEnum)(['CLASS', 'ACTION', 'ACTIVITY_DIAGRAM', 'CLASS_DIAGRAM']),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "type", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Title of the design',
+        example: 'Login Flow Design',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "title", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Design content in JSON format',
+        example: { nodes: [], edges: [] },
+        type: Object,
+    }),
+    __metadata("design:type", Object)
+], DesignDefinitionResponseDto.prototype, "content", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Public URL of the uploaded image or photo',
+        example: 'https://cdn.example.com/uploads/design1.png',
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "imageUrl", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Additional notes or comments for the design',
+        example: 'Needs review from the frontend team',
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DesignDefinitionResponseDto.prototype, "notes", void 0);
 //# sourceMappingURL=design.dto.js.map

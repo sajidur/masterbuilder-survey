@@ -1,9 +1,9 @@
 import { Menu } from './menu.entity';
 import { SubItem } from './subitem.entity';
 export declare class Item {
-    id: number;
+    id: string;
     name: string;
-    menuId: number;
+    menuId: string;
     menu: Menu;
     subItems: SubItem[];
 }

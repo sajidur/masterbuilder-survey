@@ -15,23 +15,23 @@ const subitem_entity_1 = require("./subitem.entity");
 const field_entity_1 = require("./field.entity");
 let SubSubItem = class SubSubItem {
     id;
-    label;
+    name;
     subItemId;
     subItem;
     fields;
 };
 exports.SubSubItem = SubSubItem;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], SubSubItem.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], SubSubItem.prototype, "label", void 0);
+], SubSubItem.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], SubSubItem.prototype, "subItemId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => subitem_entity_1.SubItem, (subItem) => subItem.subSubItems, { nullable: true }),

@@ -7,7 +7,7 @@ import { Answer } from '../survey-config.entity/answer.entity';
 export class CreateSubSubItemAnswerDto {
   @ApiProperty({ description: 'ID of the SubSubItem', example: 1 })
   @IsInt()
-  subSubItemId: number;
+  subSubItemId: string;
 
   @ApiProperty({ description: 'ID of the Answer', example: 'a1b2c3d4-5678-9101-1121-314151617181' })
   @IsUUID()
@@ -21,7 +21,7 @@ export class CreateSubSubItemAnswerDto {
 }
 export class SubSubItemAnswerResponseDto {
   
-  id: number;
+  id: string;
   subSubItem: SubSubItem;
   answer: Answer;
   createdAt: Date;

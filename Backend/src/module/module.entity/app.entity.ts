@@ -16,8 +16,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class App {
-  @PrimaryGeneratedColumn()
-  id: number;
+   @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
  @ApiProperty({ description: 'Name of the app' })
@@ -25,7 +25,7 @@ export class App {
 
  @Column()
  @ApiProperty({ description: 'Module ID' })
-  moduleId: number;
+  moduleId: string;
   @ManyToOne(() => Modules, (module) => module.apps)
   module: Modules;
 

@@ -52,7 +52,7 @@ async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
 
   return {
     id: subSubItem.id,
-    label: subSubItem.label,
+    name: subSubItem.name,
     subItemId: subSubItem?.subItemId,
     subItem: await this.toSubItemDto(subItem),
   };
@@ -65,7 +65,7 @@ async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
   return Promise.all(items.map(item => this.toSubSubItemDto(item)));
 }
 
-async findOneSubSubItem(id: number): Promise<SubSubItemDto> {
+async findOneSubSubItem(id: string): Promise<SubSubItemDto> {
   const item = await this.subSubItemRepository.findOne({
     where: { id }
   });
@@ -77,24 +77,24 @@ async findOneSubSubItem(id: number): Promise<SubSubItemDto> {
 
 async createSubSubItem(data: CreateSubSubItemDto): Promise<SubSubItemDto> {
   var subSubItem=new SubSubItem();
-  subSubItem.label=data.label;
+  subSubItem.name=data.name;
   subSubItem.subItemId=data.subItemId;
   const saved = await this.subSubItemRepository.save(subSubItem);
   return this.toSubSubItemDto(saved);
 }
 
-async updateSubSubItem(id: number, data: CreateSubSubItemDto): Promise<SubSubItemDto> {
+async updateSubSubItem(id: string, data: CreateSubSubItemDto): Promise<SubSubItemDto> {
     const existing = await this.subSubItemRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`SubSubItem with ID ${id} not found`);
   }
- existing.label=data.label;
+ existing.name=data.name;
  existing.subItemId=data.subItemId;
  var updatedData=await this.subSubItemRepository.save(existing);
   return this.toSubSubItemDto(updatedData);
 }
 
-  async deleteSubSubItem(id: number): Promise<void> {
+  async deleteSubSubItem(id: string): Promise<void> {
     const result = await this.subSubItemRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`SubSubItem with ID ${id} not found`);
@@ -120,7 +120,7 @@ async updateSubSubItem(id: number, data: CreateSubSubItemDto): Promise<SubSubIte
   return Promise.all(fields.map((field) => this.toFieldDto(field)));
 }
 
-async findOneField(id: number): Promise<FieldDto | null> {
+async findOneField(id: string): Promise<FieldDto | null> {
   const field = await this.fieldRepository.findOne({
     where: { id }
   });
@@ -136,7 +136,7 @@ async createField(field: CreateFieldDto): Promise<FieldDto> {
   return await this.toFieldDto(data);
 }
 
-async updateField(id: number, updated: CreateFieldDto): Promise<FieldDto> {
+async updateField(id: string, updated: CreateFieldDto): Promise<FieldDto> {
   const existing = await this.fieldRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`Field with ID ${id} not found`);
@@ -149,7 +149,7 @@ async updateField(id: number, updated: CreateFieldDto): Promise<FieldDto> {
 }
 
 
-  async deleteField(id: number): Promise<void> {
+  async deleteField(id: string): Promise<void> {
     const result = await this.fieldRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Field with ID ${id} not found`);
@@ -160,23 +160,23 @@ async updateField(id: number, updated: CreateFieldDto): Promise<FieldDto> {
   return this.subItemRepository.find();
 }
 
-async findOneSubItem(id: number): Promise<SubItem | null> {
+async findOneSubItem(id: string): Promise<SubItem | null> {
   return this.subItemRepository.findOne({ where: { id } });
 }
 
 async createSubItem(subItem: CreateSubItemDto): Promise<SubItem> {
 var newSubItem=new SubItem();
-newSubItem.label=subItem.label;
+newSubItem.name=subItem.name;
 newSubItem.itemId=subItem.itemId;
   return this.subItemRepository.save(newSubItem);
 }
 
-async updateSubItem(id: number, updated: CreateSubItemDto): Promise<SubItem> {
+async updateSubItem(id: string, updated: CreateSubItemDto): Promise<SubItem> {
   const existing = await this.subItemRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`SubItem with ID ${id} not found`);
   }
-  existing.label=updated.label;
+  existing.name=updated.name;
   existing.itemId=updated.itemId;
   return this.subItemRepository.save(existing);
 }
@@ -204,7 +204,7 @@ async toSubItemDto(subItem: SubItem): Promise<SubItemDto> {
 
   return {
     id: subItem.id,
-    label: subItem.label,
+    name: subItem.name,
     itemId: itemId, // Now guaranteed to be number
     item: itemDto,
   };
@@ -214,7 +214,7 @@ async toSubItemDto(subItem: SubItem): Promise<SubItemDto> {
 
 
 
-  async deleteSubItem(id: number): Promise<void> {
+  async deleteSubItem(id: string): Promise<void> {
     const result = await this.subItemRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`SubItem with ID ${id} not found`);
@@ -245,7 +245,7 @@ async findAllItems(): Promise<ItemDto[]> {
   return Promise.all(items.map(item => this.toItemDto(item)));
 }
 
-async findOneItem(id: number): Promise<ItemDto | null> {
+async findOneItem(id: string): Promise<ItemDto | null> {
   const item = await this.itemRepository.findOne({ where: { id } });
   return item ? await this.toItemDto(item) : null;
 }
@@ -258,7 +258,7 @@ newItem.menuId=item.menuId;
   return this.toItemDto(created);
 }
 
-async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
+async updateItem(id: string, updatedItem: CreateItemDto): Promise<ItemDto> {
   const existing = await this.itemRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`Item with ID ${id} not found`);
@@ -270,7 +270,7 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
 }
 
 
-  async deleteItem(id: number): Promise<void> {
+  async deleteItem(id: string): Promise<void> {
     const result = await this.itemRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Item with ID ${id} not found`);
@@ -281,14 +281,14 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
     return this.modulesRepository.find();
   }
 
-  async findOne(id: number): Promise<Modules> {
+  async findOne(id: string): Promise<Modules> {
     const user = await this.modulesRepository.findOneBy({ id });
     if (!user) {
       throw new Error(`User with id ${id} not found`);
     }
     return user;
   }
- async update(id: number, moduleDto: Partial<Modules>): Promise<Modules> {
+ async update(id: string, moduleDto: Partial<Modules>): Promise<Modules> {
   const existing = await this.modulesRepository.findOneBy({ id });
   if (!existing) {
     throw new NotFoundException(`Module with ID ${id} not found`);
@@ -301,7 +301,7 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
     return this.modulesRepository.save(user);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.modulesRepository.delete(id);
   }
    // ---------- APP METHODS ----------
@@ -327,7 +327,7 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
     return await Promise.all(dtoPromises); // Wait for all async mapping
   }
 
-  async findOneApp(id: number): Promise<AppDto | null> {
+  async findOneApp(id: string): Promise<AppDto | null> {
   const app = await this.appRepository.findOne({ where: { id } });
   return app ? await this.toDto(app) : null;
 }
@@ -351,7 +351,7 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
     return this.toDto(created);
   }
 
-  async updateApp(id: number, app: UpdateAppDto): Promise<AppDto> {
+  async updateApp(id: string, app: UpdateAppDto): Promise<AppDto> {
   const existing = await this.appRepository.preload({ id, ...app });
 
   if (!existing) {
@@ -362,7 +362,7 @@ async updateItem(id: number, updatedItem: CreateItemDto): Promise<ItemDto> {
   return this.toDto(updated);
 }
 
-  async deleteApp(id: number): Promise<void> {
+  async deleteApp(id: string): Promise<void> {
     await this.appRepository.delete(id);
   }
 
@@ -410,7 +410,7 @@ async findAllMenus(): Promise<MenuDto[]> {
 }
 
 
-async findOneMenu(id: number): Promise<MenuDto | null> {
+async findOneMenu(id: string): Promise<MenuDto | null> {
   const menu = await this.menuRepository.findOne({
     where: { id },
   });
@@ -429,7 +429,7 @@ async createMenu(menuDto: CreateMenuDto): Promise<MenuDto> {
   return await this.toMenuDto(saved);
 }
 
-async updateMenu(id: number, updateDto: CreateMenuDto): Promise<MenuDto> {
+async updateMenu(id: string, updateDto: CreateMenuDto): Promise<MenuDto> {
   // Find existing menu by id
   const existing = await this.menuRepository.findOne({
     where: { id },
@@ -450,7 +450,7 @@ async updateMenu(id: number, updateDto: CreateMenuDto): Promise<MenuDto> {
 }
 
 
-  async deleteMenu(id: number): Promise<void> {
+  async deleteMenu(id: string): Promise<void> {
     const result = await this.menuRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Menu with ID ${id} not found`);

@@ -11,7 +11,6 @@ const common_1 = require("@nestjs/common");
 const design_definition_controller_1 = require("./design-definition.controller");
 const design_definition_service_1 = require("./design-definition.service");
 const design_definition_entity_1 = require("./design-defination.entity/design-definition.entity");
-const subsubitem_entity_1 = require("../module/module.entity/subsubitem.entity");
 const typeorm_module_1 = require("@nestjs/typeorm/dist/typeorm.module");
 let DesignDefinitionModule = class DesignDefinitionModule {
 };
@@ -20,8 +19,7 @@ exports.DesignDefinitionModule = DesignDefinitionModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_module_1.TypeOrmModule.forFeature([
-                design_definition_entity_1.DesignDefinition,
-                subsubitem_entity_1.SubSubItem
+                design_definition_entity_1.DesignDefinition
             ]),
         ],
         controllers: [design_definition_controller_1.DesignDefinitionController],

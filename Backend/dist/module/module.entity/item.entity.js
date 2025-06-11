@@ -23,8 +23,8 @@ let Item = class Item {
 };
 exports.Item = Item;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], Item.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -34,7 +34,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'Menu ID' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Item.prototype, "menuId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => menu_entity_1.Menu, (menu) => menu.items),

@@ -6,15 +6,15 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Item {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
  @ApiProperty({ description: 'Name of the item' })
   name: string;
   @Column()
   @ApiProperty({ description: 'Menu ID' })
-  menuId: number;
+  menuId: string;
   @ManyToOne(() => Menu, (menu) => menu.items)
   menu: Menu;
 

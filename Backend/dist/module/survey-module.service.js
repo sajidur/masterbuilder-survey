@@ -50,7 +50,7 @@ let SurveyModuleService = class SurveyModuleService {
         }
         return {
             id: subSubItem.id,
-            label: subSubItem.label,
+            name: subSubItem.name,
             subItemId: subSubItem?.subItemId,
             subItem: await this.toSubItemDto(subItem),
         };
@@ -70,7 +70,7 @@ let SurveyModuleService = class SurveyModuleService {
     }
     async createSubSubItem(data) {
         var subSubItem = new subsubitem_entity_1.SubSubItem();
-        subSubItem.label = data.label;
+        subSubItem.name = data.name;
         subSubItem.subItemId = data.subItemId;
         const saved = await this.subSubItemRepository.save(subSubItem);
         return this.toSubSubItemDto(saved);
@@ -80,7 +80,7 @@ let SurveyModuleService = class SurveyModuleService {
         if (!existing) {
             throw new common_1.NotFoundException(`SubSubItem with ID ${id} not found`);
         }
-        existing.label = data.label;
+        existing.name = data.name;
         existing.subItemId = data.subItemId;
         var updatedData = await this.subSubItemRepository.save(existing);
         return this.toSubSubItemDto(updatedData);
@@ -144,7 +144,7 @@ let SurveyModuleService = class SurveyModuleService {
     }
     async createSubItem(subItem) {
         var newSubItem = new subitem_entity_1.SubItem();
-        newSubItem.label = subItem.label;
+        newSubItem.name = subItem.name;
         newSubItem.itemId = subItem.itemId;
         return this.subItemRepository.save(newSubItem);
     }
@@ -153,7 +153,7 @@ let SurveyModuleService = class SurveyModuleService {
         if (!existing) {
             throw new common_1.NotFoundException(`SubItem with ID ${id} not found`);
         }
-        existing.label = updated.label;
+        existing.name = updated.name;
         existing.itemId = updated.itemId;
         return this.subItemRepository.save(existing);
     }
@@ -172,7 +172,7 @@ let SurveyModuleService = class SurveyModuleService {
         itemDto = await this.toItemDto(item);
         return {
             id: subItem.id,
-            label: subItem.label,
+            name: subItem.name,
             itemId: itemId,
             item: itemDto,
         };

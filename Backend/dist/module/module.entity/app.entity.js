@@ -23,8 +23,8 @@ let App = class App {
 };
 exports.App = App;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], App.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -34,7 +34,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], App.prototype, "moduleId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => modules_entity_1.Modules, (module) => module.apps),

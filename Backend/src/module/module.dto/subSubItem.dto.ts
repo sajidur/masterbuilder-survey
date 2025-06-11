@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 import { SubItemDto } from "./subiItem.dto";
 
 export class SubSubItemDto {
-  id: number;
-  label: string;
-  subItemId?: number;   
+  id: string;
+  name: string;
+  subItemId?: string;   
   subItem?: SubItemDto | null;
   
 }
@@ -14,10 +14,10 @@ export class CreateSubSubItemDto {
   @ApiProperty({ description: 'Label of the subsubitem' })
   @IsString()
   @IsNotEmpty()
-  label: string;
+  name: string;
 
   @ApiPropertyOptional({ description: 'SubItem ID' })
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  subItemId?: number;
+  subItemId?: string;
 }

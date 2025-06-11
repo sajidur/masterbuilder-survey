@@ -6,13 +6,13 @@ import { Item } from './item.entity';
 import { App } from './app.entity';
 @Entity()
 export class Menu {
-  @PrimaryGeneratedColumn()
-  id: number;
+   @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   title: string;
 
   @Column()
-  appId: number;
+  appId: string;
   @ManyToOne(() => App, (app) => app.menus)
   app: App;
   @OneToMany(() => Item, (item) => item.menu)

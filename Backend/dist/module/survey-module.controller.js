@@ -43,12 +43,12 @@ let SurveyModuleController = class SurveyModuleController {
     }
     async createSubItem(subItem) {
         const created = await this.moduleService.createSubItem(subItem);
-        console.log("subItem label " + created.label);
+        console.log("subItem label " + created.name);
         return this.moduleService.toSubItemDto(created);
     }
     async updateSubItem(id, subItem) {
         const updated = await this.moduleService.updateSubItem(id, subItem);
-        console.log("update subitem label " + updated.label);
+        console.log("update subitem label " + updated.name);
         return this.moduleService.toSubItemDto(updated);
     }
     deleteSubItem(id) {
@@ -58,7 +58,7 @@ let SurveyModuleController = class SurveyModuleController {
         return this.moduleService.findAll();
     }
     findOne(id) {
-        return this.moduleService.findOne(+id);
+        return this.moduleService.findOne(id);
     }
     create(moduleDto) {
         return this.moduleService.create(moduleDto);
@@ -67,7 +67,7 @@ let SurveyModuleController = class SurveyModuleController {
         return this.moduleService.update(id, moduleDto);
     }
     remove(id) {
-        return this.moduleService.remove(+id);
+        return this.moduleService.remove(id);
     }
     findAllApps() {
         return this.moduleService.findAllApps();
@@ -172,7 +172,7 @@ __decorate([
     (0, swagger_1.ApiParam)({ name: 'id', type: Number, description: 'SubItem ID' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneSubItem", null);
 __decorate([
@@ -191,7 +191,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, subiItem_dto_1.CreateSubItemDto]),
+    __metadata("design:paramtypes", [String, subiItem_dto_1.CreateSubItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateSubItem", null);
 __decorate([
@@ -199,7 +199,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'SubItem deleted' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteSubItem", null);
 __decorate([
@@ -231,7 +231,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, create_module_dto_1.UpdateModuleDto]),
+    __metadata("design:paramtypes", [String, create_module_dto_1.UpdateModuleDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "update", null);
 __decorate([
@@ -253,7 +253,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: App_dto_1.AppDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneApp", null);
 __decorate([
@@ -272,7 +272,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, App_dto_1.UpdateAppDto]),
+    __metadata("design:paramtypes", [String, App_dto_1.UpdateAppDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateApp", null);
 __decorate([
@@ -280,7 +280,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'App deleted' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteApp", null);
 __decorate([
@@ -295,7 +295,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: menu_dto_1.MenuDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneMenu", null);
 __decorate([
@@ -314,7 +314,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, menu_dto_1.CreateMenuDto]),
+    __metadata("design:paramtypes", [String, menu_dto_1.CreateMenuDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateMenu", null);
 __decorate([
@@ -322,7 +322,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Menu deleted' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteMenu", null);
 __decorate([
@@ -337,7 +337,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: item_dto_1.ItemDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneItem", null);
 __decorate([
@@ -356,7 +356,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, item_dto_1.CreateItemDto]),
+    __metadata("design:paramtypes", [String, item_dto_1.CreateItemDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateItem", null);
 __decorate([
@@ -364,7 +364,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Item deleted' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteItem", null);
 __decorate([
@@ -380,7 +380,7 @@ __decorate([
     (0, swagger_1.ApiParam)({ name: 'id', type: Number, description: 'Field ID' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneField", null);
 __decorate([
@@ -399,7 +399,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, field_dto_1.CreateFieldDto]),
+    __metadata("design:paramtypes", [String, field_dto_1.CreateFieldDto]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateField", null);
 __decorate([
@@ -407,7 +407,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Field deleted' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteField", null);
 __decorate([
@@ -422,7 +422,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: subSubItem_dto_1.SubSubItemDto }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "findOneSubSubItem", null);
 __decorate([
@@ -441,7 +441,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, subsubitem_entity_1.SubSubItem]),
+    __metadata("design:paramtypes", [String, subsubitem_entity_1.SubSubItem]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateSubSubItem", null);
 __decorate([
@@ -449,7 +449,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 204, description: 'Deleted successfully' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteSubSubItem", null);
 exports.SurveyModuleController = SurveyModuleController = __decorate([

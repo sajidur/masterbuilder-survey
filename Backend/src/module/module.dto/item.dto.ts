@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty} from 'class-validator';
 import { MenuDto } from './menu.dto';
 export class ItemDto {
  
-  id: number;
+  id: string;
   name: string;
   menu: MenuDto|null;
 
@@ -16,7 +16,7 @@ export class CreateItemDto {
   name: string;
 
   @ApiProperty({ description: 'Menu ID' })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  menuId: number;
+  menuId: string;
 }
