@@ -23,16 +23,13 @@ interface AppItem {
 interface MenuItem {
   id: number;
   name: string;
-  App: AppItem;
-  Module: Module;
+  app: AppItem;
 }
 
 interface Item {
   id: number;
   name: string;
-  Menu: MenuItem;
-  App: AppItem;
-  Module: Module;
+  menu: MenuItem;
 }
 
 const ItemManager: React.FC = () => {
@@ -83,14 +80,14 @@ const ItemManager: React.FC = () => {
   // Filtered lists based on selections
   const filteredApps = apps.filter(app => app.Module?.name === selectedModule);
   const filteredMenus = menus.filter(menu => 
-    menu.Module?.name === selectedModule && menu.App?.name === selectedApp
+    menu.app.Module?.name === selectedModule && menu.app?.name === selectedApp
   );
 
   // Filter items for display based on all three selections
   const filteredItems = items.filter(item =>
-    item.Module?.name === selectedModule &&
-    item.App?.name === selectedApp &&
-    item.Menu?.name === selectedMenu
+    item.menu.app.Module?.name === selectedModule &&
+    item.menu.app?.name === selectedApp &&
+    item.menu?.name === selectedMenu
   );
 
   const handleAddItem = async () => {
@@ -127,9 +124,7 @@ const ItemManager: React.FC = () => {
       const newItem: Item = {
         id: Date.now(), // temp id
         name: trimmedItemName,
-        Menu: selectedMenuObj,
-        App: selectedAppObj,
-        Module: selectedMod,
+        menu: selectedMenuObj,
       };
 
       setItems(prev => [...prev, newItem]);
@@ -254,9 +249,9 @@ const ItemManager: React.FC = () => {
             <tbody>
               {filteredItems.map(item => (
                 <tr key={item.id} className="border-t border-gray-300">
-                  <td className="p-2">{item.Module?.name || "—"}</td>
-                  <td className="p-2">{item.App?.name || "—"}</td>
-                  <td className="p-2">{item.Menu?.name || "—"}</td>
+                  <td className="p-2">{item.menu.app.Module?.name || "—"}</td>
+                  <td className="p-2">{item.menu.app?.name || "—"}</td>
+                  <td className="p-2">{item.menu?.name || "—"}</td>
                   <td className="p-2">{item.name}</td>
                 </tr>
               ))}
