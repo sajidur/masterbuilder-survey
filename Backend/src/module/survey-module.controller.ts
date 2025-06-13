@@ -33,26 +33,26 @@ export class SurveyModuleController {
    @Get('allSubitems')
 @ApiResponse({ status: 200, type: [SubItemDto] })
 async findAllSubItems(): Promise<SubItemDto[]> {
-  const subItems = await this.moduleService.findAllSubItems();
-  return Promise.all(subItems.map((s) => this.moduleService.toSubItemDto(s)));
+  return await this.moduleService.findAllSubItems();
+  //return Promise.all(subItems.map((s) => this.moduleService.toSubItemDto(s)));
 }
 
 @Get('getSubitem/:id')
 @ApiResponse({ status: 200, type: SubItemDto })
 @ApiParam({ name: 'id', type: String, description: 'SubItem ID' })
 async findOneSubItem(@Param('id') id: string): Promise<SubItemDto> {
-  const subItem = await this.moduleService.findOneSubItem(id);
-  if (!subItem) throw new NotFoundException(`SubItem with ID ${id} not found`);
-  return this.moduleService.toSubItemDto(subItem);
+  return  await this.moduleService.findOneSubItem(id);
+  // if (!subItem) throw new NotFoundException(`SubItem with ID ${id} not found`);
+  // return this.moduleService.toSubItemDto(subItem);
 }
 
 @Post('addSubitems')
 @ApiBody({ type: CreateSubItemDto })
 @ApiResponse({ status: 201, type: SubItemDto })
 async createSubItem(@Body() subItem: CreateSubItemDto): Promise<SubItemDto> {
-  const created = await this.moduleService.createSubItem(subItem);
-  console.log("subItem label "+created.name);
-  return this.moduleService.toSubItemDto(created);
+  return await this.moduleService.createSubItem(subItem);
+  // console.log("subItem label "+created.name);
+  // return this.moduleService.toSubItemDto(created);
 }
 
 @Put('updateSubitems/:id')
@@ -62,9 +62,9 @@ async updateSubItem(
   @Param('id') id: string,
   @Body() subItem: CreateSubItemDto,
 ): Promise<SubItemDto> {
-  const updated = await this.moduleService.updateSubItem(id, subItem);
-  console.log("update subitem label "+updated.name);
-  return this.moduleService.toSubItemDto(updated);
+  return  await this.moduleService.updateSubItem(id, subItem);
+  // console.log("update subitem label "+updated.name);
+  // return this.moduleService.toSubItemDto(updated);
 }
 
 
@@ -129,7 +129,7 @@ async findOneApp(@Param('id') id: string): Promise<AppDto> {
   @Post('addApps')
 @ApiBody({ type: CreateAppDto }) // Better to use CreateAppDto for input
 @ApiResponse({ status: 201, type: AppDto })
-createApp(@Body() app: CreateAppDto): Promise<AppDto> {
+createApp(@Body() app: CreateAppDto): Promise<AppDto|null> {
   return this.moduleService.createApp(app);
 }
 
@@ -137,7 +137,7 @@ createApp(@Body() app: CreateAppDto): Promise<AppDto> {
  
   @ApiBody({ type: App })
   @ApiResponse({ status: 200, type: AppDto })
-  updateApp(@Param('id') id: string, @Body() app: UpdateAppDto): Promise<AppDto> {
+  updateApp(@Param('id') id: string, @Body() app: UpdateAppDto): Promise<AppDto|null> {
     return this.moduleService.updateApp(id, app);
   }
 

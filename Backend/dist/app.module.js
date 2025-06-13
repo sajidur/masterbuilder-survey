@@ -27,14 +27,17 @@ exports.AppModule = AppModule = __decorate([
                 username: 'a66689_mukut',
                 password: 'Root@pass1',
                 database: 'db_a66689_mukut',
+                synchronize: false,
                 autoLoadEntities: true,
-                synchronize: false
+                extra: {
+                    connectionLimit: 100,
+                },
             }),
             user_module_1.UserModule,
             feature_module_1.FeatureModule,
             design_definition_module_1.DesignDefinitionModule,
             survey_module_module_1.SurveyModuleModule,
-            survey_config_module_1.SurveyConfigModule
+            survey_config_module_1.SurveyConfigModule,
         ],
     })
 ], AppModule);

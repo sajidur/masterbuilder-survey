@@ -23,8 +23,8 @@ export declare class SurveyModuleController {
     remove(id: string): Promise<void>;
     findAllApps(): Promise<AppDto[]>;
     findOneApp(id: string): Promise<AppDto>;
-    createApp(app: CreateAppDto): Promise<AppDto>;
-    updateApp(id: string, app: UpdateAppDto): Promise<AppDto>;
+    createApp(app: CreateAppDto): Promise<AppDto | null>;
+    updateApp(id: string, app: UpdateAppDto): Promise<AppDto | null>;
     deleteApp(id: string): Promise<void>;
     findAllMenus(): Promise<MenuDto[]>;
     findOneMenu(id: string): Promise<MenuDto>;

@@ -17,15 +17,18 @@ import { DesignDefinitionModule } from './design-definition/design-definition.mo
       username: 'a66689_mukut',
       password: 'Root@pass1',
       database: 'db_a66689_mukut',
+
+      synchronize: false, // disable in production
       autoLoadEntities: true,
-      synchronize: false // disable in production
-    
+      extra: {
+        connectionLimit: 100, // ✅ Increase based on MySQL server's limit
+      },
     }),
     UserModule,
     FeatureModule,
     DesignDefinitionModule,
     SurveyModuleModule,
-    SurveyConfigModule
+    SurveyConfigModule,
   ],
 })
 export class AppModule {}

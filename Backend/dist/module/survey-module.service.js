@@ -55,9 +55,82 @@ let SurveyModuleService = class SurveyModuleService {
             subItem: await this.toSubItemDto(subItem),
         };
     }
+    async toSubSubItemDto1(subSubItem, subItemDtoMap) {
+        if (!subSubItem.subItemId) {
+            throw new common_1.BadRequestException('SubSubItem must have a valid subItemId');
+        }
+        const subItemDto = subItemDtoMap.get(subSubItem.subItemId);
+        if (!subItemDto) {
+            throw new common_1.NotFoundException(`SubItem with ID ${subSubItem.subItemId} not found in cache`);
+        }
+        return {
+            id: subSubItem.id,
+            name: subSubItem.name,
+            subItemId: subSubItem.subItemId,
+            subItem: subItemDto,
+        };
+    }
     async findAllSubSubItem() {
-        const items = await this.subSubItemRepository.find();
-        return Promise.all(items.map(item => this.toSubSubItemDto(item)));
+        const [subSubItems, subItems, items, menus, apps, modules,] = await Promise.all([
+            this.subSubItemRepository.find(),
+            this.subItemRepository.find(),
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!subSubItems.length) {
+            console.log('No sub-sub-items found.');
+            return [];
+        }
+        const appMap = new Map(apps.map(app => [app.id, app]));
+        const moduleMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appMap.get(menu.appId);
+            const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        const itemDtoMap = new Map();
+        for (const item of items) {
+            const menuDto = menuDtoMap.get(item.menuId);
+            if (!menuDto)
+                continue;
+            itemDtoMap.set(item.id, {
+                id: item.id,
+                name: item.name,
+                menu: menuDto,
+            });
+        }
+        const subItemDtoMap = new Map();
+        for (const subItem of subItems) {
+            if (!subItem.itemId) {
+                console.warn(`SubItem ${subItem.id} has no itemId.`);
+                continue;
+            }
+            const itemDto = itemDtoMap.get(subItem.itemId);
+            if (!itemDto) {
+                console.warn(`Item with ID ${subItem.itemId} not found for SubItem ${subItem.id}`);
+                continue;
+            }
+            subItemDtoMap.set(subItem.id, {
+                id: subItem.id,
+                name: subItem.name,
+                itemId: subItem.itemId,
+                item: itemDto,
+            });
+        }
+        return Promise.all(subSubItems.map(subSubItem => this.toSubSubItemDto1(subSubItem, subItemDtoMap)));
     }
     async findOneSubSubItem(id) {
         const item = await this.subSubItemRepository.findOne({
@@ -103,22 +176,57 @@ let SurveyModuleService = class SurveyModuleService {
             subSubItem: await this.toSubSubItemDto(subSubItem1),
         };
     }
+    async toFieldDto1(field, subSubItemMap) {
+        const subSubItem = subSubItemMap.get(field.subSubItemId);
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${field.subSubItemId} not found`);
+        }
+        return {
+            id: field.id,
+            name: field.name,
+            subSubItemId: field.subSubItemId,
+            subSubItem: await this.toSubSubItemDto(subSubItem),
+        };
+    }
     async findAllFields() {
         const fields = await this.fieldRepository.find();
-        return Promise.all(fields.map((field) => this.toFieldDto(field)));
+        if (!fields.length)
+            return [];
+        const subSubItemIds = Array.from(new Set(fields.map(f => f.subSubItemId)));
+        const subSubItems = await this.subSubItemRepository.findByIds(subSubItemIds);
+        const subSubItemMap = new Map(subSubItems.map(sub => [sub.id, sub]));
+        return Promise.all(fields.map(field => this.toFieldDto1(field, subSubItemMap)));
     }
     async findOneField(id) {
-        const field = await this.fieldRepository.findOne({
-            where: { id }
-        });
-        return field ? this.toFieldDto(field) : null;
+        const field = await this.fieldRepository.findOne({ where: { id } });
+        if (!field)
+            return null;
+        const subSubItem = await this.subSubItemRepository.findOneBy({ id: field.subSubItemId });
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${field.subSubItemId} not found`);
+        }
+        return {
+            id: field.id,
+            name: field.name,
+            subSubItemId: field.subSubItemId,
+            subSubItem: await this.toSubSubItemDto(subSubItem),
+        };
     }
     async createField(field) {
-        var newField = new field_entity_1.Field();
+        const newField = new field_entity_1.Field();
         newField.name = field.name;
         newField.subSubItemId = field.subSubItemId;
-        const data = await this.fieldRepository.save(newField);
-        return await this.toFieldDto(data);
+        const saved = await this.fieldRepository.save(newField);
+        const subSubItem = await this.subSubItemRepository.findOneBy({ id: saved.subSubItemId });
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${saved.subSubItemId} not found`);
+        }
+        return {
+            id: saved.id,
+            name: saved.name,
+            subSubItemId: saved.subSubItemId,
+            subSubItem: await this.toSubSubItemDto(subSubItem),
+        };
     }
     async updateField(id, updated) {
         const existing = await this.fieldRepository.findOneBy({ id });
@@ -128,7 +236,16 @@ let SurveyModuleService = class SurveyModuleService {
         existing.name = updated.name;
         existing.subSubItemId = updated.subSubItemId;
         const saved = await this.fieldRepository.save(existing);
-        return await this.toFieldDto(saved);
+        const subSubItem = await this.subSubItemRepository.findOneBy({ id: saved.subSubItemId });
+        if (!subSubItem) {
+            throw new common_1.NotFoundException(`SubSubItem with ID ${saved.subSubItemId} not found`);
+        }
+        return {
+            id: saved.id,
+            name: saved.name,
+            subSubItemId: saved.subSubItemId,
+            subSubItem: await this.toSubSubItemDto(subSubItem),
+        };
     }
     async deleteField(id) {
         const result = await this.fieldRepository.delete(id);
@@ -136,17 +253,154 @@ let SurveyModuleService = class SurveyModuleService {
             throw new common_1.NotFoundException(`Field with ID ${id} not found`);
         }
     }
+    async toSubItemDto1(subItem, itemDtoMap) {
+        if (!subItem) {
+            throw new common_1.NotFoundException('SubItem not found');
+        }
+        const itemId = subItem.itemId;
+        if (!itemId) {
+            throw new common_1.BadRequestException('SubItem must have a valid itemId');
+        }
+        const itemDto = itemDtoMap.get(itemId);
+        if (!itemDto) {
+            throw new common_1.NotFoundException(`Item with ID ${itemId} not found in cache`);
+        }
+        return {
+            id: subItem.id,
+            name: subItem.name,
+            itemId,
+            item: itemDto,
+        };
+    }
     async findAllSubItems() {
-        return this.subItemRepository.find();
+        const [subItems, items, menus, apps, modules] = await Promise.all([
+            this.subItemRepository.find(),
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!subItems.length) {
+            console.log("No sub-items found.");
+            return [];
+        }
+        const appMap = new Map(apps.map(app => [app.id, app]));
+        const moduleMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appMap.get(menu.appId);
+            const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        const itemDtoMap = new Map();
+        for (const item of items) {
+            const menuDto = menuDtoMap.get(item.menuId);
+            if (!menuDto)
+                continue;
+            itemDtoMap.set(item.id, {
+                id: item.id,
+                name: item.name,
+                menu: menuDto,
+            });
+        }
+        return Promise.all(subItems.map(subItem => this.toSubItemDto1(subItem, itemDtoMap)));
     }
     async findOneSubItem(id) {
-        return this.subItemRepository.findOne({ where: { id } });
+        if (!id) {
+            throw new common_1.BadRequestException('SubItem ID must be provided');
+        }
+        const subItem = await this.subItemRepository.findOne({ where: { id } });
+        if (!subItem) {
+            throw new common_1.NotFoundException(`SubItem with ID ${id} not found`);
+        }
+        const [items, menus, apps, modules] = await Promise.all([
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        const appMap = new Map(apps.map(app => [app.id, app]));
+        const moduleMap = new Map(modules.map(m => [m.id, m]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appMap.get(menu.appId);
+            const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        const itemDtoMap = new Map();
+        for (const item of items) {
+            const menuDto = menuDtoMap.get(item.menuId);
+            if (!menuDto)
+                continue;
+            itemDtoMap.set(item.id, {
+                id: item.id,
+                name: item.name,
+                menu: menuDto,
+            });
+        }
+        return this.toSubItemDto1(subItem, itemDtoMap);
     }
     async createSubItem(subItem) {
         var newSubItem = new subitem_entity_1.SubItem();
         newSubItem.name = subItem.name;
         newSubItem.itemId = subItem.itemId;
-        return this.subItemRepository.save(newSubItem);
+        var data = this.subItemRepository.save(newSubItem);
+        const [items, menus, apps, modules] = await Promise.all([
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        const appMap = new Map(apps.map(app => [app.id, app]));
+        const moduleMap = new Map(modules.map(m => [m.id, m]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appMap.get(menu.appId);
+            const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        const itemDtoMap = new Map();
+        for (const item of items) {
+            const menuDto = menuDtoMap.get(item.menuId);
+            if (!menuDto)
+                continue;
+            itemDtoMap.set(item.id, {
+                id: item.id,
+                name: item.name,
+                menu: menuDto,
+            });
+        }
+        return this.toSubItemDto1(await data, itemDtoMap);
     }
     async updateSubItem(id, updated) {
         const existing = await this.subItemRepository.findOneBy({ id });
@@ -155,7 +409,43 @@ let SurveyModuleService = class SurveyModuleService {
         }
         existing.name = updated.name;
         existing.itemId = updated.itemId;
-        return this.subItemRepository.save(existing);
+        const data = this.subItemRepository.save(existing);
+        const [items, menus, apps, modules] = await Promise.all([
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        const appMap = new Map(apps.map(app => [app.id, app]));
+        const moduleMap = new Map(modules.map(m => [m.id, m]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appMap.get(menu.appId);
+            const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        const itemDtoMap = new Map();
+        for (const item of items) {
+            const menuDto = menuDtoMap.get(item.menuId);
+            if (!menuDto)
+                continue;
+            itemDtoMap.set(item.id, {
+                id: item.id,
+                name: item.name,
+                menu: menuDto,
+            });
+        }
+        return this.toSubItemDto1(await data, itemDtoMap);
     }
     async toSubItemDto(subItem) {
         let itemDto = null;
@@ -197,32 +487,142 @@ let SurveyModuleService = class SurveyModuleService {
             menu: await this.toMenuDto(menu),
         };
     }
+    async toItemDto1(item, menuDtoMap) {
+        const menuDto = menuDtoMap.get(item.menuId);
+        if (!menuDto) {
+            throw new common_1.NotFoundException(`Menu with ID ${item.menuId} not found`);
+        }
+        return {
+            id: item.id,
+            name: item.name,
+            menu: menuDto,
+        };
+    }
     async findAllItems() {
-        const items = await this.itemRepository.find();
-        return Promise.all(items.map(item => this.toItemDto(item)));
+        const [items, menus, apps, modules] = await Promise.all([
+            this.itemRepository.find(),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!items.length) {
+            console.log("No items found.");
+            return [];
+        }
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appsMap.get(menu.appId);
+            const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        return Promise.all(items.map(item => this.toItemDto1(item, menuDtoMap)));
     }
     async findOneItem(id) {
-        const item = await this.itemRepository.findOne({ where: { id } });
-        return item ? await this.toItemDto(item) : null;
+        const [item, menus, apps, modules] = await Promise.all([
+            this.itemRepository.findOne({ where: { id } }),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!item) {
+            console.log("No items found.");
+            return null;
+        }
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appsMap.get(menu.appId);
+            const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        return this.toItemDto1(item, menuDtoMap);
     }
     async createItem(item) {
         var newItem = new item_entity_1.Item();
         newItem.name = item.name;
         newItem.menuId = item.menuId;
         const created = await this.itemRepository.save(newItem);
-        return this.toItemDto(created);
+        const [menus, apps, modules] = await Promise.all([
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appsMap.get(menu.appId);
+            const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        return this.toItemDto1(created, menuDtoMap);
     }
     async updateItem(id, updatedItem) {
-        const existing = await this.itemRepository.findOneBy({ id });
-        console.log(existing?.name);
-        if (!existing) {
+        const [item, menus, apps, modules] = await Promise.all([
+            this.itemRepository.findOne({ where: { id } }),
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!item) {
+            console.log("No items found.");
             throw new common_1.NotFoundException(`Item with ID ${id} not found`);
         }
-        existing.menuId = updatedItem.menuId;
-        existing.name = updatedItem.name;
-        const saved = await this.itemRepository.save(existing);
-        console.log(saved.name);
-        return this.toItemDto(saved);
+        item.menuId = updatedItem.menuId;
+        item.name = updatedItem.name;
+        const saved = await this.itemRepository.save(item);
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(mod => [mod.id, mod]));
+        const menuDtoMap = new Map();
+        for (const menu of menus) {
+            const app = appsMap.get(menu.appId);
+            const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
+            const moduleDto = module
+                ? { id: module.id, name: module.name }
+                : null;
+            const appDto = app
+                ? { id: app.id, name: app.name, Module: moduleDto }
+                : null;
+            menuDtoMap.set(menu.id, {
+                id: menu.id,
+                title: menu.title,
+                app: appDto,
+            });
+        }
+        return this.toItemDto1(saved, menuDtoMap);
     }
     async deleteItem(id) {
         const result = await this.itemRepository.delete(id);
@@ -254,12 +654,10 @@ let SurveyModuleService = class SurveyModuleService {
     async remove(id) {
         await this.modulesRepository.delete(id);
     }
-    async toDto(app) {
-        const module = await this.modulesRepository.findOne({
-            where: { id: app.moduleId },
-        });
+    async toDto(app, modulesMap) {
+        const module = modulesMap.get(app.moduleId);
         if (!module) {
-            throw new Error(`Module with ID ${app.moduleId} not found`);
+            return null;
         }
         return {
             id: app.id,
@@ -268,29 +666,55 @@ let SurveyModuleService = class SurveyModuleService {
         };
     }
     async findAllApps() {
-        const apps = await this.appRepository.find();
-        const dtoPromises = apps.map(app => this.toDto(app));
-        return await Promise.all(dtoPromises);
+        const [apps, modules] = await Promise.all([
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!apps.length || !modules.length)
+            return [];
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        const appDtos = await Promise.all(apps.map(app => this.toDto(app, modulesMap)));
+        return appDtos.filter((dto) => dto !== null);
     }
     async findOneApp(id) {
-        const app = await this.appRepository.findOne({ where: { id } });
-        return app ? await this.toDto(app) : null;
+        const [app, modules] = await Promise.all([
+            this.appRepository.findOne({ where: { id } }),
+            this.modulesRepository.find(),
+        ]);
+        if (!app)
+            throw new common_1.NotFoundException(`App with ID ${id} not found`);
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        return this.toDto(app, modulesMap);
     }
     async createApp(createAppDto) {
+        const [modules] = await Promise.all([this.modulesRepository.find()]);
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        const module = modulesMap.get(createAppDto.moduleId);
+        console.log(module);
+        if (!module) {
+            throw new common_1.NotFoundException(`Module with ID ${createAppDto.moduleId} not found`);
+        }
         const app = this.appRepository.create({
             name: createAppDto.name,
             moduleId: createAppDto.moduleId,
         });
         const created = await this.appRepository.save(app);
-        return this.toDto(created);
+        return this.toDto(created, modulesMap);
     }
     async updateApp(id, app) {
+        const [modules] = await Promise.all([this.modulesRepository.find()]);
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        const module = modulesMap.get(app.moduleId);
+        console.log(module);
+        if (!module) {
+            throw new common_1.NotFoundException(`Module with ID ${app.moduleId} not found`);
+        }
         const existing = await this.appRepository.preload({ id, ...app });
         if (!existing) {
             throw new common_1.NotFoundException(`App with ID ${id} not found`);
         }
         const updated = await this.appRepository.save(existing);
-        return this.toDto(updated);
+        return this.toDto(updated, modulesMap);
     }
     async deleteApp(id) {
         await this.appRepository.delete(id);
@@ -320,19 +744,53 @@ let SurveyModuleService = class SurveyModuleService {
             app: appDto,
         };
     }
+    async toMenuDto1(menu, appsMap, modulesMap) {
+        const app = menu.appId ? appsMap.get(menu.appId) ?? null : null;
+        const module = app?.moduleId ? modulesMap.get(app.moduleId) ?? null : null;
+        const moduleDto = module && {
+            id: module.id,
+            name: module.name,
+        };
+        const appDto = app && {
+            id: app.id,
+            name: app.name,
+            Module: moduleDto,
+        };
+        return {
+            id: menu.id,
+            title: menu.title,
+            app: appDto,
+        };
+    }
     async findAllMenus() {
-        const menus = await this.menuRepository.find();
+        const [menus, apps, modules] = await Promise.all([
+            this.menuRepository.find(),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
         if (menus.length === 0) {
             console.log("No menus found.");
             return [];
         }
-        return Promise.all(menus.map(menu => this.toMenuDto(menu)));
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        return Promise.all(menus.map(menu => this.toMenuDto1(menu, appsMap, modulesMap)));
     }
     async findOneMenu(id) {
-        const menu = await this.menuRepository.findOne({
-            where: { id },
-        });
-        return menu ? await this.toMenuDto(menu) : null;
+        const [menu, apps, modules] = await Promise.all([
+            this.menuRepository.findOne({
+                where: { id }
+            }),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!menu) {
+            console.log("No menu found.");
+            throw new common_1.NotFoundException(`Menu with ID ${id} not found`);
+        }
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        return this.toMenuDto1(menu, appsMap, modulesMap);
     }
     async createMenu(menuDto) {
         var menu = new menu_entity_1.Menu();
@@ -340,18 +798,31 @@ let SurveyModuleService = class SurveyModuleService {
         menu.title = menuDto.title;
         const saved = await this.menuRepository.save(menu);
         console.log("menu appId " + saved.appId);
-        return await this.toMenuDto(saved);
+        const [apps, modules] = await Promise.all([
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        return this.toMenuDto1(menu, appsMap, modulesMap);
     }
     async updateMenu(id, updateDto) {
-        const existing = await this.menuRepository.findOne({
-            where: { id },
-        });
-        if (!existing) {
+        const [menu, apps, modules] = await Promise.all([
+            this.menuRepository.findOne({
+                where: { id }
+            }),
+            this.appRepository.find(),
+            this.modulesRepository.find(),
+        ]);
+        if (!menu) {
+            console.log("No menu found.");
             throw new common_1.NotFoundException(`Menu with ID ${id} not found`);
         }
-        const merged = this.menuRepository.merge(existing, updateDto);
+        const appsMap = new Map(apps.map(app => [app.id, app]));
+        const modulesMap = new Map(modules.map(m => [m.id, m]));
+        const merged = this.menuRepository.merge(menu, updateDto);
         const saved = await this.menuRepository.save(merged);
-        return await this.toMenuDto(saved);
+        return this.toMenuDto1(saved, appsMap, modulesMap);
     }
     async deleteMenu(id) {
         const result = await this.menuRepository.delete(id);

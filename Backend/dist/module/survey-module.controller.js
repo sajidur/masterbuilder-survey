@@ -32,24 +32,16 @@ let SurveyModuleController = class SurveyModuleController {
         this.moduleService = moduleService;
     }
     async findAllSubItems() {
-        const subItems = await this.moduleService.findAllSubItems();
-        return Promise.all(subItems.map((s) => this.moduleService.toSubItemDto(s)));
+        return await this.moduleService.findAllSubItems();
     }
     async findOneSubItem(id) {
-        const subItem = await this.moduleService.findOneSubItem(id);
-        if (!subItem)
-            throw new common_1.NotFoundException(`SubItem with ID ${id} not found`);
-        return this.moduleService.toSubItemDto(subItem);
+        return await this.moduleService.findOneSubItem(id);
     }
     async createSubItem(subItem) {
-        const created = await this.moduleService.createSubItem(subItem);
-        console.log("subItem label " + created.name);
-        return this.moduleService.toSubItemDto(created);
+        return await this.moduleService.createSubItem(subItem);
     }
     async updateSubItem(id, subItem) {
-        const updated = await this.moduleService.updateSubItem(id, subItem);
-        console.log("update subitem label " + updated.name);
-        return this.moduleService.toSubItemDto(updated);
+        return await this.moduleService.updateSubItem(id, subItem);
     }
     deleteSubItem(id) {
         return this.moduleService.deleteSubItem(id);
