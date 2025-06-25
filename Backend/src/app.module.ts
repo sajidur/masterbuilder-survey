@@ -21,7 +21,7 @@ import { DesignDefinitionModule } from './design-definition/design-definition.mo
       synchronize: false, // disable in production
       autoLoadEntities: true,
       extra: {
-        connectionLimit: 100, // ✅ Increase based on MySQL server's limit
+        connectionLimit: 9, // ✅ Increase based on MySQL server's limit
       },
     }),
     UserModule,
