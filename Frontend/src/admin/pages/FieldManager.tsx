@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,48 +12,19 @@ import {
   addField,
 } from "../../apiRequest/api";
 
-interface Module {
-  id: number;
-  name: string;
-}
-
-interface App {
-  id: number;
-  name: string;
-  Module: Module;
-}
-
-interface Menu {
-  id: number;
-  name: string;
-  App: App;
-  Module: Module;
-}
-
-interface Item {
-  id: number;
-  name: string;
-  Menu: Menu;
-  App: App;
-  Module: Module;
-}
-
-interface SubItem {
-  id: number;
-  name: string;
-  Item: Item;
-}
-
-interface SubSubItem {
-  id: number;
-  name: string;
-  SubItem: SubItem;
-}
+interface Module { id: number; name: string; }
+interface App { id: number; name: string; Module: Module; }
+interface Menu { id: number; name: string; App: App; Module: Module; }
+interface Item { id: number; name: string; Menu: Menu; App: App; Module: Module; }
+interface SubItem { id: number; name: string; Item: Item; }
+interface SubSubItem { id: number; name: string; SubItem: SubItem; }
+interface SubSubSubItem { id: number; name: string; SubSubItem: SubSubItem; }
 
 interface Field {
   id: number;
   name: string;
-  SubSubItem: SubSubItem;
+  fieldGroup: string;
+  SubSubSubItem: SubSubSubItem;
 }
 
 const FieldManager: React.FC = () => {
@@ -67,6 +34,7 @@ const FieldManager: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [subItems, setSubItems] = useState<SubItem[]>([]);
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
+  const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
@@ -75,7 +43,11 @@ const FieldManager: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedSubItem, setSelectedSubItem] = useState("");
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
+  const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
+  const [selectedFieldGroup, setSelectedFieldGroup] = useState("");
   const [fieldName, setFieldName] = useState("");
+
+  const fieldGroups = ["tree", "graph", "table", "individual field"];
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -89,7 +61,6 @@ const FieldManager: React.FC = () => {
           getAllSubSubitems(),
           getAllFields(),
         ]);
-
         setModules(mod);
         setApps(app);
         setMenus(menu);
@@ -99,12 +70,22 @@ const FieldManager: React.FC = () => {
         setFields(field);
       } catch (error) {
         toast.error("Failed to fetch data.");
-        console.error(error);
       }
     };
 
     fetchAll();
   }, []);
+
+  useEffect(() => {
+    const generatedSubSubSub: SubSubSubItem[] = subSubItems.flatMap((ssi) =>
+      Array.from({ length: 2 }, (_, i) => ({
+        id: parseInt(`${ssi.id}${i + 1}`),
+        name: `${ssi.name}-Child-${i + 1}`,
+        SubSubItem: ssi,
+      }))
+    );
+    setSubSubSubItems(generatedSubSubSub);
+  }, [subSubItems]);
 
   const handleAddField = async () => {
     if (
@@ -114,22 +95,25 @@ const FieldManager: React.FC = () => {
       !selectedItem ||
       !selectedSubItem ||
       !selectedSubSubItem ||
+      !selectedSubSubSubItem ||
+      !selectedFieldGroup ||
       !fieldName.trim()
     ) {
       toast.warn("Please fill all fields.");
       return;
     }
 
-    const subSubObj = subSubItems.find((s) => s.name === selectedSubSubItem);
-    if (!subSubObj) {
-      toast.error("Invalid SubSubItem.");
+    const subSubSubObj = subSubSubItems.find((s) => s.name === selectedSubSubSubItem);
+    if (!subSubSubObj) {
+      toast.error("Invalid SubSubSubItem.");
       return;
     }
 
     try {
       await addField({
         name: fieldName.trim(),
-        subSubItemId: subSubObj.id,
+        fieldGroup: selectedFieldGroup,
+        subSubSubItemId: subSubSubObj.id,
       });
 
       toast.success("Field added successfully!");
@@ -139,14 +123,15 @@ const FieldManager: React.FC = () => {
         {
           id: Date.now(),
           name: fieldName.trim(),
-          SubSubItem: subSubObj,
+          fieldGroup: selectedFieldGroup,
+          SubSubSubItem: subSubSubObj,
         },
       ]);
 
       setFieldName("");
+      setSelectedFieldGroup("");
     } catch (error) {
       toast.error("Failed to add field.");
-      console.error(error);
     }
   };
 
@@ -155,60 +140,59 @@ const FieldManager: React.FC = () => {
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Field Manager</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        {/* Dropdowns */}
         <Dropdown label="Module" value={selectedModule} options={modules.map((m) => m.name)} onChange={(val) => {
           setSelectedModule(val);
-          setSelectedApp("");
-          setSelectedMenu("");
-          setSelectedItem("");
-          setSelectedSubItem("");
-          setSelectedSubSubItem("");
+          setSelectedApp(""); setSelectedMenu(""); setSelectedItem("");
+          setSelectedSubItem(""); setSelectedSubSubItem(""); setSelectedSubSubSubItem("");
         }} />
 
         <Dropdown label="App" value={selectedApp}
           options={apps.filter(a => a.Module?.name === selectedModule).map(a => a.name)}
           onChange={(val) => {
-            setSelectedApp(val);
-            setSelectedMenu("");
-            setSelectedItem("");
-            setSelectedSubItem("");
-            setSelectedSubSubItem("");
+            setSelectedApp(val); setSelectedMenu(""); setSelectedItem("");
+            setSelectedSubItem(""); setSelectedSubSubItem(""); setSelectedSubSubSubItem("");
           }}
         />
 
         <Dropdown label="Menu" value={selectedMenu}
           options={menus.filter(m => m.App?.name === selectedApp && m.Module?.name === selectedModule).map(m => m.name)}
           onChange={(val) => {
-            setSelectedMenu(val);
-            setSelectedItem("");
-            setSelectedSubItem("");
-            setSelectedSubSubItem("");
+            setSelectedMenu(val); setSelectedItem(""); setSelectedSubItem("");
+            setSelectedSubSubItem(""); setSelectedSubSubSubItem("");
           }}
         />
 
         <Dropdown label="Item" value={selectedItem}
-          options={items.filter(i => i.Menu?.name === selectedMenu && i.App?.name === selectedApp && i.Module?.name === selectedModule).map(i => i.name)}
+          options={items.filter(i => i.Menu?.name === selectedMenu).map(i => i.name)}
           onChange={(val) => {
-            setSelectedItem(val);
-            setSelectedSubItem("");
-            setSelectedSubSubItem("");
+            setSelectedItem(val); setSelectedSubItem(""); setSelectedSubSubItem(""); setSelectedSubSubSubItem("");
           }}
         />
 
         <Dropdown label="SubItem" value={selectedSubItem}
           options={subItems.filter(s => s.Item?.name === selectedItem).map(s => s.name)}
           onChange={(val) => {
-            setSelectedSubItem(val);
-            setSelectedSubSubItem("");
+            setSelectedSubItem(val); setSelectedSubSubItem(""); setSelectedSubSubSubItem("");
           }}
         />
 
         <Dropdown label="SubSubItem" value={selectedSubSubItem}
           options={subSubItems.filter(s => s.SubItem?.name === selectedSubItem).map(s => s.name)}
-          onChange={setSelectedSubSubItem}
+          onChange={(val) => {
+            setSelectedSubSubItem(val); setSelectedSubSubSubItem("");
+          }}
         />
 
-        {/* Field Input */}
+        <Dropdown label="SubSubSubItem" value={selectedSubSubSubItem}
+          options={subSubSubItems.filter(s => s.SubSubItem?.name === selectedSubSubItem).map(s => s.name)}
+          onChange={(val) => setSelectedSubSubSubItem(val)}
+        />
+
+        <Dropdown label="Field Group" value={selectedFieldGroup}
+          options={fieldGroups}
+          onChange={(val) => setSelectedFieldGroup(val)}
+        />
+
         <div>
           <label className="block mb-1 font-medium">Field Name</label>
           <input
@@ -240,18 +224,22 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SubSubItem</th>
+              <th className="p-2 text-left">SubSubSubItem</th>
+              <th className="p-2 text-left">Field Group</th>
               <th className="p-2 text-left">Field</th>
             </tr>
           </thead>
           <tbody>
             {fields.map((f) => (
               <tr key={f.id} className="border-t">
-                <td className="p-2">{f.SubSubItem?.SubItem?.Item?.Module?.name || "—"}</td>
-                <td className="p-2">{f.SubSubItem?.SubItem?.Item?.App?.name || "—"}</td>
-                <td className="p-2">{f.SubSubItem?.SubItem?.Item?.Menu?.name || "—"}</td>
-                <td className="p-2">{f.SubSubItem?.SubItem?.Item?.name || "—"}</td>
-                <td className="p-2">{f.SubSubItem?.SubItem?.name || "—"}</td>
-                <td className="p-2">{f.SubSubItem?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.SubItem?.Item?.Module?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.SubItem?.Item?.App?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.SubItem?.Item?.Menu?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.SubItem?.Item?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.SubItem?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.SubSubItem?.name || "—"}</td>
+                <td className="p-2">{f.SubSubSubItem?.name || "—"}</td>
+                <td className="p-2">{f.fieldGroup}</td>
                 <td className="p-2">{f.name}</td>
               </tr>
             ))}
@@ -284,9 +272,7 @@ const Dropdown = ({
     >
       <option value="">-- Select {label} --</option>
       {options.map((opt, idx) => (
-        <option key={idx} value={opt}>
-          {opt}
-        </option>
+        <option key={idx} value={opt}>{opt}</option>
       ))}
     </select>
   </div>

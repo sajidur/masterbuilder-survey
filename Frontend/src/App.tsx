@@ -20,14 +20,20 @@ import SurveyBuilder from "./admin/pages/SurveyBuilder";
 import SubSubItemManager from "./admin/pages/SubSubItemManager";
 import DocumentUploader from "./admin/pages/DocumentUploader";
 import DocumentDetails from "./admin/pages/DocumentDetails";
+import SubSubSubItemManager from "./admin/pages/SubSubSubItemManager";
+import TemplateConfiguration from "./admin/pages/TemplateConfiguration";
+import ReportsPage from "./admin/pages/ReportsPage";
+import LoginPage from "./pages/Login";
 
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAuthPage = location.pathname === "/login"; // You can add /register here too if needed
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {!isAdminRoute && (
+      {/* ✅ Hide header if login or admin route */}
+      {!isAdminRoute && !isAuthPage && (
         <header className="mb-8 py-12">
           <div className="max-w-3xl mx-auto px-4 flex items-center justify-center">
             <div className="bg-white rounded-full p-3 shadow-sm mr-3">
@@ -49,6 +55,8 @@ function AppContent() {
             }
           />
 
+          <Route path="/login" element={<LoginPage />} />
+
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
@@ -58,17 +66,21 @@ function AppContent() {
             <Route path="item-manager" element={<ItemManager />} />
             <Route path="sub-item-manager" element={<SubItemManager />} />
             <Route path="sub-sub-item-manager" element={<SubSubItemManager />} />
+            <Route path="sub-sub-sub-item-manager" element={<SubSubSubItemManager />} />
             <Route path="field-manager" element={<FieldManager />} />
+            <Route path="template-configuration" element={<TemplateConfiguration />} />
             <Route path="question-manager" element={<SurveyBuilder />} />
             <Route path="document-upload" element={<DocumentUploader />} />
             <Route path="document-details" element={<DocumentDetails />} />
+            <Route path="reports" element={<ReportsPage />} />
           </Route>
         </Routes>
       </main>
 
       <ToastContainer />
 
-      {!isAdminRoute && (
+      {/* ✅ Hide footer if login or admin route */}
+      {!isAdminRoute && !isAuthPage && (
         <footer className="mt-12 text-center text-gray-500 text-sm">
           © {new Date().getFullYear()} WorkspaceIQ • All Rights Reserved
         </footer>

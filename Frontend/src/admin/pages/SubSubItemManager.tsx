@@ -10,6 +10,7 @@ import {
   getAllSubSubitems,
   addSubSubitem,
 } from "../../apiRequest/api";
+import { tiers } from "./data";
 
 interface Module {
   id: number;
@@ -49,6 +50,12 @@ interface SubSubItem {
   SubItem: SubItem;
 }
 
+const templates = [
+  { id: 1, name: "Invoice Template" },
+  { id: 2, name: "Prescription Template" },
+  { id: 3, name: "Report Template" },
+];
+
 const SubSubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<App[]>([]);
@@ -63,6 +70,7 @@ const SubSubItemManager: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedSubItem, setSelectedSubItem] = useState("");
   const [subSubItemName, setSubSubItemName] = useState("");
+  const [selectedTier, setSelectedTier] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -92,7 +100,14 @@ const SubSubItemManager: React.FC = () => {
   }, []);
 
   const handleAdd = async () => {
-    if (!selectedModule || !selectedApp || !selectedMenu || !selectedItem || !selectedSubItem || !subSubItemName.trim()) {
+    if (
+      !selectedModule ||
+      !selectedApp ||
+      !selectedMenu ||
+      !selectedItem ||
+      !selectedSubItem ||
+      !subSubItemName.trim()
+    ) {
       toast.warn("Please fill all fields.");
       return;
     }
@@ -128,9 +143,11 @@ const SubSubItemManager: React.FC = () => {
 
   return (
     <div className="p-6 ">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">SubSubItem Manager</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        SubSubItem Manager
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
         {/* Module */}
         <div>
           <label className="block mb-1 font-medium">Module</label>
@@ -147,7 +164,9 @@ const SubSubItemManager: React.FC = () => {
           >
             <option value="">-- Select Module --</option>
             {modules.map((m) => (
-              <option key={m.id} value={m.name}>{m.name}</option>
+              <option key={m.id} value={m.name}>
+                {m.name}
+              </option>
             ))}
           </select>
         </div>
@@ -166,9 +185,13 @@ const SubSubItemManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">-- Select App --</option>
-            {apps.filter((a) => a.Module?.name === selectedModule).map((a) => (
-              <option key={a.id} value={a.name}>{a.name}</option>
-            ))}
+            {apps
+              .filter((a) => a.Module?.name === selectedModule)
+              .map((a) => (
+                <option key={a.id} value={a.name}>
+                  {a.name}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -185,9 +208,17 @@ const SubSubItemManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">-- Select Menu --</option>
-            {menus.filter((m) => m.App?.name === selectedApp && m.Module?.name === selectedModule).map((m) => (
-              <option key={m.id} value={m.name}>{m.name}</option>
-            ))}
+            {menus
+              .filter(
+                (m) =>
+                  m.App?.name === selectedApp &&
+                  m.Module?.name === selectedModule
+              )
+              .map((m) => (
+                <option key={m.id} value={m.name}>
+                  {m.name}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -203,9 +234,18 @@ const SubSubItemManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">-- Select Item --</option>
-            {items.filter((i) => i.Menu?.name === selectedMenu && i.App?.name === selectedApp && i.Module?.name === selectedModule).map((i) => (
-              <option key={i.id} value={i.name}>{i.name}</option>
-            ))}
+            {items
+              .filter(
+                (i) =>
+                  i.Menu?.name === selectedMenu &&
+                  i.App?.name === selectedApp &&
+                  i.Module?.name === selectedModule
+              )
+              .map((i) => (
+                <option key={i.id} value={i.name}>
+                  {i.name}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -218,9 +258,13 @@ const SubSubItemManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">-- Select SubItem --</option>
-            {subItems.filter((s) => s.Item?.name === selectedItem).map((s) => (
-              <option key={s.id} value={s.name}>{s.name}</option>
-            ))}
+            {subItems
+              .filter((s) => s.Item?.name === selectedItem)
+              .map((s) => (
+                <option key={s.id} value={s.name}>
+                  {s.name}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -234,6 +278,36 @@ const SubSubItemManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
             placeholder="Enter SubSubItem"
           />
+        </div>
+
+        {/* template */}
+        <div>
+          <label className="block mb-1 font-medium">Template</label>
+          <select className="w-full border px-3 py-2 rounded">
+            <option value="">-- Choose a Template --</option>
+            {templates.map((template) => (
+              <option key={template.id} value={template.id}>
+                {template.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tire */}
+        <div>
+          <label className="block mb-1 font-medium">Tier</label>
+          <select
+            value={selectedTier}
+            onChange={(e) => setSelectedTier(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">-- Choose Tier --</option>
+            {tiers.map((tier) => (
+              <option key={tier.value} value={tier.value}>
+                {tier.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

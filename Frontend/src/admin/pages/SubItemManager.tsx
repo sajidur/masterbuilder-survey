@@ -9,6 +9,7 @@ import {
   addSubitem,
   getAllSubitems, // If you have subitem fetching
 } from "../../apiRequest/api";
+import { tiers } from "./data";
 
 interface Module {
   id: number;
@@ -42,6 +43,12 @@ interface SubItem {
   Item: Item;
 }
 
+const templates = [
+  { id: 1, name: 'Invoice Template' },
+  { id: 2, name: 'Prescription Template' },
+  { id: 3, name: 'Report Template' },
+];
+
 const SubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<AppItem[]>([]);
@@ -54,6 +61,7 @@ const SubItemManager: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [subItemName, setSubItemName] = useState<string>("");
+  const [selectedTier, setSelectedTier] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +88,8 @@ const SubItemManager: React.FC = () => {
 
     fetchData();
   }, []);
+
+  
 
   const handleAddSubItem = async () => {
     if (!selectedModule || !selectedApp || !selectedMenu || !selectedItem) {
@@ -237,6 +247,36 @@ const SubItemManager: React.FC = () => {
             value={subItemName}
             onChange={(e) => setSubItemName(e.target.value)}
           />
+        </div>
+
+        {/* template */}
+        <div>
+          <label className="block mb-1 font-medium">Template</label>
+          <select className="w-full border px-3 py-2 rounded">
+            <option value="">-- Choose a Template --</option>
+            {templates.map((template) => (
+              <option key={template.id} value={template.id}>
+                {template.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tire */}
+        <div>
+          <label className="block mb-1 font-medium">Tier</label>
+          <select
+            value={selectedTier}
+            onChange={(e) => setSelectedTier(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">-- Choose Tier --</option>
+            {tiers.map((tier) => (
+              <option key={tier.value} value={tier.value}>
+                {tier.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

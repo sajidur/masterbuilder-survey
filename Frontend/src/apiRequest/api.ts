@@ -1,19 +1,28 @@
 import axios from 'axios';
 
-// Reusable Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Change to your backend URL if needed
+  baseURL: 'http://localhost:3000',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 
 
 // Add Module
-export const addModule = async (data: { name: string }) => {
+export const addModule = async (data: { name: string ,tier: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addModule', data);
     return response.data;
@@ -24,7 +33,7 @@ export const addModule = async (data: { name: string }) => {
 };
 
 // Add App
-export const addApp = async (data: { name: string; moduleId: number }) => {
+export const addApp = async (data: { name: string; moduleId: string, tier: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addApps', data);
     return response.data;
@@ -35,7 +44,7 @@ export const addApp = async (data: { name: string; moduleId: number }) => {
 };
 
 // Add Menu
-export const addMenu = async (data: { title: string; appId: number }) => {
+export const addMenu = async (data: { title: string; appId: string, tier: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addMenu', data);
     return response.data;
@@ -46,7 +55,7 @@ export const addMenu = async (data: { title: string; appId: number }) => {
 };
 
 // Add Item
-export const addItem = async (data: { name: string; menuId: number }) => {
+export const addItem = async (data: { name: string; menuId: string, tier: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addItem', data);
     return response.data;
@@ -57,7 +66,7 @@ export const addItem = async (data: { name: string; menuId: number }) => {
 };
 
 // Add Subitem
-export const addSubitem = async (data: { label: string; itemId: number }) => {
+export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubitems', data);
     return response.data;
@@ -68,7 +77,7 @@ export const addSubitem = async (data: { label: string; itemId: number }) => {
 };
 
 // Add Sub-Subitem
-export const addSubSubitem = async (data: { label: string; subItemId: number }) => {
+export const addSubSubitem = async (data: { name: string; subItemId: string, tier: string, templateId: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubItem', data);
     return response.data;
@@ -78,8 +87,19 @@ export const addSubSubitem = async (data: { label: string; subItemId: number }) 
   }
 };
 
+// Add SubsubSubitem
+export const addSubSubSubitem = async (data: { name: string; subSubItemId: string, tier: string, templateId: string }) => {
+  try {
+    const response = await apiClient.post('/survey-module/addSubSubSubItem', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding sub-subitem:', error);
+    throw error;
+  }
+};
+
 // Add Field
-export const addField = async (data: { name: string; subSubItemId: number }) => {
+export const addField = async (data: { name: string; subSubSubItemId: number, fieldGroup: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addField', data);
     return response.data;

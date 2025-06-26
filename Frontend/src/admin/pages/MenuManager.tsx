@@ -7,6 +7,7 @@ import {
   addMenu,
   getAllMenus,
 } from "../../apiRequest/api";
+import { tiers } from "./data";
 
 interface Module {
   id: number;
@@ -34,6 +35,7 @@ const MenuManager: React.FC = () => {
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [menuName, setMenuName] = useState<string>("");
+  const [selectedTier, setSelectedTier] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,121 +104,128 @@ const MenuManager: React.FC = () => {
   };
 
   return (
-    <div className="p-4 mx-auto">
-      <h2 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2">
-        <span className="text-green-600 text-2xl">📁</span> Menu Management
-      </h2>
+    <div className=" p-4">
+  <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
+    <span className="text-green-600 text-2xl">📁</span> Menu Management
+  </h2>
 
-      <div className="flex flex-col sm:flex-row sm:items-end gap-4 pb-6">
-        {/* Module Dropdown */}
-        <div className="w-full sm:w-1/3">
-          <label
-            htmlFor="module"
-            className="block mb-2 text-sm font-semibold text-gray-700"
-          >
-            Select Module
-          </label>
-          <select
-            id="module"
-            value={selectedModule}
-            onChange={(e) => setSelectedModule(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">-- Select Module --</option>
-            {modules.map((mod) => (
-              <option key={mod.id} value={mod.name}>
-                {mod.name}
+  {/* Add Menu Form */}
+  <div className="bg-white shadow-md rounded-xl p-6 mb-8">
+    <h3 className="text-lg font-semibold text-gray-700 mb-4">Add New Menu</h3>
+
+    <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+      {/* Module Dropdown */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">Module</label>
+        <select
+          value={selectedModule}
+          onChange={(e) => setSelectedModule(e.target.value)}
+          className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">-- Select Module --</option>
+          {modules.map((mod) => (
+            <option key={mod.id} value={mod.name}>
+              {mod.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* App Dropdown */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">App</label>
+        <select
+          value={selectedApp}
+          onChange={(e) => setSelectedApp(e.target.value)}
+          className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">-- Select App --</option>
+          {apps
+            .filter((app) => app.Module?.name === selectedModule)
+            .map((app) => (
+              <option key={app.id} value={app.name}>
+                {app.name}
               </option>
             ))}
-          </select>
-        </div>
-
-        {/* App Dropdown */}
-        <div className="w-full sm:w-1/3">
-          <label
-            htmlFor="app"
-            className="block mb-2 text-sm font-semibold text-gray-700"
-          >
-            Select App
-          </label>
-          <select
-            id="app"
-            value={selectedApp}
-            onChange={(e) => setSelectedApp(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">-- Select App --</option>
-            {apps
-              .filter((app) => app.Module?.name === selectedModule)
-              .map((app) => (
-                <option key={app.id} value={app.name}>
-                  {app.name}
-                </option>
-              ))}
-          </select>
-        </div>
-
-        {/* Menu Input */}
-        <div className="w-full sm:w-1/4">
-          <label
-            htmlFor="menuName"
-            className="block mb-2 text-sm font-semibold text-gray-700"
-          >
-            Menu Name
-          </label>
-          <input
-            id="menuName"
-            type="text"
-            value={menuName}
-            onChange={(e) => setMenuName(e.target.value)}
-            placeholder="Enter menu name"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-
-        {/* Add Button */}
-        <div className="w-full sm:w-[8%]">
-          <button
-            onClick={handleAddMenu}
-            className="w-full py-2.5 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-colors"
-          >
-            + Add
-          </button>
-        </div>
+        </select>
       </div>
 
-      {/* Menus List */}
-      <div className="bg-white p-6 rounded shadow">
-        <h3 className="text-xl font-semibold mb-4">Menu List</h3>
-
-        {menus.length === 0 ? (
-          <p>No menus available.</p>
-        ) : (
-          <table className="w-full border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 border-b border-gray-300 text-left">
-                  Module
-                </th>
-                <th className="p-2 border-b border-gray-300 text-left">App</th>
-                <th className="p-2 border-b border-gray-300 text-left">Menu</th>
-              </tr>
-            </thead>
-            <tbody>
-              {menus.map((menu) => (
-                <tr key={menu.id} className="border-t border-gray-300">
-                  <td className="p-2">{menu.app.Module?.name || "—"}</td>
-                  <td className="p-2">{menu.app?.name || "—"}</td>
-                  <td className="p-2">{menu.title}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+      {/* Menu Name */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">Menu Name</label>
+        <input
+          type="text"
+          value={menuName}
+          onChange={(e) => setMenuName(e.target.value)}
+          placeholder="Enter menu name"
+          className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
-      <ToastContainer />
+      {/* Tier Dropdown */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">Tier</label>
+        <select
+          value={selectedTier}
+          onChange={(e) => setSelectedTier(e.target.value)}
+          className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">-- Choose Tier --</option>
+          {tiers.map((tier) => (
+            <option key={tier.value} value={tier.value}>
+              {tier.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      
     </div>
+
+    {/* Add Button */}
+      <div className="mt-6">
+        <button
+          onClick={handleAddMenu}
+          className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
+        >
+          + Add
+        </button>
+      </div>
+  </div>
+
+  {/* Menu List */}
+  <div className="bg-white shadow-md rounded-xl p-6">
+    <h3 className="text-xl font-semibold text-gray-700 mb-4">Menu List</h3>
+
+    {menus.length === 0 ? (
+      <p className="text-gray-600">No menus available.</p>
+    ) : (
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="px-4 py-3 text-left">Module</th>
+              <th className="px-4 py-3 text-left">App</th>
+              <th className="px-4 py-3 text-left">Menu Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {menus.map((menu, index) => (
+              <tr key={menu.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                <td className="px-4 py-3 text-gray-800">{menu.app.Module?.name || "—"}</td>
+                <td className="px-4 py-3 text-gray-800">{menu.app?.name || "—"}</td>
+                <td className="px-4 py-3 text-gray-800">{menu.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </div>
+
+  <ToastContainer />
+</div>
+
   );
 };
 

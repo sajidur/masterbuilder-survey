@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addModule, getAllModules } from "../../apiRequest/api";
+import { tiers } from "./data";
 
 interface Module {
   id: number;
@@ -11,6 +12,7 @@ interface Module {
 const ModuleManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [newModuleName, setNewModuleName] = useState("");
+  const [selectedTier, setSelectedTier] = useState("");
 
   useEffect(() => {
     fetchModules();
@@ -45,7 +47,7 @@ const ModuleManager: React.FC = () => {
     }
 
     try {
-      await addModule({ name: trimmedName });
+      await addModule({ name: trimmedName, tier: selectedTier });
       toast.success("Module added successfully!");
       setNewModuleName("");
       fetchModules(); // refresh module list
@@ -56,25 +58,55 @@ const ModuleManager: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto px-4 ">
-      <h2 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2">
+    <div className=" p-4">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
         <span className="text-blue-600 text-2xl">📋</span> Survey Module
         Management
       </h2>
 
-      {/* Add Module Inline */}
-      <div className="mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl shadow-sm w-full w-[40%]">
-          <input
-            type="text"
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter module name"
-            value={newModuleName}
-            onChange={(e) => setNewModuleName(e.target.value)}
-          />
+      {/* Add Module Form Card */}
+      <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">
+          Add New Module
+        </h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+          {/* Module Name */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Module Name
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter module name"
+              value={newModuleName}
+              onChange={(e) => setNewModuleName(e.target.value)}
+            />
+          </div>
+
+          {/* Tier Dropdown */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Tier</label>
+            <select
+              value={selectedTier}
+              onChange={(e) => setSelectedTier(e.target.value)}
+              className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">-- Choose Tier --</option>
+              {tiers.map((tier) => (
+                <option key={tier.value} value={tier.value}>
+                  {tier.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-6">
           <button
             onClick={handleAddModule}
-            className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+            className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow"
           >
             + Add Module
           </button>
