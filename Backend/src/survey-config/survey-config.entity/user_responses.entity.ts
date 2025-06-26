@@ -1,8 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Question } from "./question.entity";
-import {Option} from  "./option.entity"
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Question } from './question.entity';
+import { Option } from './option.entity';
 @Entity('user_responses')
 export class UserResponse {
   @PrimaryGeneratedColumn('uuid')
@@ -20,7 +28,10 @@ export class UserResponse {
   @JoinColumn({ name: 'questionId' })
   question: Question;
 
-  @ApiProperty({ description: 'Option ID (for single/multiple choice)', required: false })
+  @ApiProperty({
+    description: 'Option ID (for single/multiple choice)',
+    required: false,
+  })
   @Column({ nullable: true })
   optionId?: string;
 
@@ -28,11 +39,18 @@ export class UserResponse {
   @JoinColumn({ name: 'optionId' })
   selectedOption?: Option;
 
-  @ApiProperty({ description: 'Text answer (if open-ended question)', required: false })
+  @ApiProperty({
+    description: 'Text answer (if open-ended question)',
+    required: false,
+  })
   @Column({ nullable: true })
   textAnswer?: string;
-
-  @ApiProperty({ description: 'Timestamp of response' })
   @CreateDateColumn()
   createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
+  @Column({ nullable: true })
+  createdBy?: string;
+  @Column({ nullable: true })
+  updatedBy?: string;
 }

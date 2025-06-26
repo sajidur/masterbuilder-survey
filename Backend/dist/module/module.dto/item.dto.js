@@ -20,6 +20,7 @@ class ItemDto {
 exports.ItemDto = ItemDto;
 class CreateItemDto {
     name;
+    tier;
     menuId;
 }
 exports.CreateItemDto = CreateItemDto;
@@ -29,6 +30,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateItemDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the Item' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateItemDto.prototype, "tier", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Menu ID' }),
     (0, class_validator_1.IsString)(),

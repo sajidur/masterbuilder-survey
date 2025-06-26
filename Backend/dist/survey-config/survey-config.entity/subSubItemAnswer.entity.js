@@ -15,14 +15,29 @@ let SubSubItemAnswer = class SubSubItemAnswer {
     id;
     subSubItemId;
     answerId;
+    userId;
     createdAt;
     updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.SubSubItemAnswer = SubSubItemAnswer;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], SubSubItemAnswer.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItemAnswer.prototype, "subSubItemId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItemAnswer.prototype, "answerId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItemAnswer.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -31,6 +46,14 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], SubSubItemAnswer.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubItemAnswer.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubItemAnswer.prototype, "updatedBy", void 0);
 exports.SubSubItemAnswer = SubSubItemAnswer = __decorate([
     (0, typeorm_1.Entity)()
 ], SubSubItemAnswer);

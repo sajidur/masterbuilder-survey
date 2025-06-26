@@ -20,6 +20,12 @@ let Item = class Item {
     menuId;
     menu;
     subItems;
+    userId;
+    tier;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Item = Item;
 __decorate([
@@ -44,6 +50,30 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => subitem_entity_1.SubItem, (subItem) => subItem.item),
     __metadata("design:type", Array)
 ], Item.prototype, "subItems", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Item.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Item.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Item.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Item.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Item.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Item.prototype, "updatedBy", void 0);
 exports.Item = Item = __decorate([
     (0, typeorm_1.Entity)()
 ], Item);

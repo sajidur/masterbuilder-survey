@@ -12,12 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Field = void 0;
 const typeorm_1 = require("typeorm");
 const swagger_1 = require("@nestjs/swagger");
-const subsubitem_entity_1 = require("./subsubitem.entity");
+const subSubSubItem_entity_1 = require("./subSubSubItem.entity");
 let Field = class Field {
     id;
     name;
-    subSubItemId;
-    subSubItem;
+    subSubSubItemId;
+    subSubSubItem;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
+    fieldGroup;
 };
 exports.Field = Field;
 __decorate([
@@ -31,13 +37,37 @@ __decorate([
 ], Field.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, swagger_1.ApiProperty)({ description: 'SubItem ID' }),
+    (0, swagger_1.ApiProperty)({ description: 'SubSubSubItem ID' }),
     __metadata("design:type", String)
-], Field.prototype, "subSubItemId", void 0);
+], Field.prototype, "subSubSubItemId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.fields),
-    __metadata("design:type", subsubitem_entity_1.SubSubItem)
-], Field.prototype, "subSubItem", void 0);
+    (0, typeorm_1.ManyToOne)(() => subSubSubItem_entity_1.SubSubSubItem, (subSubSubItem) => subSubSubItem.fields),
+    __metadata("design:type", subSubSubItem_entity_1.SubSubSubItem)
+], Field.prototype, "subSubSubItem", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Field.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Field.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Field.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Field.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Field.prototype, "updatedBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Field.prototype, "fieldGroup", void 0);
 exports.Field = Field = __decorate([
     (0, typeorm_1.Entity)()
 ], Field);

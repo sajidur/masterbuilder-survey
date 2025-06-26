@@ -6,4 +6,10 @@ export declare class Item {
     menuId: string;
     menu: Menu;
     subItems: SubItem[];
+    userId: string;
+    tier: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

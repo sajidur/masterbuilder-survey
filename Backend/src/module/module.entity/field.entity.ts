@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
  
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { SubSubItem } from './subsubitem.entity';
+import { SubSubSubItem } from './subSubSubItem.entity';
 
 @Entity()
 export class Field {
@@ -14,10 +14,21 @@ export class Field {
   name: string;
 
   @Column()
-  @ApiProperty({ description: 'SubItem ID' })
-  subSubItemId: string;
+  @ApiProperty({ description: 'SubSubSubItem ID' })
+  subSubSubItemId: string;
 
-  @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.fields)
-  subSubItem: SubSubItem;
-
+  @ManyToOne(() => SubSubSubItem, (subSubSubItem) => subSubSubItem.fields)
+  subSubSubItem: SubSubSubItem;
+  @Column()
+  userId: string;
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
+  @Column({ nullable: true })
+  createdBy?: string;
+  @Column({ nullable: true })
+  updatedBy?: string;
+  @Column()
+  fieldGroup:string;
 }

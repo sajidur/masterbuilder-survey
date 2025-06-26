@@ -6,5 +6,6 @@ export declare class ItemDto {
 }
 export declare class CreateItemDto {
     name: string;
+    tier: string;
     menuId: string;
 }

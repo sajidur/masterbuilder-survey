@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsString,
   IsObject,
-
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -47,7 +46,7 @@ export class CreateDesignDefinitionDto {
     example: 'Login Flow Design',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   title: string;
 
   @ApiProperty({
@@ -55,7 +54,7 @@ export class CreateDesignDefinitionDto {
     type: Object,
   })
   @IsObject()
-  @IsNotEmpty()
+  @IsOptional()
   content: any;
 
   @ApiPropertyOptional({
@@ -117,6 +116,7 @@ export class DesignDefinitionResponseDto {
     example: 'Login Flow Design',
   })
   @IsString()
+  @IsOptional()
   title: string;
 
   @ApiProperty({
@@ -124,6 +124,7 @@ export class DesignDefinitionResponseDto {
     example: { nodes: [], edges: [] },
     type: Object,
   })
+  @IsOptional()
   content: any;
 
   @ApiPropertyOptional({

@@ -8,4 +8,9 @@ export declare class Option {
     question?: Question;
     questionModelId?: string;
     questionModel?: QuestionModel;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

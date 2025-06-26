@@ -1,5 +1,5 @@
-import { Question } from "./question.entity";
-import { Option } from "./option.entity";
+import { Question } from './question.entity';
+import { Option } from './option.entity';
 export declare class UserResponse {
     id: string;
     userId: string;
@@ -9,4 +9,7 @@ export declare class UserResponse {
     selectedOption?: Option;
     textAnswer?: string;
     createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

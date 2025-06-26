@@ -21,6 +21,11 @@ let DesignDefinition = class DesignDefinition {
     content;
     imageUrl;
     notes;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.DesignDefinition = DesignDefinition;
 __decorate([
@@ -47,11 +52,11 @@ __decorate([
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "type", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'json' }),
+    (0, typeorm_1.Column)({ type: 'json', nullable: true }),
     __metadata("design:type", Object)
 ], DesignDefinition.prototype, "content", void 0);
 __decorate([
@@ -62,6 +67,26 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], DesignDefinition.prototype, "notes", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], DesignDefinition.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], DesignDefinition.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], DesignDefinition.prototype, "updatedBy", void 0);
 exports.DesignDefinition = DesignDefinition = __decorate([
     (0, typeorm_1.Entity)('DesignDefinitions')
 ], DesignDefinition);

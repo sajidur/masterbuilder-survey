@@ -17,23 +17,61 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity/user.entity");
+const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcrypt");
+const user_role_1 = require("./user.entity/user.role");
 let UserService = class UserService {
     userRepository;
-    constructor(userRepository) {
+    roleRepository;
+    jwtService;
+    constructor(userRepository, roleRepository, jwtService) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.jwtService = jwtService;
     }
     findAll() {
         return this.userRepository.find();
     }
-    async findOne(id) {
-        const user = await this.userRepository.findOneBy({ id });
+    async login(loginDto) {
+        let user = await this.userRepository.findOneBy({ username: loginDto.username });
         if (!user) {
-            throw new Error(`User with id ${id} not found`);
+            user = await this.userRepository.findOneBy({ email: loginDto.username });
         }
-        return user;
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        const passwordValid = await bcrypt.compare(loginDto.password, user.password);
+        if (!passwordValid) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
+        }
+        const role = await this.roleRepository.findOneBy({ userId: user.id });
+        const payload = {
+            sub: user.id,
+            username: user.username,
+            email: user.email,
+            role: role?.name || 'user',
+        };
+        const token = this.jwtService.sign(payload);
+        return {
+            user: user,
+            role: role,
+            token: token,
+        };
     }
-    create(user) {
-        return this.userRepository.save(user);
+    async create(dto) {
+        const hashedPassword = await bcrypt.hash(dto.password, 10);
+        const user = this.userRepository.create({
+            username: dto.username,
+            email: dto.email,
+            password: hashedPassword,
+        });
+        const savedUser = await this.userRepository.save(user);
+        const role = this.roleRepository.create({
+            name: dto.userRole,
+            userId: savedUser.id,
+        });
+        const savedRole = await this.roleRepository.save(role);
+        return { user: savedUser, role: savedRole };
     }
     async remove(id) {
         await this.userRepository.delete(id);
@@ -43,6 +81,9 @@ exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(user_role_1.Role)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        jwt_1.JwtService])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

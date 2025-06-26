@@ -22,7 +22,9 @@ export class CreateMenuDto {
   @ApiProperty({ description: 'App ID' })
   @IsString()
   appId: string;
-
+  @ApiProperty({ description: 'Tier of the Menu' })
+  @IsString()
+  tier: string;
   
 
 }

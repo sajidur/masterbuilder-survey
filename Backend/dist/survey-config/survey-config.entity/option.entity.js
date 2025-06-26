@@ -22,6 +22,11 @@ let Option = class Option {
     question;
     questionModelId;
     questionModel;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Option = Option;
 __decorate([
@@ -58,6 +63,26 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'questionModelId' }),
     __metadata("design:type", question_model_entity_1.QuestionModel)
 ], Option.prototype, "questionModel", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Option.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Option.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Option.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Option.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Option.prototype, "updatedBy", void 0);
 exports.Option = Option = __decorate([
     (0, typeorm_1.Entity)('options')
 ], Option);

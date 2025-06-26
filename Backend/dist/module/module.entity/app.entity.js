@@ -17,9 +17,15 @@ const swagger_1 = require("@nestjs/swagger");
 let App = class App {
     id;
     name;
+    tier;
     moduleId;
     module;
     menus;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.App = App;
 __decorate([
@@ -33,6 +39,10 @@ __decorate([
 ], App.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], App.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     __metadata("design:type", String)
 ], App.prototype, "moduleId", void 0);
@@ -44,6 +54,26 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => menu_entity_1.Menu, (menu) => menu.app),
     __metadata("design:type", Array)
 ], App.prototype, "menus", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], App.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], App.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], App.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], App.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], App.prototype, "updatedBy", void 0);
 exports.App = App = __decorate([
     (0, typeorm_1.Entity)()
 ], App);

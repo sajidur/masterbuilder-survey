@@ -20,6 +20,11 @@ let QuestionGroup = class QuestionGroup {
     description;
     survey;
     questions;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.QuestionGroup = QuestionGroup;
 __decorate([
@@ -45,6 +50,26 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => question_entity_1.Question, q => q.questionGroup, { cascade: true, eager: true }),
     __metadata("design:type", Array)
 ], QuestionGroup.prototype, "questions", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], QuestionGroup.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], QuestionGroup.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], QuestionGroup.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], QuestionGroup.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], QuestionGroup.prototype, "updatedBy", void 0);
 exports.QuestionGroup = QuestionGroup = __decorate([
     (0, typeorm_1.Entity)('questionGroups')
 ], QuestionGroup);

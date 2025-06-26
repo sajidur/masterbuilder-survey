@@ -1,13 +1,14 @@
 import { SubSubItem } from 'src/module/module.entity/subsubitem.entity';
 import { Repository } from 'typeorm';
 import { DesignDefinition } from './design-defination.entity/design-definition.entity';
-import { CreateDesignDefinitionDto, DesignDefinitionResponseDto } from './design-definition.dto/design.dto';
+import { CreateDesignDefinitionDto } from './design-definition.dto/design.dto';
 import { App } from 'src/module/module.entity/app.entity';
 import { Field } from 'src/module/module.entity/field.entity';
 import { Item } from 'src/module/module.entity/item.entity';
 import { Menu } from 'src/module/module.entity/menu.entity';
 import { Modules } from 'src/module/module.entity/modules.entity';
 import { SubItem } from 'src/module/module.entity/subitem.entity';
+import { User } from 'src/user/user.entity/user.entity';
 export declare class DesignDefinitionService {
     private readonly designDefRepo;
     private readonly modulesRepository;
@@ -22,9 +23,9 @@ export declare class DesignDefinitionService {
         source: string;
         data: any;
     }>;
-    create(dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
-    findAll(): Promise<DesignDefinitionResponseDto[]>;
-    findOne(id: string): Promise<DesignDefinitionResponseDto>;
-    update(id: string, dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
+    create(dto: CreateDesignDefinitionDto, user: User): Promise<DesignDefinition>;
+    findAll(): Promise<DesignDefinition[]>;
+    findOne(id: string): Promise<DesignDefinition>;
+    update(id: string, dto: CreateDesignDefinitionDto, user: User): Promise<DesignDefinition>;
     remove(id: string): Promise<void>;
 }

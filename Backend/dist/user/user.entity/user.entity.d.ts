@@ -1,7 +1,10 @@
 export declare class UserEntity {
 }
 export declare class User {
-    id: number;
-    name: string;
+    id: string;
+    username: string;
     email: string;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

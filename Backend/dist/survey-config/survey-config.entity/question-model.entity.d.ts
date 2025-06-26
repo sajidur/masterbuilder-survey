@@ -9,4 +9,9 @@ export declare class QuestionModel {
     parentQuestion: Question;
     options: Option[];
     answers: Answer[];
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

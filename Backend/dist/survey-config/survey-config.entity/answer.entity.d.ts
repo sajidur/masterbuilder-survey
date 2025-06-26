@@ -4,7 +4,11 @@ export declare class Answer {
     id: string;
     text: string | null;
     selectedOptionIds: string[] | null;
-    userId?: string;
     question: Question;
     questionModel: QuestionModel;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

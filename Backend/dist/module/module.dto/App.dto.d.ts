@@ -6,9 +6,11 @@ export declare class AppDto {
 }
 export declare class CreateAppDto {
     name: string;
+    tier: string;
     moduleId: string;
 }
 export declare class UpdateAppDto {
     name: string;
+    tier: string;
     moduleId: string;
 }

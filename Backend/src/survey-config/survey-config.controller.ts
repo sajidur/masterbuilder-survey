@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
- 
- 
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable prettier/prettier */
- 
+
+/* eslint-disable prettier/prettier */
+
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable prettier/prettier */
@@ -28,6 +30,7 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -52,7 +55,10 @@ import {
   UpdateAnswerDto,
 } from './survey-config.dto/create-answer.dto';
 import { Answer } from './survey-config.entity/answer.entity';
-import { SubSubItemAnswerResponseDto, CreateSubSubItemAnswerDto } from './survey-config.dto/CreateSubSubItemAnswer.dto';
+import {
+  SubSubItemAnswerResponseDto,
+  CreateSubSubItemAnswerDto,
+} from './survey-config.dto/CreateSubSubItemAnswer.dto';
 import { SubSubItemAnswer } from './survey-config.entity/subSubItemAnswer.entity';
 @ApiTags('Surveys')
 @Controller('surveyConfig')
@@ -64,9 +70,13 @@ export class SurveyConfigController {
   //   }
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-  async create(@Body() createSurveyDto: CreateSurveyDto): Promise<Survey> {
+  async create(
+    @Body() createSurveyDto: CreateSurveyDto,
+    @Req() req: Request,
+  ): Promise<Survey> {
     try {
-      return await this.surveyService.create(createSurveyDto);
+      const user = req['user'];
+      return await this.surveyService.create(createSurveyDto, user);
     } catch (error) {
       console.error('Survey creation failed:', error.message, error.stack);
       throw error;
@@ -84,8 +94,13 @@ export class SurveyConfigController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateSurveyDto: CreateSurveyDto) {
-    return this.surveyService.update(id, updateSurveyDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateSurveyDto: CreateSurveyDto,
+    @Req() req: Request,
+  ) {
+    const user = req['user'];
+    return this.surveyService.update(id, updateSurveyDto, user);
   }
 
   @Delete(':id')
@@ -95,8 +110,12 @@ export class SurveyConfigController {
   //answer
   @Post('addAnswer')
   @ApiResponse({ status: 201, description: 'Answer created successfully' })
-  async createAnswer(@Body() createAnswerDto: CreateAnswerDto) {
-    return this.surveyService.createanswer(createAnswerDto);
+  async createAnswer(
+    @Body() createAnswerDto: CreateAnswerDto,
+    @Req() req: Request,
+  ) {
+    const user = req['user'];
+    return this.surveyService.createanswer(createAnswerDto, user);
   }
 
   @Get('getAnswer/:id')
@@ -107,14 +126,16 @@ export class SurveyConfigController {
     return await this.surveyService.findOneAnswer(id);
   }
 
- @Put('updateAnswer/:id')
-@ApiOperation({ summary: 'Update answer by ID' })
-async updateAnswer(
-  @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  @Body() updateAnswerDto: UpdateAnswerDto,
-): Promise<Answer> {
-  return await this.surveyService.updateAnswer(id, updateAnswerDto);
-}
+  @Put('updateAnswer/:id')
+  @ApiOperation({ summary: 'Update answer by ID' })
+  async updateAnswer(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() updateAnswerDto: UpdateAnswerDto,
+    @Req() req: Request,
+  ): Promise<Answer> {
+    const user = req['user'];
+    return await this.surveyService.updateAnswer(id, updateAnswerDto, user);
+  }
 
   @Delete('deleteAnswer:id')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -122,35 +143,38 @@ async updateAnswer(
   async removeAnswer(@Param('id', ParseUUIDPipe) id: string) {
     return this.surveyService.removeAnswer(id);
   }
- @Post("addSubSubItemAnswer")
+  @Post('addSubSubItemAnswer')
   @ApiResponse({ status: 201, type: SubSubItemAnswerResponseDto })
-  async createSubAns(@Body() dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto> {
-    const entity = await this.surveyService.createSubAns(dto);
-   return entity;
+  async createSubAns(
+    @Body() dto: CreateSubSubItemAnswerDto,
+    @Req() req: Request,
+  ): Promise<SubSubItemAnswerResponseDto> {
+    const user = req['user'];
+    const entity = await this.surveyService.createSubAns(dto, user);
+    return entity;
   }
 
-  @Get("getAllSubSubItemAnswer")
-  
+  @Get('getAllSubSubItemAnswer')
   async findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]> {
     const entities = await this.surveyService.findAllSubAns();
     return entities;
   }
 
   @Get('getSubSubItemAnswer:id')
- 
-  async findByIdSubAns(@Param('id', ParseIntPipe) id: string): Promise<SubSubItemAnswerResponseDto> {
+  async findByIdSubAns(
+    @Param('id', ParseIntPipe) id: string,
+  ): Promise<SubSubItemAnswerResponseDto> {
     const entity = await this.surveyService.findByIdSubAns(id);
     return entity;
   }
 
   @Delete('deleteSubSubItemAnswer:id')
-
-  async deleteSubAns(@Param('id', ParseIntPipe) id: string): Promise<{ message: string }> {
+  async deleteSubAns(
+    @Param('id', ParseIntPipe) id: string,
+  ): Promise<{ message: string }> {
     await this.surveyService.deleteSubAns(id);
     return { message: `SubSubItemAnswer with ID ${id} deleted successfully.` };
   }
-
-
 
   //   @Get('getAllQuestionSets')
   //   async fetchSurvey(): Promise<QuestionGroup[]> {

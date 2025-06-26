@@ -65,7 +65,7 @@ __decorate([
         example: 'Login Flow Design',
     }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateDesignDefinitionDto.prototype, "title", void 0);
 __decorate([
@@ -74,7 +74,7 @@ __decorate([
         type: Object,
     }),
     (0, class_validator_1.IsObject)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], CreateDesignDefinitionDto.prototype, "content", void 0);
 __decorate([
@@ -154,6 +154,7 @@ __decorate([
         example: 'Login Flow Design',
     }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], DesignDefinitionResponseDto.prototype, "title", void 0);
 __decorate([
@@ -162,6 +163,7 @@ __decorate([
         example: { nodes: [], edges: [] },
         type: Object,
     }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], DesignDefinitionResponseDto.prototype, "content", void 0);
 __decorate([

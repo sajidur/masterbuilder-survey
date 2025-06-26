@@ -43,28 +43,61 @@ let SurveyConfigService = class SurveyConfigService {
         this.answerRepository = answerRepository;
         this.subSubItemAnswerRepository = subSubItemAnswerRepository;
     }
-    async create(createSurveyDto) {
+    async create(createSurveyDto, user) {
         try {
+            const now = new Date();
+            const name = user.username;
+            const userId = user.id;
             const survey = this.surveyRepository.create({
                 title: createSurveyDto.title,
                 description: createSurveyDto.description,
-                questionGroups: createSurveyDto.questionGroups.map(groupDto => ({
+                updatedAt: now,
+                createdAt: now,
+                createdBy: name,
+                updatedBy: name,
+                userId: userId,
+                questionGroups: createSurveyDto.questionGroups.map((groupDto) => ({
                     title: groupDto.title,
                     description: groupDto.description,
-                    questions: groupDto.questions.map(questionDto => ({
+                    updatedAt: now,
+                    createdAt: now,
+                    createdBy: name,
+                    updatedBy: name,
+                    userId: userId,
+                    questions: groupDto.questions.map((questionDto) => ({
                         text: questionDto.text,
                         type: questionDto.type,
                         required: questionDto.required,
                         answer: questionDto.answer,
-                        options: questionDto.options?.map(optionDto => ({
+                        updatedAt: now,
+                        createdAt: now,
+                        createdBy: name,
+                        updatedBy: name,
+                        userId: userId,
+                        options: questionDto.options?.map((optionDto) => ({
+                            updatedAt: now,
+                            createdAt: now,
+                            createdBy: name,
+                            updatedBy: name,
+                            userId: userId,
                             text: optionDto.text,
                             value: optionDto.value,
                         })) || [],
-                        questionModels: questionDto.questionModels?.map(modelDto => ({
+                        questionModels: questionDto.questionModels?.map((modelDto) => ({
                             text: modelDto.text,
                             type: modelDto.type,
+                            updatedAt: now,
+                            createdAt: now,
+                            createdBy: name,
+                            updatedBy: name,
+                            userId: userId,
                             required: modelDto.required,
-                            options: modelDto.options?.map(opt => ({
+                            options: modelDto.options?.map((opt) => ({
+                                updatedAt: now,
+                                createdAt: now,
+                                createdBy: name,
+                                updatedBy: name,
+                                userId: userId,
                                 text: opt.text,
                                 value: opt.value,
                             })) || [],
@@ -80,21 +113,41 @@ let SurveyConfigService = class SurveyConfigService {
         }
     }
     findAll() {
-        return this.surveyRepository.find({ relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'] });
+        return this.surveyRepository.find({
+            relations: [
+                'questionGroups',
+                'questionGroups.questions',
+                'questionGroups.questions.options',
+                'questionGroups.questions.questionModels',
+                'questionGroups.questions.questionModels.options',
+            ],
+        });
     }
     async findOne(id) {
         const survey = await this.surveyRepository.findOne({
             where: { id },
-            relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options']
+            relations: [
+                'questionGroups',
+                'questionGroups.questions',
+                'questionGroups.questions.options',
+                'questionGroups.questions.questionModels',
+                'questionGroups.questions.questionModels.options',
+            ],
         });
         if (!survey)
             throw new common_1.NotFoundException('Survey not found');
         return survey;
     }
-    async update(id, updateSurveyDto) {
+    async update(id, updateSurveyDto, user) {
         const existingSurvey = await this.surveyRepository.findOne({
             where: { id },
-            relations: ['questionGroups', 'questionGroups.questions', 'questionGroups.questions.options', 'questionGroups.questions.questionModels', 'questionGroups.questions.questionModels.options'],
+            relations: [
+                'questionGroups',
+                'questionGroups.questions',
+                'questionGroups.questions.options',
+                'questionGroups.questions.questionModels',
+                'questionGroups.questions.questionModels.options',
+            ],
         });
         if (!existingSurvey) {
             throw new common_1.NotFoundException(`Survey with ID ${id} not found`);
@@ -102,31 +155,45 @@ let SurveyConfigService = class SurveyConfigService {
         await this.surveyRepository.update(id, {
             title: updateSurveyDto.title,
             description: updateSurveyDto.description,
+            updatedAt: new Date(),
+            updatedBy: user.username,
             questionGroups: [],
         });
         const updatedSurvey = this.surveyRepository.create({
             id,
             title: updateSurveyDto.title,
             description: updateSurveyDto.description,
-            questionGroups: updateSurveyDto.questionGroups.map(groupDto => ({
+            updatedAt: new Date(),
+            updatedBy: user.username,
+            questionGroups: updateSurveyDto.questionGroups.map((groupDto) => ({
                 title: groupDto.title,
                 description: groupDto.description,
-                questions: groupDto.questions.map(questionDto => ({
+                updatedAt: new Date(),
+                updatedBy: user.username,
+                questions: groupDto.questions.map((questionDto) => ({
                     text: questionDto.text,
                     type: questionDto.type,
                     required: questionDto.required,
                     answer: questionDto.answer,
-                    options: questionDto.options?.map(optionDto => ({
+                    updatedAt: new Date(),
+                    updatedBy: user.username,
+                    options: questionDto.options?.map((optionDto) => ({
                         text: optionDto.text,
                         value: optionDto.value,
+                        updatedAt: new Date(),
+                        updatedBy: user.username,
                     })) || [],
-                    questionModels: questionDto.questionModels?.map(modelDto => ({
+                    questionModels: questionDto.questionModels?.map((modelDto) => ({
                         text: modelDto.text,
                         type: modelDto.type,
                         required: modelDto.required,
-                        options: modelDto.options?.map(opt => ({
+                        updatedAt: new Date(),
+                        updatedBy: user.username,
+                        options: modelDto.options?.map((opt) => ({
                             text: opt.text,
                             value: opt.value,
+                            updatedAt: new Date(),
+                            updatedBy: user.username,
                         })) || [],
                     })) || [],
                 })),
@@ -138,19 +205,27 @@ let SurveyConfigService = class SurveyConfigService {
         const survey = await this.findOne(id);
         return this.surveyRepository.remove(survey);
     }
-    async createanswer(createAnswerDto) {
+    async createanswer(createAnswerDto, user) {
         const answer = new answer_entity_1.Answer();
-        answer.userId = createAnswerDto.userId;
+        answer.userId = user.id;
         answer.text = createAnswerDto.text ?? null;
         answer.selectedOptionIds = createAnswerDto.selectedOptionIds ?? [];
+        answer.createdAt = new Date();
+        answer.updatedAt = new Date();
+        answer.createdBy = user.username;
+        answer.updatedBy = user.username;
         if (createAnswerDto.questionId) {
-            const question = await this.questionRepo.findOneBy({ id: createAnswerDto.questionId });
+            const question = await this.questionRepo.findOneBy({
+                id: createAnswerDto.questionId,
+            });
             if (!question)
                 throw new common_1.NotFoundException('Question not found');
             answer.question = question;
         }
         if (createAnswerDto.questionModelId) {
-            const model = await this.questionModelRepository.findOneBy({ id: createAnswerDto.questionModelId });
+            const model = await this.questionModelRepository.findOneBy({
+                id: createAnswerDto.questionModelId,
+            });
             if (!model)
                 throw new common_1.NotFoundException('Question Model not found');
             answer.questionModel = model;
@@ -167,22 +242,27 @@ let SurveyConfigService = class SurveyConfigService {
         }
         return answer;
     }
-    async updateAnswer(id, updateDto) {
+    async updateAnswer(id, updateDto, user) {
         const answer = await this.answerRepository.findOne({ where: { id } });
         if (!answer) {
             throw new common_1.NotFoundException(`Answer with ID ${id} not found`);
         }
-        answer.userId = updateDto.userId;
         answer.text = updateDto.text ?? null;
         answer.selectedOptionIds = updateDto.selectedOptionIds ?? [];
+        answer.updatedAt = new Date();
+        answer.updatedBy = user.username;
         if (updateDto.questionId) {
-            const question = await this.questionRepo.findOneBy({ id: updateDto.questionId });
+            const question = await this.questionRepo.findOneBy({
+                id: updateDto.questionId,
+            });
             if (!question)
                 throw new common_1.NotFoundException('Question not found');
             answer.question = question;
         }
         if (updateDto.questionModelId) {
-            const model = await this.questionModelRepository.findOneBy({ id: updateDto.questionModelId });
+            const model = await this.questionModelRepository.findOneBy({
+                id: updateDto.questionModelId,
+            });
             if (!model)
                 throw new common_1.NotFoundException('Question Model not found');
             answer.questionModel = model;
@@ -195,35 +275,51 @@ let SurveyConfigService = class SurveyConfigService {
             throw new common_1.NotFoundException(`Answer with ID ${id} not found`);
         }
     }
-    async createSubAns(dto) {
-        const subSubItem = await this.subSubItemRepo.findOne({ where: { id: dto.subSubItemId } });
+    async createSubAns(dto, user) {
+        const subSubItem = await this.subSubItemRepo.findOne({
+            where: { id: dto.subSubItemId },
+        });
         if (!subSubItem) {
             throw new common_1.NotFoundException(`SubSubItem with ID ${dto.subSubItemId} not found`);
         }
-        const answer = await this.answerRepository.findOne({ where: { id: dto.answerId } });
+        const answer = await this.answerRepository.findOne({
+            where: { id: dto.answerId },
+        });
         if (!answer) {
             throw new common_1.NotFoundException(`Answer with ID ${dto.answerId} not found`);
         }
         const entity = this.subSubItemAnswerRepository.create({
             subSubItemId: subSubItem.id,
-            answerId: answer.id
+            answerId: answer.id,
+            createdAt: new Date(),
+            createdBy: user.username,
+            updatedAt: new Date(),
+            updatedBy: user.username,
+            userId: user.id,
         });
-        var data = this.subSubItemAnswerRepository.save(entity);
+        var data = await this.subSubItemAnswerRepository.save(entity);
         return {
-            id: entity.id,
+            id: data.id,
             subSubItem: subSubItem,
             answer: answer,
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt,
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt,
+            createdBy: data?.createdBy ?? null,
+            updatedBy: data?.updatedBy ?? null,
+            userId: data.userId,
         };
     }
     async findAllSubAns() {
         const entries = await this.subSubItemAnswerRepository.find();
         const result = [];
         for (const entry of entries) {
-            const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+            const subSubItem = await this.subSubItemRepo.findOne({
+                where: { id: entry.subSubItemId },
+            });
             console.log(subSubItem);
-            const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+            const answer = await this.answerRepository.findOne({
+                where: { id: entry.answerId },
+            });
             console.log(answer);
             if (subSubItem && answer) {
                 result.push({
@@ -232,6 +328,9 @@ let SurveyConfigService = class SurveyConfigService {
                     answer,
                     createdAt: entry.createdAt,
                     updatedAt: entry.updatedAt,
+                    createdBy: entry.createdBy ?? null,
+                    updatedBy: entry.updatedBy ?? null,
+                    userId: entry.userId,
                 });
             }
         }
@@ -239,17 +338,21 @@ let SurveyConfigService = class SurveyConfigService {
     }
     async findByIdSubAns(id) {
         const entry = await this.subSubItemAnswerRepository.findOne({
-            where: { id }
+            where: { id },
         });
         if (!entry) {
             throw new common_1.NotFoundException(`SubSubItemAnswer with ID ${id} not found`);
         }
-        const subSubItem = await this.subSubItemRepo.findOne({ where: { id: entry.subSubItemId } });
+        const subSubItem = await this.subSubItemRepo.findOne({
+            where: { id: entry.subSubItemId },
+        });
         console.log(subSubItem);
         if (!subSubItem) {
             throw new common_1.NotFoundException(`SubSubItem with ID ${entry.subSubItemId} not found`);
         }
-        const answer = await this.answerRepository.findOne({ where: { id: entry.answerId } });
+        const answer = await this.answerRepository.findOne({
+            where: { id: entry.answerId },
+        });
         if (!answer) {
             throw new common_1.NotFoundException(`Answer with ID ${entry.answerId} not found`);
         }
@@ -260,6 +363,9 @@ let SurveyConfigService = class SurveyConfigService {
             answer: answer,
             createdAt: entry.createdAt,
             updatedAt: entry.updatedAt,
+            createdBy: entry.createdBy ?? null,
+            updatedBy: entry.updatedBy ?? null,
+            userId: entry.userId,
         };
     }
     async deleteSubAns(id) {

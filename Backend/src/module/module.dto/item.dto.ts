@@ -14,7 +14,9 @@ export class CreateItemDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
+ @ApiProperty({ description: 'Tier of the Item' })
+  @IsString()
+  tier: string;
   @ApiProperty({ description: 'Menu ID' })
   @IsString()
   @IsNotEmpty()

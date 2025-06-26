@@ -17,6 +17,11 @@ let Survey = class Survey {
     title;
     description;
     questionGroups;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Survey = Survey;
 __decorate([
@@ -32,9 +37,32 @@ __decorate([
     __metadata("design:type", String)
 ], Survey.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => questionGroup_entity_1.QuestionGroup, qg => qg.survey, { cascade: true, eager: true }),
+    (0, typeorm_1.OneToMany)(() => questionGroup_entity_1.QuestionGroup, (qg) => qg.survey, {
+        cascade: true,
+        eager: true,
+    }),
     __metadata("design:type", Array)
 ], Survey.prototype, "questionGroups", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Survey.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Survey.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Survey.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Survey.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Survey.prototype, "updatedBy", void 0);
 exports.Survey = Survey = __decorate([
     (0, typeorm_1.Entity)('survey-configs')
 ], Survey);

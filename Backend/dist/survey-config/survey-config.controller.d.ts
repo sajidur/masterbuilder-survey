@@ -7,16 +7,16 @@ import { SubSubItemAnswerResponseDto, CreateSubSubItemAnswerDto } from './survey
 export declare class SurveyConfigController {
     private readonly surveyService;
     constructor(surveyService: SurveyConfigService);
-    create(createSurveyDto: CreateSurveyDto): Promise<Survey>;
+    create(createSurveyDto: CreateSurveyDto, req: Request): Promise<Survey>;
     findAll(): Promise<Survey[]>;
     findOne(id: string): Promise<Survey>;
-    update(id: string, updateSurveyDto: CreateSurveyDto): Promise<Survey>;
+    update(id: string, updateSurveyDto: CreateSurveyDto, req: Request): Promise<Survey>;
     remove(id: string): Promise<Survey>;
-    createAnswer(createAnswerDto: CreateAnswerDto): Promise<Answer>;
+    createAnswer(createAnswerDto: CreateAnswerDto, req: Request): Promise<Answer>;
     findOneAnswer(id: string): Promise<Answer>;
-    updateAnswer(id: string, updateAnswerDto: UpdateAnswerDto): Promise<Answer>;
+    updateAnswer(id: string, updateAnswerDto: UpdateAnswerDto, req: Request): Promise<Answer>;
     removeAnswer(id: string): Promise<void>;
-    createSubAns(dto: CreateSubSubItemAnswerDto): Promise<SubSubItemAnswerResponseDto>;
+    createSubAns(dto: CreateSubSubItemAnswerDto, req: Request): Promise<SubSubItemAnswerResponseDto>;
     findAllSubAns(): Promise<SubSubItemAnswerResponseDto[]>;
     findByIdSubAns(id: string): Promise<SubSubItemAnswerResponseDto>;
     deleteSubAns(id: string): Promise<{

@@ -13,18 +13,12 @@ exports.UpdateAnswerDto = exports.CreateAnswerDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateAnswerDto {
-    userId;
     text;
     selectedOptionIds;
     questionId;
     questionModelId;
 }
 exports.CreateAnswerDto = CreateAnswerDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'User ID who answered' }),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateAnswerDto.prototype, "userId", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Optional text response' }),
     (0, class_validator_1.IsOptional)(),
@@ -51,19 +45,12 @@ __decorate([
     __metadata("design:type", String)
 ], CreateAnswerDto.prototype, "questionModelId", void 0);
 class UpdateAnswerDto {
-    userId;
     text;
     selectedOptionIds;
     questionId;
     questionModelId;
 }
 exports.UpdateAnswerDto = UpdateAnswerDto;
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'User ID who answered' }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateAnswerDto.prototype, "userId", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Optional text response' }),
     (0, class_validator_1.IsOptional)(),

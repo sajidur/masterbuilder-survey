@@ -26,6 +26,7 @@ const subiItem_dto_1 = require("./module.dto/subiItem.dto");
 const subSubItem_dto_1 = require("./module.dto/subSubItem.dto");
 const field_dto_1 = require("./module.dto/field.dto");
 const create_module_dto_1 = require("./module.dto/create-module.dto");
+const subsubsubitem_dto_1 = require("./module.dto/subsubsubitem.dto");
 let SurveyModuleController = class SurveyModuleController {
     moduleService;
     constructor(moduleService) {
@@ -37,11 +38,13 @@ let SurveyModuleController = class SurveyModuleController {
     async findOneSubItem(id) {
         return await this.moduleService.findOneSubItem(id);
     }
-    async createSubItem(subItem) {
-        return await this.moduleService.createSubItem(subItem);
+    async createSubItem(subItem, req) {
+        const user = req['user'];
+        return await this.moduleService.createSubItem(subItem, user);
     }
-    async updateSubItem(id, subItem) {
-        return await this.moduleService.updateSubItem(id, subItem);
+    async updateSubItem(id, subItem, req) {
+        const user = req['user'];
+        return await this.moduleService.updateSubItem(id, subItem, user);
     }
     deleteSubItem(id) {
         return this.moduleService.deleteSubItem(id);
@@ -52,11 +55,13 @@ let SurveyModuleController = class SurveyModuleController {
     findOne(id) {
         return this.moduleService.findOne(id);
     }
-    create(moduleDto) {
-        return this.moduleService.create(moduleDto);
+    create(moduleDto, req) {
+        const user = req['user'];
+        return this.moduleService.create(moduleDto, user);
     }
-    update(id, moduleDto) {
-        return this.moduleService.update(id, moduleDto);
+    update(id, moduleDto, req) {
+        const user = req['user'];
+        return this.moduleService.update(id, moduleDto, user);
     }
     remove(id) {
         return this.moduleService.remove(id);
@@ -71,11 +76,13 @@ let SurveyModuleController = class SurveyModuleController {
         }
         return app;
     }
-    createApp(app) {
-        return this.moduleService.createApp(app);
+    createApp(app, req) {
+        const user = req['user'];
+        return this.moduleService.createApp(app, user);
     }
-    updateApp(id, app) {
-        return this.moduleService.updateApp(id, app);
+    updateApp(id, app, req) {
+        const user = req['user'];
+        return this.moduleService.updateApp(id, app, user);
     }
     deleteApp(id) {
         return this.moduleService.deleteApp(id);
@@ -89,11 +96,13 @@ let SurveyModuleController = class SurveyModuleController {
             throw new common_1.NotFoundException(`Menu with ID ${id} not found`);
         return menu;
     }
-    createMenu(menuDto) {
-        return this.moduleService.createMenu(menuDto);
+    createMenu(menuDto, req) {
+        const user = req['user'];
+        return this.moduleService.createMenu(menuDto, user);
     }
-    updateMenu(id, menuDto) {
-        return this.moduleService.updateMenu(id, menuDto);
+    updateMenu(id, menuDto, req) {
+        const user = req['user'];
+        return this.moduleService.updateMenu(id, menuDto, user);
     }
     deleteMenu(id) {
         return this.moduleService.deleteMenu(id);
@@ -107,12 +116,13 @@ let SurveyModuleController = class SurveyModuleController {
             throw new common_1.NotFoundException(`Item with ID ${id} not found`);
         return item;
     }
-    createItem(item) {
-        return this.moduleService.createItem(item);
+    createItem(item, req) {
+        const user = req['user'];
+        return this.moduleService.createItem(item, user);
     }
-    updateItem(id, item) {
-        console.log(App_dto_1.CreateAppDto.name);
-        return this.moduleService.updateItem(id, item);
+    updateItem(id, item, req) {
+        const user = req['user'];
+        return this.moduleService.updateItem(id, item, user);
     }
     deleteItem(id) {
         return this.moduleService.deleteItem(id);
@@ -126,11 +136,13 @@ let SurveyModuleController = class SurveyModuleController {
             throw new common_1.NotFoundException(`Field with ID ${id} not found`);
         return field;
     }
-    async createField(field) {
-        return this.moduleService.createField(field);
+    async createField(field, req) {
+        const user = req['user'];
+        return this.moduleService.createField(field, user);
     }
-    async updateField(id, field) {
-        return this.moduleService.updateField(id, field);
+    async updateField(id, field, req) {
+        const user = req['user'];
+        return this.moduleService.updateField(id, field, user);
     }
     deleteField(id) {
         return this.moduleService.deleteField(id);
@@ -141,14 +153,33 @@ let SurveyModuleController = class SurveyModuleController {
     async findOneSubSubItem(id) {
         return this.moduleService.findOneSubSubItem(id);
     }
-    async createSubSubItem(data) {
-        return this.moduleService.createSubSubItem(data);
+    async createSubSubItem(data, req) {
+        const user = req['user'];
+        return this.moduleService.createSubSubItem(data, user);
     }
-    async updateSubSubItem(id, data) {
-        return this.moduleService.updateSubSubItem(id, data);
+    async updateSubSubItem(id, data, req) {
+        const user = req['user'];
+        return this.moduleService.updateSubSubItem(id, data, user);
     }
     async deleteSubSubItem(id) {
         return this.moduleService.deleteSubSubItem(id);
+    }
+    async findAllSubSubSubItems() {
+        return this.moduleService.findAllSubSubSubItems();
+    }
+    async findOneSubSubSubItem(id) {
+        return this.moduleService.findOneSubSubSubItem(id);
+    }
+    async createSubSubSubItem(dto, req) {
+        const user = req['user'];
+        return this.moduleService.createSubSubSubItem(dto, user);
+    }
+    async updateSubSubSubItem(id, dto, req) {
+        const user = req['user'];
+        return this.moduleService.updateSubSubSubItem(id, dto, user);
+    }
+    async deleteSubSubSubItem(id) {
+        return this.moduleService.deleteSubSubSubItem(id);
     }
 };
 exports.SurveyModuleController = SurveyModuleController;
@@ -173,8 +204,9 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: subiItem_dto_1.CreateSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: subiItem_dto_1.SubItemDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [subiItem_dto_1.CreateSubItemDto]),
+    __metadata("design:paramtypes", [subiItem_dto_1.CreateSubItemDto, Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createSubItem", null);
 __decorate([
@@ -183,8 +215,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: subiItem_dto_1.SubItemDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, subiItem_dto_1.CreateSubItemDto]),
+    __metadata("design:paramtypes", [String, subiItem_dto_1.CreateSubItemDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateSubItem", null);
 __decorate([
@@ -213,8 +247,10 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: create_module_dto_1.CreateModuleDto }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Module created', type: modules_entity_1.Modules }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_module_dto_1.CreateModuleDto]),
+    __metadata("design:paramtypes", [create_module_dto_1.CreateModuleDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "create", null);
 __decorate([
@@ -223,8 +259,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Module updated', type: modules_entity_1.Modules }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_module_dto_1.UpdateModuleDto]),
+    __metadata("design:paramtypes", [String, create_module_dto_1.UpdateModuleDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "update", null);
 __decorate([
@@ -254,8 +292,10 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: App_dto_1.CreateAppDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: App_dto_1.AppDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [App_dto_1.CreateAppDto]),
+    __metadata("design:paramtypes", [App_dto_1.CreateAppDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createApp", null);
 __decorate([
@@ -264,8 +304,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: App_dto_1.AppDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, App_dto_1.UpdateAppDto]),
+    __metadata("design:paramtypes", [String, App_dto_1.UpdateAppDto, Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateApp", null);
 __decorate([
@@ -296,8 +337,9 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: menu_dto_1.CreateMenuDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: menu_dto_1.MenuDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [menu_dto_1.CreateMenuDto]),
+    __metadata("design:paramtypes", [menu_dto_1.CreateMenuDto, Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createMenu", null);
 __decorate([
@@ -306,8 +348,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: menu_dto_1.MenuDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, menu_dto_1.CreateMenuDto]),
+    __metadata("design:paramtypes", [String, menu_dto_1.CreateMenuDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateMenu", null);
 __decorate([
@@ -338,8 +382,10 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: item_dto_1.CreateItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: item_dto_1.ItemDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [item_dto_1.CreateItemDto]),
+    __metadata("design:paramtypes", [item_dto_1.CreateItemDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createItem", null);
 __decorate([
@@ -348,8 +394,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: item_dto_1.ItemDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, item_dto_1.CreateItemDto]),
+    __metadata("design:paramtypes", [String, item_dto_1.CreateItemDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateItem", null);
 __decorate([
@@ -381,8 +429,10 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: field_dto_1.CreateFieldDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: field_dto_1.FieldDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [field_dto_1.CreateFieldDto]),
+    __metadata("design:paramtypes", [field_dto_1.CreateFieldDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createField", null);
 __decorate([
@@ -391,8 +441,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: field_dto_1.FieldDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, field_dto_1.CreateFieldDto]),
+    __metadata("design:paramtypes", [String, field_dto_1.CreateFieldDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateField", null);
 __decorate([
@@ -423,8 +475,9 @@ __decorate([
     (0, swagger_1.ApiBody)({ type: subSubItem_dto_1.CreateSubSubItemDto }),
     (0, swagger_1.ApiResponse)({ status: 201, type: subSubItem_dto_1.SubSubItemDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [subSubItem_dto_1.CreateSubSubItemDto]),
+    __metadata("design:paramtypes", [subSubItem_dto_1.CreateSubSubItemDto, Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "createSubSubItem", null);
 __decorate([
@@ -433,8 +486,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, type: subSubItem_dto_1.SubSubItemDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, subsubitem_entity_1.SubSubItem]),
+    __metadata("design:paramtypes", [String, subsubitem_entity_1.SubSubItem,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "updateSubSubItem", null);
 __decorate([
@@ -445,6 +500,52 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SurveyModuleController.prototype, "deleteSubSubItem", null);
+__decorate([
+    (0, common_1.Get)('getAllSubSubSubItems'),
+    (0, swagger_1.ApiResponse)({ status: 200, type: [subsubsubitem_dto_1.SubSubSubItemDto] }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "findAllSubSubSubItems", null);
+__decorate([
+    (0, common_1.Get)('SubSubSubItem:id'),
+    (0, swagger_1.ApiResponse)({ status: 200, type: subsubsubitem_dto_1.SubSubSubItemDto }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "findOneSubSubSubItem", null);
+__decorate([
+    (0, common_1.Post)('addSubSubSubItem'),
+    (0, swagger_1.ApiBody)({ type: subsubsubitem_dto_1.CreateSubSubSubItemDto }),
+    (0, swagger_1.ApiResponse)({ status: 201, type: subsubsubitem_dto_1.SubSubSubItemDto }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [subsubsubitem_dto_1.CreateSubSubSubItemDto,
+        Request]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "createSubSubSubItem", null);
+__decorate([
+    (0, common_1.Put)('updateSubSubSubItem/:id'),
+    (0, swagger_1.ApiBody)({ type: subsubsubitem_dto_1.CreateSubSubSubItemDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, type: subsubsubitem_dto_1.SubSubSubItemDto }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, subsubsubitem_dto_1.CreateSubSubSubItemDto,
+        Request]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "updateSubSubSubItem", null);
+__decorate([
+    (0, common_1.Delete)('deleteSubSubSubItem/:id'),
+    (0, swagger_1.ApiResponse)({ status: 204, description: 'Deleted successfully' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SurveyModuleController.prototype, "deleteSubSubSubItem", null);
 exports.SurveyModuleController = SurveyModuleController = __decorate([
     (0, swagger_1.ApiTags)('survey-module'),
     (0, common_1.Controller)('survey-module'),

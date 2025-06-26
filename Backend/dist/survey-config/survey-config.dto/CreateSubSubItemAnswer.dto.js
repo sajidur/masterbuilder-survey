@@ -33,6 +33,9 @@ class SubSubItemAnswerResponseDto {
     answer;
     createdAt;
     updatedAt;
+    createdBy;
+    updatedBy;
+    userId;
 }
 exports.SubSubItemAnswerResponseDto = SubSubItemAnswerResponseDto;
 //# sourceMappingURL=CreateSubSubItemAnswer.dto.js.map

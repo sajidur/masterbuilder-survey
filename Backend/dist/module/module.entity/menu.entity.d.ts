@@ -6,4 +6,10 @@ export declare class Menu {
     appId: string;
     app: App;
     items: Item[];
+    userId: string;
+    tier: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

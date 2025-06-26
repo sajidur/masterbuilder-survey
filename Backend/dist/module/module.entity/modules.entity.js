@@ -16,7 +16,13 @@ const swagger_1 = require("@nestjs/swagger");
 let Modules = class Modules {
     id;
     name;
+    tier;
     apps;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Modules = Modules;
 __decorate([
@@ -29,9 +35,33 @@ __decorate([
     __metadata("design:type", String)
 ], Modules.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Modules.prototype, "tier", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => app_entity_1.App, (app) => app.module),
     __metadata("design:type", Array)
 ], Modules.prototype, "apps", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Modules.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Modules.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Modules.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Modules.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Modules.prototype, "updatedBy", void 0);
 exports.Modules = Modules = __decorate([
     (0, typeorm_1.Entity)()
 ], Modules);

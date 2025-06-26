@@ -26,6 +26,11 @@ let Question = class Question {
     options;
     questionModels;
     answers;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Question = Question;
 __decorate([
@@ -69,6 +74,26 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => answer_entity_1.Answer, answer => answer.question, { cascade: true }),
     __metadata("design:type", Array)
 ], Question.prototype, "answers", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Question.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Question.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Question.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Question.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Question.prototype, "updatedBy", void 0);
 exports.Question = Question = __decorate([
     (0, typeorm_1.Entity)('questions')
 ], Question);

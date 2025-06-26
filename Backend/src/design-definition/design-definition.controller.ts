@@ -1,4 +1,10 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
  
@@ -27,6 +33,7 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import { DesignDefinitionService } from './design-definition.service';
+import { DesignDefinition } from './design-defination.entity/design-definition.entity';
 
 @ApiTags('Design Definitions')
 @Controller('design-definitions')
@@ -59,12 +66,12 @@ export class DesignDefinitionController {
         },
         filename: (req, file, cb) => {
           const fileExt = extname(file.originalname).toLowerCase();
-          const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx'];
+          const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx','txt','xlsx'];
 
           if (!allowedExtensions.includes(fileExt)) {
             return cb(
               new BadRequestException(
-                'Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx files are allowed.',
+                'Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx,.txt,.xlsx files are allowed.',
               ),
               '',
             );
@@ -76,13 +83,13 @@ export class DesignDefinitionController {
       }),
       fileFilter: (req, file, cb) => {
         const fileExt = extname(file.originalname).toLowerCase();
-        const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx'];
+        const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx','txt','xlsx'];
         if (allowedExtensions.includes(fileExt)) {
           cb(null, true);
         } else {
           cb(
             new BadRequestException(
-              'Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx files are allowed.',
+              'Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx,.txt,.xlsx files are allowed.',
             ),
             false,
           );
@@ -114,19 +121,24 @@ export class DesignDefinitionController {
   @ApiResponse({ status: 201, description: 'Design Definition created.' })
   async create(
     @Body() dto: CreateDesignDefinitionDto,
-  ): Promise<DesignDefinitionResponseDto> {
-    return this.designDefService.create(dto);
+    @Req() req: Request,
+  ): Promise<DesignDefinition> {
+    const user = req['user'];
+   // const role = req['role'];
+
+    return this.designDefService.create(dto, user);
+   // return this.designDefService.create(dto);
   }
 
   @Get("getAll")
   @ApiOperation({ summary: 'Get all Design Definitions' })
-  async findAll(): Promise<DesignDefinitionResponseDto[]> {
+  async findAll(): Promise<DesignDefinition[]> {
     return this.designDefService.findAll();
   }
 
   @Get('get:id')
   @ApiOperation({ summary: 'Get a Design Definition by ID' })
-  async findOne(@Param('id') id: string): Promise<DesignDefinitionResponseDto> {
+  async findOne(@Param('id') id: string): Promise<DesignDefinition> {
     return this.designDefService.findOne(id);
   }
 
@@ -135,8 +147,11 @@ export class DesignDefinitionController {
   async update(
     @Param('id') id: string,
      @Body() dto: CreateDesignDefinitionDto,
-  ): Promise<DesignDefinitionResponseDto>  {
-    return this.designDefService.update(id, dto);
+      @Req() req: Request,
+  ): Promise<DesignDefinition>  {
+     const user = req['user'];
+   // const role = req['role'];
+    return this.designDefService.update(id, dto,user);
   }
 
   @Delete('delete:id')

@@ -14,6 +14,7 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateModuleDto {
     name;
+    tier;
 }
 exports.CreateModuleDto = CreateModuleDto;
 __decorate([
@@ -21,8 +22,14 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateModuleDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the module' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateModuleDto.prototype, "tier", void 0);
 class UpdateModuleDto {
     name;
+    tier;
 }
 exports.UpdateModuleDto = UpdateModuleDto;
 __decorate([
@@ -30,6 +37,11 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Name of the module' }),
     __metadata("design:type", String)
 ], UpdateModuleDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the module' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateModuleDto.prototype, "tier", void 0);
 class ModuleDto {
     id;
     name;

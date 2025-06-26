@@ -1,11 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {  ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateAnswerDto {
-  @ApiProperty({ description: 'User ID who answered' })
-  @IsString()
-  userId: string;
 
   @ApiPropertyOptional({ description: 'Optional text response' })
   @IsOptional()
@@ -29,10 +26,7 @@ export class CreateAnswerDto {
   questionModelId?: string;
 }
 export class UpdateAnswerDto {
-  @ApiPropertyOptional({ description: 'User ID who answered' })
-  @IsOptional()
-  @IsString()
-  userId?: string;
+
 
   @ApiPropertyOptional({ description: 'Optional text response' })
   @IsOptional()

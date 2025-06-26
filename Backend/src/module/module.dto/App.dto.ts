@@ -19,7 +19,9 @@ export class CreateAppDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
+ @ApiProperty({ description: 'Tier of the App' })
+  @IsString()
+  tier: string;
   @ApiProperty({ description: 'Module ID' })
   @IsNotEmpty()
   @IsString()
@@ -32,7 +34,9 @@ export class UpdateAppDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
+  @ApiProperty({ description: 'Tier of the App' })
+  @IsString()
+  tier: string;
   @ApiProperty({ description: 'Module ID' })
   @IsNotEmpty()
   @IsString()

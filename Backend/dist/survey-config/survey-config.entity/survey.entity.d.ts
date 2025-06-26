@@ -4,4 +4,9 @@ export declare class Survey {
     title: string;
     description?: string;
     questionGroups: QuestionGroup[];
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

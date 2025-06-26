@@ -16,9 +16,16 @@ const subsubitem_entity_1 = require("./subsubitem.entity");
 let SubItem = class SubItem {
     id;
     name;
+    tier;
     itemId;
     item;
     subSubItems;
+    templateId;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.SubItem = SubItem;
 __decorate([
@@ -32,6 +39,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
+], SubItem.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
 ], SubItem.prototype, "itemId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => item_entity_1.Item, (item) => item.subItems, { nullable: true }),
@@ -41,6 +52,30 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.subItem),
     __metadata("design:type", Array)
 ], SubItem.prototype, "subSubItems", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubItem.prototype, "templateId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubItem.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], SubItem.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], SubItem.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubItem.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubItem.prototype, "updatedBy", void 0);
 exports.SubItem = SubItem = __decorate([
     (0, typeorm_1.Entity)()
 ], SubItem);

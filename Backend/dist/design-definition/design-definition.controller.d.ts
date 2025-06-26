@@ -1,6 +1,7 @@
-import { CreateDesignDefinitionDto, DesignDefinitionResponseDto } from './design-definition.dto/design.dto';
+import { CreateDesignDefinitionDto } from './design-definition.dto/design.dto';
 import { Request } from 'express';
 import { DesignDefinitionService } from './design-definition.service';
+import { DesignDefinition } from './design-defination.entity/design-definition.entity';
 export declare class DesignDefinitionController {
     private readonly designDefService;
     constructor(designDefService: DesignDefinitionService);
@@ -8,9 +9,9 @@ export declare class DesignDefinitionController {
         message: string;
         photoUrl: string;
     }>;
-    create(dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
-    findAll(): Promise<DesignDefinitionResponseDto[]>;
-    findOne(id: string): Promise<DesignDefinitionResponseDto>;
-    update(id: string, dto: CreateDesignDefinitionDto): Promise<DesignDefinitionResponseDto>;
+    create(dto: CreateDesignDefinitionDto, req: Request): Promise<DesignDefinition>;
+    findAll(): Promise<DesignDefinition[]>;
+    findOne(id: string): Promise<DesignDefinition>;
+    update(id: string, dto: CreateDesignDefinitionDto, req: Request): Promise<DesignDefinition>;
     remove(id: string): Promise<void>;
 }

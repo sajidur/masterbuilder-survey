@@ -15,13 +15,15 @@ const class_validator_1 = require("class-validator");
 class FieldDto {
     id;
     name;
-    subSubItemId;
-    subSubItem;
+    fieldGroup;
+    subSubSubItemId;
+    subSubSubItem;
 }
 exports.FieldDto = FieldDto;
 class CreateFieldDto {
     name;
-    subSubItemId;
+    fieldGroup;
+    subSubSubItemId;
 }
 exports.CreateFieldDto = CreateFieldDto;
 __decorate([
@@ -31,8 +33,13 @@ __decorate([
     __metadata("design:type", String)
 ], CreateFieldDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'SubSubItem ID' }),
+    (0, swagger_1.ApiProperty)({ description: 'Field Group of the field' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateFieldDto.prototype, "subSubItemId", void 0);
+], CreateFieldDto.prototype, "fieldGroup", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'SubSubSubItem ID' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateFieldDto.prototype, "subSubSubItemId", void 0);
 //# sourceMappingURL=field.dto.js.map

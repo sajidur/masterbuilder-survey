@@ -66,8 +66,8 @@ let DesignDefinitionService = class DesignDefinitionService {
         }
         throw new common_1.NotFoundException(`No entity found with id = ${contentTypeId} and name = ${contentTypeName}`);
     }
-    async create(dto) {
-        await this.findByContentTypeIdAndName(dto.contentTypeId, dto.contentTypeName);
+    async create(dto, user) {
+        const now = new Date();
         const designDefinition = this.designDefRepo.create({
             type: dto.type,
             title: dto.title,
@@ -77,33 +77,16 @@ let DesignDefinitionService = class DesignDefinitionService {
             contentTypeId: dto.contentTypeId,
             contentTypeName: dto.contentTypeName,
             fileType: dto.fileType,
+            userId: user.id,
+            createdBy: user.username,
+            updatedBy: user.username,
+            createdAt: now,
+            updatedAt: now,
         });
-        const saved = await this.designDefRepo.save(designDefinition);
-        return {
-            id: saved.id,
-            type: saved.type,
-            title: saved.title,
-            content: saved.content,
-            imageUrl: saved.imageUrl,
-            notes: saved.notes,
-            contentTypeId: saved.contentTypeId,
-            contentTypeName: saved.contentTypeName,
-            fileType: saved.fileType,
-        };
+        return await this.designDefRepo.save(designDefinition);
     }
     async findAll() {
-        const data = await this.designDefRepo.find();
-        return data.map((designDef) => ({
-            id: designDef.id,
-            title: designDef.title,
-            type: designDef.type,
-            content: designDef.content,
-            imageUrl: designDef.imageUrl,
-            notes: designDef.notes,
-            contentTypeId: designDef.contentTypeId,
-            contentTypeName: designDef.contentTypeName,
-            fileType: designDef.fileType,
-        }));
+        return await this.designDefRepo.find();
     }
     async findOne(id) {
         const designDef = await this.designDefRepo.findOne({
@@ -112,36 +95,27 @@ let DesignDefinitionService = class DesignDefinitionService {
         if (!designDef) {
             throw new common_1.NotFoundException(`DesignDefinition with ID ${id} not found`);
         }
-        return {
-            id: designDef.id,
-            title: designDef.title,
-            type: designDef.type,
-            content: designDef.content,
-            imageUrl: designDef.imageUrl,
-            notes: designDef.notes,
-            contentTypeId: designDef.contentTypeId,
-            contentTypeName: designDef.contentTypeName,
-            fileType: designDef.fileType,
-        };
+        return designDef;
     }
-    async update(id, dto) {
+    async update(id, dto, user) {
         const designDef = await this.designDefRepo.findOne({ where: { id } });
         if (!designDef) {
             throw new common_1.NotFoundException('DesignDefinition not found');
         }
-        Object.assign(designDef, dto);
-        const updated = await this.designDefRepo.save(designDef);
-        return {
-            id: updated.id,
-            title: updated.title,
-            type: updated.type,
-            content: updated.content,
-            imageUrl: updated.imageUrl,
-            notes: updated.notes,
-            contentTypeId: updated.contentTypeId,
-            contentTypeName: updated.contentTypeName,
-            fileType: updated.fileType,
-        };
+        const now = new Date();
+        Object.assign(designDef, {
+            type: dto.type,
+            title: dto.title,
+            content: dto.content,
+            imageUrl: dto.imageUrl,
+            notes: dto.notes,
+            contentTypeId: dto.contentTypeId,
+            contentTypeName: dto.contentTypeName,
+            fileType: dto.fileType,
+            updatedBy: user.username,
+            updatedAt: now,
+        });
+        return await this.designDefRepo.save(designDef);
     }
     async remove(id) {
         const designDef = await this.designDefRepo.findOne({

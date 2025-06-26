@@ -15,6 +15,7 @@ const class_validator_1 = require("class-validator");
 class CreateMenuDto {
     title;
     appId;
+    tier;
 }
 exports.CreateMenuDto = CreateMenuDto;
 __decorate([
@@ -27,6 +28,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateMenuDto.prototype, "appId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the Menu' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMenuDto.prototype, "tier", void 0);
 class MenuDto {
     id;
     title;

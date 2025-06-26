@@ -19,6 +19,12 @@ let Menu = class Menu {
     appId;
     app;
     items;
+    userId;
+    tier;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Menu = Menu;
 __decorate([
@@ -41,6 +47,30 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => item_entity_1.Item, (item) => item.menu),
     __metadata("design:type", Array)
 ], Menu.prototype, "items", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Menu.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Menu.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Menu.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Menu.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Menu.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Menu.prototype, "updatedBy", void 0);
 exports.Menu = Menu = __decorate([
     (0, typeorm_1.Entity)()
 ], Menu);

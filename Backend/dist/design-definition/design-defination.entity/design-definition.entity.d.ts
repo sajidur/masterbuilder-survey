@@ -8,4 +8,9 @@ export declare class DesignDefinition {
     content: any;
     imageUrl?: string;
     notes?: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

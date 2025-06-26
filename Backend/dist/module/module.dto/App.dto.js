@@ -20,6 +20,7 @@ class AppDto {
 exports.AppDto = AppDto;
 class CreateAppDto {
     name;
+    tier;
     moduleId;
 }
 exports.CreateAppDto = CreateAppDto;
@@ -30,6 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreateAppDto.prototype, "name", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the App' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateAppDto.prototype, "tier", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -37,6 +43,7 @@ __decorate([
 ], CreateAppDto.prototype, "moduleId", void 0);
 class UpdateAppDto {
     name;
+    tier;
     moduleId;
 }
 exports.UpdateAppDto = UpdateAppDto;
@@ -46,6 +53,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateAppDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the App' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAppDto.prototype, "tier", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Module ID' }),
     (0, class_validator_1.IsNotEmpty)(),

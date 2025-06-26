@@ -7,6 +7,8 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Question } from './question.entity';
 import { QuestionModel } from './question-model.entity';
@@ -40,6 +42,16 @@ export class Option {
   @ManyToOne(() => QuestionModel, qm => qm.options, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'questionModelId' })
   questionModel?: QuestionModel;
+   @Column()
+    userId: string;
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
+    @Column({ nullable: true })
+    createdBy?: string;
+    @Column({ nullable: true })
+    updatedBy?: string;
 }
 // option.entity.ts
 // @Entity('options')

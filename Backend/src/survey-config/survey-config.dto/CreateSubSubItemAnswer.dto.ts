@@ -26,4 +26,7 @@ export class SubSubItemAnswerResponseDto {
   answer: Answer;
   createdAt: Date;
   updatedAt: Date;
+  createdBy?:string|null;
+  updatedBy?:string|null;
+  userId:string;
 }

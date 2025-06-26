@@ -2,6 +2,7 @@ import { AppDto } from './App.dto';
 export declare class CreateMenuDto {
     title: string;
     appId: string;
+    tier: string;
 }
 export declare class MenuDto {
     id: string;

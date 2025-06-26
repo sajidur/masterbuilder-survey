@@ -14,19 +14,24 @@ import { Field } from './module.entity/field.entity';
 
 import { SubItem } from './module.entity/subitem.entity';
 import { SubSubItem } from './module.entity/subsubitem.entity';
+import { AuthModule } from '../auth/auth.module';
+import { SubSubSubItem } from './module.entity/subSubSubItem.entity';
+import { Template } from 'src/Template/entity/template';
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+       Template,
       Modules,
       App, // ✅ This is likely what’s missing
       Menu,
       Item,
       SubItem,
       SubSubItem,
+      SubSubSubItem,
       Field
-    ]),
+    ]),AuthModule
   ],
   providers: [SurveyModuleService],
   controllers: [SurveyModuleController],

@@ -24,9 +24,10 @@ let SurveyConfigController = class SurveyConfigController {
     constructor(surveyService) {
         this.surveyService = surveyService;
     }
-    async create(createSurveyDto) {
+    async create(createSurveyDto, req) {
         try {
-            return await this.surveyService.create(createSurveyDto);
+            const user = req['user'];
+            return await this.surveyService.create(createSurveyDto, user);
         }
         catch (error) {
             console.error('Survey creation failed:', error.message, error.stack);
@@ -39,26 +40,30 @@ let SurveyConfigController = class SurveyConfigController {
     findOne(id) {
         return this.surveyService.findOne(id);
     }
-    update(id, updateSurveyDto) {
-        return this.surveyService.update(id, updateSurveyDto);
+    update(id, updateSurveyDto, req) {
+        const user = req['user'];
+        return this.surveyService.update(id, updateSurveyDto, user);
     }
     remove(id) {
         return this.surveyService.remove(id);
     }
-    async createAnswer(createAnswerDto) {
-        return this.surveyService.createanswer(createAnswerDto);
+    async createAnswer(createAnswerDto, req) {
+        const user = req['user'];
+        return this.surveyService.createanswer(createAnswerDto, user);
     }
     async findOneAnswer(id) {
         return await this.surveyService.findOneAnswer(id);
     }
-    async updateAnswer(id, updateAnswerDto) {
-        return await this.surveyService.updateAnswer(id, updateAnswerDto);
+    async updateAnswer(id, updateAnswerDto, req) {
+        const user = req['user'];
+        return await this.surveyService.updateAnswer(id, updateAnswerDto, user);
     }
     async removeAnswer(id) {
         return this.surveyService.removeAnswer(id);
     }
-    async createSubAns(dto) {
-        const entity = await this.surveyService.createSubAns(dto);
+    async createSubAns(dto, req) {
+        const user = req['user'];
+        const entity = await this.surveyService.createSubAns(dto, user);
         return entity;
     }
     async findAllSubAns() {
@@ -79,8 +84,10 @@ __decorate([
     (0, common_1.Post)(),
     (0, common_1.UsePipes)(new common_1.ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [survey_dto_1.CreateSurveyDto]),
+    __metadata("design:paramtypes", [survey_dto_1.CreateSurveyDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "create", null);
 __decorate([
@@ -100,8 +107,10 @@ __decorate([
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, survey_dto_1.CreateSurveyDto]),
+    __metadata("design:paramtypes", [String, survey_dto_1.CreateSurveyDto,
+        Request]),
     __metadata("design:returntype", void 0)
 ], SurveyConfigController.prototype, "update", null);
 __decorate([
@@ -115,8 +124,10 @@ __decorate([
     (0, common_1.Post)('addAnswer'),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Answer created successfully' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_answer_dto_1.CreateAnswerDto]),
+    __metadata("design:paramtypes", [create_answer_dto_1.CreateAnswerDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "createAnswer", null);
 __decorate([
@@ -132,8 +143,10 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Update answer by ID' }),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_answer_dto_1.UpdateAnswerDto]),
+    __metadata("design:paramtypes", [String, create_answer_dto_1.UpdateAnswerDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "updateAnswer", null);
 __decorate([
@@ -146,15 +159,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "removeAnswer", null);
 __decorate([
-    (0, common_1.Post)("addSubSubItemAnswer"),
+    (0, common_1.Post)('addSubSubItemAnswer'),
     (0, swagger_1.ApiResponse)({ status: 201, type: CreateSubSubItemAnswer_dto_1.SubSubItemAnswerResponseDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateSubSubItemAnswer_dto_1.CreateSubSubItemAnswerDto]),
+    __metadata("design:paramtypes", [CreateSubSubItemAnswer_dto_1.CreateSubSubItemAnswerDto,
+        Request]),
     __metadata("design:returntype", Promise)
 ], SurveyConfigController.prototype, "createSubAns", null);
 __decorate([
-    (0, common_1.Get)("getAllSubSubItemAnswer"),
+    (0, common_1.Get)('getAllSubSubItemAnswer'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

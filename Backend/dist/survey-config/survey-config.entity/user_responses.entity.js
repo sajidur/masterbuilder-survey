@@ -23,6 +23,9 @@ let UserResponse = class UserResponse {
     selectedOption;
     textAnswer;
     createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.UserResponse = UserResponse;
 __decorate([
@@ -45,7 +48,10 @@ __decorate([
     __metadata("design:type", question_entity_1.Question)
 ], UserResponse.prototype, "question", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Option ID (for single/multiple choice)', required: false }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Option ID (for single/multiple choice)',
+        required: false,
+    }),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserResponse.prototype, "optionId", void 0);
@@ -55,15 +61,29 @@ __decorate([
     __metadata("design:type", option_entity_1.Option)
 ], UserResponse.prototype, "selectedOption", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Text answer (if open-ended question)', required: false }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Text answer (if open-ended question)',
+        required: false,
+    }),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserResponse.prototype, "textAnswer", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Timestamp of response' }),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserResponse.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], UserResponse.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], UserResponse.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], UserResponse.prototype, "updatedBy", void 0);
 exports.UserResponse = UserResponse = __decorate([
     (0, typeorm_1.Entity)('user_responses')
 ], UserResponse);

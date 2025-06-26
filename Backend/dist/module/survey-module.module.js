@@ -18,6 +18,9 @@ const item_entity_1 = require("./module.entity/item.entity");
 const field_entity_1 = require("./module.entity/field.entity");
 const subitem_entity_1 = require("./module.entity/subitem.entity");
 const subsubitem_entity_1 = require("./module.entity/subsubitem.entity");
+const auth_module_1 = require("../auth/auth.module");
+const subSubSubItem_entity_1 = require("./module.entity/subSubSubItem.entity");
+const template_1 = require("../Template/entity/template");
 let SurveyModuleModule = class SurveyModuleModule {
 };
 exports.SurveyModuleModule = SurveyModuleModule;
@@ -25,14 +28,16 @@ exports.SurveyModuleModule = SurveyModuleModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([
+                template_1.Template,
                 modules_entity_1.Modules,
                 app_entity_1.App,
                 menu_entity_1.Menu,
                 item_entity_1.Item,
                 subitem_entity_1.SubItem,
                 subsubitem_entity_1.SubSubItem,
+                subSubSubItem_entity_1.SubSubSubItem,
                 field_entity_1.Field
-            ]),
+            ]), auth_module_1.AuthModule
         ],
         providers: [survey_module_service_1.SurveyModuleService],
         controllers: [survey_module_controller_1.SurveyModuleController],

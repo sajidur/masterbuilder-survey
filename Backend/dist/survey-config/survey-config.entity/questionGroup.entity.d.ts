@@ -6,4 +6,9 @@ export declare class QuestionGroup {
     description: string;
     survey: Survey;
     questions: Question[];
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

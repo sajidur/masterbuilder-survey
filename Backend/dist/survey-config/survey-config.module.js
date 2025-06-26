@@ -11,23 +11,33 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const questionGroup_entity_1 = require("./survey-config.entity/questionGroup.entity");
 const question_entity_1 = require("./survey-config.entity/question.entity");
-;
 const option_entity_1 = require("./survey-config.entity/option.entity");
-;
 const question_model_entity_1 = require("./survey-config.entity/question-model.entity");
-;
 const survey_config_controller_1 = require("./survey-config.controller");
 const survey_config_service_1 = require("./survey-config.service");
 const survey_entity_1 = require("./survey-config.entity/survey.entity");
 const answer_entity_1 = require("./survey-config.entity/answer.entity");
 const subSubItemAnswer_entity_1 = require("./survey-config.entity/subSubItemAnswer.entity");
 const subsubitem_entity_1 = require("../module/module.entity/subsubitem.entity");
+const auth_module_1 = require("../auth/auth.module");
 let SurveyConfigModule = class SurveyConfigModule {
 };
 exports.SurveyConfigModule = SurveyConfigModule;
 exports.SurveyConfigModule = SurveyConfigModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([subsubitem_entity_1.SubSubItem, survey_entity_1.Survey, questionGroup_entity_1.QuestionGroup, question_entity_1.Question, option_entity_1.Option, question_model_entity_1.QuestionModel, answer_entity_1.Answer, subSubItemAnswer_entity_1.SubSubItemAnswer])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([
+                subsubitem_entity_1.SubSubItem,
+                survey_entity_1.Survey,
+                questionGroup_entity_1.QuestionGroup,
+                question_entity_1.Question,
+                option_entity_1.Option,
+                question_model_entity_1.QuestionModel,
+                answer_entity_1.Answer,
+                subSubItemAnswer_entity_1.SubSubItemAnswer,
+            ]),
+            auth_module_1.AuthModule,
+        ],
         controllers: [survey_config_controller_1.SurveyConfigController],
         providers: [survey_config_service_1.SurveyConfigService],
     })

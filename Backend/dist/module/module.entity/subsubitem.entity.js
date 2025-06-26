@@ -17,8 +17,16 @@ let SubSubItem = class SubSubItem {
     id;
     name;
     subItemId;
+    tier;
     subItem;
+    templateId;
     fields;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
+    subSubSubItems;
 };
 exports.SubSubItem = SubSubItem;
 __decorate([
@@ -34,13 +42,43 @@ __decorate([
     __metadata("design:type", String)
 ], SubSubItem.prototype, "subItemId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => subitem_entity_1.SubItem, (subItem) => subItem.subSubItems, { nullable: true }),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItem.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => subitem_entity_1.SubItem, (subItem) => subItem.subSubItems, {
+        nullable: true,
+    }),
     __metadata("design:type", subitem_entity_1.SubItem)
 ], SubSubItem.prototype, "subItem", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subSubItem),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItem.prototype, "templateId", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subSubSubItem),
     __metadata("design:type", Array)
 ], SubSubItem.prototype, "fields", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubItem.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], SubSubItem.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], SubSubItem.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubItem.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubItem.prototype, "updatedBy", void 0);
 exports.SubSubItem = SubSubItem = __decorate([
     (0, typeorm_1.Entity)()
 ], SubSubItem);

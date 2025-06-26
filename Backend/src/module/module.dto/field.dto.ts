@@ -1,21 +1,25 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty} from 'class-validator';
-import { SubSubItemDto } from './subSubItem.dto'; // Adjust path as needed
+import { SubSubSubItemDto } from './subsubsubitem.dto';
 export class FieldDto {
  
   id: string;
   name: string;
-  subSubItemId: string;
-  subSubItem?: SubSubItemDto | null;
+  fieldGroup:string;
+  subSubSubItemId: string;
+  subSubSubItem?: SubSubSubItemDto | null;
 }
 export class CreateFieldDto {
   @ApiProperty({ description: 'Name of the field' })
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @ApiProperty({ description: 'SubSubItem ID' })
+  @ApiProperty({ description: 'Field Group of the field' })
   @IsString()
-  subSubItemId: string;
+  fieldGroup:string;
+
+  @ApiProperty({ description: 'SubSubSubItem ID' })
+  @IsString()
+  subSubSubItemId: string;
 }

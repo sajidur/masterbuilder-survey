@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const swagger_1 = require("@nestjs/swagger");
+const UserDto_1 = require("./user.dto/UserDto");
 let UserController = class UserController {
     userService;
     constructor(userService) {
@@ -24,11 +25,11 @@ let UserController = class UserController {
     findAll() {
         return this.userService.findAll();
     }
-    findOne(id) {
-        return this.userService.findOne(+id);
+    async login(loginDto) {
+        return this.userService.login(loginDto);
     }
-    create(user) {
-        return this.userService.create(user);
+    async create(dto) {
+        return this.userService.create(dto);
     }
     remove(id) {
         return this.userService.remove(+id);
@@ -36,27 +37,40 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('getAllUsers'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('login'),
+    (0, swagger_1.ApiBody)({ type: UserDto_1.LoginUserDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'User successfully logged in',
+        schema: {
+            example: {
+                user: {},
+                role: {},
+                token: 'jwt_token_here',
+            },
+        },
+    }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [UserDto_1.LoginUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('addUser'),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'User and Role created successfully' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [UserDto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('deleteUser:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

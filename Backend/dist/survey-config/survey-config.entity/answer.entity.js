@@ -17,9 +17,13 @@ let Answer = class Answer {
     id;
     text;
     selectedOptionIds;
-    userId;
     question;
     questionModel;
+    userId;
+    createdAt;
+    updatedAt;
+    createdBy;
+    updatedBy;
 };
 exports.Answer = Answer;
 __decorate([
@@ -35,10 +39,6 @@ __decorate([
     __metadata("design:type", Object)
 ], Answer.prototype, "selectedOptionIds", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Answer.prototype, "userId", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => question_entity_1.Question, (q) => q.answers, { nullable: true, onDelete: 'CASCADE' }),
     __metadata("design:type", question_entity_1.Question)
 ], Answer.prototype, "question", void 0);
@@ -46,6 +46,26 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => question_model_entity_1.QuestionModel, (qm) => qm.answers, { nullable: true, onDelete: 'CASCADE' }),
     __metadata("design:type", question_model_entity_1.QuestionModel)
 ], Answer.prototype, "questionModel", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Answer.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Answer.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Answer.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Answer.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Answer.prototype, "updatedBy", void 0);
 exports.Answer = Answer = __decorate([
     (0, typeorm_1.Entity)("answers")
 ], Answer);

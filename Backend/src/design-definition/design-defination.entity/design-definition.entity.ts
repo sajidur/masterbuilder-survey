@@ -1,8 +1,13 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { SubSubItem } from '../../module/module.entity/subsubitem.entity';
-
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 @Entity('DesignDefinitions')
 export class DesignDefinition {
   @PrimaryGeneratedColumn('uuid')
@@ -23,15 +28,27 @@ export class DesignDefinition {
   })
   type: 'CLASS' | 'ACTION' | 'ACTIVITY_DIAGRAM' | 'CLASS_DIAGRAM';
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column({ type: 'json' }) // MySQL supports JSON
+  @Column({ type: 'json',nullable:true }) // MySQL supports JSON
   content: any;
 
   @Column({ nullable: true })
   imageUrl?: string;
 
-  @Column({  nullable: true })
+  @Column({ nullable: true })
   notes?: string;
+
+  @Column()
+  userId: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
+  @Column({ nullable: true })
+  createdBy?: string;
+  @Column({ nullable: true })
+  updatedBy?: string;
 }

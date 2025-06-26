@@ -1,20 +1,38 @@
 /* eslint-disable prettier/prettier */
 // module.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm'
-import { App } from './app.entity'
-import { ApiProperty } from '@nestjs/swagger'
-
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { App } from './app.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class Modules  {
+export class Modules {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   @ApiProperty({ description: 'Name of the module' })
-  name: string
+  name: string;
+
+  @Column()
+  tier: string;
 
   @OneToMany(() => App, (app) => app.module)
-  apps: App[]
-  
+  apps: App[];
+  @Column()
+  userId: string;
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
+  @Column({ nullable: true })
+  createdBy?: string;
+  @Column({ nullable: true })
+  updatedBy?: string;
 }

@@ -9,6 +9,8 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Question } from './question.entity';
@@ -35,6 +37,16 @@ export class QuestionGroup {
 
   @OneToMany(() => Question, q => q.questionGroup, { cascade: true, eager: true })
   questions: Question[];
+   @Column()
+    userId: string;
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
+    @Column({ nullable: true })
+    createdBy?: string;
+    @Column({ nullable: true })
+    updatedBy?: string;
 }
 // }
 // @Entity('question_groups')

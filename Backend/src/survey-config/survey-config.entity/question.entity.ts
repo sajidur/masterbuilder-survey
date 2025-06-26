@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { QuestionGroup } from './questionGroup.entity';
 import { Option } from './option.entity';
@@ -47,6 +49,16 @@ export class Question {
    // NEW
   @OneToMany(() => Answer, answer => answer.question, { cascade: true })
   answers: Answer[];
+   @Column()
+    userId: string;
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
+    @Column({ nullable: true })
+    createdBy?: string;
+    @Column({ nullable: true })
+    updatedBy?: string;
 }
 
 // question.entity.ts

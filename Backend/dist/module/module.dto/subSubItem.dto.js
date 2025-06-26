@@ -17,10 +17,13 @@ class SubSubItemDto {
     name;
     subItemId;
     subItem;
+    template;
 }
 exports.SubSubItemDto = SubSubItemDto;
 class CreateSubSubItemDto {
     name;
+    tier;
+    templateId;
     subItemId;
 }
 exports.CreateSubSubItemDto = CreateSubSubItemDto;
@@ -30,6 +33,16 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateSubSubItemDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Tier of the SubSubItem' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSubSubItemDto.prototype, "tier", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Template of the SubItem' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSubSubItemDto.prototype, "templateId", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'SubItem ID' }),
     (0, class_validator_1.IsString)(),

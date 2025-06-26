@@ -40,8 +40,9 @@ let DesignDefinitionController = class DesignDefinitionController {
             photoUrl: publicUrl,
         };
     }
-    async create(dto) {
-        return this.designDefService.create(dto);
+    async create(dto, req) {
+        const user = req['user'];
+        return this.designDefService.create(dto, user);
     }
     async findAll() {
         return this.designDefService.findAll();
@@ -49,8 +50,9 @@ let DesignDefinitionController = class DesignDefinitionController {
     async findOne(id) {
         return this.designDefService.findOne(id);
     }
-    async update(id, dto) {
-        return this.designDefService.update(id, dto);
+    async update(id, dto, req) {
+        const user = req['user'];
+        return this.designDefService.update(id, dto, user);
     }
     async remove(id) {
         return this.designDefService.remove(id);
@@ -83,9 +85,9 @@ __decorate([
             },
             filename: (req, file, cb) => {
                 const fileExt = (0, path_1.extname)(file.originalname).toLowerCase();
-                const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx'];
+                const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx', 'txt', 'xlsx'];
                 if (!allowedExtensions.includes(fileExt)) {
-                    return cb(new common_1.BadRequestException('Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx files are allowed.'), '');
+                    return cb(new common_1.BadRequestException('Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx,.txt,.xlsx files are allowed.'), '');
                 }
                 const uniqueName = `${(0, uuid_1.v4)()}${fileExt}`;
                 cb(null, uniqueName);
@@ -93,12 +95,12 @@ __decorate([
         }),
         fileFilter: (req, file, cb) => {
             const fileExt = (0, path_1.extname)(file.originalname).toLowerCase();
-            const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx'];
+            const allowedExtensions = ['.png', '.jpg', '.jpeg', '.ico', '.gif', '.pdf', '.docx', 'txt', 'xlsx'];
             if (allowedExtensions.includes(fileExt)) {
                 cb(null, true);
             }
             else {
-                cb(new common_1.BadRequestException('Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx files are allowed.'), false);
+                cb(new common_1.BadRequestException('Invalid file type. Only .png, .jpg, .jpeg, .ico, .gif, .pdf, .docx,.txt,.xlsx files are allowed.'), false);
             }
         },
     })),
@@ -113,8 +115,9 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Create a new Design Definition' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Design Definition created.' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [design_dto_1.CreateDesignDefinitionDto]),
+    __metadata("design:paramtypes", [design_dto_1.CreateDesignDefinitionDto, Object]),
     __metadata("design:returntype", Promise)
 ], DesignDefinitionController.prototype, "create", null);
 __decorate([
@@ -137,8 +140,9 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Update a Design Definition by ID' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, design_dto_1.CreateDesignDefinitionDto]),
+    __metadata("design:paramtypes", [String, design_dto_1.CreateDesignDefinitionDto, Object]),
     __metadata("design:returntype", Promise)
 ], DesignDefinitionController.prototype, "update", null);
 __decorate([
