@@ -5,12 +5,12 @@ import { getAllModules, getAllApps, addApp } from "../../apiRequest/api";
 import { tiers } from "./data";
 
 interface Module {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface AppItem {
-  id: number;
+  id: string;
   name: string;
   Module: Module;
 }
