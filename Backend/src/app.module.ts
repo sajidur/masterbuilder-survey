@@ -61,7 +61,7 @@ import { TemplateModule } from './Template/template.module';
       synchronize: false, // Never true in production
       autoLoadEntities: true,
       extra: {
-        connectionLimit: 100,
+        connectionLimit: 9, // ✅ Increase based on MySQL server's limit
       },
     }),
 
