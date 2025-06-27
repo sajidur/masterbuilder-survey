@@ -26,14 +26,6 @@ export class CreateSubSubSubItemDto {
   @IsNotEmpty()
   templateId: string;
 
-  @ApiProperty({
-    description: 'User ID of the creator',
-    example: 'user-uuid-456',
-  })
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
-
   @ApiPropertyOptional({
     description: 'ID of the parent SubSubItem',
     example: 'uuid-subsubitem-789',
@@ -42,15 +34,7 @@ export class CreateSubSubSubItemDto {
   @IsString()
   subSubItemId?: string;
 
-  @ApiPropertyOptional({ description: 'Created By (user name or ID)' })
-  @IsOptional()
-  @IsString()
-  createdBy?: string;
 
-  @ApiPropertyOptional({ description: 'Updated By (user name or ID)' })
-  @IsOptional()
-  @IsString()
-  updatedBy?: string;
 }
 export class SubSubSubItemDto {
   id: string;

@@ -1389,7 +1389,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: entity.templateI
   }
 
   async updateSubSubSubItem(id: string, dto: CreateSubSubSubItemDto, user: any): Promise<SubSubSubItemDto> {
-    const existing = await this.subSubItemRepository.findOne({ where: { id } });
+    const existing = await this.subSubSubItemRepo.findOne({ where: { id } });
     if (!existing) {
       throw new NotFoundException(`SubSubSubItem with ID ${id} not found`);
     }
