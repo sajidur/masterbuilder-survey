@@ -129,6 +129,18 @@ export const addField = async (data: { name: string; subSubSubItemId: number, fi
 
 
 
+export const getAllTemplates  = async () => {
+  try {
+    const response = await apiClient.get('/templates');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all modules:', error);
+    throw error;
+  }
+};
+
+
+
 export const getAllModules = async () => {
   try {
     const response = await apiClient.get('/survey-module/allModules');

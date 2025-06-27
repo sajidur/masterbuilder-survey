@@ -10,22 +10,23 @@ import {
 import { tiers } from "./data";
 
 interface Module {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface AppItem {
-  id: number;
+  id: string;
   name: string;
   Module: Module;
 }
 
 interface MenuItem {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
+  tier: string;
   App: AppItem;
-  Module: Module;
 }
+
 
 const MenuManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -81,21 +82,15 @@ const MenuManager: React.FC = () => {
     }
 
     try {
-      await addMenu({
+      const newMenu = await addMenu({
         title: trimmedMenuName,
         appId: selectedAppObj.id,
+        tier: selectedTier,
       });
 
       toast.success("Menu added successfully!");
-
-      const newMenu: MenuItem = {
-        id: Date.now(), // temporary ID
-        name: trimmedMenuName,
-        App: selectedAppObj,
-        Module: selectedMod,
-      };
-
       setMenus((prev) => [...prev, newMenu]);
+
       setMenuName("");
     } catch (error) {
       console.error("Failed to add menu:", error);
@@ -214,7 +209,7 @@ const MenuManager: React.FC = () => {
               <tr key={menu.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                 <td className="px-4 py-3 text-gray-800">{menu.app.Module?.name || "—"}</td>
                 <td className="px-4 py-3 text-gray-800">{menu.app?.name || "—"}</td>
-                <td className="px-4 py-3 text-gray-800">{menu.name}</td>
+                <td className="px-4 py-3 text-gray-800">{menu.title}</td>
               </tr>
             ))}
           </tbody>

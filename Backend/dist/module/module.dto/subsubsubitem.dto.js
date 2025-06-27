@@ -16,10 +16,7 @@ class CreateSubSubSubItemDto {
     name;
     tier;
     templateId;
-    userId;
     subSubItemId;
-    createdBy;
-    updatedBy;
 }
 exports.CreateSubSubSubItemDto = CreateSubSubSubItemDto;
 __decorate([
@@ -47,15 +44,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "templateId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'User ID of the creator',
-        example: 'user-uuid-456',
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateSubSubSubItemDto.prototype, "userId", void 0);
-__decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'ID of the parent SubSubItem',
         example: 'uuid-subsubitem-789',
@@ -64,18 +52,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "subSubItemId", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Created By (user name or ID)' }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateSubSubSubItemDto.prototype, "createdBy", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Updated By (user name or ID)' }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateSubSubSubItemDto.prototype, "updatedBy", void 0);
 class SubSubSubItemDto {
     id;
     name;

@@ -7,47 +7,48 @@ import {
   getAllMenus,
   getAllItems,
   addSubitem,
-  getAllSubitems, // If you have subitem fetching
+  getAllSubitems,
+  getAllTemplates,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 
 interface Module {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface AppItem {
-  id: number;
+  id: string;
   name: string;
   Module: Module;
 }
 
 interface MenuItem {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   App: AppItem;
-  Module: Module;
 }
 
 interface Item {
-  id: number;
+  id: string;
   name: string;
   Menu: MenuItem;
-  App: AppItem;
-  Module: Module;
+}
+
+interface Template {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
 }
 
 interface SubItem {
-  id: number;
+  id: string;
   name: string;
   Item: Item;
+  tier: string;
+  Template?: Template;
 }
-
-const templates = [
-  { id: 1, name: 'Invoice Template' },
-  { id: 2, name: 'Prescription Template' },
-  { id: 3, name: 'Report Template' },
-];
 
 const SubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -55,31 +56,41 @@ const SubItemManager: React.FC = () => {
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [items, setItems] = useState<Item[]>([]);
   const [subItems, setSubItems] = useState<SubItem[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
 
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [subItemName, setSubItemName] = useState<string>("");
-  const [selectedTier, setSelectedTier] = useState('');
+  const [selectedTier, setSelectedTier] = useState<string>("");
+  const [selectedTemplateCode, setSelectedTemplateCode] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [modulesData, appsData, menusData, itemsData, subItemsData] =
-          await Promise.all([
-            getAllModules(),
-            getAllApps(),
-            getAllMenus(),
-            getAllItems(),
-            getAllSubitems?.() || [],
-          ]);
+        const [
+          modulesData,
+          appsData,
+          menusData,
+          itemsData,
+          subItemsData,
+          templatesData,
+        ] = await Promise.all([
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+          getAllItems(),
+          getAllSubitems(),
+          getAllTemplates(),
+        ]);
 
         setModules(modulesData);
         setApps(appsData);
         setMenus(menusData);
         setItems(itemsData);
         setSubItems(subItemsData);
+        setTemplates(templatesData);
       } catch (error) {
         toast.error("Failed to load data.");
         console.error("Fetch error:", error);
@@ -89,11 +100,14 @@ const SubItemManager: React.FC = () => {
     fetchData();
   }, []);
 
-  
-
   const handleAddSubItem = async () => {
     if (!selectedModule || !selectedApp || !selectedMenu || !selectedItem) {
       toast.warn("Please select all fields.");
+      return;
+    }
+
+    if (!selectedTemplateCode) {
+      toast.warn("Please select a template.");
       return;
     }
 
@@ -103,31 +117,25 @@ const SubItemManager: React.FC = () => {
       return;
     }
 
-    const itemObj = items.find((i) => i.name === selectedItem);
-
+    const itemObj = items.find((i) => i.id === selectedItem);
     if (!itemObj) {
       toast.error("Invalid item selected.");
       return;
     }
 
     try {
-      await addSubitem({
-        label: trimmedName,
+      const newSubItem = await addSubitem({
+        name: trimmedName,
         itemId: itemObj.id,
+        tier: selectedTier,
+        templateId: selectedTemplateCode, // using template.code
       });
 
       toast.success("SubItem added successfully!");
-
-      setSubItems((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          name: trimmedName,
-          Item: itemObj,
-        },
-      ]);
-
+      setSubItems((prev) => [...prev, newSubItem]);
       setSubItemName("");
+      setSelectedTier("");
+      setSelectedTemplateCode("");
     } catch (error) {
       console.error("Add subitem error:", error);
       toast.error("Failed to add subitem.");
@@ -135,7 +143,7 @@ const SubItemManager: React.FC = () => {
   };
 
   return (
-    <div className="p-4 ">
+    <div className="p-4">
       <h2 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2">
         <span className="text-purple-600 text-2xl">📦</span> SubItem Manager
       </h2>
@@ -158,7 +166,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Module</option>
             {modules.map((m) => (
-              <option key={m.id} value={m.name}>
+              <option key={m.id} value={m.id}>
                 {m.name}
               </option>
             ))}
@@ -181,9 +189,9 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select App</option>
             {apps
-              .filter((a) => a.Module?.name === selectedModule)
+              .filter((a) => a.Module?.id === selectedModule)
               .map((a) => (
-                <option key={a.id} value={a.name}>
+                <option key={a.id} value={a.id}>
                   {a.name}
                 </option>
               ))}
@@ -205,10 +213,10 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Menu</option>
             {menus
-              .filter((m) => m.App?.name === selectedApp)
+              .filter((m) => m.App?.id === selectedApp)
               .map((m) => (
-                <option key={m.id} value={m.name}>
-                  {m.name}
+                <option key={m.id} value={m.id}>
+                  {m.title}
                 </option>
               ))}
           </select>
@@ -226,9 +234,9 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Item</option>
             {items
-              .filter((i) => i.Menu?.name === selectedMenu)
+              .filter((i) => i.Menu?.id === selectedMenu)
               .map((i) => (
-                <option key={i.id} value={i.name}>
+                <option key={i.id} value={i.id}>
                   {i.name}
                 </option>
               ))}
@@ -249,20 +257,24 @@ const SubItemManager: React.FC = () => {
           />
         </div>
 
-        {/* template */}
+        {/* Template */}
         <div>
           <label className="block mb-1 font-medium">Template</label>
-          <select className="w-full border px-3 py-2 rounded">
+          <select
+            className="w-full border px-3 py-2 rounded"
+            value={selectedTemplateCode}
+            onChange={(e) => setSelectedTemplateCode(e.target.value)}
+          >
             <option value="">-- Choose a Template --</option>
             {templates.map((template) => (
-              <option key={template.id} value={template.id}>
+              <option key={template.code} value={template.code}>
                 {template.name}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Tire */}
+        {/* Tier */}
         <div>
           <label className="block mb-1 font-medium">Tier</label>
           <select
@@ -301,16 +313,18 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">Item</th>
                 <th className="p-2 text-left">SubItem</th>
+                <th className="p-2 text-left">Template</th>
               </tr>
             </thead>
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
-                  <td className="p-2">{s.Item?.Module?.name || "—"}</td>
-                  <td className="p-2">{s.Item?.App?.name || "—"}</td>
-                  <td className="p-2">{s.Item?.Menu?.name || "—"}</td>
+                  <td className="p-2">{s.Item.Menu.App.Module?.name || "—"}</td>
+                  <td className="p-2">{s.Item.Menu.App?.name || "—"}</td>
+                  <td className="p-2">{s.Item.Menu?.title || "—"}</td>
                   <td className="p-2">{s.Item?.name || "—"}</td>
                   <td className="p-2">{s.name}</td>
+                  <td className="p-2">{s.Template?.name || "—"}</td>
                 </tr>
               ))}
             </tbody>
