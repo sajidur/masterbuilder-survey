@@ -26,13 +26,13 @@ interface AppItem {
 interface MenuItem {
   id: string;
   title: string;
-  App: AppItem;
+  app: AppItem;
 }
 
 interface Item {
   id: string;
   name: string;
-  Menu: MenuItem;
+  menu: MenuItem;
 }
 
 interface Template {
@@ -45,7 +45,7 @@ interface Template {
 interface SubItem {
   id: string;
   name: string;
-  Item: Item;
+  item: Item;
   tier: string;
   Template?: Template;
 }
@@ -166,7 +166,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Module</option>
             {modules.map((m) => (
-              <option key={m.id} value={m.id}>
+              <option key={m.id} value={m.name}>
                 {m.name}
               </option>
             ))}
@@ -319,10 +319,10 @@ const SubItemManager: React.FC = () => {
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
-                  <td className="p-2">{s.Item.Menu.App.Module?.name || "—"}</td>
-                  <td className="p-2">{s.Item.Menu.App?.name || "—"}</td>
-                  <td className="p-2">{s.Item.Menu?.title || "—"}</td>
-                  <td className="p-2">{s.Item?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.app?.Module?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
+                  <td className="p-2">{s.item?.menu?.title || "—"}</td>
+                  <td className="p-2">{s.item?.name || "—"}</td>
                   <td className="p-2">{s.name}</td>
                   <td className="p-2">{s.Template?.name || "—"}</td>
                 </tr>

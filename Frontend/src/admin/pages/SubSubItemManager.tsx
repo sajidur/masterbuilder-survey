@@ -13,42 +13,43 @@ import {
 import { tiers } from "./data";
 
 interface Module {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface App {
-  id: number;
+  id: string;
   name: string;
   Module: Module;
 }
 
 interface Menu {
-  id: number;
+  id: string;
   name: string;
-  App: App;
-  Module: Module;
+  app: App;
 }
 
 interface Item {
-  id: number;
+  id: string;
   name: string;
-  Menu: Menu;
-  App: App;
-  Module: Module;
+  menu: Menu;
+
 }
 
 interface SubItem {
   id: number;
   name: string;
-  Item: Item;
+  item: Item;
 }
 
 interface SubSubItem {
   id: number;
   name: string;
-  SubItem: SubItem;
+  subItem: SubItem;
+  tier?: string;
+  templateId?: string;
 }
+
 
 const templates = [
   { id: 1, name: "Invoice Template" },
@@ -71,6 +72,8 @@ const SubSubItemManager: React.FC = () => {
   const [selectedSubItem, setSelectedSubItem] = useState("");
   const [subSubItemName, setSubSubItemName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
+  const [selectedTemplateId, setSelectedTemplateId] = useState("");
+
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -101,44 +104,54 @@ const SubSubItemManager: React.FC = () => {
 
   const handleAdd = async () => {
     if (
-      !selectedModule ||
-      !selectedApp ||
-      !selectedMenu ||
-      !selectedItem ||
-      !selectedSubItem ||
-      !subSubItemName.trim()
-    ) {
-      toast.warn("Please fill all fields.");
-      return;
-    }
+  !selectedModule ||
+  !selectedApp ||
+  !selectedMenu ||
+  !selectedItem ||
+  !selectedSubItem ||
+  !subSubItemName.trim() ||
+  !selectedTemplateId ||
+  !selectedTier
+) {
+  toast.warn("Please fill all fields.");
+  return;
+}
 
-    const subItemObj = subItems.find((s) => s.name === selectedSubItem);
+const subItemObj = subItems.find((s) => s.name === selectedSubItem);
 
-    if (!subItemObj) {
-      toast.error("Invalid SubItem selected.");
-      return;
-    }
+if (!subItemObj) {
+  toast.error("Invalid SubItem selected.");
+  return;
+}
 
-    try {
-      await addSubSubitem({
-        label: subSubItemName.trim(),
-        subItemId: subItemObj.id,
-      });
+try {
+  await addSubSubitem({
+    name: subSubItemName.trim(),
+    subItemId: subItemObj.id.toString(),
+    tier: selectedTier,
+    templateId: selectedTemplateId,
+  });
 
-      toast.success("SubSubItem added!");
-      setSubSubItems((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          name: subSubItemName.trim(),
-          SubItem: subItemObj,
-        },
-      ]);
-      setSubSubItemName("");
-    } catch (error) {
-      toast.error("Failed to add SubSubItem.");
-      console.error(error);
-    }
+  toast.success("SubSubItem added!");
+
+  setSubSubItems((prev) => [
+    ...prev,
+    {
+      id: Date.now(),
+      name: subSubItemName.trim(),
+      subItem: subItemObj,
+    },
+  ]);
+
+  // Reset
+  setSubSubItemName("");
+  setSelectedTemplateId("");
+  setSelectedTier("");
+} catch (error) {
+  toast.error("Failed to add SubSubItem.");
+  console.error(error);
+}
+
   };
 
   return (
@@ -283,14 +296,19 @@ const SubSubItemManager: React.FC = () => {
         {/* template */}
         <div>
           <label className="block mb-1 font-medium">Template</label>
-          <select className="w-full border px-3 py-2 rounded">
+          <select
+            value={selectedTemplateId}
+            onChange={(e) => setSelectedTemplateId(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
             <option value="">-- Choose a Template --</option>
             {templates.map((template) => (
-              <option key={template.id} value={template.id}>
+              <option key={template.id} value={template.id.toString()}>
                 {template.name}
               </option>
             ))}
           </select>
+
         </div>
 
         {/* Tire */}
@@ -330,17 +348,22 @@ const SubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SubSubItem</th>
+              <th className="p-2 text-left">Template</th>
+
             </tr>
           </thead>
           <tbody>
             {subSubItems.map((s) => (
               <tr key={s.id} className="border-t">
-                <td className="p-2">{s.SubItem?.Item?.Module?.name || "—"}</td>
-                <td className="p-2">{s.SubItem?.Item?.App?.name || "—"}</td>
-                <td className="p-2">{s.SubItem?.Item?.Menu?.name || "—"}</td>
-                <td className="p-2">{s.SubItem?.Item?.name || "—"}</td>
-                <td className="p-2">{s.SubItem?.name || "—"}</td>
+                <td className="p-2">{s.subItem?.item?.menu?.app?.Module?.name || "—"}</td>
+                <td className="p-2">{s.subItem?.item?.menu?.app?.name || "—"}</td>
+                <td className="p-2">{s.subItem?.item?.menu?.title || "—"}</td>
+                <td className="p-2">{s.subItem?.item?.name || "—"}</td>
+                <td className="p-2">{s.subItem?.name || "—"}</td>
                 <td className="p-2">{s.name}</td>
+                <td className="p-2">
+                  {templates.find((t) => t.id.toString() === s.templateId)?.name || "—"}
+                </td>
               </tr>
             ))}
           </tbody>
