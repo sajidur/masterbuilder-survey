@@ -140,7 +140,7 @@ async findOneApp(@Param('id') id: string): Promise<AppDto> {
   return app;
 }
 
-  @Post('addApps')
+@Post('addApps')
 @ApiBody({ type: CreateAppDto }) // Better to use CreateAppDto for input
 @ApiResponse({ status: 201, type: AppDto })
 createApp(@Body() app: CreateAppDto,

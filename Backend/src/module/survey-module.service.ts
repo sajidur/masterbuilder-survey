@@ -228,6 +228,8 @@ export class SurveyModuleService {
     subSubItem.createdBy = user.username;
     subSubItem.updatedBy = user.username;
     subSubItem.userId = user.id;
+    subSubItem.tier=data.tier;
+    subSubItem.templateId=data.templateId;
     const saved = await this.subSubItemRepository.save(subSubItem);
     return this.toSubSubItemDto(saved);
   }
@@ -245,6 +247,8 @@ export class SurveyModuleService {
     existing.subItemId = data.subItemId;
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
+    existing.tier=data.tier;
+    existing.templateId=data.templateId;
     var updatedData = await this.subSubItemRepository.save(existing);
     return this.toSubSubItemDto(updatedData);
   }
@@ -404,6 +408,7 @@ export class SurveyModuleService {
     existing.subSubSubItemId = updated.subSubSubItemId;
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
+    existing.fieldGroup=updated.fieldGroup;
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -595,6 +600,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     newSubItem.updatedAt = new Date();
     newSubItem.updatedBy = user.username;
     newSubItem.userId = user.id;
+    newSubItem.templateId=subItem.templateId;
+    newSubItem.tier=subItem.tier;
     var data = this.subItemRepository.save(newSubItem);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -659,6 +666,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     existing.itemId = updated.itemId;
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
+    existing.tier=updated.tier;
+    existing.templateId=updated.templateId;
     const data = this.subItemRepository.save(existing);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -866,6 +875,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     var newItem = new Item();
     newItem.name = item.name;
     newItem.menuId = item.menuId;
+    newItem.tier=item.tier;
     newItem.createdAt = new Date();
     newItem.createdBy = user.username;
     newItem.updatedAt = new Date();
@@ -922,6 +932,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     item.name = updatedItem.name;
     item.updatedAt = new Date();
     item.updatedBy = user.username;
+    item.tier=updatedItem.tier;
     const saved = await this.itemRepository.save(item);
     const appsMap = new Map(apps.map((app) => [app.id, app]));
     const modulesMap = new Map(modules.map((mod) => [mod.id, mod]));
@@ -1093,6 +1104,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     const app = this.appRepository.create({
       name: createAppDto.name,
       moduleId: createAppDto.moduleId,
+      tier:createAppDto.tier,
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: user.id,
@@ -1265,6 +1277,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     menu.userId = user.id;
     menu.createdBy = user.username;
     menu.updatedBy = user.username;
+    menu.tier=menuDto.tier;
     // Save entity to DB
     const saved = await this.menuRepository.save(menu);
     console.log('menu appId ' + saved.appId);
@@ -1310,6 +1323,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     // Merge updated data into existing entity
     menu.updatedAt = new Date();
     menu.updatedBy = user.username;
+    menu.tier=updateDto.tier;
     const merged = this.menuRepository.merge(menu, updateDto);
 
     // Save updated entity
@@ -1381,6 +1395,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: entity.templateI
       updatedBy: user.username,
       createdAt: new Date(),
       updatedAt: new Date(),
+      templateId:dto.templateId,
+      tier:dto.tier,
       userId: user.id,
     });
 

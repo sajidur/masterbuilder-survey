@@ -47,6 +47,7 @@ import { SurveyConfigModule } from './survey-config/survey-config.module';
 import { Role } from './user/user.entity/user.role';
 import { User } from './user/user.entity/user.entity';
 import { TemplateModule } from './Template/template.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -66,10 +67,10 @@ import { TemplateModule } from './Template/template.module';
     }),
 
     // JWT Configuration
-    // JwtModule.register({
-    //   secret: process.env.JWT_SECRET || 'your_jwt_secret',
-    //   signOptions: { expiresIn: '1d' },
-    // }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'your_jwt_secret',
+      signOptions: { expiresIn: '1d' },
+    }),
  // ✅ Needed so middleware can inject repositories
     TypeOrmModule.forFeature([User, Role]),
 
