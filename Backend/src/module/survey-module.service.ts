@@ -290,6 +290,8 @@ export class SurveyModuleService {
     return {
       id: field.id,
       name: field.name,
+      isRequired:field.isRequired,
+      fieldType:field.fieldType,
       fieldGroup:field.fieldGroup,
       subSubSubItemId: field.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
@@ -360,6 +362,8 @@ export class SurveyModuleService {
     return {
       id: field.id,
       name: field.name,
+      isRequired:field.isRequired,
+      fieldType:field.fieldType,
       fieldGroup:field.fieldGroup,
       subSubSubItemId: field.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
@@ -375,6 +379,8 @@ export class SurveyModuleService {
     newField.createdBy = user.username;
     newField.userId = user.id;
     newField.fieldGroup=field.fieldGroup;
+    newField.fieldType=field.fieldType;
+    newField.isRequired=field.isRequired;
     const saved = await this.fieldRepository.save(newField);
 
     const subSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -390,6 +396,8 @@ export class SurveyModuleService {
       id: saved.id,
       name: saved.name,
       fieldGroup:field.fieldGroup,
+      fieldType:field.fieldType,
+      isRequired:field.isRequired,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubItem),
     };
@@ -409,6 +417,8 @@ export class SurveyModuleService {
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
     existing.fieldGroup=updated.fieldGroup;
+    existing.isRequired=updated.isRequired;
+    existing.fieldType=updated.fieldType;
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -423,6 +433,8 @@ export class SurveyModuleService {
     return {
       id: saved.id,
       name: saved.name,
+      isRequired:saved.isRequired,
+      fieldType:saved.fieldType,
       fieldGroup:saved.fieldGroup,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),

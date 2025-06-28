@@ -31,4 +31,9 @@ export class Field {
   updatedBy?: string;
   @Column()
   fieldGroup:string;
+    @Column()
+  fieldType:string;
+    @Column()
+  isRequired:boolean;
+    
 }
