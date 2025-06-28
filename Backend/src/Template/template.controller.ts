@@ -7,27 +7,27 @@ import { CreateTemplateDto} from '../Template/dtos/template.dto';
 export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
 
-  @Post()
+  @Post("addTemplate")
   create(@Body() dto: CreateTemplateDto) {
     return this.templateService.create(dto);
   }
 
-  @Get()
+  @Get("getAllTemplates")
   findAll() {
     return this.templateService.findAll();
   }
 
-  @Get(':id')
+  @Get('getTemplate:id')
   findOne(@Param('id') id: string) {
     return this.templateService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('updateTemplate:id')
   update(@Param('id') id: string, @Body() dto: CreateTemplateDto) {
     return this.templateService.update(id, dto);
   }
 
-  @Delete(':id')
+  @Delete('deleteTemplate:id')
   remove(@Param('id') id: string) {
     return this.templateService.remove(id);
   }
