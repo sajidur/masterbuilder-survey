@@ -52,20 +52,30 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     // MySQL Database Connection
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'MYSQL8010.site4now.net',
-      port: 3306,
-      username: 'a66689_mukut',
-      password: 'Root@pass1',
-      database: 'db_a66689_mukut',
-      synchronize: false, // Never true in production
-      autoLoadEntities: true,
-      extra: {
-        connectionLimit: 100, // ✅ Increase based on MySQL server's limit
-      },
-    }),
-
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   host: 'MYSQL8010.site4now.net',
+    //   port: 3306,
+    //   username: 'a66689_mukut',
+    //   password: 'Root@pass1',
+    //   database: 'db_a66689_mukut',
+    //   synchronize: false, // Never true in production
+    //   autoLoadEntities: true,
+    //   extra: {
+    //     connectionLimit: 100, // ✅ Increase based on MySQL server's limit
+    //   },
+    // }),
+   TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'Root@pass1',
+  database: 'survey_app_db',
+  synchronize: true,
+  autoLoadEntities: true,
+  charset: 'utf8mb4_unicode_ci',
+}),
     // JWT Configuration
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your_jwt_secret',
