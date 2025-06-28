@@ -9,6 +9,7 @@ import {
   getAllSubitems,
   getAllSubSubitems,
   addSubSubitem,
+  getAllTemplates,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 
@@ -37,25 +38,25 @@ interface Item {
 }
 
 interface SubItem {
-  id: number;
+  id: string;
   name: string;
   item: Item;
 }
 
 interface SubSubItem {
-  id: number;
+  id: string;
   name: string;
   subItem: SubItem;
   tier?: string;
   templateId?: string;
 }
 
-
-const templates = [
-  { id: 1, name: "Invoice Template" },
-  { id: 2, name: "Prescription Template" },
-  { id: 3, name: "Report Template" },
-];
+interface Template {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+}
 
 const SubSubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -73,18 +74,21 @@ const SubSubItemManager: React.FC = () => {
   const [subSubItemName, setSubSubItemName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
+  const [templates, setTemplates] = useState<Template[]>([]);
+  
 
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub] = await Promise.all([
+        const [mod, app, menu, item, subItem, subSub, templatesData] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
           getAllItems(),
           getAllSubitems(),
           getAllSubSubitems(),
+          getAllTemplates(),
         ]);
 
         setModules(mod);
@@ -93,6 +97,7 @@ const SubSubItemManager: React.FC = () => {
         setItems(item);
         setSubItems(subItem);
         setSubSubItems(subSub);
+        setTemplates(templatesData);
       } catch (error) {
         toast.error("Failed to load data.");
         console.error(error);
@@ -125,9 +130,9 @@ if (!subItemObj) {
 }
 
 try {
-  await addSubSubitem({
+  const newSubSubItem = await addSubSubitem({
     name: subSubItemName.trim(),
-    subItemId: subItemObj.id.toString(),
+    subItemId: subItemObj.id,
     tier: selectedTier,
     templateId: selectedTemplateId,
   });
@@ -136,11 +141,7 @@ try {
 
   setSubSubItems((prev) => [
     ...prev,
-    {
-      id: Date.now(),
-      name: subSubItemName.trim(),
-      subItem: subItemObj,
-    },
+    newSubSubItem
   ]);
 
   // Reset
@@ -224,8 +225,8 @@ try {
             {menus
               .filter(
                 (m) =>
-                  m.App?.name === selectedApp &&
-                  m.Module?.name === selectedModule
+                  m.app?.name === selectedApp &&
+                  m.app?.Module?.name === selectedModule
               )
               .map((m) => (
                 <option key={m.id} value={m.name}>
@@ -250,9 +251,9 @@ try {
             {items
               .filter(
                 (i) =>
-                  i.Menu?.name === selectedMenu &&
-                  i.App?.name === selectedApp &&
-                  i.Module?.name === selectedModule
+                  i.menu?.title === selectedMenu &&
+                  i.menu?.app?.name === selectedApp &&
+                  i.menu?.app?.Module?.name === selectedModule
               )
               .map((i) => (
                 <option key={i.id} value={i.name}>
@@ -272,7 +273,7 @@ try {
           >
             <option value="">-- Select SubItem --</option>
             {subItems
-              .filter((s) => s.Item?.name === selectedItem)
+              .filter((s) => s.item?.name === selectedItem)
               .map((s) => (
                 <option key={s.id} value={s.name}>
                   {s.name}
@@ -303,7 +304,7 @@ try {
           >
             <option value="">-- Choose a Template --</option>
             {templates.map((template) => (
-              <option key={template.id} value={template.id.toString()}>
+              <option key={template.id} value={template.id}>
                 {template.name}
               </option>
             ))}

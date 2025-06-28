@@ -10,6 +10,7 @@ import {
   getAllSubSubitems,
   getAllSubSubSubitems,
   addSubSubSubitem,
+  getAllTemplates,
   //   getAllSubSubSubitems,
   //   addSubSubSubitem,
 } from "../../apiRequest/api";
@@ -56,11 +57,12 @@ interface SubSubSubItem {
   SubSubItem: SubSubItem;
 }
 
-const templates = [
-  { id: 1, name: "Invoice Template" },
-  { id: 2, name: "Prescription Template" },
-  { id: 3, name: "Report Template" },
-];
+interface Template {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+}
 
 const SubSubSubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -80,12 +82,13 @@ const SubSubSubItemManager: React.FC = () => {
   const [subSubSubItemName, setSubSubSubItemName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
+  const [templates, setTemplates] = useState<Template[]>([]);
 
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub] = await Promise.all([
+        const [mod, app, menu, item, subItem, subSub, subSubSub, templatesData] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
@@ -93,14 +96,16 @@ const SubSubSubItemManager: React.FC = () => {
           getAllSubitems(),
           getAllSubSubitems(),
           getAllSubSubSubitems(),
+          getAllTemplates(),
         ]);
         setModules(mod);
-        setApps(app);
+        setApps(app); 
         setMenus(menu);
         setItems(item);
         setSubItems(subItem);
         setSubSubItems(subSub);
         setSubSubSubItems(subSubSub);
+        setTemplates(templatesData);
       } catch (error) {
         toast.error("Failed to load data.");
         console.error(error);
@@ -273,9 +278,13 @@ const SubSubSubItemManager: React.FC = () => {
         </div>
 
         {/* template */}
-        <div>
+       <div>
           <label className="block mb-1 font-medium">Template</label>
-          <select className="w-full border px-3 py-2 rounded">
+          <select
+            value={selectedTemplateId}
+            onChange={(e) => setSelectedTemplateId(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
             <option value="">-- Choose a Template --</option>
             {templates.map((template) => (
               <option key={template.id} value={template.id}>
@@ -283,6 +292,7 @@ const SubSubSubItemManager: React.FC = () => {
               </option>
             ))}
           </select>
+
         </div>
 
         {/* Tire */}

@@ -62,7 +62,7 @@ import { JwtModule } from '@nestjs/jwt';
       synchronize: false, // Never true in production
       autoLoadEntities: true,
       extra: {
-        connectionLimit: 9, // ✅ Increase based on MySQL server's limit
+        connectionLimit: 100, // ✅ Increase based on MySQL server's limit
       },
     }),
 

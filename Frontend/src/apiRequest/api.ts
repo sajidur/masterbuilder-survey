@@ -110,16 +110,6 @@ export const addField = async (data: { name: string; subSubSubItemId: number, fi
 };
 
 
-// Add a module
-// await addModule({ name: 'Survey Module' });
-
-// await addApp({ name: 'Health App', moduleId: 1 });
-
-// await addMenu({ title: 'Dashboard', appId: 2 });
-// await addItem({ name: 'Item A', menuId: 1 });
-// await addSubitem({ label: 'Subitem A', itemId: 2 });
-// await addSubSubitem({ label: 'SubSub A', subItemId: 3 });
-// await addField({ name: 'Field A', subSubItemId: 4 });
 
 
 
@@ -127,17 +117,35 @@ export const addField = async (data: { name: string; subSubSubItemId: number, fi
 
 
 
+
+
+
+// Add Template
+export const addTemplate = async (data: { name: string; description: string, code: string }) => {
+  try {
+    const response = await apiClient.post('/templates/addTemplate', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding field:', error);
+    throw error;
+  }
+};
 
 
 export const getAllTemplates  = async () => {
   try {
-    const response = await apiClient.get('/templates');
+    const response = await apiClient.get('/templates/getAllTemplates');
     return response.data;
   } catch (error) {
     console.error('Error fetching all modules:', error);
     throw error;
   }
 };
+
+
+
+
+
 
 
 

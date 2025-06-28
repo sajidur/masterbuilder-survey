@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addTemplate } from '../../apiRequest/api';
 
 interface Template {
-  id: number;
+  id: string;
   name: string;
   description: string;
   code: string;
@@ -15,18 +16,17 @@ const TemplateConfiguration: React.FC = () => {
   const [description, setDescription] = useState('');
   const [code, setCode] = useState('');
 
-  const handleAddTemplate = () => {
+  const handleAddTemplate = async () => {
     if (!name.trim() || !description.trim() || !code.trim()) {
       toast.warn('Please fill all fields');
       return;
     }
 
-    const newTemplate: Template = {
-      id: Date.now(),
+    const newTemplate = await addTemplate({
       name,
       description,
       code,
-    };
+    });
 
     setTemplates(prev => [...prev, newTemplate]);
 

@@ -64,7 +64,7 @@ const SubItemManager: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [subItemName, setSubItemName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState<string>("");
-  const [selectedTemplateCode, setSelectedTemplateCode] = useState<string>("");
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,7 +106,7 @@ const SubItemManager: React.FC = () => {
       return;
     }
 
-    if (!selectedTemplateCode) {
+    if (!selectedTemplateId) {
       toast.warn("Please select a template.");
       return;
     }
@@ -128,14 +128,14 @@ const SubItemManager: React.FC = () => {
         name: trimmedName,
         itemId: itemObj.id,
         tier: selectedTier,
-        templateId: selectedTemplateCode, // using template.code
+        templateId: selectedTemplateId, // using template.code
       });
 
       toast.success("SubItem added successfully!");
       setSubItems((prev) => [...prev, newSubItem]);
       setSubItemName("");
       setSelectedTier("");
-      setSelectedTemplateCode("");
+      setSelectedTemplateId("");
     } catch (error) {
       console.error("Add subitem error:", error);
       toast.error("Failed to add subitem.");
@@ -189,7 +189,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select App</option>
             {apps
-              .filter((a) => a.Module?.id === selectedModule)
+              .filter((a) => a.Module?.name === selectedModule)
               .map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -213,7 +213,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Menu</option>
             {menus
-              .filter((m) => m.App?.id === selectedApp)
+              .filter((m) => m.app?.name === selectedApp)
               .map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.title}
@@ -234,7 +234,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Item</option>
             {items
-              .filter((i) => i.Menu?.id === selectedMenu)
+              .filter((i) => i.menu?.title === selectedMenu)
               .map((i) => (
                 <option key={i.id} value={i.id}>
                   {i.name}
@@ -261,17 +261,18 @@ const SubItemManager: React.FC = () => {
         <div>
           <label className="block mb-1 font-medium">Template</label>
           <select
+            value={selectedTemplateId}
+            onChange={(e) => setSelectedTemplateId(e.target.value)}
             className="w-full border px-3 py-2 rounded"
-            value={selectedTemplateCode}
-            onChange={(e) => setSelectedTemplateCode(e.target.value)}
           >
             <option value="">-- Choose a Template --</option>
             {templates.map((template) => (
-              <option key={template.code} value={template.code}>
+              <option key={template.id} value={template.id}>
                 {template.name}
               </option>
             ))}
           </select>
+
         </div>
 
         {/* Tier */}
