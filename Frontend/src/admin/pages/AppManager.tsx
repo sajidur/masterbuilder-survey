@@ -13,6 +13,7 @@ interface AppItem {
   id: string;
   name: string;
   Module: Module;
+  tier?: string;
 }
 
 const AppManager: React.FC = () => {
@@ -61,14 +62,14 @@ const AppManager: React.FC = () => {
       await addApp({ name: trimmedAppName, moduleId: selectedMod.id, tier: selectedTier });
       toast.success("App added successfully!");
 
-      // Optional: update local list (or refetch from server if needed)
-      const newApp: AppItem = {
-        id: Date.now(), // or get from response if available
+      const createdApp = await addApp({
         name: trimmedAppName,
-        Module: selectedMod,
-      };
+        moduleId: selectedMod.id,
+        tier: selectedTier,
+      });
 
-      setApps((prev) => [...prev, newApp]);
+      setApps((prev) => [...prev, createdApp]);
+
       setAppName("");
     } catch (error) {
       console.error("Failed to add app:", error);

@@ -4,10 +4,7 @@ export declare class CreateSubSubSubItemDto {
     name: string;
     tier: string;
     templateId: string;
-    userId: string;
     subSubItemId?: string;
-    createdBy?: string;
-    updatedBy?: string;
 }
 export declare class SubSubSubItemDto {
     id: string;

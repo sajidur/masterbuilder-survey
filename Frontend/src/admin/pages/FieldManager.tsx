@@ -20,12 +20,16 @@ interface SubItem { id: number; name: string; Item: Item; }
 interface SubSubItem { id: number; name: string; SubItem: SubItem; }
 interface SubSubSubItem { id: number; name: string; SubSubItem: SubSubItem; }
 
+
 interface Field {
-  id: number;
+  id: string;
   name: string;
   fieldGroup: string;
+  fieldType: string;
+  isRequired: boolean;
   SubSubSubItem: SubSubSubItem;
 }
+
 
 const FieldManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -46,6 +50,10 @@ const FieldManager: React.FC = () => {
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedFieldGroup, setSelectedFieldGroup] = useState("");
   const [fieldName, setFieldName] = useState("");
+  const [selectedFieldType, setSelectedFieldType] = useState("");
+  const [isRequired, setIsRequired] = useState(false);
+
+  const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
 
   const fieldGroups = ["tree", "graph", "table", "individual field"];
 
@@ -110,9 +118,17 @@ const FieldManager: React.FC = () => {
     }
 
     try {
+            
+      if (!selectedFieldType) {
+        toast.warn("Please select field type.");
+        return;
+      }
+
       await addField({
         name: fieldName.trim(),
         fieldGroup: selectedFieldGroup,
+        // fieldType: selectedFieldType,
+        // isRequired,
         subSubSubItemId: subSubSubObj.id,
       });
 
@@ -121,15 +137,18 @@ const FieldManager: React.FC = () => {
       setFields((prev) => [
         ...prev,
         {
-          id: Date.now(),
           name: fieldName.trim(),
           fieldGroup: selectedFieldGroup,
+          // fieldType: selectedFieldType,
+          // isRequired,
           SubSubSubItem: subSubSubObj,
         },
       ]);
 
       setFieldName("");
       setSelectedFieldGroup("");
+      setSelectedFieldType("");
+      setIsRequired(false);
     } catch (error) {
       toast.error("Failed to add field.");
     }
@@ -139,7 +158,7 @@ const FieldManager: React.FC = () => {
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Field Manager</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <Dropdown label="Module" value={selectedModule} options={modules.map((m) => m.name)} onChange={(val) => {
           setSelectedModule(val);
           setSelectedApp(""); setSelectedMenu(""); setSelectedItem("");
@@ -203,6 +222,27 @@ const FieldManager: React.FC = () => {
             placeholder="Enter field name"
           />
         </div>
+
+        <Dropdown
+          label="Field Type"
+          value={selectedFieldType}
+          options={fieldTypes}
+          onChange={(val) => setSelectedFieldType(val)}
+        />
+
+        <div className="flex items-center space-x-2 mt-2">
+          <input
+            type="checkbox"
+            checked={isRequired}
+            onChange={(e) => setIsRequired(e.target.checked)}
+            className="w-4 h-4"
+            id="required-checkbox"
+          />
+          <label htmlFor="required-checkbox" className="text-sm font-medium text-gray-700">
+            Required Field
+          </label>
+        </div>
+
       </div>
 
       <button
@@ -226,7 +266,10 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">SubSubItem</th>
               <th className="p-2 text-left">SubSubSubItem</th>
               <th className="p-2 text-left">Field Group</th>
-              <th className="p-2 text-left">Field</th>
+              <th className="p-2 text-left">Field Name</th>
+              <th className="p-2 text-left">Field Type</th>
+              <th className="p-2 text-left">Required</th>
+
             </tr>
           </thead>
           <tbody>
@@ -241,6 +284,9 @@ const FieldManager: React.FC = () => {
                 <td className="p-2">{f.SubSubSubItem?.name || "—"}</td>
                 <td className="p-2">{f.fieldGroup}</td>
                 <td className="p-2">{f.name}</td>
+                <td className="p-2">{f.fieldType}</td>
+                <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
+
               </tr>
             ))}
           </tbody>
