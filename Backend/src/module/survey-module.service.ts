@@ -459,7 +459,7 @@ export class SurveyModuleService {
       throw new NotFoundException(`Item with ID ${itemId} not found in cache`);
     }
 const template = await this.TemplateRepo.findOne({ where: { id: subItem.templateId } });
-    if (!template) throw new NotFoundException('Template not found');
+    
     return {
       id: subItem.id,
       name: subItem.name,
