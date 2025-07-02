@@ -54,6 +54,7 @@ import { User } from 'src/user/user.entity/user.entity';
 import { SubSubSubItem } from './module.entity/subSubSubItem.entity';
 import { CreateSubSubSubItemDto, SubSubSubItemDto } from './module.dto/subsubsubitem.dto';
 import { Template } from 'src/Template/entity/template';
+import { memoryUsage } from 'process';
 @Injectable()
 export class SurveyModuleService {
   constructor(
@@ -89,6 +90,7 @@ export class SurveyModuleService {
     return {
       id: subSubItem.id,
       name: subSubItem.name,
+      tier:subSubItem.tier,
       subItemId: subSubItem?.subItemId,
       subItem: await this.toSubItemDto(subItem),
       template:template||null
@@ -118,6 +120,7 @@ export class SurveyModuleService {
     return {
       id: subSubItem.id,
       name: subSubItem.name,
+      tier:subSubItem.tier,
       subItemId: subSubItem.subItemId,
       subItem: subItemDto,
       template:template||null
@@ -150,16 +153,17 @@ export class SurveyModuleService {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -172,6 +176,7 @@ export class SurveyModuleService {
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
+        tier:item.tier,
         menu: menuDto,
       });
     }
@@ -194,6 +199,7 @@ export class SurveyModuleService {
       subItemDtoMap.set(subItem.id, {
         id: subItem.id,
         name: subItem.name,
+        tier:subItem.tier,
         itemId: subItem.itemId,
         item: itemDto,
       });
@@ -475,6 +481,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     return {
       id: subItem.id,
       name: subItem.name,
+      tier:subItem.tier,
       itemId,
       item: itemDto,
       template:template||null
@@ -504,16 +511,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -526,6 +534,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
+        tier:item.tier,
         menu: menuDto,
       });
     }
@@ -565,16 +574,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -588,6 +598,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
+        tier:item.tier,
         menu: menuDto,
       });
     }
@@ -634,16 +645,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -657,6 +669,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
+        tier:item.tier,
         menu: menuDto,
       });
     }
@@ -700,16 +713,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -723,6 +737,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
+        tier:item.tier,
         menu: menuDto,
       });
     }
@@ -756,6 +771,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     return {
       id: subItem.id,
       name: subItem.name,
+      tier:subItem.tier,
       itemId: itemId, // Now guaranteed to be number
       item: itemDto,
       template:template||null
@@ -781,6 +797,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     return {
       id: item.id,
       name: item.name,
+      tier:item.tier,
       menu: await this.toMenuDto(menu),
     };
   }
@@ -802,6 +819,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     return {
       id: item.id,
       name: item.name,
+      tier:item.tier,
       menu: menuDto,
     };
   }
@@ -829,16 +847,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -867,16 +886,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -907,16 +927,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const app = appsMap.get(menu.appId);
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name,tier:module.tier }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -954,16 +975,17 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
       const app = appsMap.get(menu.appId);
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name }
+        ? { id: module.id, name: module.name ,tier:module.tier}
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, Module: moduleDto }
+        ? { id: app.id, name: app.name,tier:app.tier, Module: moduleDto }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
+        tier:menu.tier,
         app: appDto,
       });
     }
@@ -1049,7 +1071,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
   private async toDto(
     app: App,
-    modulesMap: Map<String, Module>,
+    modulesMap: Map<String, Modules>,
   ): Promise<AppDto | null> {
     const module = modulesMap.get(app.moduleId);
 
@@ -1061,6 +1083,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     return {
       id: app.id,
       name: app.name,
+      tier:app.tier,
       Module: module,
     };
   }
@@ -1072,8 +1095,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     ]);
 
     if (!apps.length || !modules.length) return [];
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     const appDtos = await Promise.all(
       apps.map((app) => this.toDto(app, modulesMap)),
@@ -1091,8 +1114,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
     if (!app) throw new NotFoundException(`App with ID ${id} not found`);
 
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     return this.toDto(app, modulesMap);
   }
@@ -1102,8 +1125,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     user: User,
   ): Promise<AppDto | null> {
     const [modules] = await Promise.all([this.modulesRepository.find()]);
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     const module = modulesMap.get(createAppDto.moduleId);
     console.log(module);
@@ -1134,8 +1157,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     user: User,
   ): Promise<AppDto | null> {
     const [modules] = await Promise.all([this.modulesRepository.find()]);
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     const module = modulesMap.get(app.moduleId);
     console.log(module);
@@ -1175,17 +1198,20 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     const moduleDto: ModuleDto | null = module && {
       id: module.id,
       name: module.name,
+      tier:module.tier
     };
 
     const appDto: AppDto | null = app && {
       id: app.id,
       name: app.name,
+      tier:app.tier,
       Module: moduleDto,
     };
 
     return {
       id: menu.id,
       title: menu.title,
+      tier:menu.tier,
       app: appDto,
     };
   }
@@ -1206,7 +1232,7 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
   private async toMenuDto1(
     menu: Menu,
     appsMap: Map<string, App>,
-    modulesMap: Map<string, Module>,
+    modulesMap: Map<string, Modules>,
   ): Promise<MenuDto> {
     const app = menu.appId ? (appsMap.get(menu.appId) ?? null) : null;
     const module = app?.moduleId
@@ -1216,17 +1242,20 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
     const moduleDto: ModuleDto | null = module && {
       id: module.id,
       name: module.name,
+      tier:module.tier,
     };
 
     const appDto: AppDto | null = app && {
       id: app.id,
       name: app.name,
+      tier:app.tier,
       Module: moduleDto,
     };
 
     return {
       id: menu.id,
       title: menu.title,
+      tier:menu.tier,
       app: appDto,
     };
   }
@@ -1247,8 +1276,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
     const appsMap = new Map<string, App>(apps.map((app) => [app.id, app]));
 
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
 
     return Promise.all(
@@ -1271,8 +1300,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
     const appsMap = new Map<string, App>(apps.map((app) => [app.id, app]));
 
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     //return menu ? await this.toMenuDto(menu) : null;
     return this.toMenuDto1(menu, appsMap, modulesMap);
@@ -1300,8 +1329,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
     const appsMap = new Map<string, App>(apps.map((app) => [app.id, app]));
 
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     //return menu ? await this.toMenuDto(menu) : null;
     return this.toMenuDto1(menu, appsMap, modulesMap);
@@ -1328,8 +1357,8 @@ const template = await this.TemplateRepo.findOne({ where: { id: subItem.template
 
     const appsMap = new Map<string, App>(apps.map((app) => [app.id, app]));
 
-    const modulesMap = new Map<string, Module>(
-      modules.map((m) => [m.id, m as unknown as Module]),
+    const modulesMap = new Map<string, Modules>(
+      modules.map((m) => [m.id, m as unknown as Modules]),
     );
     //return menu ? await this.toMenuDto(menu) : null;
     // Merge updated data into existing entity

@@ -7,6 +7,7 @@ import { Template } from 'src/Template/entity/template';
 export class SubItemDto {
   id: string;
   name: string;
+  tier:string;
   itemId: string;
   item?: ItemDto | null;
   template?: Template | null;

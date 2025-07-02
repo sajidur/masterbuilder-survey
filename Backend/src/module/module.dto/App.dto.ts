@@ -9,7 +9,7 @@ export class AppDto {
   id: string;
   
   name: string;
-  
+  tier:string;
   Module: ModuleDto|null;
 }
 export class CreateAppDto {

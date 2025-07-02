@@ -32,6 +32,7 @@ export class CreateMenuDto {
 export class MenuDto {
   id: string;
   title: string;
+  tier:string;
   app: AppDto|null;
  
 }

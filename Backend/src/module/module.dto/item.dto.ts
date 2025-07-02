@@ -6,6 +6,7 @@ export class ItemDto {
  
   id: string;
   name: string;
+  tier:string;
   menu: MenuDto|null;
 
 }

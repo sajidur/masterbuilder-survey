@@ -26,5 +26,6 @@ export class UpdateModuleDto {
 export class ModuleDto {
   id: string;
   name: string;
+  tier:string;
 }
 
