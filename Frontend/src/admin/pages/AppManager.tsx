@@ -22,6 +22,7 @@ const AppManager: React.FC = () => {
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [appName, setAppName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,15 +59,15 @@ const AppManager: React.FC = () => {
       return;
     }
 
-    try {
-      await addApp({ name: trimmedAppName, moduleId: selectedMod.id, tier: selectedTier });
-      toast.success("App added successfully!");
+    try {      
 
       const createdApp = await addApp({
         name: trimmedAppName,
         moduleId: selectedMod.id,
         tier: selectedTier,
+        serialNumber
       });
+      toast.success("App added successfully!");
 
       setApps((prev) => [...prev, createdApp]);
 
@@ -90,6 +91,20 @@ const AppManager: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
+          </div>
+
+
           {/* Module Dropdown */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -165,8 +180,10 @@ const AppManager: React.FC = () => {
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
+                  <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module</th>
-                  <th className="px-4 py-3 text-left">App Name</th>
+                  <th className="px-4 py-3 text-left">App</th>
+                  <th className="px-4 py-3 text-left">Tier</th>
                 </tr>
               </thead>
               <tbody>
@@ -175,10 +192,15 @@ const AppManager: React.FC = () => {
                     key={app.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
+                  <td className="px-4 py-3 text-gray-800">{app.serialNumber}</td>
+
                     <td className="px-4 py-3 text-gray-800">
-                      {app.Module?.name || "—"}
+                      {/* {app.Module.serialNumber} -  */}
+                      {app.Module?.name || "—"} 
+                      {/* - {app.Module.tier} */}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{app.name}</td>
+                    <td className="px-4 py-3 text-gray-800">{app.tier}</td>
                   </tr>
                 ))}
               </tbody>

@@ -48,7 +48,12 @@ interface SubItem {
   item: Item;
   tier: string;
   Template?: Template;
+  serialNumber: string;
+  buttonType: string;
+  navigationTo: string;
+  description: string;
 }
+
 
 const SubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -65,6 +70,11 @@ const SubItemManager: React.FC = () => {
   const [subItemName, setSubItemName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState<string>("");
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
+  const [serialNumber, setSerialNumber] = useState("");
+const [buttonType, setButtonType] = useState("");
+const [navigationTo, setNavigationTo] = useState("");
+const [description, setDescription] = useState("");
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,14 +138,24 @@ const SubItemManager: React.FC = () => {
         name: trimmedName,
         itemId: itemObj.id,
         tier: selectedTier,
-        templateId: selectedTemplateId, // using template.code
+        templateId: selectedTemplateId,
+        serialNumber,
+        buttonType,
+        navigationTo,
+        description,
       });
+
 
       toast.success("SubItem added successfully!");
       setSubItems((prev) => [...prev, newSubItem]);
       setSubItemName("");
       setSelectedTier("");
       setSelectedTemplateId("");
+      setSerialNumber("");
+setButtonType("");
+setNavigationTo("");
+setDescription("");
+
     } catch (error) {
       console.error("Add subitem error:", error);
       toast.error("Failed to add subitem.");
@@ -149,6 +169,20 @@ const SubItemManager: React.FC = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+
+        {/* Serial Number */}
+<div>
+  <label className="block mb-1 text-sm font-semibold text-gray-700">Serial Number</label>
+  <input
+    type="text"
+    value={serialNumber}
+    onChange={(e) => setSerialNumber(e.target.value)}
+    placeholder="Enter serial number"
+    className="w-full px-3 py-2 border rounded"
+  />
+</div>
+
+
         {/* Module */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -213,7 +247,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Menu</option>
             {menus
-              .filter((m) => m.app?.name === selectedApp)
+              .filter((m) => m.app?.id === selectedApp)
               .map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.title}
@@ -234,7 +268,7 @@ const SubItemManager: React.FC = () => {
           >
             <option value="">Select Item</option>
             {items
-              .filter((i) => i.menu?.title === selectedMenu)
+              .filter((i) => i.menu?.id === selectedMenu)
               .map((i) => (
                 <option key={i.id} value={i.id}>
                   {i.name}
@@ -291,6 +325,44 @@ const SubItemManager: React.FC = () => {
             ))}
           </select>
         </div>
+
+        {/* Button Type */}
+<div>
+  <label className="block mb-1 text-sm font-semibold text-gray-700">Button Type</label>
+  <select
+    value={buttonType}
+    onChange={(e) => setButtonType(e.target.value)}
+    className="w-full px-3 py-2 border rounded"
+  >
+    <option value="">-- Select Button Type --</option>
+    <option value="Primary Button">Primary Button</option>
+    <option value="Second Button">Second Button</option>
+  </select>
+</div>
+
+{/* Navigate To */}
+<div>
+  <label className="block mb-1 text-sm font-semibold text-gray-700">Navigate To</label>
+  <input
+    type="text"
+    value={navigationTo}
+    onChange={(e) => setNavigationTo(e.target.value)}
+    placeholder="Enter route or URL"
+    className="w-full px-3 py-2 border rounded"
+  />
+</div>
+
+{/* Description */}
+<div>
+  <label className="block mb-1 text-sm font-semibold text-gray-700">Description</label>
+  <input
+    type="text"
+    value={description}
+    onChange={(e) => setDescription(e.target.value)}
+    placeholder="Enter description"
+    className="w-full px-3 py-2 border rounded"
+  />
+</div>
       </div>
 
       <button
@@ -309,23 +381,35 @@ const SubItemManager: React.FC = () => {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
+                <th className="p-2 text-left">SI</th>
+
+
                 <th className="p-2 text-left">Module</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">Item</th>
                 <th className="p-2 text-left">SubItem</th>
                 <th className="p-2 text-left">Template</th>
+                <th className="p-2 text-left">Tier</th>
+                <th className="p-2 text-left">Button Type</th>
+                <th className="p-2 text-left">Navigate To</th>
+                <th className="p-2 text-left">Description</th>
               </tr>
             </thead>
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
+                  <td className="p-2">{s.serialNumber}</td>
                   <td className="p-2">{s.item?.menu?.app?.Module?.name || "—"}</td>
                   <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
                   <td className="p-2">{s.item?.menu?.title || "—"}</td>
                   <td className="p-2">{s.item?.name || "—"}</td>
                   <td className="p-2">{s.name}</td>
-                  <td className="p-2">{s.Template?.name || "—"}</td>
+                  <td className="p-2">{s.template?.name || "—"}</td>
+                  <td className="p-2">{s.tier}</td>
+                  <td className="p-2">{s.buttonType}</td>
+                  <td className="p-2">{s.navigationTo}</td>
+                  <td className="p-2">{s.description}</td>
                 </tr>
               ))}
             </tbody>

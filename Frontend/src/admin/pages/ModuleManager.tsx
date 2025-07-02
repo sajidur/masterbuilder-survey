@@ -7,12 +7,15 @@ import { tiers } from "./data";
 interface Module {
   id: number;
   name: string;
+  serialNumber: string;
 }
 
 const ModuleManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [newModuleName, setNewModuleName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
+
 
   useEffect(() => {
     fetchModules();
@@ -47,10 +50,11 @@ const ModuleManager: React.FC = () => {
     }
 
     try {
-      await addModule({ name: trimmedName, tier: selectedTier });
+      await addModule({ name: trimmedName, tier: selectedTier, serialNumber  });
       toast.success("Module added successfully!");
       setNewModuleName("");
-      fetchModules(); // refresh module list
+      setSerialNumber("");
+      fetchModules();
     } catch (error) {
       console.error("Failed to add module:", error);
       toast.error("Failed to add module.");
@@ -71,6 +75,20 @@ const ModuleManager: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
+          </div>
+
+
           {/* Module Name */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -123,7 +141,9 @@ const ModuleManager: React.FC = () => {
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
+                  <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module Name</th>
+                  <th className="px-4 py-3 text-left">Tier</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,7 +152,9 @@ const ModuleManager: React.FC = () => {
                     key={module.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
+                    <td className="px-4 py-3 text-gray-800">{module.serialNumber}</td>
                     <td className="px-4 py-3 text-gray-800">{module.name}</td>
+                    <td className="px-4 py-3 text-gray-800">{module.tier}</td>
                   </tr>
                 ))}
               </tbody>

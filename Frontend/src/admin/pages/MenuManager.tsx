@@ -25,6 +25,7 @@ interface MenuItem {
   title: string;
   tier: string;
   App: AppItem;
+  serialNumber: string;
 }
 
 
@@ -37,6 +38,8 @@ const MenuManager: React.FC = () => {
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [menuName, setMenuName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState("");
+    const [serialNumber, setSerialNumber] = useState("");
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +89,7 @@ const MenuManager: React.FC = () => {
         title: trimmedMenuName,
         appId: selectedAppObj.id,
         tier: selectedTier,
+        serialNumber
       });
 
       toast.success("Menu added successfully!");
@@ -109,6 +113,21 @@ const MenuManager: React.FC = () => {
     <h3 className="text-lg font-semibold text-gray-700 mb-4">Add New Menu</h3>
 
     <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+
+
+      {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
+          </div>
+
+
       {/* Module Dropdown */}
       <div>
         <label className="block mb-1 font-medium text-gray-700">Module</label>
@@ -199,17 +218,21 @@ const MenuManager: React.FC = () => {
         <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
+              <th className="px-4 py-3 text-left">SI</th>
               <th className="px-4 py-3 text-left">Module</th>
               <th className="px-4 py-3 text-left">App</th>
-              <th className="px-4 py-3 text-left">Menu Name</th>
+              <th className="px-4 py-3 text-left">Menu</th>
+              <th className="px-4 py-3 text-left">Tier</th>
             </tr>
           </thead>
           <tbody>
             {menus.map((menu, index) => (
               <tr key={menu.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                <td className="px-4 py-3 text-gray-800">{menu.serialNumber}</td>
                 <td className="px-4 py-3 text-gray-800">{menu.app.Module?.name || "—"}</td>
                 <td className="px-4 py-3 text-gray-800">{menu.app?.name || "—"}</td>
                 <td className="px-4 py-3 text-gray-800">{menu.title}</td>
+                <td className="px-4 py-3 text-gray-800">{menu.tier}</td>
               </tr>
             ))}
           </tbody>

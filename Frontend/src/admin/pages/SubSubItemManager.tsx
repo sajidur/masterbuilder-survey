@@ -34,7 +34,6 @@ interface Item {
   id: string;
   name: string;
   menu: Menu;
-
 }
 
 interface SubItem {
@@ -65,6 +64,7 @@ const SubSubItemManager: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [subItems, setSubItems] = useState<SubItem[]>([]);
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -74,22 +74,22 @@ const SubSubItemManager: React.FC = () => {
   const [subSubItemName, setSubSubItemName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
-  const [templates, setTemplates] = useState<Template[]>([]);
+    const [serialNumber, setSerialNumber] = useState("");
   
-
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, templatesData] = await Promise.all([
-          getAllModules(),
-          getAllApps(),
-          getAllMenus(),
-          getAllItems(),
-          getAllSubitems(),
-          getAllSubSubitems(),
-          getAllTemplates(),
-        ]);
+        const [mod, app, menu, item, subItem, subSub, templatesData] =
+          await Promise.all([
+            getAllModules(),
+            getAllApps(),
+            getAllMenus(),
+            getAllItems(),
+            getAllSubitems(),
+            getAllSubSubitems(),
+            getAllTemplates(),
+          ]);
 
         setModules(mod);
         setApps(app);
@@ -109,59 +109,68 @@ const SubSubItemManager: React.FC = () => {
 
   const handleAdd = async () => {
     if (
-  !selectedModule ||
-  !selectedApp ||
-  !selectedMenu ||
-  !selectedItem ||
-  !selectedSubItem ||
-  !subSubItemName.trim() ||
-  !selectedTemplateId ||
-  !selectedTier
-) {
-  toast.warn("Please fill all fields.");
-  return;
-}
+      !selectedModule ||
+      !selectedApp ||
+      !selectedMenu ||
+      !selectedItem ||
+      !selectedSubItem ||
+      !subSubItemName.trim() ||
+      !selectedTemplateId ||
+      !selectedTier
+    ) {
+      toast.warn("Please fill all fields.");
+      return;
+    }
 
-const subItemObj = subItems.find((s) => s.name === selectedSubItem);
+    const subItemObj = subItems.find((s) => s.id === selectedSubItem);
+    if (!subItemObj) {
+      toast.error("Invalid SubItem selected.");
+      return;
+    }
 
-if (!subItemObj) {
-  toast.error("Invalid SubItem selected.");
-  return;
-}
+    try {
+      const newSubSubItem = await addSubSubitem({
+        name: subSubItemName.trim(),
+        subItemId: subItemObj.id,
+        tier: selectedTier,
+        templateId: selectedTemplateId,
+        serialNumber
+      });
 
-try {
-  const newSubSubItem = await addSubSubitem({
-    name: subSubItemName.trim(),
-    subItemId: subItemObj.id,
-    tier: selectedTier,
-    templateId: selectedTemplateId,
-  });
+      toast.success("SubSubItem added!");
+      setSubSubItems((prev) => [...prev, newSubSubItem]);
 
-  toast.success("SubSubItem added!");
-
-  setSubSubItems((prev) => [
-    ...prev,
-    newSubSubItem
-  ]);
-
-  // Reset
-  setSubSubItemName("");
-  setSelectedTemplateId("");
-  setSelectedTier("");
-} catch (error) {
-  toast.error("Failed to add SubSubItem.");
-  console.error(error);
-}
-
+      setSubSubItemName("");
+      setSelectedTier("");
+      setSelectedTemplateId("");
+      setSerialNumber("");
+    } catch (error) {
+      toast.error("Failed to add SubSubItem.");
+      console.error(error);
+    }
   };
 
   return (
-    <div className="p-6 ">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-        SubSubItem Manager
-      </h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">SubSubItem Manager</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+
+
+
+        {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
+          </div>
+
+
         {/* Module */}
         <div>
           <label className="block mb-1 font-medium">Module</label>
@@ -178,7 +187,7 @@ try {
           >
             <option value="">-- Select Module --</option>
             {modules.map((m) => (
-              <option key={m.id} value={m.name}>
+              <option key={m.id} value={m.id}>
                 {m.name}
               </option>
             ))}
@@ -200,9 +209,9 @@ try {
           >
             <option value="">-- Select App --</option>
             {apps
-              .filter((a) => a.Module?.name === selectedModule)
+              .filter((a) => a.Module?.id === selectedModule)
               .map((a) => (
-                <option key={a.id} value={a.name}>
+                <option key={a.id} value={a.id}>
                   {a.name}
                 </option>
               ))}
@@ -223,14 +232,10 @@ try {
           >
             <option value="">-- Select Menu --</option>
             {menus
-              .filter(
-                (m) =>
-                  m.app?.name === selectedApp &&
-                  m.app?.Module?.name === selectedModule
-              )
+              .filter((m) => m.app?.id === selectedApp)
               .map((m) => (
-                <option key={m.id} value={m.name}>
-                  {m.name}
+                <option key={m.id} value={m.id}>
+                  {m.title}
                 </option>
               ))}
           </select>
@@ -249,14 +254,9 @@ try {
           >
             <option value="">-- Select Item --</option>
             {items
-              .filter(
-                (i) =>
-                  i.menu?.title === selectedMenu &&
-                  i.menu?.app?.name === selectedApp &&
-                  i.menu?.app?.Module?.name === selectedModule
-              )
+              .filter((i) => i.menu?.id === selectedMenu)
               .map((i) => (
-                <option key={i.id} value={i.name}>
+                <option key={i.id} value={i.id}>
                   {i.name}
                 </option>
               ))}
@@ -273,16 +273,16 @@ try {
           >
             <option value="">-- Select SubItem --</option>
             {subItems
-              .filter((s) => s.item?.name === selectedItem)
+              .filter((s) => s.item?.id === selectedItem)
               .map((s) => (
-                <option key={s.id} value={s.name}>
+                <option key={s.id} value={s.id}>
                   {s.name}
                 </option>
               ))}
           </select>
         </div>
 
-        {/* SubSubItem Input */}
+        {/* SubSubItem Name */}
         <div>
           <label className="block mb-1 font-medium">SubSubItem Name</label>
           <input
@@ -294,7 +294,7 @@ try {
           />
         </div>
 
-        {/* template */}
+        {/* Template */}
         <div>
           <label className="block mb-1 font-medium">Template</label>
           <select
@@ -309,10 +309,9 @@ try {
               </option>
             ))}
           </select>
-
         </div>
 
-        {/* Tire */}
+        {/* Tier */}
         <div>
           <label className="block mb-1 font-medium">Tier</label>
           <select
@@ -337,12 +336,13 @@ try {
         + Add SubSubItem
       </button>
 
-      {/* Table */}
+      {/* SubSubItems Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
         <h3 className="text-lg font-semibold mb-4">SubSubItems List</h3>
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
+              <th className="p-2 text-left">SI</th>
               <th className="p-2 text-left">Module</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
@@ -350,12 +350,13 @@ try {
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SubSubItem</th>
               <th className="p-2 text-left">Template</th>
-
+              <th className="p-2 text-left">Tier</th>
             </tr>
           </thead>
           <tbody>
             {subSubItems.map((s) => (
               <tr key={s.id} className="border-t">
+                <td className="p-2">{s.serialNumber}</td>
                 <td className="p-2">{s.subItem?.item?.menu?.app?.Module?.name || "—"}</td>
                 <td className="p-2">{s.subItem?.item?.menu?.app?.name || "—"}</td>
                 <td className="p-2">{s.subItem?.item?.menu?.title || "—"}</td>
@@ -363,8 +364,11 @@ try {
                 <td className="p-2">{s.subItem?.name || "—"}</td>
                 <td className="p-2">{s.name}</td>
                 <td className="p-2">
-                  {templates.find((t) => t.id.toString() === s.templateId)?.name || "—"}
+                  {/* {templates.find((t) => t.id === s.templateId)?.name || "—"} */}
+                  {s.template?.name}
                 </td>
+                                <td className="p-2">{s.tier}</td>
+
               </tr>
             ))}
           </tbody>

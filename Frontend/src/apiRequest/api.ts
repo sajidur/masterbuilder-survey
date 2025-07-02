@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
 
 
 // Add Module
-export const addModule = async (data: { name: string ,tier: string }) => {
+export const addModule = async (data: { name: string ,tier: string, serialNumber: string}) => {
   try {
     const response = await apiClient.post('/survey-module/addModule', data);
     return response.data;
@@ -33,7 +33,7 @@ export const addModule = async (data: { name: string ,tier: string }) => {
 };
 
 // Add App
-export const addApp = async (data: { name: string; moduleId: string, tier: string }) => {
+export const addApp = async (data: { name: string; moduleId: string, tier: string, serialNumber: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addApps', data);
     return response.data;
@@ -44,7 +44,7 @@ export const addApp = async (data: { name: string; moduleId: string, tier: strin
 };
 
 // Add Menu
-export const addMenu = async (data: { title: string; appId: string, tier: string }) => {
+export const addMenu = async (data: { title: string; appId: string, tier: string, serialNumber: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addMenu', data);
     return response.data;
@@ -55,7 +55,7 @@ export const addMenu = async (data: { title: string; appId: string, tier: string
 };
 
 // Add Item
-export const addItem = async (data: { name: string; menuId: string, tier: string }) => {
+export const addItem = async (data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addItem', data);
     return response.data;
@@ -66,7 +66,7 @@ export const addItem = async (data: { name: string; menuId: string, tier: string
 };
 
 // Add Subitem
-export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string }) => {
+export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubitems', data);
     return response.data;
@@ -77,7 +77,7 @@ export const addSubitem = async (data: { name: string; itemId: string, tier: str
 };
 
 // Add Sub-Subitem
-export const addSubSubitem = async (data: { name: string; subItemId: string, tier: string, templateId: string }) => {
+export const addSubSubitem = async (data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubItem', data);
     return response.data;
@@ -88,7 +88,7 @@ export const addSubSubitem = async (data: { name: string; subItemId: string, tie
 };
 
 // Add SubsubSubitem
-export const addSubSubSubitem = async (data: { name: string; subSubItemId: string, tier: string, templateId: string }) => {
+export const addSubSubSubitem = async (data: { name: string; subSubItemId: string, tier: string, templateId: string, serialNumber: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubSubItem', data);
     return response.data;
@@ -99,7 +99,14 @@ export const addSubSubSubitem = async (data: { name: string; subSubItemId: strin
 };
 
 // Add Field
-export const addField = async (data: { name: string; subSubSubItemId: number, fieldGroup: string }) => {
+export const addField = async (data: {
+  name: string;
+  displayType: string;
+  fieldType: string;
+  isRequired: boolean;
+  subSubSubItemId: string;
+  serialNumber: string
+}) => {
   try {
     const response = await apiClient.post('/survey-module/addField', data);
     return response.data;

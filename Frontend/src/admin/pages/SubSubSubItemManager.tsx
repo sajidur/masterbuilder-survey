@@ -55,6 +55,9 @@ interface SubSubSubItem {
   id: string;
   name: string;
   SubSubItem: SubSubItem;
+  serialNumber?: string;
+  tier?: string;
+  templateId?: string;
 }
 
 interface Template {
@@ -83,12 +86,21 @@ const SubSubSubItemManager: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [templates, setTemplates] = useState<Template[]>([]);
-
+  const [serialNumber, setSerialNumber] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub, templatesData] = await Promise.all([
+        const [
+          mod,
+          app,
+          menu,
+          item,
+          subItem,
+          subSub,
+          subSubSub,
+          templatesData,
+        ] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
@@ -99,7 +111,7 @@ const SubSubSubItemManager: React.FC = () => {
           getAllTemplates(),
         ]);
         setModules(mod);
-        setApps(app); 
+        setApps(app);
         setMenus(menu);
         setItems(item);
         setSubItems(subItem);
@@ -139,21 +151,19 @@ const SubSubSubItemManager: React.FC = () => {
     }
 
     try {
-
       const newSubSubSubItem = await addSubSubSubitem({
         name: subSubSubItemName.trim(),
-        subSubItemId: subSubItemObj.id.toString(),
+        subSubItemId: subSubItemObj.id,
         tier: selectedTier,
         templateId: selectedTemplateId,
+        serialNumber,
       });
 
-
       toast.success("SubSubSubItem added!");
-      setSubSubSubItems((prev) => [
-        ...prev,
-       newSubSubSubItem
-      ]);
+      setSubSubSubItems((prev) => [...prev, newSubSubSubItem]);
       setSubSubSubItemName("");
+      setSerialNumber("");
+      setSelectedTier("");
     } catch (error) {
       toast.error("Failed to add SubSubSubItem.");
       console.error(error);
@@ -167,6 +177,18 @@ const SubSubSubItemManager: React.FC = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+        {/* Serial Number */}
+        <div>
+          <label className="block mb-1 font-medium">Serial Number</label>
+          <input
+            type="text"
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
+            placeholder="Enter serial number"
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
         {/* Module to SubSubItem Selects */}
         {[
           {
@@ -206,7 +228,7 @@ const SubSubSubItemManager: React.FC = () => {
                   m.app?.name === selectedApp &&
                   m.app.Module?.name === selectedModule
               )
-              .map((m) => m.name),
+              .map((m) => m.title),
             reset: () => {
               setSelectedItem("");
               setSelectedSubItem("");
@@ -218,7 +240,7 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedItem,
             setter: setSelectedItem,
             options: items
-              .filter((i) => i.menu?.name === selectedMenu)
+              .filter((i) => i.menu?.title === selectedMenu)
               .map((i) => i.name),
             reset: () => {
               setSelectedSubItem("");
@@ -278,7 +300,7 @@ const SubSubSubItemManager: React.FC = () => {
         </div>
 
         {/* template */}
-       <div>
+        <div>
           <label className="block mb-1 font-medium">Template</label>
           <select
             value={selectedTemplateId}
@@ -292,7 +314,6 @@ const SubSubSubItemManager: React.FC = () => {
               </option>
             ))}
           </select>
-
         </div>
 
         {/* Tire */}
@@ -326,6 +347,7 @@ const SubSubSubItemManager: React.FC = () => {
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
+              <th className="p-2 text-left">SI</th>
               <th className="p-2 text-left">Module</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
@@ -333,12 +355,15 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SubSubItem</th>
               <th className="p-2 text-left">SubSubSubItem</th>
+              <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Template</th>
             </tr>
           </thead>
+
           <tbody>
             {subSubSubItems.map((s) => (
               <tr key={s.id} className="border-t">
+                <td className="p-2">{s.serialNumber || "—"}</td>
                 <td className="p-2">
                   {s.subSubItem?.subItem?.item?.menu?.app?.Module?.name || "—"}
                 </td>
@@ -354,9 +379,10 @@ const SubSubSubItemManager: React.FC = () => {
                 <td className="p-2">{s.subSubItem?.subItem?.name || "—"}</td>
                 <td className="p-2">{s.subSubItem?.name || "—"}</td>
                 <td className="p-2">{s.name}</td>
-
+                <td className="p-2">{s.tier || "—"}</td>
                 <td className="p-2">
-                  {templates.find((t) => t.id.toString() === s.templateId)?.name || "—"}
+                  {templates.find((t) => t.id.toString() === s.templateId)
+                    ?.name || "—"}
                 </td>
               </tr>
             ))}
