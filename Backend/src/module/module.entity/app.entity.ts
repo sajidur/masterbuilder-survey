@@ -26,6 +26,8 @@ export class App {
   @Column()
   tier: string;
   @Column()
+  serialNumber: string;
+  @Column()
   @ApiProperty({ description: 'Module ID' })
   moduleId: string;
   @ManyToOne(() => Modules, (module) => module.apps)

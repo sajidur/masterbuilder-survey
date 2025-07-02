@@ -5,8 +5,9 @@ import { SubSubSubItemDto } from './subsubsubitem.dto';
 export class FieldDto {
  
   id: string;
+  serialumber:string;
   name: string;
-  fieldGroup: string;
+  displayType: string;
   fieldType: string;
   isRequired: boolean;
   subSubSubItemId: string;
@@ -21,10 +22,14 @@ export class CreateFieldDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: 'Field Group of the field' })
+  @ApiProperty({ description: 'Serial Number of the field' })
   @IsString()
   @IsNotEmpty()
-  fieldGroup: string;
+  serialNumber: string;
+  @ApiProperty({ description: 'Display Type of the field' })
+  @IsString()
+  @IsNotEmpty()
+  displayType: string;
 
   @ApiProperty({ description: 'Field Type of the field' })
   @IsString()
@@ -40,8 +45,5 @@ export class CreateFieldDto {
   @IsNotEmpty()
   subSubSubItemId: string;
 
-  @ApiProperty({ description: 'User ID' })
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
+ 
 }

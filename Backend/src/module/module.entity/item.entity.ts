@@ -25,7 +25,14 @@ export class Item {
   menuId: string;
   @ManyToOne(() => Menu, (menu) => menu.items)
   menu: Menu;
-
+  @Column()
+  serialNumber: string;
+  @Column()
+  buttonType: string;
+  @Column()
+  navigationTo: string;
+  @Column()
+  description: string;
   @OneToMany(() => SubItem, (subItem) => subItem.item)
   subItems: SubItem[];
   @Column()

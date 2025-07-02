@@ -8,7 +8,8 @@ import { SubSubSubItem } from './subSubSubItem.entity';
 export class Field {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
+  @Column()
+  serialNumber:string;
   @Column()
   @ApiProperty({ description: 'Name of the field' })
   name: string;
@@ -30,7 +31,7 @@ export class Field {
   @Column({ nullable: true })
   updatedBy?: string;
   @Column()
-  fieldGroup:string;
+  displayType:string;
     @Column()
   fieldType:string;
     @Column()

@@ -32,6 +32,8 @@ export class Menu {
   userId: string;
   @Column()
   tier: string;
+  @Column()
+  serialNumber: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

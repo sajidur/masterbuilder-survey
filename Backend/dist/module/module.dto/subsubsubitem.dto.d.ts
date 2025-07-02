@@ -3,6 +3,7 @@ import { Template } from 'src/Template/entity/template';
 export declare class CreateSubSubSubItemDto {
     name: string;
     tier: string;
+    serialNumber: string;
     templateId: string;
     subSubItemId?: string;
 }
@@ -14,6 +15,7 @@ export declare class SubSubSubItemDto {
     userId: string;
     subSubItemId?: string;
     subSubItem?: SubSubItemDto | null;
+    serialNumber: string;
     createdAt: Date;
     updatedAt: Date;
     createdBy?: string;

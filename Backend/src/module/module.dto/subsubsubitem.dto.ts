@@ -17,7 +17,9 @@ export class CreateSubSubSubItemDto {
   @IsString()
   @IsNotEmpty()
   tier: string;
-
+  @ApiProperty({ description: 'SerialNumber of the SubSubSubItem' })
+  @IsString()
+  serialNumber: string;
   @ApiProperty({
     description: 'Template ID associated with the item',
     example: 'uuid-template-123',
@@ -33,8 +35,6 @@ export class CreateSubSubSubItemDto {
   @IsOptional()
   @IsString()
   subSubItemId?: string;
-
-
 }
 export class SubSubSubItemDto {
   id: string;
@@ -44,6 +44,7 @@ export class SubSubSubItemDto {
   userId: string;
   subSubItemId?: string;
   subSubItem?: SubSubItemDto | null;
+  serialNumber: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy?: string;

@@ -30,6 +30,8 @@ export class SubSubItem {
   subItemId?: string;
   @Column()
   tier: string;
+  @Column()
+  serialNumber: string;
   @ManyToOne(() => SubItem, (subItem) => subItem.subSubItems, {
     nullable: true,
   })

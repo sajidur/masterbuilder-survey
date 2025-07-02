@@ -7,7 +7,8 @@ import { Template } from 'src/Template/entity/template';
 export class SubSubItemDto {
   id: string;
   name: string;
-  tier:string;
+  tier: string;
+  serialNumber: string;
   subItemId?: string;
   subItem?: SubItemDto | null;
   template?: Template | null;
@@ -20,6 +21,9 @@ export class CreateSubSubItemDto {
   @ApiProperty({ description: 'Tier of the SubSubItem' })
   @IsString()
   tier: string;
+  @ApiProperty({ description: 'SerialNumber of the SubSubItem' })
+  @IsString()
+  serialNumber: string;
   @ApiProperty({ description: 'Template of the SubItem' })
   @IsString()
   templateId: string;

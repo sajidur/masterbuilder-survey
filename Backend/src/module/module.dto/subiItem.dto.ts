@@ -7,7 +7,11 @@ import { Template } from 'src/Template/entity/template';
 export class SubItemDto {
   id: string;
   name: string;
-  tier:string;
+  tier: string;
+  serialNumber: string;
+  buttonType: string;
+  navigationTo: string;
+  description: string;
   itemId: string;
   item?: ItemDto | null;
   template?: Template | null;
@@ -21,6 +25,18 @@ export class CreateSubItemDto {
   @ApiProperty({ description: 'Tier of the SubItem' })
   @IsString()
   tier: string;
+  @ApiProperty({ description: 'serialNumber of the SubItem' })
+  @IsString()
+  serialNumber: string;
+  @ApiProperty({ description: 'buttonType of the SubItem' })
+  @IsString()
+  buttonType: string;
+  @ApiProperty({ description: 'navigationTo of the SubItem' })
+  @IsString()
+  navigationTo: string;
+  @ApiProperty({ description: 'Description of the SubItem' })
+  @IsString()
+  description: string;
   @ApiProperty({ description: 'Template of the SubItem' })
   @IsString()
   templateId: string;

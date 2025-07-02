@@ -18,6 +18,7 @@ let SubSubSubItem = class SubSubSubItem {
     name;
     subSubItemId;
     tier;
+    serialNumber;
     subSubItem;
     templateId;
     fields;
@@ -44,6 +45,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], SubSubSubItem.prototype, "serialNumber", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.subSubSubItems, {
         nullable: true,

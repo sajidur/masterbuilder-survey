@@ -38,6 +38,14 @@ export class SubItem {
   templateId: string;
   @Column()
   userId: string;
+   @Column()
+  serialNumber: string;
+  @Column()
+  buttonType: string;
+  @Column()
+  navigationTo: string;
+  @Column()
+  description: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

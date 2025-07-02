@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
- 
- 
+
 /* eslint-disable prettier/prettier */
 //import { Modules } from "../survey-module.entity/modules.entity";
 
@@ -8,11 +7,8 @@
 
 import { AppDto } from './App.dto';
 
-
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString} from 'class-validator';
-
-
+import { IsString } from 'class-validator';
 
 export class CreateMenuDto {
   @ApiProperty({ description: 'Title of the menu' })
@@ -25,15 +21,15 @@ export class CreateMenuDto {
   @ApiProperty({ description: 'Tier of the Menu' })
   @IsString()
   tier: string;
-  
-
+  @ApiProperty({ description: 'SerialNumber of the Menu' })
+  @IsString()
+  serialNumber: string;
 }
 
 export class MenuDto {
   id: string;
   title: string;
-  tier:string;
-  app: AppDto|null;
- 
+  tier: string;
+  serialNumber: string;
+  app: AppDto | null;
 }
-

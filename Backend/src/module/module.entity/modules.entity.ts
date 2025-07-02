@@ -22,7 +22,8 @@ export class Modules {
 
   @Column()
   tier: string;
-
+  @Column()
+  serialNumber: string;
   @OneToMany(() => App, (app) => app.module)
   apps: App[];
   @Column()

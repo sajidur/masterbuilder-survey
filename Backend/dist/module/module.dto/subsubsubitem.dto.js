@@ -15,6 +15,7 @@ const swagger_1 = require("@nestjs/swagger");
 class CreateSubSubSubItemDto {
     name;
     tier;
+    serialNumber;
     templateId;
     subSubItemId;
 }
@@ -34,6 +35,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "tier", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'SerialNumber of the SubSubSubItem' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSubSubSubItemDto.prototype, "serialNumber", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Template ID associated with the item',
@@ -60,6 +66,7 @@ class SubSubSubItemDto {
     userId;
     subSubItemId;
     subSubItem;
+    serialNumber;
     createdAt;
     updatedAt;
     createdBy;
