@@ -141,7 +141,7 @@ export const updateSubitem = async (
     const response = await apiClient.put(`/survey-module/updateSubitems/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error('Error updating module:', error);
+    console.error('Error updating sub:', error);
     throw error;
   }
 };
@@ -158,7 +158,7 @@ export const addSubSubitem = async (data: { name: string; subItemId: string, tie
     throw error;
   }
 };
-// Update Subitem
+// Update subSubitem
 export const updateSubSubitem = async (
   id: string,
   data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }
@@ -167,7 +167,7 @@ export const updateSubSubitem = async (
     const response = await apiClient.put(`/survey-module/updateSubSubItem/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error('Error updating module:', error);
+    console.error('Error updating subsub:', error);
     throw error;
   }
 };
@@ -185,6 +185,22 @@ export const addSubSubSubitem = async (data: { name: string; subSubItemId: strin
   }
 };
 
+// Update SubSubSubitem
+export const updateSubSubSubitem = async (
+  id: string,
+  data: { name: string; subSubItemId: string, tier: string, templateId: string, serialNumber: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateSubSubSubItem/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating subsubsub:', error);
+    throw error;
+  }
+};
+
+
+
 // Add Field
 export const addField = async (data: {
   name: string;
@@ -199,6 +215,27 @@ export const addField = async (data: {
     return response.data;
   } catch (error) {
     console.error('Error adding field:', error);
+    throw error;
+  }
+};
+
+// Update Field
+export const updateField = async (
+  id: string,
+  data: { 
+    name: string;
+    displayType: string;
+    fieldType: string;
+    isRequired: boolean;
+    subSubSubItemId: string;
+    serialNumber: string
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateField/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating Field:', error);
     throw error;
   }
 };

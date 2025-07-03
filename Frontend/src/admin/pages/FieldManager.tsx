@@ -11,20 +11,49 @@ import {
   getAllFields,
   addField,
   getAllSubSubSubitems,
+  updateField,
 } from "../../apiRequest/api";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
-interface Module { id: string; name: string; }
-interface App { id: string; name: string; Module: Module; }
-interface Menu { id: string; title: string; app: App; }
-interface Item { id: string; name: string; menu: Menu; }
-interface SubItem { id: string; name: string; item: Item; }
-interface SubSubItem { id: string; name: string; subItem: SubItem; }
-interface SubSubSubItem { id: string; name: string; subSubItem: SubSubItem; }
+interface Module {
+  id: string;
+  name: string;
+}
+interface App {
+  id: string;
+  name: string;
+  Module: Module;
+}
+interface Menu {
+  id: string;
+  title: string;
+  app: App;
+}
+interface Item {
+  id: string;
+  name: string;
+  menu: Menu;
+}
+interface SubItem {
+  id: string;
+  name: string;
+  item: Item;
+}
+interface SubSubItem {
+  id: string;
+  name: string;
+  subItem: SubItem;
+}
+interface SubSubSubItem {
+  id: string;
+  name: string;
+  subSubItem: SubSubItem;
+}
 
 interface Field {
   id?: string;
   name: string;
-  fieldGroup: string;
+  displayType: string;
   fieldType: string;
   isRequired: boolean;
   subSubSubItem: SubSubSubItem;
@@ -48,28 +77,30 @@ const FieldManager: React.FC = () => {
   const [selectedSubItem, setSelectedSubItem] = useState("");
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
-  const [selectedFieldGroup, setSelectedFieldGroup] = useState("");
+  const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [fieldName, setFieldName] = useState("");
   const [selectedFieldType, setSelectedFieldType] = useState("");
   const [isRequired, setIsRequired] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
+  const [editFieldId, setEditFieldId] = useState<string | null>(null);
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
-  const fieldGroups = ["tree", "graph", "table", "individual field"];
+  const displayTypes = ["tree", "graph", "table", "individual field"];
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub, field] = await Promise.all([
-          getAllModules(),
-          getAllApps(),
-          getAllMenus(),
-          getAllItems(),
-          getAllSubitems(),
-          getAllSubSubitems(),
-          getAllSubSubSubitems(),
-          getAllFields(),
-        ]);
+        const [mod, app, menu, item, subItem, subSub, subSubSub, field] =
+          await Promise.all([
+            getAllModules(),
+            getAllApps(),
+            getAllMenus(),
+            getAllItems(),
+            getAllSubitems(),
+            getAllSubSubitems(),
+            getAllSubSubSubitems(),
+            getAllFields(),
+          ]);
         setModules(mod);
         setApps(app);
         setMenus(menu);
@@ -86,9 +117,7 @@ const FieldManager: React.FC = () => {
     fetchAll();
   }, []);
 
-
-
-  const handleAddField = async () => {
+  const handleAddOrUpdateField = async () => {
     if (
       !selectedModule ||
       !selectedApp ||
@@ -97,14 +126,16 @@ const FieldManager: React.FC = () => {
       !selectedSubItem ||
       !selectedSubSubItem ||
       !selectedSubSubSubItem ||
-      !selectedFieldGroup ||
+      !selectedDisplayType ||
       !fieldName.trim()
     ) {
       toast.warn("Please fill all fields.");
       return;
     }
 
-    const subSubSubObj = subSubSubItems.find((s) => s.id === selectedSubSubSubItem);
+    const subSubSubObj = subSubSubItems.find(
+      (s) => s.id === selectedSubSubSubItem
+    );
     if (!subSubSubObj) {
       toast.error("Invalid SubSubSubItem.");
       return;
@@ -115,46 +146,50 @@ const FieldManager: React.FC = () => {
       return;
     }
 
-    try {
-    await addField({
+    const payload = {
       name: fieldName.trim(),
-      displayType: selectedFieldGroup,
+      displayType: selectedDisplayType,
       fieldType: selectedFieldType,
       isRequired,
       subSubSubItemId: subSubSubObj.id,
-      serialNumber
-    });
+      serialNumber,
+    };
 
-      toast.success("Field added successfully!");
+    try {
+      if (editFieldId) {
+        await updateField(editFieldId, payload);
+        toast.success("Field updated successfully!");
 
-      setFields((prev) => [
-        ...prev,
-        {
-          name: fieldName.trim(),
-          fieldGroup: selectedFieldGroup,
-          fieldType: selectedFieldType,
-          isRequired,
-          subSubSubItem: subSubSubObj,
-          serialNumber
-        },
-      ]);
+        // Update local list
+        const updatedFields = await getAllFields();
+        setFields(updatedFields);
+        setEditFieldId(null);
+      } else {
+        await addField(payload);
+        toast.success("Field added successfully!");
+        const updatedFields = await getAllFields();
+        setFields(updatedFields);
+      }
 
+      // Clear form
       setFieldName("");
       setSerialNumber("");
-      setSelectedFieldGroup("");
+      setSelectedDisplayType("");
       setSelectedFieldType("");
       setIsRequired(false);
+      setSelectedSubSubSubItem("");
     } catch (e) {
-      toast.error("Failed to add field.");
+      toast.error("Failed to save field.");
     }
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Field Manager</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        Field Manager
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -167,94 +202,105 @@ const FieldManager: React.FC = () => {
         </div>
 
         <Dropdown
-  label="Module"
-  value={selectedModule}
-  options={modules.map((m) => ({ label: m.name, value: m.id }))}
-  onChange={(val) => {
-    setSelectedModule(val);
-    setSelectedApp("");
-    setSelectedMenu("");
-    setSelectedItem("");
-    setSelectedSubItem("");
-    setSelectedSubSubItem("");
-    setSelectedSubSubSubItem("");
-  }}
-/>
+          label="Module"
+          value={selectedModule}
+          options={modules.map((m) => ({ label: m.name, value: m.id }))}
+          onChange={(val) => {
+            setSelectedModule(val);
+            setSelectedApp("");
+            setSelectedMenu("");
+            setSelectedItem("");
+            setSelectedSubItem("");
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="App"
-  value={selectedApp}
-  options={apps.filter((a) => a.Module?.id === selectedModule).map((a) => ({ label: a.name, value: a.id }))}
-  onChange={(val) => {
-    setSelectedApp(val);
-    setSelectedMenu("");
-    setSelectedItem("");
-    setSelectedSubItem("");
-    setSelectedSubSubItem("");
-    setSelectedSubSubSubItem("");
-  }}
-/>
+        <Dropdown
+          label="App"
+          value={selectedApp}
+          options={apps
+            .filter((a) => a.Module?.id === selectedModule)
+            .map((a) => ({ label: a.name, value: a.id }))}
+          onChange={(val) => {
+            setSelectedApp(val);
+            setSelectedMenu("");
+            setSelectedItem("");
+            setSelectedSubItem("");
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="Menu"
-  value={selectedMenu}
-  options={menus.filter((m) => m.app?.id === selectedApp).map((m) => ({ label: m.title, value: m.id }))}
-  onChange={(val) => {
-    setSelectedMenu(val);
-    setSelectedItem("");
-    setSelectedSubItem("");
-    setSelectedSubSubItem("");
-    setSelectedSubSubSubItem("");
-  }}
-/>
+        <Dropdown
+          label="Menu"
+          value={selectedMenu}
+          options={menus
+            .filter((m) => m.app?.id === selectedApp)
+            .map((m) => ({ label: m.title, value: m.id }))}
+          onChange={(val) => {
+            setSelectedMenu(val);
+            setSelectedItem("");
+            setSelectedSubItem("");
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="Item"
-  value={selectedItem}
-  options={items.filter((i) => i.menu?.id === selectedMenu).map((i) => ({ label: i.name, value: i.id }))}
-  onChange={(val) => {
-    setSelectedItem(val);
-    setSelectedSubItem("");
-    setSelectedSubSubItem("");
-    setSelectedSubSubSubItem("");
-  }}
-/>
+        <Dropdown
+          label="Item"
+          value={selectedItem}
+          options={items
+            .filter((i) => i.menu?.id === selectedMenu)
+            .map((i) => ({ label: i.name, value: i.id }))}
+          onChange={(val) => {
+            setSelectedItem(val);
+            setSelectedSubItem("");
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="SubItem"
-  value={selectedSubItem}
-  options={subItems.filter((s) => s.item?.id === selectedItem).map((s) => ({ label: s.name, value: s.id }))}
-  onChange={(val) => {
-    setSelectedSubItem(val);
-    setSelectedSubSubItem("");
-    setSelectedSubSubSubItem("");
-  }}
-/>
+        <Dropdown
+          label="SubItem"
+          value={selectedSubItem}
+          options={subItems
+            .filter((s) => s.item?.id === selectedItem)
+            .map((s) => ({ label: s.name, value: s.id }))}
+          onChange={(val) => {
+            setSelectedSubItem(val);
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="SubSubItem"
-  value={selectedSubSubItem}
-  options={subSubItems.filter((s) => s.subItem?.id === selectedSubItem).map((s) => ({ label: s.name, value: s.id }))}
-  onChange={(val) => {
-    setSelectedSubSubItem(val);
-    setSelectedSubSubSubItem("");
-  }}
-/>
+        <Dropdown
+          label="SubSubItem"
+          value={selectedSubSubItem}
+          options={subSubItems
+            .filter((s) => s.subItem?.id === selectedSubItem)
+            .map((s) => ({ label: s.name, value: s.id }))}
+          onChange={(val) => {
+            setSelectedSubSubItem(val);
+            setSelectedSubSubSubItem("");
+          }}
+        />
 
-<Dropdown
-  label="SubSubSubItem"
-  value={selectedSubSubSubItem}
-  options={subSubSubItems.filter((s) => s.subSubItem?.id === selectedSubSubItem).map((s) => ({ label: s.name, value: s.id }))}
-  onChange={(val) => setSelectedSubSubSubItem(val)}
-/>
+        <Dropdown
+          label="SubSubSubItem"
+          value={selectedSubSubSubItem}
+          options={subSubSubItems
+            .filter((s) => s.subSubItem?.id === selectedSubSubItem)
+            .map((s) => ({ label: s.name, value: s.id }))}
+          onChange={(val) => setSelectedSubSubSubItem(val)}
+        />
 
-
-<Dropdown
-  label="Display Type"
-  value={selectedFieldGroup}
-  options={fieldGroups.map(f => ({ label: f, value: f }))}
-  onChange={(val) => setSelectedFieldGroup(val)}
-/>
+        <Dropdown
+          label="Display Type"
+          value={selectedDisplayType}
+          options={displayTypes.map((f) => ({ label: f, value: f }))}
+          onChange={(val) => setSelectedDisplayType(val)}
+        />
 
         <div>
           <label className="block mb-1 font-medium">Field Name</label>
@@ -267,12 +313,12 @@ const FieldManager: React.FC = () => {
           />
         </div>
 
-<Dropdown
-  label="Field Type"
-  value={selectedFieldType}
-  options={fieldTypes.map(f => ({ label: f, value: f }))}
-  onChange={(val) => setSelectedFieldType(val)}
-/>
+        <Dropdown
+          label="Field Type"
+          value={selectedFieldType}
+          options={fieldTypes.map((f) => ({ label: f, value: f }))}
+          onChange={(val) => setSelectedFieldType(val)}
+        />
 
         <div className="flex items-center space-x-2 mt-2">
           <input
@@ -282,18 +328,37 @@ const FieldManager: React.FC = () => {
             className="w-4 h-4"
             id="required-checkbox"
           />
-          <label htmlFor="required-checkbox" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="required-checkbox"
+            className="text-sm font-medium text-gray-700"
+          >
             Required Field
           </label>
         </div>
       </div>
 
       <button
-        onClick={handleAddField}
+        onClick={handleAddOrUpdateField}
         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
       >
-        + Add Field
+        {editFieldId ? "Update Field" : "+ Add Field"}
       </button>
+
+      {editFieldId && (
+        <button
+          onClick={() => {
+            setEditFieldId(null);
+            setFieldName("");
+            setSerialNumber("");
+            setSelectedDisplayType("");
+            setSelectedFieldType("");
+            setIsRequired(false);
+          }}
+          className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 ml-4"
+        >
+          Cancel
+        </button>
+      )}
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
@@ -313,23 +378,84 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">Field Name</th>
               <th className="p-2 text-left">Field Type</th>
               <th className="p-2 text-left">Required</th>
+              <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {fields.map((f) => (
               <tr key={f.id} className="border-t">
                 <td className="p-2">{f.serialNumber || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app?.Module?.name || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app?.name || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.title || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.subItem?.item?.name || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.subItem?.name || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.subSubItem?.name || "—"}</td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app?.Module
+                    ?.name || "—"}
+                </td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
+                    ?.name || "—"}
+                </td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.title ||
+                    "—"}
+                </td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.subItem?.item?.name || "—"}
+                </td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.subItem?.name || "—"}
+                </td>
+                <td className="p-2">
+                  {f.subSubSubItem?.subSubItem?.name || "—"}
+                </td>
                 <td className="p-2">{f.subSubSubItem?.name || "—"}</td>
-                <td className="p-2">{f.fieldGroup}</td>
+                <td className="p-2">{f.displayType}</td>
                 <td className="p-2">{f.name}</td>
                 <td className="p-2">{f.fieldType}</td>
                 <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
+
+                <td className="px-4 py-3 flex gap-3">
+                  <button
+                    onClick={() => {
+                      setEditFieldId(f.id || "");
+                      setFieldName(f.name);
+                      setSelectedDisplayType(f.displayType);
+                      setSelectedFieldType(f.fieldType);
+                      setIsRequired(f.isRequired);
+                      setSerialNumber(f.serialNumber || "");
+
+                      // Pre-select the hierarchy for edit
+                      setSelectedModule(
+                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
+                          ?.Module?.id || ""
+                      );
+                      setSelectedApp(
+                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
+                          ?.id || ""
+                      );
+                      setSelectedMenu(
+                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.id ||
+                          ""
+                      );
+                      setSelectedItem(
+                        f.subSubSubItem?.subSubItem?.subItem?.item?.id || ""
+                      );
+                      setSelectedSubItem(
+                        f.subSubSubItem?.subSubItem?.subItem?.id || ""
+                      );
+                      setSelectedSubSubItem(
+                        f.subSubSubItem?.subSubItem?.id || ""
+                      );
+                      setSelectedSubSubSubItem(f.subSubSubItem?.id || "");
+                    }}
+                  
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <FaEdit />
+                  </button>
+
+                  <button className="text-red-600 hover:text-red-800">
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -368,6 +494,5 @@ const Dropdown = ({
     </select>
   </div>
 );
-
 
 export default FieldManager;
