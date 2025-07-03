@@ -7,8 +7,10 @@ import {
   getAllMenus,
   getAllItems,
   addItem,
+  updateItem,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: string;
@@ -53,6 +55,7 @@ const ItemManager: React.FC = () => {
   const [buttonType, setButtonType] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
   const [description, setDescription] = useState("");
+  const [editItemId, setEditItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,13 +93,6 @@ const ItemManager: React.FC = () => {
       menu.app?.name === selectedApp
   );
 
-  // const filteredItems = items.filter(
-  //   item =>
-  //     item.menu?.app?.Module?.name === selectedModule &&
-  //     item.menu?.app?.name === selectedApp &&
-  //     item.menu?.title === selectedMenu
-  // );
-
   const filteredItems =
     selectedModule || selectedApp || selectedMenu
       ? items.filter(
@@ -126,19 +122,25 @@ const ItemManager: React.FC = () => {
       return;
     }
 
-    try {
-      const newItem = await addItem({
-        name: trimmedItemName,
-        menuId: selectedMenuObj.id,
-        tier: selectedTier,
-        serialNumber,
-        buttonType,
-        navigationTo,
-        description,
-      });
+    const payload = {
+      name: trimmedItemName,
+      menuId: selectedMenuObj.id,
+      tier: selectedTier,
+      serialNumber,
+      buttonType,
+      navigationTo,
+      description,
+    };
 
-      toast.success("Item added successfully!");
-      setItems((prev) => [...prev, newItem]);
+    try {
+      if (editItemId) {
+        await updateItem(editItemId, payload);
+        toast.success("Item updated successfully!");
+      } else {
+        const newItem = await addItem(payload);
+        setItems((prev) => [...prev, newItem]);
+        toast.success("Item added successfully!");
+      }
 
       // Reset form
       setItemName("");
@@ -147,9 +149,13 @@ const ItemManager: React.FC = () => {
       setButtonType("");
       setNavigationTo("");
       setDescription("");
+      setEditItemId(null);
+
+      const updatedItems = await getAllItems();
+      setItems(updatedItems);
     } catch (error) {
-      console.error("Failed to add item:", error);
-      toast.error("Failed to add item.");
+      console.error("Failed to save item:", error);
+      toast.error("Failed to save item.");
     }
   };
 
@@ -247,43 +253,48 @@ const ItemManager: React.FC = () => {
         </div>
 
         {/* Button Type */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Button Type</label>
-  <select
-    value={buttonType}
-    onChange={e => setButtonType(e.target.value)}
-    className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
-  >
-    <option value="">-- Select Button Type --</option>
-    <option value="Primary Button">Primary Button</option>
-    <option value="Second Button">Second Button</option>
-  </select>
-</div>
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Type
+          </label>
+          <select
+            value={buttonType}
+            onChange={(e) => setButtonType(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">-- Select Button Type --</option>
+            <option value="Primary Button">Primary Button</option>
+            <option value="Second Button">Second Button</option>
+          </select>
+        </div>
 
-{/* Navigate To */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Navigate To</label>
-  <input
-    type="text"
-    value={navigationTo}
-    onChange={e => setNavigationTo(e.target.value)}
-    placeholder="Enter path or URL"
-    className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
-  />
-</div>
+        {/* Navigate To */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Navigate To
+          </label>
+          <input
+            type="text"
+            value={navigationTo}
+            onChange={(e) => setNavigationTo(e.target.value)}
+            placeholder="Enter path or URL"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
 
-{/* Description */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Description</label>
-  <input
-    type="text"
-    value={description}
-    onChange={e => setDescription(e.target.value)}
-    placeholder="Enter description"
-    className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
-  />
-</div>
-
+        {/* Description */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Description
+          </label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter description"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
 
         {/* Tier */}
         <div>
@@ -306,13 +317,33 @@ const ItemManager: React.FC = () => {
       </div>
 
       {/* Add Button */}
-      <div>
+      <div className="mt-4 flex gap-4">
         <button
           onClick={handleAddItem}
           className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
         >
-          + Add
+          {editItemId ? "Update Item" : "+ Add item"}
         </button>
+
+        {editItemId && (
+          <button
+            onClick={() => {
+              setEditItemId(null);
+              setItemName("");
+              setSelectedModule("");
+              setSelectedApp("");
+              setSelectedMenu("");
+              setSelectedTier("");
+              setSerialNumber("");
+              setButtonType("");
+              setNavigationTo("");
+              setDescription("");
+            }}
+            className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+          >
+            Cancel
+          </button>
+        )}
       </div>
 
       {/* Items Table */}
@@ -323,34 +354,57 @@ const ItemManager: React.FC = () => {
         ) : (
           <table className="w-full border border-gray-300 text-sm">
             <thead>
-  <tr className="bg-gray-100">
-    <th className="p-2 border-b text-left">SI</th>
-    <th className="p-2 border-b text-left">Module</th>
-    <th className="p-2 border-b text-left">App</th>
-    <th className="p-2 border-b text-left">Menu</th>
-    <th className="p-2 border-b text-left">Item</th>
-    <th className="p-2 border-b text-left">Tier</th>
-    <th className="p-2 border-b text-left">Button Type</th>
-    <th className="p-2 border-b text-left">Navigate To</th>
-    <th className="p-2 border-b text-left">Description</th>
-  </tr>
-</thead>
-<tbody>
-  {filteredItems.map(item => (
-    <tr key={item.id} className="border-t">
-      <td className="p-2">{item.serialNumber}</td>
-      <td className="p-2">{item.menu.app.Module?.name}</td>
-      <td className="p-2">{item.menu.app?.name}</td>
-      <td className="p-2">{item.menu?.title}</td>
-      <td className="p-2">{item.name}</td>
-      <td className="p-2">{item.tier}</td>
-      <td className="p-2">{item.buttonType}</td>
-      <td className="p-2">{item.navigationTo}</td>
-      <td className="p-2">{item.description}</td>
-    </tr>
-  ))}
-</tbody>
+              <tr className="bg-gray-100">
+                <th className="p-2 border-b text-left">SI</th>
+                <th className="p-2 border-b text-left">Module</th>
+                <th className="p-2 border-b text-left">App</th>
+                <th className="p-2 border-b text-left">Menu</th>
+                <th className="p-2 border-b text-left">Item</th>
+                <th className="p-2 border-b text-left">Tier</th>
+                <th className="p-2 border-b text-left">Button Type</th>
+                <th className="p-2 border-b text-left">Navigate To</th>
+                <th className="p-2 border-b text-left">Description</th>
+                <th className="p-2 border-b text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredItems.map((item) => (
+                <tr key={item.id} className="border-t">
+                  <td className="p-2">{item.serialNumber}</td>
+                  <td className="p-2">{item.menu.app.Module?.name}</td>
+                  <td className="p-2">{item.menu.app?.name}</td>
+                  <td className="p-2">{item.menu?.title}</td>
+                  <td className="p-2">{item.name}</td>
+                  <td className="p-2">{item.tier}</td>
+                  <td className="p-2">{item.buttonType}</td>
+                  <td className="p-2">{item.navigationTo}</td>
+                  <td className="p-2">{item.description}</td>
 
+                  <td className="px-4 py-3 flex gap-3">
+                    <button
+                      onClick={() => {
+                        setEditItemId(item.id);
+                        setItemName(item.name);
+                        setSelectedModule(item.menu.app.Module.name);
+                        setSelectedApp(item.menu.app.name);
+                        setSelectedMenu(item.menu.title);
+                        setSelectedTier(item.tier);
+                        setSerialNumber(item.serialNumber);
+                        setButtonType(item.buttonType);
+                        setNavigationTo(item.navigationTo);
+                        setDescription(item.description);
+                      }}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                        <FaEdit />
+                      </button>
+                      <button className="text-red-600 hover:text-red-800">
+                        <FaTrash />
+                      </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         )}
       </div>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addModule, getAllModules } from "../../apiRequest/api";
+import { addModule, getAllModules, updateModule } from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: number;
@@ -15,6 +16,8 @@ const ModuleManager: React.FC = () => {
   const [newModuleName, setNewModuleName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
+
 
 
   useEffect(() => {
@@ -32,34 +35,67 @@ const ModuleManager: React.FC = () => {
   };
 
   const handleAddModule = async () => {
-    const trimmedName = newModuleName.trim();
+  const trimmedName = newModuleName.trim();
 
-    if (!trimmedName) {
-      toast.warn("Please enter a module name.");
-      return;
-    }
+  if (!trimmedName) {
+    toast.warn("Please enter a module name.");
+    return;
+  }
 
-    // Check for duplicate name (case-insensitive)
-    const isDuplicate = modules.some(
-      (module) => module.name.toLowerCase() === trimmedName.toLowerCase()
-    );
+  const isDuplicate = modules.some(
+    (module) =>
+      module.name.toLowerCase() === trimmedName.toLowerCase() &&
+      module.id.toString() !== editId // allow current edit
+  );
 
-    if (isDuplicate) {
-      toast.warn("This module name already exists.");
-      return;
-    }
+  if (isDuplicate) {
+    toast.warn("This module name already exists.");
+    return;
+  }
 
-    try {
-      await addModule({ name: trimmedName, tier: selectedTier, serialNumber  });
-      toast.success("Module added successfully!");
-      setNewModuleName("");
-      setSerialNumber("");
-      fetchModules();
-    } catch (error) {
-      console.error("Failed to add module:", error);
-      toast.error("Failed to add module.");
-    }
+  const payload = {
+    name: trimmedName,
+    tier: selectedTier,
+    serialNumber,
   };
+
+  try {
+    if (editId) {
+      await updateModule(editId, payload);
+      toast.success("Module updated successfully!");
+    } else {
+      await addModule(payload);
+      toast.success("Module added successfully!");
+    }
+
+    // Reset form
+    setNewModuleName("");
+    setSelectedTier("");
+    setSerialNumber("");
+    setEditId(null);
+
+    fetchModules();
+  } catch (error) {
+    console.error("Failed to save module:", error);
+    toast.error("Failed to save module.");
+  }
+};
+
+
+
+  const handleDeleteModule = async (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this module?")) return;
+
+    // try {
+    //   await deleteModule(id); // You should create this function in your API
+    //   toast.success("Module deleted successfully!");
+    //   fetchModules();
+    // } catch (error) {
+    //   console.error("Failed to delete module:", error);
+    //   toast.error("Failed to delete module.");
+    // }
+  };
+
 
   return (
     <div className=" p-4">
@@ -126,8 +162,23 @@ const ModuleManager: React.FC = () => {
             onClick={handleAddModule}
             className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow"
           >
-            + Add Module
+            {editId ? "Update Module" : "+ Add Module"}
+
           </button>
+          {editId !== null && (
+            <button
+              onClick={() => {
+                setEditId(null);
+                setNewModuleName("");
+                setSerialNumber("");
+                setSelectedTier("");
+              }}
+              className="ml-4 px-6 py-2.5 bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-500 transition-colors shadow"
+            >
+              Cancel
+            </button>
+          )}
+
         </div>
       </div>
 
@@ -144,6 +195,8 @@ const ModuleManager: React.FC = () => {
                   <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module Name</th>
                   <th className="px-4 py-3 text-left">Tier</th>
+                  <th className="px-4 py-3 text-left">Actions</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -155,6 +208,23 @@ const ModuleManager: React.FC = () => {
                     <td className="px-4 py-3 text-gray-800">{module.serialNumber}</td>
                     <td className="px-4 py-3 text-gray-800">{module.name}</td>
                     <td className="px-4 py-3 text-gray-800">{module.tier}</td>
+                    <td className="px-4 py-3 flex gap-3">
+                      <button
+                        onClick={() => {
+                          setEditId(module.id.toString());
+                          setNewModuleName(module.name);
+                          setSerialNumber(module.serialNumber);
+                          setSelectedTier(module.tier);
+                        }}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button onClick={() => handleDeleteModule(module.id)} className="text-red-600 hover:text-red-800">
+                        <FaTrash />
+                      </button>
+                    </td>
+
                   </tr>
                 ))}
               </tbody>

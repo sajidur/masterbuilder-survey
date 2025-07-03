@@ -31,6 +31,20 @@ export const addModule = async (data: { name: string ,tier: string, serialNumber
     throw error;
   }
 };
+// Update Module
+export const updateModule = async (
+  id: string,
+  data: { name: string; tier: string; serialNumber: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateModule/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
+    throw error;
+  }
+};
+
 
 // Add App
 export const addApp = async (data: { name: string; moduleId: string, tier: string, serialNumber: string }) => {
@@ -39,6 +53,20 @@ export const addApp = async (data: { name: string; moduleId: string, tier: strin
     return response.data;
   } catch (error) {
     console.error('Error adding app:', error);
+    throw error;
+  }
+};
+
+// Update Apps
+export const updateApps = async (
+  id: string,
+  data: { name: string; moduleId: string; tier: string; serialNumber: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateApps/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
     throw error;
   }
 };
@@ -53,6 +81,20 @@ export const addMenu = async (data: { title: string; appId: string, tier: string
     throw error;
   }
 };
+// Update Menu
+export const updateMenu = async (
+  id: string,
+  data: { title: string; appId: string, tier: string, serialNumber: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateMenu/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
+    throw error;
+  }
+};
+
 
 // Add Item
 export const addItem = async (data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {
@@ -64,6 +106,21 @@ export const addItem = async (data: { name: string; menuId: string, tier: string
     throw error;
   }
 };
+// Update Item
+export const updateItem = async (
+  id: string,
+  data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateItem/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
+    throw error;
+  }
+};
+
+
 
 // Add Subitem
 export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {

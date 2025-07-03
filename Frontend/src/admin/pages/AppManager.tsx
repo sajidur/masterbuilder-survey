@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAllModules, getAllApps, addApp } from "../../apiRequest/api";
+import {
+  getAllModules,
+  getAllApps,
+  addApp,
+  updateApps,
+} from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: string;
@@ -14,6 +20,7 @@ interface AppItem {
   name: string;
   Module: Module;
   tier?: string;
+  serialNumber: string;
 }
 
 const AppManager: React.FC = () => {
@@ -23,6 +30,7 @@ const AppManager: React.FC = () => {
   const [appName, setAppName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [editAppId, setEditAppId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,30 +60,49 @@ const AppManager: React.FC = () => {
       return;
     }
 
-    // Get moduleId by matching selected module name
     const selectedMod = modules.find((m) => m.name === selectedModule);
     if (!selectedMod) {
       toast.error("Selected module not found.");
       return;
     }
 
-    try {      
+    const payload = {
+      name: trimmedAppName,
+      moduleId: selectedMod.id,
+      tier: selectedTier,
+      serialNumber,
+    };
 
-      const createdApp = await addApp({
-        name: trimmedAppName,
-        moduleId: selectedMod.id,
-        tier: selectedTier,
-        serialNumber
-      });
-      toast.success("App added successfully!");
+    try {
+      if (editAppId) {
+        await updateApps(editAppId, payload);
+        toast.success("App updated successfully!");
+      } else {
+        const createdApp = await addApp(payload);
+        setApps((prev) => [...prev, createdApp]);
+        toast.success("App added successfully!");
+      }
 
-      setApps((prev) => [...prev, createdApp]);
-
+      // Reset form
       setAppName("");
+      setSelectedModule("");
+      setSelectedTier("");
+      setSerialNumber("");
+      setEditAppId(null);
+
+      const refreshedApps = await getAllApps();
+      setApps(refreshedApps);
     } catch (error) {
-      console.error("Failed to add app:", error);
-      toast.error("Failed to add app.");
+      console.error("Failed to save app:", error);
+      toast.error("Failed to save app.");
     }
+  };
+  const handleEditApp = (app: AppItem) => {
+    setEditAppId(app.id);
+    setAppName(app.name);
+    setSelectedModule(app.Module.name); // use name to match select option
+    setSelectedTier(app.tier || "");
+    setSerialNumber(app.serialNumber || "");
   };
 
   return (
@@ -91,10 +118,11 @@ const AppManager: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
           {/* Serial Number */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Serial Number
+            </label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -103,7 +131,6 @@ const AppManager: React.FC = () => {
               onChange={(e) => setSerialNumber(e.target.value)}
             />
           </div>
-
 
           {/* Module Dropdown */}
           <div>
@@ -154,19 +181,31 @@ const AppManager: React.FC = () => {
               ))}
             </select>
           </div>
-
-          
         </div>
 
         {/* Add Button */}
-          <div className="mt-6">
+        <div className="mt-6 flex items-center gap-4">
+          <button
+            onClick={handleAddApp}
+            className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
+          >
+            {editAppId ? "Update App" : "+ Add App"}
+          </button>
+          {editAppId && (
             <button
-              onClick={handleAddApp}
-              className=" px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
+              onClick={() => {
+                setEditAppId(null);
+                setAppName("");
+                setSelectedModule("");
+                setSelectedTier("");
+                setSerialNumber("");
+              }}
+              className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
             >
-              + Add App
+              Cancel
             </button>
-          </div>
+          )}
+        </div>
       </div>
 
       {/* App List */}
@@ -184,6 +223,7 @@ const AppManager: React.FC = () => {
                   <th className="px-4 py-3 text-left">Module</th>
                   <th className="px-4 py-3 text-left">App</th>
                   <th className="px-4 py-3 text-left">Tier</th>
+                  <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -192,15 +232,31 @@ const AppManager: React.FC = () => {
                     key={app.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
-                  <td className="px-4 py-3 text-gray-800">{app.serialNumber}</td>
+                    <td className="px-4 py-3 text-gray-800">
+                      {app.serialNumber}
+                    </td>
 
                     <td className="px-4 py-3 text-gray-800">
                       {/* {app.Module.serialNumber} -  */}
-                      {app.Module?.name || "—"} 
+                      {app.Module?.name || "—"}
                       {/* - {app.Module.tier} */}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{app.name}</td>
                     <td className="px-4 py-3 text-gray-800">{app.tier}</td>
+
+                    <td className="px-4 py-3 flex gap-3">
+                      <button
+                        onClick={() => {
+                          handleEditApp(app);
+                        }}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button className="text-red-600 hover:text-red-800">
+                        <FaTrash />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
