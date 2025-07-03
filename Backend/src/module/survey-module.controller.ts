@@ -21,7 +21,7 @@ import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {SurveyModuleService} from './survey-module.service';
 import { Modules } from './module.entity/modules.entity';
 import { App } from './module.entity/app.entity';
-import { SubSubItem } from './module.entity/subsubitem.entity';
+//import { SubSubItem } from './module.entity/subsubitem.entity';
 import { AppDto, CreateAppDto, UpdateAppDto } from './module.dto/App.dto';
 import { CreateMenuDto, MenuDto } from './module.dto/menu.dto';
 import { CreateItemDto, ItemDto } from './module.dto/item.dto';
@@ -310,11 +310,11 @@ async createSubSubItem(@Body() data: CreateSubSubItemDto,@Req() req: Request): P
 }
 
 @Put('updateSubSubItem/:id')
-@ApiBody({ type: SubSubItem })
+@ApiBody({ type: CreateSubSubItemDto })
 @ApiResponse({ status: 200, type: SubSubItemDto })
 async updateSubSubItem(
   @Param('id') id: string,
-  @Body() data: SubSubItem,
+  @Body() data: CreateSubSubItemDto,
   @Req() req: Request
 ): Promise<SubSubItemDto> {
   const user=req['user'];
