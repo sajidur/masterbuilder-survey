@@ -11,10 +11,12 @@ import {
   getAllSubSubSubitems,
   addSubSubSubitem,
   getAllTemplates,
+  updateSubSubSubitem,
   //   getAllSubSubSubitems,
   //   addSubSubSubitem,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: string;
@@ -29,32 +31,32 @@ interface App {
 
 interface Menu {
   id: string;
-  name: string;
-  App: App;
+  title: string;
+  app: App;
 }
 
 interface Item {
   id: string;
   name: string;
-  Menu: Menu;
+  menu: Menu;
 }
 
 interface SubItem {
   id: string;
   name: string;
-  Item: Item;
+  item: Item;
 }
 
 interface SubSubItem {
   id: string;
   name: string;
-  SubItem: SubItem;
+  subItem: SubItem;
 }
 
 interface SubSubSubItem {
   id: string;
   name: string;
-  SubSubItem: SubSubItem;
+  subSubItem: SubSubItem;
   serialNumber?: string;
   tier?: string;
   templateId?: string;
@@ -87,6 +89,9 @@ const SubSubSubItemManager: React.FC = () => {
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [templates, setTemplates] = useState<Template[]>([]);
   const [serialNumber, setSerialNumber] = useState("");
+  const [editSubSubSubItemId, setEditSubSubSubItemId] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -142,7 +147,7 @@ const SubSubSubItemManager: React.FC = () => {
     }
 
     const subSubItemObj = subSubItems.find(
-      (s) => s.name === selectedSubSubItem
+      (s) => s.id === selectedSubSubItem
     );
 
     if (!subSubItemObj) {
@@ -150,22 +155,37 @@ const SubSubSubItemManager: React.FC = () => {
       return;
     }
 
-    try {
-      const newSubSubSubItem = await addSubSubSubitem({
-        name: subSubSubItemName.trim(),
-        subSubItemId: subSubItemObj.id,
-        tier: selectedTier,
-        templateId: selectedTemplateId,
-        serialNumber,
-      });
+    const payload = {
+      name: subSubSubItemName.trim(),
+      subSubItemId: subSubItemObj.id,
+      tier: selectedTier,
+      templateId: selectedTemplateId,
+      serialNumber,
+    };
 
-      toast.success("SubSubSubItem added!");
-      setSubSubSubItems((prev) => [...prev, newSubSubSubItem]);
+    try {
+      if (editSubSubSubItemId) {
+        // Update logic
+        await updateSubSubSubitem(editSubSubSubItemId, payload);
+        toast.success("SubSubSubItem updated!");
+        setEditSubSubSubItemId(null);
+      } else {
+        const newSubSubSubItem = await addSubSubSubitem(payload);
+        toast.success("SubSubSubItem added!");
+        setSubSubSubItems((prev) => [...prev, newSubSubSubItem]);
+      }
+
+      // Refresh list
+      const updated = await getAllSubSubSubitems();
+      setSubSubSubItems(updated);
+
+      // Reset fields
       setSubSubSubItemName("");
       setSerialNumber("");
       setSelectedTier("");
+      setSelectedTemplateId("");
     } catch (error) {
-      toast.error("Failed to add SubSubSubItem.");
+      toast.error("Failed to save SubSubSubItem.");
       console.error(error);
     }
   };
@@ -195,7 +215,7 @@ const SubSubSubItemManager: React.FC = () => {
             label: "Module",
             value: selectedModule,
             setter: setSelectedModule,
-            options: modules.map((m) => m.name),
+            options: modules.map((m) => ({ id: m.id, label: m.name })),
             reset: () => {
               setSelectedApp("");
               setSelectedMenu("");
@@ -209,8 +229,8 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedApp,
             setter: setSelectedApp,
             options: apps
-              .filter((a) => a.Module?.name === selectedModule)
-              .map((a) => a.name),
+              .filter((a) => a.Module?.id === selectedModule)
+              .map((a) => ({ id: a.id, label: a.name })),
             reset: () => {
               setSelectedMenu("");
               setSelectedItem("");
@@ -223,12 +243,8 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedMenu,
             setter: setSelectedMenu,
             options: menus
-              .filter(
-                (m) =>
-                  m.app?.name === selectedApp &&
-                  m.app.Module?.name === selectedModule
-              )
-              .map((m) => m.title),
+              .filter((m) => m.app?.id === selectedApp)
+              .map((m) => ({ id: m.id, label: m.title })),
             reset: () => {
               setSelectedItem("");
               setSelectedSubItem("");
@@ -240,8 +256,8 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedItem,
             setter: setSelectedItem,
             options: items
-              .filter((i) => i.menu?.title === selectedMenu)
-              .map((i) => i.name),
+              .filter((i) => i.menu?.id === selectedMenu)
+              .map((i) => ({ id: i.id, label: i.name })),
             reset: () => {
               setSelectedSubItem("");
               setSelectedSubSubItem("");
@@ -252,8 +268,8 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedSubItem,
             setter: setSelectedSubItem,
             options: subItems
-              .filter((s) => s.item?.name === selectedItem)
-              .map((s) => s.name),
+              .filter((s) => s.item?.id === selectedItem)
+              .map((s) => ({ id: s.id, label: s.name })),
             reset: () => {
               setSelectedSubSubItem("");
             },
@@ -263,8 +279,8 @@ const SubSubSubItemManager: React.FC = () => {
             value: selectedSubSubItem,
             setter: setSelectedSubSubItem,
             options: subSubItems
-              .filter((s) => s.subItem?.name === selectedSubItem)
-              .map((s) => s.name),
+              .filter((s) => s.subItem?.id === selectedSubItem)
+              .map((s) => ({ id: s.id, label: s.name })),
           },
         ].map(({ label, value, setter, options, reset }, idx) => (
           <div key={idx}>
@@ -278,12 +294,13 @@ const SubSubSubItemManager: React.FC = () => {
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">{`-- Select ${label} --`}</option>
-              {options.map((opt, i) => (
-                <option key={i} value={opt}>
-                  {opt}
+              {options.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
                 </option>
               ))}
             </select>
+
           </div>
         ))}
 
@@ -334,12 +351,30 @@ const SubSubSubItemManager: React.FC = () => {
         </div>
       </div>
 
-      <button
-        onClick={handleAdd}
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-      >
-        + Add SubSubSubItem
-      </button>
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={handleAdd}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        >
+          {editSubSubSubItemId ? "Update SubSubSubItem" : "+ Add SubSubSubItem"}
+        </button>
+
+        {editSubSubSubItemId && (
+          <button
+            onClick={() => {
+              setEditSubSubSubItemId(null);
+              setSubSubSubItemName("");
+              setSerialNumber("");
+              setSelectedTier("");
+              setSelectedTemplateId("");
+            }}
+            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
+
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
@@ -357,6 +392,7 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">SubSubSubItem</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Template</th>
+              <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
 
@@ -383,6 +419,38 @@ const SubSubSubItemManager: React.FC = () => {
                 <td className="p-2">
                   {templates.find((t) => t.id.toString() === s.templateId)
                     ?.name || "—"}
+                </td>
+
+                <td className="px-4 py-3 flex gap-3">
+                  <button
+                    onClick={() => {
+                      setEditSubSubSubItemId(s.id);
+                      setSubSubSubItemName(s.name);
+                      setSerialNumber(s.serialNumber || "");
+                      setSelectedTier(s.tier || "");
+                      setSelectedTemplateId(s.templateId || "");
+
+                      setSelectedModule(
+                        s.subSubItem?.subItem?.item?.menu?.app?.Module?.id || ""
+                      );
+                      setSelectedApp(
+                        s.subSubItem?.subItem?.item?.menu?.app?.id || ""
+                      );
+                      setSelectedMenu(
+                        s.subSubItem?.subItem?.item?.menu?.id || ""
+                      );
+                      setSelectedItem(s.subSubItem?.subItem?.item?.id || "");
+                      setSelectedSubItem(s.subSubItem?.subItem?.id || "");
+                      setSelectedSubSubItem(s.subSubItem?.id || "");
+                    }}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <FaEdit />
+                  </button>
+
+                  <button className="text-red-600 hover:text-red-800">
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
