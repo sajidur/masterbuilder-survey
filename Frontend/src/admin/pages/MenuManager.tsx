@@ -287,7 +287,11 @@ const MenuManager: React.FC = () => {
                           setSelectedTier(menu.tier);
                           setSerialNumber(menu.serialNumber);
                           setSelectedModule(menu.app.Module.name);
-                          setSelectedApp(menu.app.name);
+                          // setSelectedApp(menu.app.name);
+
+                          setTimeout(() => {
+                            setSelectedApp(menu.app.name);
+                          }, 50);
                         }}
                         className="text-blue-600 hover:text-blue-800"
                       >

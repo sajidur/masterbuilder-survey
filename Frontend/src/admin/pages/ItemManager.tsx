@@ -386,8 +386,15 @@ const ItemManager: React.FC = () => {
                         setEditItemId(item.id);
                         setItemName(item.name);
                         setSelectedModule(item.menu.app.Module.name);
-                        setSelectedApp(item.menu.app.name);
-                        setSelectedMenu(item.menu.title);
+                        // setSelectedApp(item.menu.app.name);
+                        // setSelectedMenu(item.menu.title);
+                        setTimeout(() => {
+                          setSelectedApp(item.menu.app.name);
+                          setTimeout(() => {
+                            setSelectedMenu(item.menu.title);
+                          }, 50);
+                        }, 50);
+
                         setSelectedTier(item.tier);
                         setSerialNumber(item.serialNumber);
                         setButtonType(item.buttonType);
@@ -396,11 +403,11 @@ const ItemManager: React.FC = () => {
                       }}
                       className="text-blue-600 hover:text-blue-800"
                     >
-                        <FaEdit />
-                      </button>
-                      <button className="text-red-600 hover:text-red-800">
-                        <FaTrash />
-                      </button>
+                      <FaEdit />
+                    </button>
+                    <button className="text-red-600 hover:text-red-800">
+                      <FaTrash />
+                    </button>
                   </td>
                 </tr>
               ))}
