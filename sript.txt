@@ -1,0 +1,153 @@
+1st register user in swagger api: http://localhost:3000/users/addUser
+body:
+{
+  "username": "al_amin",
+  "email": "alamin@rexsystemsbd.com",
+  "password": "12345678",
+  "userRole": "admin"
+}
+then in website visit this url:http://localhost:5173/login
+add above user name/email & password.
+after successful navigate to: http://localhost:5173/admin
+here we create module, app, menu, item, subitem, subsubitem, subsubsubitem, field and in Template Configuration
+we create template.
+ demo body of each part :
+module:
+{
+  "name": "Health Survey",
+  "tier": "2",
+  "serialNumber": "MOD-001"
+}
+app:
+{
+  "name": "Wellness Assessment",
+  "tier": "2",
+  "serialNumber": "APP-001",
+  "moduleId": "MOD-001"
+}
+menu:
+{
+  "title": "User Onboarding",
+  "appId": "APP-001",
+  "tier": "3",
+  "serialNumber": "MENU-001"
+}
+item:
+{
+  "name": "Basic Information",
+  "tier": "3.5",
+  "serialNumber": "ITEM-001",
+  "buttonType": "primary",
+  "navigationTo": "/onboarding/basic-info",
+  "description": "Collect basic user information such as name, age, and gender.",
+  "menuId": "MENU-001"
+}
+subitem:
+{
+  "name": "Demographics",
+  "tier": "3.5",
+  "serialNumber": "SUBITEM-001",
+  "buttonType": "secondary",
+  "navigationTo": "/onboarding/demographics",
+  "description": "Capture demographic data for better segmentation.",
+  "templateId": "TEMPLATE-001",
+  "itemId": "ITEM-001"
+}
+subsubitem:
+{
+  "name": "Age and Gender",
+  "tier": "4",
+  "serialNumber": "SUBSUBITEM-001",
+  "templateId": "TEMPLATE-001",
+  "subItemId": "SUBITEM-001"
+}
+SubSubSubItem:
+{
+  "name": "Line Item 1",
+  "tier": "All",
+  "serialNumber": "SUBSUBSUBITEM-001",
+  "templateId": "TEMPLATE-001",
+  "subSubItemId": "SUBSUBITEM-001"
+}
+field:
+{
+  "name": "Age",
+  "serialNumber": "FIELD-001",
+  "displayType": "textbox",
+  "fieldType": "number",
+  "isRequired": true,
+  "subSubSubItemId": "SUBSUBSUBITEM-001"
+}
+
+template configuration:
+{
+  "name": "Monthly Invoice Template",
+  "code": "TPL-INVOICE-2025-001",
+  "description": "A reusable template designed for generating standard monthly invoices for clients, including billing details, summary, and payment instructions."
+}
+Report:
+Used to narrow down the data shown below.
+Each dropdown filters based on:
+
+Module → App → Menu → Item → SubItem → SubSubItem → SubSubSubItem → Field
+
+Display Type filter helps narrow down by field types (e.g., textbox, dropdown)
+Here's a *short script/overview* of the ReportsPage component for quick understanding:
+
+---
+
+### 🔍 **Overview of ReportsPage Component**
+
+*Purpose:*
+Displays a *Report Manager* interface that allows users to filter and view nested hierarchical data from *Modules → Apps → Menus → Items → SubItems → Fields*, and choose how to display it (tree, graph, etc.).
+
+---
+
+### 🧩 *Main Functionalities*
+
+1. *Data Fetching (on load):*
+
+   * Fetches all modules, apps, menus, items, sub-items, sub-sub-items, sub-sub-sub-items, and fields using API calls.
+
+2. *Dropdown Filtering Chain:*
+
+   * Each dropdown is filtered based on the selection from its parent (e.g., apps filtered by module).
+
+3. *Table Display:*
+
+   * Displays the final *filtered fields* in a table.
+   * User-selected filters (module, app, etc.) determine what's shown.
+   * Display Type is a manually selected view type (e.g., "tree").
+
+4. *Dynamic Columns:*
+
+   * Users can toggle which columns to show/hide using checkboxes.
+
+5. **Reusable Dropdown Component:**
+
+   * Simple styled dropdown with label and options.
+
+6. *Toast Notifications:*
+
+   * Uses react-toastify (though not triggered in the current script).
+
+---
+
+### 🧠 *Component State Summary*
+
+* selectedModule, selectedApp, ..., selectedField: Track dropdown selections.
+* visibleColumns: Tracks which table columns are shown.
+* modules, apps, ..., fields: Store data fetched from APIs.
+
+---
+
+### 📦 *Render Structure*
+
+* Title: "Report Manager"
+* Filter dropdowns (9 total: module to field)
+* Show/hide columns toggle
+* Field data table (conditionally rendered)
+
+---
+
+This script gives a *modular report-viewing tool*, customizable through chained filters and toggled views 
