@@ -324,7 +324,7 @@ async updateSubSubItem(
 
 
 
-  @Delete('deleteSubSubItem:id')
+  @Delete('deleteSubSubItem/:id')
   @ApiResponse({ status: 204, description: 'Deleted successfully' })
   async deleteSubSubItem(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteSubSubItem(id);
