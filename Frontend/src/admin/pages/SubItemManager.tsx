@@ -7,10 +7,12 @@ import {
   getAllMenus,
   getAllItems,
   addSubitem,
+  updateSubitem,
   getAllSubitems,
   getAllTemplates,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: string;
@@ -54,7 +56,6 @@ interface SubItem {
   description: string;
 }
 
-
 const SubItemManager: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<AppItem[]>([]);
@@ -71,10 +72,10 @@ const SubItemManager: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<string>("");
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
   const [serialNumber, setSerialNumber] = useState("");
-const [buttonType, setButtonType] = useState("");
-const [navigationTo, setNavigationTo] = useState("");
-const [description, setDescription] = useState("");
-
+  const [buttonType, setButtonType] = useState("");
+  const [navigationTo, setNavigationTo] = useState("");
+  const [description, setDescription] = useState("");
+  const [editSubItemId, setEditSubItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,32 +134,42 @@ const [description, setDescription] = useState("");
       return;
     }
 
+    const payload = {
+      name: trimmedName,
+      itemId: itemObj.id,
+      tier: selectedTier,
+      templateId: selectedTemplateId,
+      serialNumber,
+      buttonType,
+      navigationTo,
+      description,
+    };
+
     try {
-      const newSubItem = await addSubitem({
-        name: trimmedName,
-        itemId: itemObj.id,
-        tier: selectedTier,
-        templateId: selectedTemplateId,
-        serialNumber,
-        buttonType,
-        navigationTo,
-        description,
-      });
+      if (editSubItemId) {
+        await updateSubitem(editSubItemId, payload);
+        toast.success("SubItem updated successfully!");
+      } else {
+        const newSubItem = await addSubitem(payload);
+        setSubItems((prev) => [...prev, newSubItem]);
+        toast.success("SubItem added successfully!");
+      }
 
-
-      toast.success("SubItem added successfully!");
-      setSubItems((prev) => [...prev, newSubItem]);
+      // Reset form
       setSubItemName("");
       setSelectedTier("");
       setSelectedTemplateId("");
       setSerialNumber("");
-setButtonType("");
-setNavigationTo("");
-setDescription("");
+      setButtonType("");
+      setNavigationTo("");
+      setDescription("");
+      setEditSubItemId(null);
 
+      const updated = await getAllSubitems();
+      setSubItems(updated);
     } catch (error) {
-      console.error("Add subitem error:", error);
-      toast.error("Failed to add subitem.");
+      console.error("Subitem save error:", error);
+      toast.error("Failed to save subitem.");
     }
   };
 
@@ -169,19 +180,19 @@ setDescription("");
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
-
         {/* Serial Number */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Serial Number</label>
-  <input
-    type="text"
-    value={serialNumber}
-    onChange={(e) => setSerialNumber(e.target.value)}
-    placeholder="Enter serial number"
-    className="w-full px-3 py-2 border rounded"
-  />
-</div>
-
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Serial Number
+          </label>
+          <input
+            type="text"
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
+            placeholder="Enter serial number"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
 
         {/* Module */}
         <div>
@@ -306,7 +317,6 @@ setDescription("");
               </option>
             ))}
           </select>
-
         </div>
 
         {/* Tier */}
@@ -327,50 +337,76 @@ setDescription("");
         </div>
 
         {/* Button Type */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Button Type</label>
-  <select
-    value={buttonType}
-    onChange={(e) => setButtonType(e.target.value)}
-    className="w-full px-3 py-2 border rounded"
-  >
-    <option value="">-- Select Button Type --</option>
-    <option value="Primary Button">Primary Button</option>
-    <option value="Second Button">Second Button</option>
-  </select>
-</div>
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Type
+          </label>
+          <select
+            value={buttonType}
+            onChange={(e) => setButtonType(e.target.value)}
+            className="w-full px-3 py-2 border rounded"
+          >
+            <option value="">-- Select Button Type --</option>
+            <option value="Primary Button">Primary Button</option>
+            <option value="Second Button">Second Button</option>
+          </select>
+        </div>
 
-{/* Navigate To */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Navigate To</label>
-  <input
-    type="text"
-    value={navigationTo}
-    onChange={(e) => setNavigationTo(e.target.value)}
-    placeholder="Enter route or URL"
-    className="w-full px-3 py-2 border rounded"
-  />
-</div>
+        {/* Navigate To */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Navigate To
+          </label>
+          <input
+            type="text"
+            value={navigationTo}
+            onChange={(e) => setNavigationTo(e.target.value)}
+            placeholder="Enter route or URL"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
 
-{/* Description */}
-<div>
-  <label className="block mb-1 text-sm font-semibold text-gray-700">Description</label>
-  <input
-    type="text"
-    value={description}
-    onChange={(e) => setDescription(e.target.value)}
-    placeholder="Enter description"
-    className="w-full px-3 py-2 border rounded"
-  />
-</div>
+        {/* Description */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Description
+          </label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter description"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
       </div>
 
-      <button
-        onClick={handleAddSubItem}
-        className="mb-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-      >
-        + Add SubItem
-      </button>
+      <div className="flex gap-4 items-center mb-4">
+        <button
+          onClick={handleAddSubItem}
+          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
+        >
+          {editSubItemId ? "Update SubItem" : "+ Add SubItem"}
+        </button>
+
+        {editSubItemId && (
+          <button
+            onClick={() => {
+              setEditSubItemId(null);
+              setSubItemName("");
+              setSelectedTier("");
+              setSelectedTemplateId("");
+              setSerialNumber("");
+              setButtonType("");
+              setNavigationTo("");
+              setDescription("");
+            }}
+            className="px-6 py-2 bg-gray-500 text-white font-medium rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
 
       {/* SubItem List */}
       <div className="bg-white p-4 rounded shadow">
@@ -383,7 +419,6 @@ setDescription("");
               <tr className="bg-gray-100">
                 <th className="p-2 text-left">SI</th>
 
-
                 <th className="p-2 text-left">Module</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
@@ -394,13 +429,16 @@ setDescription("");
                 <th className="p-2 text-left">Button Type</th>
                 <th className="p-2 text-left">Navigate To</th>
                 <th className="p-2 text-left">Description</th>
+                <th className="p-2 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
                   <td className="p-2">{s.serialNumber}</td>
-                  <td className="p-2">{s.item?.menu?.app?.Module?.name || "—"}</td>
+                  <td className="p-2">
+                    {s.item?.menu?.app?.Module?.name || "—"}
+                  </td>
                   <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
                   <td className="p-2">{s.item?.menu?.title || "—"}</td>
                   <td className="p-2">{s.item?.name || "—"}</td>
@@ -410,6 +448,33 @@ setDescription("");
                   <td className="p-2">{s.buttonType}</td>
                   <td className="p-2">{s.navigationTo}</td>
                   <td className="p-2">{s.description}</td>
+
+                  <td className="px-4 py-3 flex gap-3">
+                    <button
+                      onClick={() => {
+                        setEditSubItemId(s.id);
+                        setSubItemName(s.name);
+                        setSelectedModule(
+                          s.item?.menu?.app?.Module?.name || ""
+                        );
+                        setSelectedApp(s.item?.menu?.app?.id || "");
+                        setSelectedMenu(s.item?.menu?.id || "");
+                        setSelectedItem(s.item?.id || "");
+                        setSelectedTemplateId(s.template?.id || "");
+                        setSelectedTier(s.tier || "");
+                        setSerialNumber(s.serialNumber || "");
+                        setButtonType(s.buttonType || "");
+                        setNavigationTo(s.navigationTo || "");
+                        setDescription(s.description || "");
+                      }}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button className="text-red-600 hover:text-red-800">
+                      <FaTrash />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

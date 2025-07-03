@@ -9,9 +9,11 @@ import {
   getAllSubitems,
   getAllSubSubitems,
   addSubSubitem,
+  updateSubSubitem,
   getAllTemplates,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
   id: string;
@@ -74,8 +76,8 @@ const SubSubItemManager: React.FC = () => {
   const [subSubItemName, setSubSubItemName] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
-    const [serialNumber, setSerialNumber] = useState("");
-  
+  const [serialNumber, setSerialNumber] = useState("");
+  const [editSubSubItemId, setEditSubSubItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -128,48 +130,60 @@ const SubSubItemManager: React.FC = () => {
       return;
     }
 
+    const payload = {
+      name: subSubItemName.trim(),
+      subItemId: subItemObj.id,
+      tier: selectedTier,
+      templateId: selectedTemplateId,
+      serialNumber,
+    };
+
     try {
-      const newSubSubItem = await addSubSubitem({
-        name: subSubItemName.trim(),
-        subItemId: subItemObj.id,
-        tier: selectedTier,
-        templateId: selectedTemplateId,
-        serialNumber
-      });
+      if (editSubSubItemId) {
+        await updateSubSubitem(editSubSubItemId, payload);
+        toast.success("SubSubItem updated!");
 
-      toast.success("SubSubItem added!");
-      setSubSubItems((prev) => [...prev, newSubSubItem]);
+        // Refresh list
+        const updated = await getAllSubSubitems();
+        setSubSubItems(updated);
+        setEditSubSubItemId(null);
+      } else {
+        const newSubSubItem = await addSubSubitem(payload);
+        setSubSubItems((prev) => [...prev, newSubSubItem]);
+        toast.success("SubSubItem added!");
+      }
 
+      // Reset form
       setSubSubItemName("");
       setSelectedTier("");
       setSelectedTemplateId("");
       setSerialNumber("");
     } catch (error) {
-      toast.error("Failed to add SubSubItem.");
+      toast.error("Failed to save SubSubItem.");
       console.error(error);
     }
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">SubSubItem Manager</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        SubSubItem Manager
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
-
-
-
         {/* Serial Number */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter serial number"
-              value={serialNumber}
-              onChange={(e) => setSerialNumber(e.target.value)}
-            />
-          </div>
-
+        <div>
+          <label className="block mb-1 font-medium text-gray-700">
+            Serial Number
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter serial number"
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
+          />
+        </div>
 
         {/* Module */}
         <div>
@@ -329,12 +343,29 @@ const SubSubItemManager: React.FC = () => {
         </div>
       </div>
 
-      <button
-        onClick={handleAdd}
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-      >
-        + Add SubSubItem
-      </button>
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={handleAdd}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        >
+          {editSubSubItemId ? "Update SubSubItem" : "+ Add SubSubItem"}
+        </button>
+
+        {editSubSubItemId && (
+          <button
+            onClick={() => {
+              setEditSubSubItemId(null);
+              setSubSubItemName("");
+              setSelectedTier("");
+              setSelectedTemplateId("");
+              setSerialNumber("");
+            }}
+            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
 
       {/* SubSubItems Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
@@ -351,14 +382,19 @@ const SubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">SubSubItem</th>
               <th className="p-2 text-left">Template</th>
               <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {subSubItems.map((s) => (
               <tr key={s.id} className="border-t">
                 <td className="p-2">{s.serialNumber}</td>
-                <td className="p-2">{s.subItem?.item?.menu?.app?.Module?.name || "—"}</td>
-                <td className="p-2">{s.subItem?.item?.menu?.app?.name || "—"}</td>
+                <td className="p-2">
+                  {s.subItem?.item?.menu?.app?.Module?.name || "—"}
+                </td>
+                <td className="p-2">
+                  {s.subItem?.item?.menu?.app?.name || "—"}
+                </td>
                 <td className="p-2">{s.subItem?.item?.menu?.title || "—"}</td>
                 <td className="p-2">{s.subItem?.item?.name || "—"}</td>
                 <td className="p-2">{s.subItem?.name || "—"}</td>
@@ -367,8 +403,33 @@ const SubSubItemManager: React.FC = () => {
                   {/* {templates.find((t) => t.id === s.templateId)?.name || "—"} */}
                   {s.template?.name}
                 </td>
-                                <td className="p-2">{s.tier}</td>
+                <td className="p-2">{s.tier}</td>
 
+                <td className="px-4 py-3 flex gap-3">
+                  <button
+                    onClick={() => {
+                      setEditSubSubItemId(s.id);
+                      setSubSubItemName(s.name);
+                      setSelectedModule(
+                        s.subItem?.item?.menu?.app?.Module?.id || ""
+                      );
+                      setSelectedApp(s.subItem?.item?.menu?.app?.id || "");
+                      setSelectedMenu(s.subItem?.item?.menu?.id || "");
+                      setSelectedItem(s.subItem?.item?.id || "");
+                      setSelectedSubItem(s.subItem?.id || "");
+                      setSelectedTemplateId(s.template?.id || "");
+
+                      setSelectedTier(s.tier || "");
+                      setSerialNumber(s.serialNumber || "");
+                    }}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <FaEdit />
+                  </button>
+                  <button className="text-red-600 hover:text-red-800">
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

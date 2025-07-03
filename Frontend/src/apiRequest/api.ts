@@ -132,6 +132,21 @@ export const addSubitem = async (data: { name: string; itemId: string, tier: str
     throw error;
   }
 };
+// Update Subitem
+export const updateSubitem = async (
+  id: string,
+  data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateSubitems/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
+    throw error;
+  }
+};
+
+
 
 // Add Sub-Subitem
 export const addSubSubitem = async (data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }) => {
@@ -143,6 +158,21 @@ export const addSubSubitem = async (data: { name: string; subItemId: string, tie
     throw error;
   }
 };
+// Update Subitem
+export const updateSubSubitem = async (
+  id: string,
+  data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateSubSubItem/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating module:', error);
+    throw error;
+  }
+};
+
+
 
 // Add SubsubSubitem
 export const addSubSubSubitem = async (data: { name: string; subSubItemId: string, tier: string, templateId: string, serialNumber: string }) => {
