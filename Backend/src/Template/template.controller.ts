@@ -9,6 +9,7 @@ export class TemplateController {
 
   @Post("addTemplate")
   create(@Body() dto: CreateTemplateDto) {
+    console.log(dto);
     return this.templateService.create(dto);
   }
 
@@ -27,8 +28,9 @@ export class TemplateController {
     return this.templateService.update(id, dto);
   }
 
-  @Delete('deleteTemplate:id')
-  remove(@Param('id') id: string) {
-    return this.templateService.remove(id);
-  }
+@Delete('deleteTemplate/:id')
+remove(@Param('id') id: string): Promise<{ status: string; message: string }> {
+  return this.templateService.remove(id);
+}
+
 }

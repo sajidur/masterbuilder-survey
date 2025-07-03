@@ -23,13 +23,16 @@ let TemplateService = class TemplateService {
         this.templateRepo = templateRepo;
     }
     async create(dto) {
+        console.log(dto);
         const temp = new template_1.Template();
         temp.code = dto.code;
         temp.description = dto.description || null;
         temp.name = dto.name;
         temp.createdAt = new Date();
         temp.updatedAt = new Date();
+        console.log(temp);
         const template = this.templateRepo.create(temp);
+        console.log(template);
         return this.templateRepo.save(template);
     }
     async findAll() {

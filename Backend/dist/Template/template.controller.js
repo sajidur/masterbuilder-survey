@@ -22,6 +22,7 @@ let TemplateController = class TemplateController {
         this.templateService = templateService;
     }
     create(dto) {
+        console.log(dto);
         return this.templateService.create(dto);
     }
     findAll() {

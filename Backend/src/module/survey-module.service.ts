@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -60,6 +62,7 @@ import { Template } from 'src/Template/entity/template';
 import { memoryUsage } from 'process';
 @Injectable()
 export class SurveyModuleService {
+  dataSource: any;
   constructor(
     @InjectRepository(Modules)
     private readonly modulesRepository: Repository<Modules>,
@@ -279,12 +282,37 @@ export class SurveyModuleService {
     return this.toSubSubItemDto(updatedData);
   }
 
-  async deleteSubSubItem(id: string): Promise<void> {
-    const result = await this.subSubItemRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`SubSubItem with ID ${id} not found`);
-    }
+async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if SubSubItem exists
+  const subSubItem = await this.subSubItemRepository.findOne({ where: { id: subSubItemId } });
+  if (!subSubItem) {
+    return { status: 'error', message: `SubSubItem with ID ${subSubItemId} not found.` };
   }
+
+  try {
+    // 2. Get all SubSubSubItems under this SubSubItem
+    const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId } });
+
+    for (const subSubSubItem of subSubSubItems) {
+      const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+
+      if (fields.length > 0) {
+        await this.fieldRepository.remove(fields);
+      }
+
+      await this.subSubSubItemRepo.remove(subSubSubItem);
+    }
+
+    // 3. Remove the SubSubItem itself
+    await this.subSubItemRepository.remove(subSubItem);
+
+    return { status: 'success', message: 'SubSubItem and related data deleted successfully.' };
+  } catch (error) {
+    console.error('SubSubItem deletion failed:', error);
+    return { status: 'error', message: 'Failed to delete SubSubItem and related data.' };
+  }
+}
+
   //field
   // async toFieldDto(field: Field): Promise<FieldDto> {
   //   const subSubItem1 = await this.subSubItemRepository.findOneBy({
@@ -476,12 +504,24 @@ export class SurveyModuleService {
     };
   }
 
-  async deleteField(id: string): Promise<void> {
-    const result = await this.fieldRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Field with ID ${id} not found`);
-    }
+async deleteField(fieldId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if field exists
+  const field = await this.fieldRepository.findOne({ where: { id: fieldId } });
+  if (!field) {
+    return { status: 'error', message: `Field with ID ${fieldId} not found.` };
   }
+
+  try {
+    // 2. Remove the field
+    await this.fieldRepository.remove(field);
+
+    return { status: 'success', message: 'Field deleted successfully.' };
+  } catch (error) {
+    console.error('Field deletion failed:', error);
+    return { status: 'error', message: 'Failed to delete field.' };
+  }
+}
+
   //subitem
   //    async findAllSubItems(): Promise<SubItem[]> {
   //   return this.subItemRepository.find();
@@ -847,12 +887,43 @@ export class SurveyModuleService {
     };
   }
 
-  async deleteSubItem(id: string): Promise<void> {
-    const result = await this.subItemRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`SubItem with ID ${id} not found`);
-    }
+async deleteSubItem(subItemId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if subItem exists
+  const subItem = await this.subItemRepository.findOne({ where: { id: subItemId } });
+  if (!subItem) {
+    return { status: 'error', message: `SubItem with ID ${subItemId} not found.` };
   }
+
+  try {
+    // 2. Get all subSubItems under this subItem
+    const subSubItems = await this.subSubItemRepository.find({ where: { subItemId } });
+
+    for (const subSubItem of subSubItems) {
+      const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
+
+      for (const subSubSubItem of subSubSubItems) {
+        const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+
+        if (fields.length > 0) {
+          await this.fieldRepository.remove(fields);
+        }
+
+        await this.subSubSubItemRepo.remove(subSubSubItem);
+      }
+
+      await this.subSubItemRepository.remove(subSubItem);
+    }
+
+    // 3. Remove the subItem
+    await this.subItemRepository.remove(subItem);
+
+    return { status: 'success', message: 'SubItem and related data deleted successfully.' };
+  } catch (error) {
+    console.error('SubItem deletion failed:', error);
+    return { status: 'error', message: 'Failed to delete subItem and related data.' };
+  }
+}
+
   //item
   private async toItemDto(item: Item): Promise<ItemDto> {
     const menu = await this.menuRepository.findOne({
@@ -1084,12 +1155,49 @@ export class SurveyModuleService {
     //  return this.toItemDto(saved);
   }
 
-  async deleteItem(id: string): Promise<void> {
-    const result = await this.itemRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Item with ID ${id} not found`);
-    }
+ async deleteItem(itemId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if item exists
+  const item = await this.itemRepository.findOne({ where: { id: itemId } });
+  if (!item) {
+    return { status: 'error', message: `Item with ID ${itemId} not found.` };
   }
+
+  try {
+    // 2. Get all subItems under the item
+    const subItems = await this.subItemRepository.find({ where: { itemId } });
+
+    for (const subItem of subItems) {
+      const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
+
+      for (const subSubItem of subSubItems) {
+        const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
+
+        for (const subSubSubItem of subSubSubItems) {
+          const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+
+          if (fields.length) {
+            await this.fieldRepository.remove(fields);
+          }
+
+          await this.subSubSubItemRepo.remove(subSubSubItem);
+        }
+
+        await this.subSubItemRepository.remove(subSubItem);
+      }
+
+      await this.subItemRepository.remove(subItem);
+    }
+
+    // 3. Delete the item itself
+    await this.itemRepository.remove(item);
+
+    return { status: 'success', message: 'Item and related data deleted successfully.' };
+  } catch (error) {
+    console.error('Item delete failed:', error);
+    return { status: 'error', message: 'Failed to delete item and related data.' };
+  }
+}
+
   //modules
   findAll(): Promise<Modules[]> {
     return this.modulesRepository.find();
@@ -1139,9 +1247,72 @@ export class SurveyModuleService {
     return this.modulesRepository.save(module);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.modulesRepository.delete(id);
+  // async remove(id: string): Promise<void> {
+  //   //before removing get all apps related to moduleId==id,
+  //   //items related to appId so son upto field:
+
+  //   await this.modulesRepository.delete(id);
+  // }
+async remove(moduleId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if module exists
+  const module = await this.modulesRepository.findOne({ where: { id: moduleId } });
+  if (!module) {
+    return { status: 'error', message: 'No such module found.' };
   }
+
+  try {
+    // 2. Get all apps under the module
+    const apps = await this.appRepository.find({ where: { moduleId } });
+
+    for (const app of apps) {
+      const menus = await this.menuRepository.find({ where: { appId: app.id } });
+
+      for (const menu of menus) {
+        const items = await this.itemRepository.find({ where: { menuId: menu.id } });
+
+        for (const item of items) {
+          const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
+
+          for (const subItem of subItems) {
+            const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
+
+            for (const subSubItem of subSubItems) {
+              const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
+
+              for (const subSubSubItem of subSubSubItems) {
+                const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+                if (fields.length) {
+                  await this.fieldRepository.remove(fields);
+                }
+                await this.subSubSubItemRepo.remove(subSubSubItem);
+              }
+
+              await this.subSubItemRepository.remove(subSubItem);
+            }
+
+            await this.subItemRepository.remove(subItem);
+          }
+
+          await this.itemRepository.remove(item);
+        }
+
+        await this.menuRepository.remove(menu);
+      }
+
+      await this.appRepository.remove(app);
+    }
+
+    // 3. Delete the module itself
+    await this.modulesRepository.remove(module);
+
+    return { status: 'success', message: 'Module and related data deleted successfully.' };
+  } catch (error) {
+    console.error('Delete failed:', error);
+    return { status: 'error', message: 'Failed to delete module and related data.' };
+  }
+}
+
+
   // ---------- APP METHODS ----------
   //    private async toDto(app: App): Promise<AppDto> {
   //   const modules=await this.modulesRepository.find();
@@ -1273,9 +1444,61 @@ export class SurveyModuleService {
     return this.toDto(updated, modulesMap);
   }
 
-  async deleteApp(id: string): Promise<void> {
-    await this.appRepository.delete(id);
+async deleteApp(appId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if app exists
+  const app = await this.appRepository.findOne({ where: { id: appId } });
+  if (!app) {
+    return { status: 'error', message: 'No such app found.' };
   }
+
+  try {
+    // 2. Get all menus under the app
+    const menus = await this.menuRepository.find({ where: { appId } });
+
+    for (const menu of menus) {
+      const items = await this.itemRepository.find({ where: { menuId: menu.id } });
+
+      for (const item of items) {
+        const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
+
+        for (const subItem of subItems) {
+          const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
+
+          for (const subSubItem of subSubItems) {
+            const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
+
+            for (const subSubSubItem of subSubSubItems) {
+              const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+
+              if (fields.length) {
+                await this.fieldRepository.remove(fields);
+              }
+
+              await this.subSubSubItemRepo.remove(subSubSubItem);
+            }
+
+            await this.subSubItemRepository.remove(subSubItem);
+          }
+
+          await this.subItemRepository.remove(subItem);
+        }
+
+        await this.itemRepository.remove(item);
+      }
+
+      await this.menuRepository.remove(menu);
+    }
+
+    // 3. Delete the app itself
+    await this.appRepository.remove(app);
+
+    return { status: 'success', message: 'App and related data deleted successfully.' };
+  } catch (error) {
+    console.error('App delete failed:', error);
+    return { status: 'error', message: 'Failed to delete app and related data.' };
+  }
+}
+
 
   //manu
   private async toMenuDto(menu: Menu): Promise<MenuDto> {
@@ -1476,12 +1699,55 @@ export class SurveyModuleService {
     // return await this.toMenuDto(saved);
   }
 
-  async deleteMenu(id: string): Promise<void> {
-    const result = await this.menuRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Menu with ID ${id} not found`);
-    }
+ async deleteMenu(menuId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if menu exists
+  const menu = await this.menuRepository.findOne({ where: { id: menuId } });
+  if (!menu) {
+    return { status: 'error', message: `Menu with ID ${menuId} not found.` };
   }
+
+  try {
+    // 2. Get all items under the menu
+    const items = await this.itemRepository.find({ where: { menuId } });
+
+    for (const item of items) {
+      const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
+
+      for (const subItem of subItems) {
+        const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
+
+        for (const subSubItem of subSubItems) {
+          const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
+
+          for (const subSubSubItem of subSubSubItems) {
+            const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
+
+            if (fields.length) {
+              await this.fieldRepository.remove(fields);
+            }
+
+            await this.subSubSubItemRepo.remove(subSubSubItem);
+          }
+
+          await this.subSubItemRepository.remove(subSubItem);
+        }
+
+        await this.subItemRepository.remove(subItem);
+      }
+
+      await this.itemRepository.remove(item);
+    }
+
+    // 3. Delete the menu itself
+    await this.menuRepository.remove(menu);
+
+    return { status: 'success', message: 'Menu and related data deleted successfully.' };
+  } catch (error) {
+    console.error('Menu delete failed:', error);
+    return { status: 'error', message: 'Failed to delete menu and related data.' };
+  }
+}
+
   private async toSubSubSubItemDto(
     entity: SubSubSubItem,
   ): Promise<SubSubSubItemDto> {
@@ -1572,11 +1838,29 @@ export class SurveyModuleService {
     const updated = await this.subSubSubItemRepo.save(existing);
     return this.toSubSubSubItemDto(updated);
   }
-
-  async deleteSubSubSubItem(id: string): Promise<void> {
-    const result = await this.subSubSubItemRepo.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`SubSubSubItem with ID ${id} not found`);
-    }
+async deleteSubSubSubItem(subSubSubItemId: string): Promise<{ status: string; message: string }> {
+  // 1. Check if SubSubSubItem exists
+  const subSubSubItem = await this.subSubSubItemRepo.findOne({ where: { id: subSubSubItemId } });
+  if (!subSubSubItem) {
+    return { status: 'error', message: `SubSubSubItem with ID ${subSubSubItemId} not found.` };
   }
+
+  try {
+    // 2. Get all fields under this SubSubSubItem
+    const fields = await this.fieldRepository.find({ where: { subSubSubItemId } });
+
+    if (fields.length > 0) {
+      await this.fieldRepository.remove(fields);
+    }
+
+    // 3. Remove the SubSubSubItem itself
+    await this.subSubSubItemRepo.remove(subSubSubItem);
+
+    return { status: 'success', message: 'SubSubSubItem and related fields deleted successfully.' };
+  } catch (error) {
+    console.error('SubSubSubItem deletion failed:', error);
+    return { status: 'error', message: 'Failed to delete SubSubSubItem and related fields.' };
+  }
+}
+
 }

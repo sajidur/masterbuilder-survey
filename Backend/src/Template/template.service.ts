@@ -14,13 +14,16 @@ export class TemplateService {
   ) {}
 
   async create(dto: CreateTemplateDto): Promise<Template> {
+    console.log(dto);
     const temp=new Template();
     temp.code=dto.code;
     temp.description=dto.description||null;
     temp.name=dto.name;
     temp.createdAt=new Date();
     temp.updatedAt=new Date();
+    console.log(temp);
     const template = this.templateRepo.create(temp);
+    console.log(template);
     return this.templateRepo.save(template);
   }
 
@@ -48,8 +51,19 @@ export class TemplateService {
 }
 
 
-  async remove(id: string): Promise<void> {
-    const result = await this.templateRepo.delete(id);
-    if (result.affected === 0) throw new NotFoundException('Template not found');
+ async remove(id: string): Promise<{ status: string; message: string }> {
+  try {
+    const template = await this.templateRepo.findOne({ where: { id } });
+    if (!template) {
+      return { status: 'error', message: 'Template not found.' };
+    }
+
+    await this.templateRepo.remove(template);
+    return { status: 'success', message: 'Template deleted successfully.' };
+  } catch (error) {
+    console.error('Template deletion failed:', error);
+    return { status: 'error', message: 'Failed to delete template.' };
   }
+}
+
 }

@@ -80,7 +80,7 @@ async updateSubItem(
 
   @Delete('deleteSubitems/:id')
   @ApiResponse({ status: 204, description: 'SubItem deleted' })
-  deleteSubItem(@Param('id') id: string): Promise<void> {
+  deleteSubItem(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteSubItem(id);
   }
   //modules
@@ -116,10 +116,11 @@ update(
   return this.moduleService.update(id, moduleDto,user);
 }
 
-  @Delete('deleteModule:id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.moduleService.remove(id);
-  }
+ @Delete('deleteModule/:id')
+async remove(@Param('id') id: string): Promise<{ status: string; message: string }> {
+  return await this.moduleService.remove(id);
+}
+
 
    // ---------- APPS CRUD ----------
   @Get('allApps')
@@ -161,7 +162,7 @@ createApp(@Body() app: CreateAppDto,
   @Delete('deleteApps/:id')
  
   @ApiResponse({ status: 204, description: 'App deleted' })
-  deleteApp(@Param('id') id: string): Promise<void> {
+  deleteApp(@Param('id') id: string):Promise<{ status: string; message: string }> {
     return this.moduleService.deleteApp(id);
   }
   //manu
@@ -202,7 +203,7 @@ updateMenu(
 
   @Delete('deleteMenu/:id')
   @ApiResponse({ status: 204, description: 'Menu deleted' })
-  deleteMenu(@Param('id') id: string): Promise<void> {
+  deleteMenu(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteMenu(id);
   }
   //item
@@ -243,7 +244,7 @@ updateItem(
 
   @Delete('deleteItem/:id')
   @ApiResponse({ status: 204, description: 'Item deleted' })
-  deleteItem(@Param('id') id: string): Promise<void> {
+  deleteItem(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteItem(id);
   }
    // ---------- FIELD CRUD ----------
@@ -285,7 +286,7 @@ async updateField(
 
   @Delete('deleteField/:id')
   @ApiResponse({ status: 204, description: 'Field deleted' })
-  deleteField(@Param('id') id: string): Promise<void> {
+  deleteField(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteField(id);
   }
   //subsubItem
@@ -325,7 +326,7 @@ async updateSubSubItem(
 
   @Delete('deleteSubSubItem:id')
   @ApiResponse({ status: 204, description: 'Deleted successfully' })
-  async deleteSubSubItem(@Param('id') id: string): Promise<void> {
+  async deleteSubSubItem(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteSubSubItem(id);
   }
  @Get('getAllSubSubSubItems')
@@ -365,7 +366,7 @@ async updateSubSubItem(
 
   @Delete('deleteSubSubSubItem/:id')
   @ApiResponse({ status: 204, description: 'Deleted successfully' })
-  async deleteSubSubSubItem(@Param('id') id: string): Promise<void> {
+  async deleteSubSubSubItem(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteSubSubSubItem(id);
   }
 
