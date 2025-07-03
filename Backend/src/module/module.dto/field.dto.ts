@@ -5,7 +5,7 @@ import { SubSubSubItemDto } from './subsubsubitem.dto';
 export class FieldDto {
  
   id: string;
-  serialumber:string;
+  serialNumber:string;
   name: string;
   displayType: string;
   fieldType: string;

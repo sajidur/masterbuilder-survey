@@ -319,7 +319,7 @@ export class SurveyModuleService {
       isRequired: field.isRequired,
       fieldType: field.fieldType,
       displayType: field.displayType,
-      serialumber: field.serialNumber,
+      serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
     };
@@ -394,7 +394,7 @@ export class SurveyModuleService {
       isRequired: field.isRequired,
       fieldType: field.fieldType,
       displayType: field.displayType,
-      serialumber: field.serialNumber,
+      serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
     };
@@ -427,7 +427,7 @@ export class SurveyModuleService {
       id: saved.id,
       name: saved.name,
       displayType: field.displayType,
-      serialumber: field.serialNumber,
+      serialNumber: field.serialNumber,
       fieldType: field.fieldType,
       isRequired: field.isRequired,
       subSubSubItemId: saved.subSubSubItemId,
@@ -470,7 +470,7 @@ export class SurveyModuleService {
       isRequired: saved.isRequired,
       fieldType: saved.fieldType,
       displayType: saved.displayType,
-      serialumber: saved.serialNumber,
+      serialNumber: saved.serialNumber,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
     };
