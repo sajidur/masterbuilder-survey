@@ -8,5 +8,8 @@ export declare class TemplateService {
     findAll(): Promise<Template[]>;
     findOne(id: string): Promise<Template>;
     update(id: string, dto: CreateTemplateDto): Promise<Template>;
-    remove(id: string): Promise<void>;
+    remove(id: string): Promise<{
+        status: string;
+        message: string;
+    }>;
 }

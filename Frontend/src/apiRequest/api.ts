@@ -44,6 +44,17 @@ export const updateModule = async (
     throw error;
   }
 };
+//delete module
+export const deleteModule = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteModule/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting module:", error);
+    throw error;
+  }
+};
+
 
 
 // Add App
@@ -56,7 +67,6 @@ export const addApp = async (data: { name: string; moduleId: string, tier: strin
     throw error;
   }
 };
-
 // Update Apps
 export const updateApps = async (
   id: string,
@@ -70,6 +80,18 @@ export const updateApps = async (
     throw error;
   }
 };
+//delete app
+export const deleteApp = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteApps/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting app:", error);
+    throw error;
+  }
+};
+
+
 
 // Add Menu
 export const addMenu = async (data: { title: string; appId: string, tier: string, serialNumber: string }) => {
@@ -94,6 +116,17 @@ export const updateMenu = async (
     throw error;
   }
 };
+//delete menu
+export const deleteMenu = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteMenu/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting menu:", error);
+    throw error;
+  }
+};
+
 
 
 // Add Item
@@ -116,6 +149,16 @@ export const updateItem = async (
     return response.data;
   } catch (error) {
     console.error('Error updating module:', error);
+    throw error;
+  }
+};
+//delete item
+export const deleteItem = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteItem/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting Item:", error);
     throw error;
   }
 };
@@ -145,6 +188,16 @@ export const updateSubitem = async (
     throw error;
   }
 };
+//delete subitem
+export const deleteSubItem = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteSubitems/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting SubItem:", error);
+    throw error;
+  }
+};
 
 
 
@@ -171,6 +224,16 @@ export const updateSubSubitem = async (
     throw error;
   }
 };
+//delete subsubitem
+export const deleteSubSubItem = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteSubSubItem/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting SubSubItem:", error);
+    throw error;
+  }
+};
 
 
 
@@ -184,7 +247,6 @@ export const addSubSubSubitem = async (data: { name: string; subSubItemId: strin
     throw error;
   }
 };
-
 // Update SubSubSubitem
 export const updateSubSubSubitem = async (
   id: string,
@@ -195,6 +257,16 @@ export const updateSubSubSubitem = async (
     return response.data;
   } catch (error) {
     console.error('Error updating subsubsub:', error);
+    throw error;
+  }
+};
+//delete subsubsub
+export const deleteSubSubSubItem = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteSubSubSubItem/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting SubSubSubItem:", error);
     throw error;
   }
 };
@@ -218,7 +290,6 @@ export const addField = async (data: {
     throw error;
   }
 };
-
 // Update Field
 export const updateField = async (
   id: string,
@@ -236,6 +307,16 @@ export const updateField = async (
     return response.data;
   } catch (error) {
     console.error('Error updating Field:', error);
+    throw error;
+  }
+};
+// delete field
+export const deleteField = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteField/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting field:", error);
     throw error;
   }
 };

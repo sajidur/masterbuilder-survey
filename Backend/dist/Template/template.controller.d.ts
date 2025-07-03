@@ -7,5 +7,8 @@ export declare class TemplateController {
     findAll(): Promise<import("./entity/template").Template[]>;
     findOne(id: string): Promise<import("./entity/template").Template>;
     update(id: string, dto: CreateTemplateDto): Promise<import("./entity/template").Template>;
-    remove(id: string): Promise<void>;
+    remove(id: string): Promise<{
+        status: string;
+        message: string;
+    }>;
 }

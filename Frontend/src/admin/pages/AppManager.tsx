@@ -6,6 +6,7 @@ import {
   getAllApps,
   addApp,
   updateApps,
+  deleteApp,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -104,6 +105,16 @@ const AppManager: React.FC = () => {
     setSelectedTier(app.tier || "");
     setSerialNumber(app.serialNumber || "");
   };
+
+  const handleDeleteApp = async (id: string) => {
+  try {
+    await deleteApp(id);
+    toast.success("App deleted successfully!");
+    window.location.reload()
+  } catch (error) {
+    toast.error("Failed to delete app.");
+  }
+};
 
   return (
     <div className=" p-4">
@@ -253,7 +264,7 @@ const AppManager: React.FC = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button className="text-red-600 hover:text-red-800">
+                      <button onClick={()=> handleDeleteApp(app?.id)} className="text-red-600 hover:text-red-800">
                         <FaTrash />
                       </button>
                     </td>

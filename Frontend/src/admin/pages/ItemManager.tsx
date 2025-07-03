@@ -8,6 +8,7 @@ import {
   getAllItems,
   addItem,
   updateItem,
+  deleteItem,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -158,6 +159,16 @@ const ItemManager: React.FC = () => {
       toast.error("Failed to save item.");
     }
   };
+
+  const handleDeleteItem = async (id: string) => {
+  try {
+    await deleteItem(id);
+    toast.success("Item deleted successfully!");
+    window.location.reload()
+  } catch (error) {
+    toast.error("Failed to delete Item.");
+  }
+};
 
   return (
     <div className="p-4">
@@ -405,7 +416,7 @@ const ItemManager: React.FC = () => {
                     >
                       <FaEdit />
                     </button>
-                    <button className="text-red-600 hover:text-red-800">
+                    <button onClick={()=> handleDeleteItem(item?.id)} className="text-red-600 hover:text-red-800">
                       <FaTrash />
                     </button>
                   </td>

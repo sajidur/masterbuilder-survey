@@ -68,11 +68,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TemplateController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)('deleteTemplate:id'),
+    (0, common_1.Delete)('deleteTemplate/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], TemplateController.prototype, "remove", null);
 exports.TemplateController = TemplateController = __decorate([
     (0, common_1.Controller)('templates'),

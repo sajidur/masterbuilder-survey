@@ -55,9 +55,18 @@ let TemplateService = class TemplateService {
         return await this.templateRepo.save(template);
     }
     async remove(id) {
-        const result = await this.templateRepo.delete(id);
-        if (result.affected === 0)
-            throw new common_1.NotFoundException('Template not found');
+        try {
+            const template = await this.templateRepo.findOne({ where: { id } });
+            if (!template) {
+                return { status: 'error', message: 'Template not found.' };
+            }
+            await this.templateRepo.remove(template);
+            return { status: 'success', message: 'Template deleted successfully.' };
+        }
+        catch (error) {
+            console.error('Template deletion failed:', error);
+            return { status: 'error', message: 'Failed to delete template.' };
+        }
     }
 };
 exports.TemplateService = TemplateService;

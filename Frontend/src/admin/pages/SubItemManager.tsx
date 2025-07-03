@@ -10,6 +10,7 @@ import {
   updateSubitem,
   getAllSubitems,
   getAllTemplates,
+  deleteSubItem,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -172,6 +173,16 @@ const SubItemManager: React.FC = () => {
       toast.error("Failed to save subitem.");
     }
   };
+
+  const handleDeleteSubItem = async (id: string) => {
+  try {
+    await deleteSubItem(id);
+    toast.success("SubItem deleted successfully!");
+    window.location.reload()
+  } catch (error) {
+    toast.error("Failed to delete SubItem.");
+  }
+};
 
   return (
     <div className="p-4">
@@ -471,7 +482,7 @@ const SubItemManager: React.FC = () => {
                     >
                       <FaEdit />
                     </button>
-                    <button className="text-red-600 hover:text-red-800">
+                    <button onClick={()=> handleDeleteSubItem(s?.id)} className="text-red-600 hover:text-red-800">
                       <FaTrash />
                     </button>
                   </td>

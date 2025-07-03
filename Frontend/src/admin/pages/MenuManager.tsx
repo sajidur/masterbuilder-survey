@@ -7,6 +7,7 @@ import {
   addMenu,
   getAllMenus,
   updateMenu,
+  deleteMenu,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -116,6 +117,17 @@ const MenuManager: React.FC = () => {
       toast.error("Failed to save menu.");
     }
   };
+
+
+  const handleDeleteMenu = async (id: string) => {
+  try {
+    await deleteMenu(id);
+    toast.success("Menu deleted successfully!");
+    window.location.reload()
+  } catch (error) {
+    toast.error("Failed to delete menu.");
+  }
+};
 
   return (
     <div className=" p-4">
@@ -297,7 +309,7 @@ const MenuManager: React.FC = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button className="text-red-600 hover:text-red-800">
+                      <button onClick={()=> handleDeleteMenu(menu?.id)} className="text-red-600 hover:text-red-800">
                         <FaTrash />
                       </button>
                     </td>

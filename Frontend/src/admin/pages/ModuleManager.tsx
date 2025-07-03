@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addModule, getAllModules, updateModule } from "../../apiRequest/api";
+import { addModule, deleteModule, getAllModules, updateModule } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -83,18 +83,15 @@ const ModuleManager: React.FC = () => {
 
 
 
-  const handleDeleteModule = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this module?")) return;
-
-    // try {
-    //   await deleteModule(id); // You should create this function in your API
-    //   toast.success("Module deleted successfully!");
-    //   fetchModules();
-    // } catch (error) {
-    //   console.error("Failed to delete module:", error);
-    //   toast.error("Failed to delete module.");
-    // }
-  };
+ const handleDeleteModule = async (id: string) => {
+  try {
+    await deleteModule(id);
+    toast.success("Module deleted successfully!");
+    window.location.reload()
+  } catch (error) {
+    toast.error("Failed to delete module.");
+  }
+};
 
 
   return (

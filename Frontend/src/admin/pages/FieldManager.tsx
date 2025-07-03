@@ -10,6 +10,7 @@ import {
   getAllSubSubitems,
   getAllFields,
   addField,
+  deleteField ,
   getAllSubSubSubitems,
   updateField,
 } from "../../apiRequest/api";
@@ -182,6 +183,16 @@ const FieldManager: React.FC = () => {
       toast.error("Failed to save field.");
     }
   };
+
+  const handleDeleteField = async (id: string) => {
+  try {
+    await deleteField(id);
+    toast.success("Field deleted successfully!");
+    window.location.reload();
+  } catch (error) {
+    toast.error("Failed to delete field.");
+  }
+};
 
   return (
     <div className="p-6">
@@ -452,7 +463,7 @@ const FieldManager: React.FC = () => {
                     <FaEdit />
                   </button>
 
-                  <button className="text-red-600 hover:text-red-800">
+                  <button onClick={()=>handleDeleteField(f?.id)} className="text-red-600 hover:text-red-800">
                     <FaTrash />
                   </button>
                 </td>
