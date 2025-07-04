@@ -21,27 +21,28 @@ import { SubSubItem } from './subsubitem.entity';
 export class SubItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   name: string;
   @Column()
   tier: string;
   @Column()
   itemId?: string;
-
   @ManyToOne(() => Item, (item) => item.subItems, { nullable: true })
   item: Item;
-
   @OneToMany(() => SubSubItem, (subSubItem) => subSubItem.subItem)
   subSubItems: SubSubItem[];
-  @Column()
-  templateId: string;
+  @Column({ nullable: true })
+  templateId?: string;
   @Column()
   userId: string;
-   @Column()
+  @Column()
   serialNumber: string;
   @Column()
   buttonType: string;
+  @Column()
+  layout: string;
+  @Column({ nullable: true })
+  templateText?: string;
   @Column()
   navigationTo: string;
   @Column()

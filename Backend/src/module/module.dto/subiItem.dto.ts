@@ -9,11 +9,13 @@ export class SubItemDto {
   name: string;
   tier: string;
   serialNumber: string;
+  layout: string;
   buttonType: string;
   navigationTo: string;
   description: string;
   itemId: string;
   item?: ItemDto | null;
+  templateText?:string|null;
   template?: Template | null;
 }
 
@@ -25,6 +27,10 @@ export class CreateSubItemDto {
   @ApiProperty({ description: 'Tier of the SubItem' })
   @IsString()
   tier: string;
+  @ApiProperty({ description: 'layout/Placement of the SubItem' })
+  @IsString()
+  layout: string;
+
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()
   serialNumber: string;
@@ -37,10 +43,15 @@ export class CreateSubItemDto {
   @ApiProperty({ description: 'Description of the SubItem' })
   @IsString()
   description: string;
-  @ApiProperty({ description: 'Template of the SubItem' })
+  @ApiProperty({ description: 'Template ID of the SubItem', required: false, nullable: true })
+  @IsOptional()
   @IsString()
-  templateId: string;
+  templateId?: string | null;
 
+  @ApiProperty({ description: 'Template of text box of the SubItem', required: false, nullable: true })
+  @IsOptional()
+  @IsString()
+  templateText?: string | null;
   @ApiPropertyOptional({ description: 'Item ID' })
   @IsString()
   @IsOptional()

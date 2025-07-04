@@ -15,11 +15,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Modules {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   @ApiProperty({ description: 'Name of the module' })
   name: string;
-
   @Column()
   tier: string;
   @Column()

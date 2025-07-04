@@ -60,6 +60,7 @@ import {
 } from './module.dto/subsubsubitem.dto';
 import { Template } from 'src/Template/entity/template';
 import { memoryUsage } from 'process';
+import { escapeId } from 'mysql2';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -91,17 +92,23 @@ export class SurveyModuleService {
         `SubItem with ID ${subSubItem.subItemId} not found`,
       );
     }
-    const template = await this.TemplateRepo.findOne({
-      where: { id: subSubItem.templateId },
-    });
-    if (!template) throw new NotFoundException('Template not found');
+   let template: Template | null = null;
+
+if (subSubItem.templateId) {
+  template = await this.TemplateRepo.findOne({
+    where: { id: subSubItem.templateId },
+  });
+}
     return {
       id: subSubItem.id,
       name: subSubItem.name,
       tier: subSubItem.tier,
+      layout:subSubItem.layout,
+      editButton:subSubItem.editButton,
       serialNumber:subSubItem.serialNumber,
       subItemId: subSubItem?.subItemId,
       subItem: await this.toSubItemDto(subItem),
+      templateText:subSubItem.templateText||null,
       template: template || null,
     };
   }
@@ -124,17 +131,24 @@ export class SurveyModuleService {
         `SubItem with ID ${subSubItem.subItemId} not found in cache`,
       );
     }
-    const template = await this.TemplateRepo.findOne({
-      where: { id: subSubItem.templateId },
-    });
-    if (!template) throw new NotFoundException('Template not found');
+ let template: Template | null = null;
+
+if (subSubItem.templateId) {
+  template = await this.TemplateRepo.findOne({
+    where: { id: subSubItem.templateId },
+  });
+}
+
     return {
       id: subSubItem.id,
       name: subSubItem.name,
       tier: subSubItem.tier,
       serialNumber:subSubItem.serialNumber,
+      layout:subSubItem.layout,
+      editButton:subSubItem.editButton,
       subItemId: subSubItem.subItemId,
       subItem: subItemDto,
+      templateText:subSubItem.templateText||null,
       template: template || null,
     };
   }
@@ -192,6 +206,7 @@ export class SurveyModuleService {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
+        buttonLabel:item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -219,6 +234,7 @@ export class SurveyModuleService {
         tier: subItem.tier,
         serialNumber: subItem.serialNumber,
         buttonType: subItem.buttonType,
+        layout:subItem.layout,
         navigationTo: subItem.navigationTo,
         description: subItem.description,
         itemId: subItem.itemId,
@@ -256,8 +272,12 @@ export class SurveyModuleService {
     subSubItem.updatedBy = user.username;
     subSubItem.userId = user.id;
     subSubItem.tier = data.tier;
+    subSubItem.editButton=data.editButton;
+    subSubItem.layout=data.layout;
     subSubItem.serialNumber=data.serialNumber;
-    subSubItem.templateId = data.templateId;
+    subSubItem.templateId = data.templateId ?? subSubItem.templateId;
+    subSubItem.templateText = data.templateText ?? subSubItem.templateText;
+
     const saved = await this.subSubItemRepository.save(subSubItem);
     return this.toSubSubItemDto(saved);
   }
@@ -277,7 +297,10 @@ export class SurveyModuleService {
     existing.updatedBy = user.username;
     existing.tier = data.tier;
     existing.serialNumber=data.serialNumber;
-    existing.templateId = data.templateId;
+    existing.editButton=data.editButton;
+    existing.layout=data.layout;
+    existing.templateId = data.templateId ?? existing.templateId;
+    existing.templateText = data.templateText ?? existing.templateText;
     var updatedData = await this.subSubItemRepository.save(existing);
     return this.toSubSubItemDto(updatedData);
   }
@@ -344,6 +367,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     return {
       id: field.id,
       name: field.name,
+      fieldGroupCode:field.fieldGroupCode,
+      description:field.description,
       isRequired: field.isRequired,
       fieldType: field.fieldType,
       displayType: field.displayType,
@@ -419,6 +444,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     return {
       id: field.id,
       name: field.name,
+      fieldGroupCode:field.fieldGroupCode,
+      description:field.description,
       isRequired: field.isRequired,
       fieldType: field.fieldType,
       displayType: field.displayType,
@@ -440,6 +467,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     newField.displayType = field.displayType;
     newField.fieldType = field.fieldType;
     newField.isRequired = field.isRequired;
+    newField.description=field.description;
+    newField.fieldGroupCode=field.fieldGroupCode;
     const saved = await this.fieldRepository.save(newField);
 
     const subSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -456,6 +485,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       name: saved.name,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
+      description:field.description,
+      fieldGroupCode:field.fieldGroupCode,
       fieldType: field.fieldType,
       isRequired: field.isRequired,
       subSubSubItemId: saved.subSubSubItemId,
@@ -481,6 +512,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     existing.isRequired = updated.isRequired;
     existing.fieldType = updated.fieldType;
     existing.userId = user.id;
+    existing.fieldGroupCode=updated.fieldGroupCode;
+    existing.description=updated.description;
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -496,6 +529,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       id: saved.id,
       name: saved.name,
       isRequired: saved.isRequired,
+      fieldGroupCode:saved.fieldGroupCode,
+      description:saved.description,
       fieldType: saved.fieldType,
       displayType: saved.displayType,
       serialNumber: saved.serialNumber,
@@ -545,9 +580,13 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
     if (!itemDto) {
       throw new NotFoundException(`Item with ID ${itemId} not found in cache`);
     }
-    const template = await this.TemplateRepo.findOne({
-      where: { id: subItem.templateId },
-    });
+    let template: Template | null = null;
+
+if (subItem.templateId) {
+  template = await this.TemplateRepo.findOne({
+    where: { id: subItem.templateId },
+  });
+}
 
     return {
       id: subItem.id,
@@ -555,10 +594,12 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
+      layout:subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
       itemId,
       item: itemDto,
+      templateText:subItem.templateText||null,
       template: template || null,
     };
   }
@@ -613,6 +654,7 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
+        buttonLabel:item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -682,6 +724,7 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
+        buttonLabel:item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -708,11 +751,13 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
     newSubItem.updatedAt = new Date();
     newSubItem.updatedBy = user.username;
     newSubItem.userId = user.id;
-    newSubItem.templateId = subItem.templateId;
+    newSubItem.templateId = subItem.templateId ?? newSubItem.templateId;
+    newSubItem.templateText = subItem.templateText ?? newSubItem.templateText;
     newSubItem.tier = subItem.tier;
     newSubItem.serialNumber=subItem.serialNumber;
     newSubItem.buttonType=subItem.buttonType;
     newSubItem.navigationTo=subItem.navigationTo;
+    newSubItem.layout=subItem.layout;
     newSubItem.description=subItem.description;
     var data = this.subItemRepository.save(newSubItem);
     // Fetch all related data in parallel for mapping
@@ -762,6 +807,7 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
+        buttonLabel:item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -786,11 +832,13 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
     existing.tier = updated.tier;
-    existing.templateId = updated.templateId;
+    existing.templateId = updated.templateId??existing.templateId;
+    existing.templateText=updated.templateText??existing.templateText;
     existing.serialNumber=updated.serialNumber;
     existing.buttonType=updated.buttonType;
     existing.navigationTo=updated.navigationTo;
     existing.description=updated.description;
+    existing.layout=updated.layout;
     const data = this.subItemRepository.save(existing);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -839,6 +887,7 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
+        buttonLabel:item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -869,20 +918,26 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
     }
 
     itemDto = await this.toItemDto(item);
-    const template = await this.TemplateRepo.findOne({
-      where: { id: subItem.templateId },
-    });
-    if (!template) throw new NotFoundException('Template not found');
+  let template: Template | null = null;
+
+if (subItem.templateId) {
+  template = await this.TemplateRepo.findOne({
+    where: { id: subItem.templateId },
+  });
+}
+
     return {
       id: subItem.id,
       name: subItem.name,
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
+      layout:subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
       itemId: itemId, // Now guaranteed to be number
       item: itemDto,
+      templateText:subItem.templateText||null,
       template: template || null,
     };
   }
@@ -940,6 +995,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       tier: item.tier,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
+      buttonLabel:item.buttonLabel,
       navigationTo: item.navigationTo,
       description: item.description,
       menu: await this.toMenuDto(menu),
@@ -966,6 +1022,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       tier: item.tier,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
+      buttonLabel:item.buttonLabel,
       navigationTo: item.navigationTo,
       description: item.description,
       menu: menuDto,
@@ -1067,6 +1124,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
     newItem.buttonType=item.buttonType;
     newItem.navigationTo=item.navigationTo;
     newItem.description=item.description;
+    newItem.buttonLabel=item.buttonLabel;
     const created = await this.itemRepository.save(newItem);
     const [menus, apps, modules] = await Promise.all([
       this.menuRepository.find(),
@@ -1766,23 +1824,28 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
 
       subSubItemDto = await this.toSubSubItemDto(subSubItem);
     }
-    const template = await this.TemplateRepo.findOne({
-      where: { id: entity.templateId },
-    });
-    if (!template) throw new NotFoundException('Template not found');
+  let template: Template | null = null;
+
+if (entity.templateId) {
+  template = await this.TemplateRepo.findOne({
+    where: { id: entity.templateId },
+  });
+}
+
     return {
       id: entity.id,
       name: entity.name,
       tier: entity.tier,
-      templateId: entity.templateId,
       subSubItemId: entity.subSubItemId,
       serialNumber:entity.serialNumber,
       subSubItem: subSubItemDto,
+      layout:entity.layout,
       userId: entity.userId,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       createdBy: entity.createdBy,
       updatedBy: entity.updatedBy,
+      templateText:entity.templateText||null,
       template: template || null,
     };
   }
@@ -1800,25 +1863,32 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
     return this.toSubSubSubItemDto(item);
   }
 
-  async createSubSubSubItem(
-    dto: CreateSubSubSubItemDto,
-    user: any,
-  ): Promise<SubSubSubItemDto> {
-    const entity = this.subSubSubItemRepo.create({
-      ...dto,
-      createdBy: user.username,
-      updatedBy: user.username,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      templateId: dto.templateId,
-      tier: dto.tier,
-      userId: user.id,
-    });
+async createSubSubSubItem(
+  dto: CreateSubSubSubItemDto,
+  user: any,
+): Promise<SubSubSubItemDto> {
+  const now = new Date();
 
-    const saved = await this.subSubSubItemRepo.save(entity);
-    return this.toSubSubSubItemDto(saved);
-  }
+  const entity = this.subSubSubItemRepo.create({
+    name: dto.name,
+    tier: dto.tier,
+    layout: dto.layout,
+    serialNumber: dto.serialNumber,
+    templateId: dto.templateId ?? null,
+    templateText: dto.templateText ?? null,
+    subSubItemId: dto.subSubItemId ?? null,
+    userId: user.id,
+    createdBy: user.username,
+    updatedBy: user.username,
+    createdAt: now,
+    updatedAt: now,
+  } as Partial<SubSubSubItem>); // 👈 Ensure correct typing
+  // or you can cast like this if you imported SubSubSubItem directly:
+  // } as DeepPartial<SubSubSubItem>);
 
+  const saved = await this.subSubSubItemRepo.save(entity);
+  return this.toSubSubSubItemDto(saved);
+}
   async updateSubSubSubItem(
     id: string,
     dto: CreateSubSubSubItemDto,

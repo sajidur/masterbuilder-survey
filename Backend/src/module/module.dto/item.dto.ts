@@ -2,13 +2,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty} from 'class-validator';
 import { MenuDto } from './menu.dto';
+import { ButtonGroup } from '../module.entity/item.entity';
 export class ItemDto {
  
   id: string;
   name: string;
   tier:string;
   serialNumber:string;
-  buttonType:string;
+  buttonType:ButtonGroup;
+  buttonLabel:string;
   navigationTo:string;
   description:string;
   menu: MenuDto|null;
@@ -25,9 +27,12 @@ export class CreateItemDto {
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()
   serialNumber: string;
-  @ApiProperty({ description: 'buttonType of the SubItem' })
+ @ApiProperty({ description: 'P for Primary, S for Secondary of the Item' })
   @IsString()
-  buttonType: string;
+  buttonType: ButtonGroup;
+  @ApiProperty({ description: 'Button label such as Export, Print, etc.' })
+  @IsString()
+  buttonLabel:string;
   @ApiProperty({ description: 'navigationTo of the SubItem' })
   @IsString()
   navigationTo: string;

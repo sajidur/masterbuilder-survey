@@ -15,8 +15,10 @@ const swagger_1 = require("@nestjs/swagger");
 class CreateSubSubSubItemDto {
     name;
     tier;
+    layout;
     serialNumber;
     templateId;
+    templateText;
     subSubItemId;
 }
 exports.CreateSubSubSubItemDto = CreateSubSubSubItemDto;
@@ -36,19 +38,35 @@ __decorate([
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "tier", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'layout/Placement of the SubItem' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSubSubSubItemDto.prototype, "layout", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ description: 'SerialNumber of the SubSubSubItem' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "serialNumber", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Template ID associated with the item',
-        example: 'uuid-template-123',
+        description: 'Template ID of the SubSubSubItem',
+        required: false,
+        nullable: true,
     }),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], CreateSubSubSubItemDto.prototype, "templateId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Template of text box of the SubSubSubItem',
+        required: false,
+        nullable: true,
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", Object)
+], CreateSubSubSubItemDto.prototype, "templateText", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'ID of the parent SubSubItem',
@@ -62,11 +80,12 @@ class SubSubSubItemDto {
     id;
     name;
     tier;
-    templateId;
+    templateText;
     userId;
     subSubItemId;
     subSubItem;
     serialNumber;
+    layout;
     createdAt;
     updatedAt;
     createdBy;

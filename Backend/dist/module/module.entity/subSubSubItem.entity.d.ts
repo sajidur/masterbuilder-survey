@@ -5,9 +5,11 @@ export declare class SubSubSubItem {
     name: string;
     subSubItemId?: string;
     tier: string;
+    layout: string;
     serialNumber: string;
     subSubItem: SubSubItem;
-    templateId: string;
+    templateId?: string;
+    templateText?: string;
     fields: Field[];
     userId: string;
     createdAt: Date;

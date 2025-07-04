@@ -22,22 +22,26 @@ import { Field } from './field.entity';
 export class SubSubItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   name: string;
-
   @Column()
   subItemId?: string;
   @Column()
   tier: string;
+  @Column()
+  layout: string;
+  @Column()
+  editButton: string;
   @Column()
   serialNumber: string;
   @ManyToOne(() => SubItem, (subItem) => subItem.subSubItems, {
     nullable: true,
   })
   subItem: SubItem;
-  @Column()
-  templateId: string;
+  @Column({ nullable: true })
+  templateId?: string;
+   @Column({ nullable: true })
+  templateText?: string;
   @OneToMany(() => Field, (field) => field.subSubSubItem)
   fields: Field[];
 
@@ -51,7 +55,7 @@ export class SubSubItem {
   createdBy?: string;
   @Column({ nullable: true })
   updatedBy?: string;
-    subSubSubItems: any;
+  subSubSubItems: any;
   // ✅ One-to-Many relation with DesignDefinition
   // @OneToMany(() => DesignDefinition, (definition) => definition.subSubItem)
   // designDefinitions: DesignDefinition[];

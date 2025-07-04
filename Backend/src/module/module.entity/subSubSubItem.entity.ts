@@ -24,25 +24,26 @@ import { SubSubItem } from './subsubitem.entity';
 export class SubSubSubItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   name: string;
-
   @Column()
   subSubItemId?: string;
   @Column()
   tier: string;
+    @Column()
+ layout: string;
   @Column()
   serialNumber: string;
   @ManyToOne(() => SubSubItem, (subSubItem) => subSubItem.subSubSubItems, {
     nullable: true,
   })
   subSubItem: SubSubItem;
-  @Column()
-  templateId: string;
+  @Column({ nullable: true })
+  templateId?: string;
+   @Column({ nullable: true })
+  templateText?: string;
   @OneToMany(() => Field, (field) => field.subSubSubItem)
   fields: Field[];
-
   @Column()
   userId: string;
   @CreateDateColumn()

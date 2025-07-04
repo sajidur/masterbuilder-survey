@@ -16,7 +16,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Item {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   @ApiProperty({ description: 'Name of the item' })
   name: string;
@@ -28,7 +27,11 @@ export class Item {
   @Column()
   serialNumber: string;
   @Column()
-  buttonType: string;
+  @ApiProperty({description: 'P for Primary, S for Secondary' })
+  buttonType: ButtonGroup;
+  @Column()
+  @ApiProperty({ description: 'Button label such as Export, Print, etc.' })
+  buttonLabel: string
   @Column()
   navigationTo: string;
   @Column()
@@ -47,4 +50,8 @@ export class Item {
   createdBy?: string;
   @Column({ nullable: true })
   updatedBy?: string;
+}
+export enum ButtonGroup {
+  PRIMARY = 'P',
+  SECONDARY = 'S',
 }

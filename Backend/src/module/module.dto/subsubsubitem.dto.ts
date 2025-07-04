@@ -17,16 +17,29 @@ export class CreateSubSubSubItemDto {
   @IsString()
   @IsNotEmpty()
   tier: string;
+  @ApiProperty({ description: 'layout/Placement of the SubItem' })
+  @IsString()
+  layout: string;
   @ApiProperty({ description: 'SerialNumber of the SubSubSubItem' })
   @IsString()
   serialNumber: string;
   @ApiProperty({
-    description: 'Template ID associated with the item',
-    example: 'uuid-template-123',
+    description: 'Template ID of the SubSubSubItem',
+    required: false,
+    nullable: true,
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  templateId: string;
+  templateId?: string | null;
+
+  @ApiProperty({
+    description: 'Template of text box of the SubSubSubItem',
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsString()
+  templateText?: string | null;
 
   @ApiPropertyOptional({
     description: 'ID of the parent SubSubItem',
@@ -40,11 +53,12 @@ export class SubSubSubItemDto {
   id: string;
   name: string;
   tier: string;
-  templateId: string;
+  templateText?: string | null;
   userId: string;
   subSubItemId?: string;
   subSubItem?: SubSubItemDto | null;
   serialNumber: string;
+  layout: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy?: string;

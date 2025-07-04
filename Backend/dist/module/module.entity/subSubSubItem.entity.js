@@ -18,9 +18,11 @@ let SubSubSubItem = class SubSubSubItem {
     name;
     subSubItemId;
     tier;
+    layout;
     serialNumber;
     subSubItem;
     templateId;
+    templateText;
     fields;
     userId;
     createdAt;
@@ -48,6 +50,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
+], SubSubSubItem.prototype, "layout", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
 ], SubSubSubItem.prototype, "serialNumber", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => subsubitem_entity_1.SubSubItem, (subSubItem) => subSubItem.subSubSubItems, {
@@ -56,9 +62,13 @@ __decorate([
     __metadata("design:type", subsubitem_entity_1.SubSubItem)
 ], SubSubSubItem.prototype, "subSubItem", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "templateId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubSubItem.prototype, "templateText", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subSubSubItem),
     __metadata("design:type", Array)

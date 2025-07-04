@@ -11,13 +11,15 @@ export class Field {
   @Column()
   serialNumber:string;
   @Column()
+  description:string;
+  @Column()
+  fieldGroupCode:string;
+  @Column()
   @ApiProperty({ description: 'Name of the field' })
   name: string;
-
   @Column()
   @ApiProperty({ description: 'SubSubSubItem ID' })
   subSubSubItemId: string;
-
   @ManyToOne(() => SubSubSubItem, (subSubSubItem) => subSubSubItem.fields)
   subSubSubItem: SubSubSubItem;
   @Column()

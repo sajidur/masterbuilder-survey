@@ -21,7 +21,6 @@ export class Menu {
   id: string;
   @Column()
   title: string;
-
   @Column()
   appId: string;
   @ManyToOne(() => App, (app) => app.menus)

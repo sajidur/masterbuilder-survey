@@ -19,7 +19,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class App {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
   @Column()
   @ApiProperty({ description: 'Name of the app' })
   name: string;
@@ -32,7 +31,6 @@ export class App {
   moduleId: string;
   @ManyToOne(() => Modules, (module) => module.apps)
   module: Modules;
-
   @OneToMany(() => Menu, (menu) => menu.app)
   menus: Menu[];
   @Column()
