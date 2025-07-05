@@ -9,7 +9,7 @@ import {
   addSubitem,
   updateSubitem,
   getAllSubitems,
-  getAllTemplates,
+  // getAllTemplates,
   deleteSubItem,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
@@ -63,7 +63,7 @@ const SubItemManager: React.FC = () => {
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [items, setItems] = useState<Item[]>([]);
   const [subItems, setSubItems] = useState<SubItem[]>([]);
-  const [templates, setTemplates] = useState<Template[]>([]);
+  // const [templates, setTemplates] = useState<Template[]>([]);
 
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
@@ -71,12 +71,14 @@ const SubItemManager: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [subItemName, setSubItemName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState<string>("");
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
+  // const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
   const [serialNumber, setSerialNumber] = useState("");
   const [buttonType, setButtonType] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
   const [description, setDescription] = useState("");
   const [editSubItemId, setEditSubItemId] = useState<string | null>(null);
+  const [buttonLabel, setButtonLabel] = useState("");
+  const [layout, setLayout] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,14 +89,14 @@ const SubItemManager: React.FC = () => {
           menusData,
           itemsData,
           subItemsData,
-          templatesData,
+          // templatesData,
         ] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
           getAllItems(),
           getAllSubitems(),
-          getAllTemplates(),
+          // getAllTemplates(),
         ]);
 
         setModules(modulesData);
@@ -102,7 +104,7 @@ const SubItemManager: React.FC = () => {
         setMenus(menusData);
         setItems(itemsData);
         setSubItems(subItemsData);
-        setTemplates(templatesData);
+        // setTemplates(templatesData);
       } catch (error) {
         toast.error("Failed to load data.");
         console.error("Fetch error:", error);
@@ -118,10 +120,10 @@ const SubItemManager: React.FC = () => {
       return;
     }
 
-    if (!selectedTemplateId) {
-      toast.warn("Please select a template.");
-      return;
-    }
+    // if (!selectedTemplateId) {
+    //   toast.warn("Please select a template.");
+    //   return;
+    // }
 
     const trimmedName = subItemName.trim();
     if (!trimmedName) {
@@ -139,11 +141,13 @@ const SubItemManager: React.FC = () => {
       name: trimmedName,
       itemId: itemObj.id,
       tier: selectedTier,
-      templateId: selectedTemplateId,
+      templateId: null,
       serialNumber,
       buttonType,
       navigationTo,
       description,
+      buttonLabel,
+      layout,
     };
 
     try {
@@ -159,12 +163,14 @@ const SubItemManager: React.FC = () => {
       // Reset form
       setSubItemName("");
       setSelectedTier("");
-      setSelectedTemplateId("");
+      // setSelectedTemplateId("");
       setSerialNumber("");
       setButtonType("");
       setNavigationTo("");
       setDescription("");
       setEditSubItemId(null);
+      setButtonLabel("");
+      setLayout("");
 
       const updated = await getAllSubitems();
       setSubItems(updated);
@@ -175,39 +181,26 @@ const SubItemManager: React.FC = () => {
   };
 
   const handleDeleteSubItem = async (id: string) => {
-  try {
-    await deleteSubItem(id);
-    toast.success("SubItem deleted successfully!");
-    window.location.reload()
-  } catch (error) {
-    toast.error("Failed to delete SubItem.");
-  }
-};
+    try {
+      await deleteSubItem(id);
+      toast.success("SubItem deleted successfully!");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Failed to delete SubItem.");
+    }
+  };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2">
-        <span className="text-purple-600 text-2xl">📦</span> SubItem Manager
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
-        {/* Serial Number */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Serial Number
-          </label>
-          <input
-            type="text"
-            value={serialNumber}
-            onChange={(e) => setSerialNumber(e.target.value)}
-            placeholder="Enter serial number"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
+    <div className="px-4">
+      {/* Top Filter Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pb-6">
+        <h2 className="font-liight text-gray-800 flex items-center gap-2">
+          <span className="text-blue-600 ">📦</span> SubItem Manager
+        </h2>
 
         {/* Module */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
+        <div className="flex">
+          <label className="block mt-2 mr-2 font-medium text-gray-700">
             Module
           </label>
           <select
@@ -230,8 +223,8 @@ const SubItemManager: React.FC = () => {
         </div>
 
         {/* App */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
+        <div className="flex">
+          <label className="block mt-2 mr-2 font-medium text-gray-700">
             App
           </label>
           <select
@@ -255,8 +248,8 @@ const SubItemManager: React.FC = () => {
         </div>
 
         {/* Menu */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
+        <div className="flex">
+          <label className="block mt-2 mr-2 font-medium text-gray-700">
             Menu
           </label>
           <select
@@ -279,8 +272,8 @@ const SubItemManager: React.FC = () => {
         </div>
 
         {/* Item */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
+        <div className="flex">
+          <label className="block mt-2 mr-2 font-medium text-gray-700">
             Item
           </label>
           <select
@@ -298,6 +291,22 @@ const SubItemManager: React.FC = () => {
               ))}
           </select>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+        {/* Serial Number */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Serial Number
+          </label>
+          <input
+            type="text"
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
+            placeholder="Enter serial number"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
 
         {/* SubItem Name */}
         <div>
@@ -314,7 +323,7 @@ const SubItemManager: React.FC = () => {
         </div>
 
         {/* Template */}
-        <div>
+        {/* <div>
           <label className="block mb-1 font-medium">Template</label>
           <select
             value={selectedTemplateId}
@@ -328,7 +337,7 @@ const SubItemManager: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* Tier */}
         <div>
@@ -347,6 +356,34 @@ const SubItemManager: React.FC = () => {
           </select>
         </div>
 
+        {/* Layout */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Layout
+          </label>
+          <input
+            type="text"
+            value={layout}
+            onChange={(e) => setLayout(e.target.value)}
+            placeholder="Enter layout info"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+
+        {/* Description */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Description
+          </label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter description"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -363,6 +400,20 @@ const SubItemManager: React.FC = () => {
           </select>
         </div>
 
+        {/* Button Label */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Name
+          </label>
+          <input
+            type="text"
+            value={buttonLabel}
+            onChange={(e) => setButtonLabel(e.target.value)}
+            placeholder="Enter button label"
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+
         {/* Navigate To */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -373,20 +424,6 @@ const SubItemManager: React.FC = () => {
             value={navigationTo}
             onChange={(e) => setNavigationTo(e.target.value)}
             placeholder="Enter route or URL"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Description
-          </label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter description"
             className="w-full px-3 py-2 border rounded"
           />
         </div>
@@ -406,7 +443,7 @@ const SubItemManager: React.FC = () => {
               setEditSubItemId(null);
               setSubItemName("");
               setSelectedTier("");
-              setSelectedTemplateId("");
+              // setSelectedTemplateId("");
               setSerialNumber("");
               setButtonType("");
               setNavigationTo("");
@@ -428,37 +465,58 @@ const SubItemManager: React.FC = () => {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 text-left">SI</th>
-
                 <th className="p-2 text-left">Module</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">Item</th>
+                <th className="p-2 text-left">SI</th>
+
                 <th className="p-2 text-left">SubItem</th>
-                <th className="p-2 text-left">Template</th>
-                <th className="p-2 text-left">Tier</th>
-                <th className="p-2 text-left">Button Type</th>
-                <th className="p-2 text-left">Navigate To</th>
+                <th className="p-2 text-left">Layout</th>
                 <th className="p-2 text-left">Description</th>
+                <th className="p-2 text-left">Tier</th>
+                <th className="p-2 text-left">P/S Button Name</th>
+
+                {/* <th className="p-2 text-left">Button Type</th> */}
+                <th className="p-2 text-left">Navigate To</th>
+
+
                 <th className="p-2 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
-                  <td className="p-2">{s.serialNumber}</td>
                   <td className="p-2">
                     {s.item?.menu?.app?.Module?.name || "—"}
                   </td>
                   <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
                   <td className="p-2">{s.item?.menu?.title || "—"}</td>
                   <td className="p-2">{s.item?.name || "—"}</td>
+                  <td className="p-2">{s.serialNumber}</td>
+
                   <td className="p-2">{s.name}</td>
-                  <td className="p-2">{s.template?.name || "—"}</td>
-                  <td className="p-2">{s.tier}</td>
-                  <td className="p-2">{s.buttonType}</td>
-                  <td className="p-2">{s.navigationTo}</td>
+                  <td className="p-2">{s.layout || "—"}</td>
                   <td className="p-2">{s.description}</td>
+
+                  <td className="p-2">{s.tier}</td>
+
+                                    <td className="p-2">
+                    {s.buttonType === "Primary Button"
+                      ? `P-Button[${s.buttonLabel || ""}]`
+                      : s.buttonType === "Second Button"
+                      ? `S-Button[${s.buttonLabel || ""}]`
+                      : ""}
+                  </td>
+
+                  {/* <td className="p-2">{s.buttonLabel || "—"}</td>
+
+                  <td className="p-2">{s.buttonType}</td> */}
+                  <td className="p-2">{s.navigationTo}</td>
+
+
+
+
 
                   <td className="px-4 py-3 flex gap-3">
                     <button
@@ -471,18 +529,23 @@ const SubItemManager: React.FC = () => {
                         setSelectedApp(s.item?.menu?.app?.id || "");
                         setSelectedMenu(s.item?.menu?.id || "");
                         setSelectedItem(s.item?.id || "");
-                        setSelectedTemplateId(s.template?.id || "");
+                        // setSelectedTemplateId(s.template?.id || "");
                         setSelectedTier(s.tier || "");
                         setSerialNumber(s.serialNumber || "");
                         setButtonType(s.buttonType || "");
                         setNavigationTo(s.navigationTo || "");
                         setDescription(s.description || "");
+                        setButtonLabel(s.buttonLabel || "");
+                        setLayout(s.layout || "");
                       }}
                       className="text-blue-600 hover:text-blue-800"
                     >
                       <FaEdit />
                     </button>
-                    <button onClick={()=> handleDeleteSubItem(s?.id)} className="text-red-600 hover:text-red-800">
+                    <button
+                      onClick={() => handleDeleteSubItem(s?.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
                       <FaTrash />
                     </button>
                   </td>

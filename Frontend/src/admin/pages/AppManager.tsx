@@ -107,45 +107,28 @@ const AppManager: React.FC = () => {
   };
 
   const handleDeleteApp = async (id: string) => {
-  try {
-    await deleteApp(id);
-    toast.success("App deleted successfully!");
-    window.location.reload()
-  } catch (error) {
-    toast.error("Failed to delete app.");
-  }
-};
+    try {
+      await deleteApp(id);
+      toast.success("App deleted successfully!");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Failed to delete app.");
+    }
+  };
 
   return (
-    <div className=" p-4">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
-        <span className="text-blue-600 text-2xl">📋</span> Survey App Management
-      </h2>
-
+    <div className="px-4">
       {/* Add App Form */}
-      <div className="bg-white shadow-md rounded-xl p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">
-          Add New App
-        </h3>
+      <div className="rounded-xl px-6">
+        {/* Top Layout: Module Dropdown */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-6">
+          {/* Header */}
+          <h2 className="font-light text-gray-800 flex items-center gap-2">
+            <span className="text-blue-600 ">📱</span> App Management
+          </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Serial Number */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Serial Number
-            </label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter serial number"
-              value={serialNumber}
-              onChange={(e) => setSerialNumber(e.target.value)}
-            />
-          </div>
-
-          {/* Module Dropdown */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">
+          <div className="flex">
+            <label className="block mt-2 mr-2 font-medium text-gray-700">
               Module
             </label>
             <select
@@ -161,8 +144,25 @@ const AppManager: React.FC = () => {
               ))}
             </select>
           </div>
+        </div>
 
-          {/* App Name Input */}
+        {/* App Form Fields */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Serial Number
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
+          </div>
+
+          {/* App Name */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
               App Name
@@ -194,8 +194,8 @@ const AppManager: React.FC = () => {
           </div>
         </div>
 
-        {/* Add Button */}
-        <div className="mt-6 flex items-center gap-4">
+        {/* Buttons */}
+        <div className="my-4 flex items-center gap-4">
           <button
             onClick={handleAddApp}
             className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
@@ -221,8 +221,6 @@ const AppManager: React.FC = () => {
 
       {/* App List */}
       <div className="bg-white shadow-md rounded-xl p-6">
-        <h3 className="text-xl font-semibold text-gray-700 mb-4">Apps List</h3>
-
         {apps.length === 0 ? (
           <p className="text-gray-600">No apps available.</p>
         ) : (
@@ -230,8 +228,9 @@ const AppManager: React.FC = () => {
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module</th>
+                  <th className="px-4 py-3 text-left">SI</th>
+
                   <th className="px-4 py-3 text-left">App</th>
                   <th className="px-4 py-3 text-left">Tier</th>
                   <th className="px-4 py-3 text-left">Actions</th>
@@ -244,13 +243,12 @@ const AppManager: React.FC = () => {
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
                     <td className="px-4 py-3 text-gray-800">
-                      {app.serialNumber}
-                    </td>
-
-                    <td className="px-4 py-3 text-gray-800">
                       {/* {app.Module.serialNumber} -  */}
                       {app.Module?.name || "—"}
                       {/* - {app.Module.tier} */}
+                    </td>
+                    <td className="px-4 py-3 text-gray-800">
+                      {app.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{app.name}</td>
                     <td className="px-4 py-3 text-gray-800">{app.tier}</td>
@@ -264,7 +262,10 @@ const AppManager: React.FC = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button onClick={()=> handleDeleteApp(app?.id)} className="text-red-600 hover:text-red-800">
+                      <button
+                        onClick={() => handleDeleteApp(app?.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
                         <FaTrash />
                       </button>
                     </td>

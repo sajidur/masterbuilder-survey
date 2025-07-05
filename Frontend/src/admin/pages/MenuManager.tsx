@@ -118,47 +118,28 @@ const MenuManager: React.FC = () => {
     }
   };
 
-
   const handleDeleteMenu = async (id: string) => {
-  try {
-    await deleteMenu(id);
-    toast.success("Menu deleted successfully!");
-    window.location.reload()
-  } catch (error) {
-    toast.error("Failed to delete menu.");
-  }
-};
+    try {
+      await deleteMenu(id);
+      toast.success("Menu deleted successfully!");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Failed to delete menu.");
+    }
+  };
 
   return (
-    <div className=" p-4">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
-        <span className="text-green-600 text-2xl">📁</span> Menu Management
-      </h2>
-
+    <div className=" px-4">
       {/* Add Menu Form */}
-      <div className="bg-white shadow-md rounded-xl p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">
-          Add New Menu
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
-          {/* Serial Number */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Serial Number
-            </label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter serial number"
-              value={serialNumber}
-              onChange={(e) => setSerialNumber(e.target.value)}
-            />
-          </div>
-
+      <div className="rounded-xl px-6">
+        {/* Top Row: Module and App Dropdowns */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-3">
+          <h2 className="font-semibold text-gray-800 flex items-center gap-2">
+            <span className="text-green-600 text-2xl">📁</span> Menu Management
+          </h2>
           {/* Module Dropdown */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">
+          <div className="flex">
+            <label className="block mt-2 mr-2 font-medium text-gray-700">
               Module
             </label>
             <select
@@ -176,8 +157,10 @@ const MenuManager: React.FC = () => {
           </div>
 
           {/* App Dropdown */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">App</label>
+          <div className="flex">
+            <label className="block mt-2 mr-2 font-medium text-gray-700">
+              App
+            </label>
             <select
               value={selectedApp}
               onChange={(e) => setSelectedApp(e.target.value)}
@@ -192,6 +175,23 @@ const MenuManager: React.FC = () => {
                   </option>
                 ))}
             </select>
+          </div>
+        </div>
+
+        {/* Grid Form Row: Serial Number, Menu Name, Tier */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Serial Number
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter serial number"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+            />
           </div>
 
           {/* Menu Name */}
@@ -226,8 +226,8 @@ const MenuManager: React.FC = () => {
           </div>
         </div>
 
-        {/* Add Button */}
-        <div className="mt-6 flex items-center gap-4">
+        {/* Add / Cancel Buttons */}
+        <div className="my-4 flex items-center gap-4">
           <button
             onClick={handleAddMenu}
             className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
@@ -250,13 +250,10 @@ const MenuManager: React.FC = () => {
             </button>
           )}
         </div>
-
       </div>
 
       {/* Menu List */}
       <div className="bg-white shadow-md rounded-xl p-6">
-        <h3 className="text-xl font-semibold text-gray-700 mb-4">Menu List</h3>
-
         {menus.length === 0 ? (
           <p className="text-gray-600">No menus available.</p>
         ) : (
@@ -264,13 +261,13 @@ const MenuManager: React.FC = () => {
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module</th>
                   <th className="px-4 py-3 text-left">App</th>
+                  <th className="px-4 py-3 text-left">SI</th>
+
                   <th className="px-4 py-3 text-left">Menu</th>
                   <th className="px-4 py-3 text-left">Tier</th>
                   <th className="px-4 py-3 text-left">Actions</th>
-
                 </tr>
               </thead>
               <tbody>
@@ -280,13 +277,13 @@ const MenuManager: React.FC = () => {
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
                     <td className="px-4 py-3 text-gray-800">
-                      {menu.serialNumber}
-                    </td>
-                    <td className="px-4 py-3 text-gray-800">
                       {menu.app.Module?.name || "—"}
                     </td>
                     <td className="px-4 py-3 text-gray-800">
                       {menu.app?.name || "—"}
+                    </td>
+                    <td className="px-4 py-3 text-gray-800">
+                      {menu.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{menu.title}</td>
                     <td className="px-4 py-3 text-gray-800">{menu.tier}</td>
@@ -309,12 +306,13 @@ const MenuManager: React.FC = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button onClick={()=> handleDeleteMenu(menu?.id)} className="text-red-600 hover:text-red-800">
+                      <button
+                        onClick={() => handleDeleteMenu(menu?.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
                         <FaTrash />
                       </button>
                     </td>
-
-
                   </tr>
                 ))}
               </tbody>

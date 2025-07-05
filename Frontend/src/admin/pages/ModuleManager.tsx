@@ -95,17 +95,15 @@ const ModuleManager: React.FC = () => {
 
 
   return (
-    <div className=" p-4">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
-        <span className="text-blue-600 text-2xl">📋</span> Survey Module
+    <div className=" px-4">
+      <h2 className=" font-light mb-6 text-gray-800 flex items-center gap-2">
+        <span className="text-blue-600 ">📋</span> Survey Module
         Management
       </h2>
 
       {/* Add Module Form Card */}
-      <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">
-          Add New Module
-        </h3>
+      <div className=" rounded-xl px-4">
+
 
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
 
@@ -154,7 +152,7 @@ const ModuleManager: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mb-4">
           <button
             onClick={handleAddModule}
             className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow"
@@ -181,9 +179,7 @@ const ModuleManager: React.FC = () => {
 
       {/* Module List */}
       <div className="bg-white shadow-md rounded-xl p-6">
-        <h3 className="text-xl font-semibold text-gray-700 mb-4">
-          Available Modules
-        </h3>
+
         {modules.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">

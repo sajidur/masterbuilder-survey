@@ -60,16 +60,16 @@ function AppContent() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="module-manager" element={<ModuleManager />} />
-            <Route path="app-manager" element={<AppManager />} />
-            <Route path="menu-manager" element={<MenuManager />} />
-            <Route path="item-manager" element={<ItemManager />} />
-            <Route path="sub-item-manager" element={<SubItemManager />} />
-            <Route path="sub-sub-item-manager" element={<SubSubItemManager />} />
-            <Route path="sub-sub-sub-item-manager" element={<SubSubSubItemManager />} />
-            <Route path="field-manager" element={<FieldManager />} />
+            <Route path="module" element={<ModuleManager />} />
+            <Route path="app" element={<AppManager />} />
+            <Route path="menu" element={<MenuManager />} />
+            <Route path="item" element={<ItemManager />} />
+            <Route path="sub-item" element={<SubItemManager />} />
+            <Route path="sub-sub-item" element={<SubSubItemManager />} />
+            <Route path="sub-sub-sub-item" element={<SubSubSubItemManager />} />
+            <Route path="field" element={<FieldManager />} />
             <Route path="template-configuration" element={<TemplateConfiguration />} />
-            <Route path="question-manager" element={<SurveyBuilder />} />
+            <Route path="question" element={<SurveyBuilder />} />
             <Route path="document-upload" element={<DocumentUploader />} />
             <Route path="document-details" element={<DocumentDetails />} />
             <Route path="reports" element={<ReportsPage />} />

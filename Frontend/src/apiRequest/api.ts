@@ -130,7 +130,7 @@ export const deleteMenu = async (id: string) => {
 
 
 // Add Item
-export const addItem = async (data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {
+export const addItem = async (data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, buttonLabel: string; navigationTo: string, description: string }) => {
   try {
     const response = await apiClient.post('/survey-module/addItem', data);
     return response.data;
@@ -142,7 +142,7 @@ export const addItem = async (data: { name: string; menuId: string, tier: string
 // Update Item
 export const updateItem = async (
   id: string,
-  data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }
+  data: { name: string; menuId: string, tier: string, serialNumber: string, buttonType:string, buttonLabel: string; navigationTo: string, description: string }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateItem/${id}`, data);
@@ -166,7 +166,7 @@ export const deleteItem = async (id: string) => {
 
 
 // Add Subitem
-export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }) => {
+export const addSubitem = async (data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string; buttonLabel: string; layout: string}) => {
   try {
     const response = await apiClient.post('/survey-module/addSubitems', data);
     return response.data;
@@ -178,7 +178,7 @@ export const addSubitem = async (data: { name: string; itemId: string, tier: str
 // Update Subitem
 export const updateSubitem = async (
   id: string,
-  data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string }
+  data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string,buttonLabel: string; layout: string }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateSubitems/${id}`, data);
@@ -202,7 +202,17 @@ export const deleteSubItem = async (id: string) => {
 
 
 // Add Sub-Subitem
-export const addSubSubitem = async (data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }) => {
+export const addSubSubitem = async (data: {
+  name: string;
+  subItemId: string;
+  tier: string;
+  templateId: string | null;
+  serialNumber: string;
+  layout: string;
+  buttonType: string;
+  buttonLabel: string;
+  navigationTo: string;
+}) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubItem', data);
     return response.data;
@@ -211,10 +221,21 @@ export const addSubSubitem = async (data: { name: string; subItemId: string, tie
     throw error;
   }
 };
+
 // Update subSubitem
 export const updateSubSubitem = async (
   id: string,
-  data: { name: string; subItemId: string, tier: string, templateId: string, serialNumber: string }
+  data: {
+    name: string;
+    subItemId: string;
+    tier: string;
+    templateId: string | null;
+    serialNumber: string;
+    layout: string;
+    buttonType: string;
+    buttonLabel: string;
+    navigationTo: string;
+  }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateSubSubItem/${id}`, data);
@@ -224,6 +245,7 @@ export const updateSubSubitem = async (
     throw error;
   }
 };
+
 //delete subsubitem
 export const deleteSubSubItem = async (id: string) => {
   try {
@@ -237,29 +259,50 @@ export const deleteSubSubItem = async (id: string) => {
 
 
 
-// Add SubsubSubitem
-export const addSubSubSubitem = async (data: { name: string; subSubItemId: string, tier: string, templateId: string, serialNumber: string }) => {
+export const addSubSubSubitem = async (data: {
+  name: string;
+  subSubItemId: string;
+  tier: string;
+  serialNumber: string;
+}) => {
   try {
-    const response = await apiClient.post('/survey-module/addSubSubSubItem', data);
+    const response = await apiClient.post('/survey-module/addSubSubSubItem', {
+      ...data,
+      layout: null,
+      templateId: null,
+      templateText: null,
+    });
     return response.data;
   } catch (error) {
-    console.error('Error adding sub-subitem:', error);
+    console.error('Error adding sub-sub-subitem:', error);
     throw error;
   }
 };
+
 // Update SubSubSubitem
 export const updateSubSubSubitem = async (
   id: string,
-  data: { name: string; subSubItemId: string, tier: string, templateId: string, serialNumber: string }
+  data: {
+    name: string;
+    subSubItemId: string;
+    tier: string;
+    serialNumber: string;
+  }
 ) => {
   try {
-    const response = await apiClient.put(`/survey-module/updateSubSubSubItem/${id}`, data);
+    const response = await apiClient.put(`/survey-module/updateSubSubSubItem/${id}`, {
+      ...data,
+      layout: null,
+      templateId: null,
+      templateText: null,
+    });
     return response.data;
   } catch (error) {
-    console.error('Error updating subsubsub:', error);
+    console.error('Error updating sub-sub-subitem:', error);
     throw error;
   }
 };
+
 //delete subsubsub
 export const deleteSubSubSubItem = async (id: string) => {
   try {
@@ -280,7 +323,9 @@ export const addField = async (data: {
   fieldType: string;
   isRequired: boolean;
   subSubSubItemId: string;
-  serialNumber: string
+  serialNumber: string;
+  fieldGroupCode: string;
+  tier: string;
 }) => {
   try {
     const response = await apiClient.post('/survey-module/addField', data);
@@ -290,26 +335,30 @@ export const addField = async (data: {
     throw error;
   }
 };
+
 // Update Field
 export const updateField = async (
   id: string,
-  data: { 
+  data: {
     name: string;
     displayType: string;
     fieldType: string;
     isRequired: boolean;
     subSubSubItemId: string;
-    serialNumber: string
+    serialNumber: string;
+    fieldGroupCode: string;
+    tier: string;
   }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateField/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error('Error updating Field:', error);
+    console.error('Error updating field:', error);
     throw error;
   }
 };
+
 // delete field
 export const deleteField = async (id: string) => {
   try {
