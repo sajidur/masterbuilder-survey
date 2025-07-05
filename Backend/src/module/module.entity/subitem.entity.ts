@@ -12,7 +12,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Item } from './item.entity';
+import { ButtonGroup, Item } from './item.entity';
 import { Field } from './field.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { SubSubItem } from './subsubitem.entity';
@@ -38,7 +38,11 @@ export class SubItem {
   @Column()
   serialNumber: string;
   @Column()
-  buttonType: string;
+  @ApiProperty({description: 'P for Primary, S for Secondary' })
+  buttonType: ButtonGroup;
+  @Column()
+  @ApiProperty({ description: 'Button label such as Export, Print, etc.' })
+  buttonLabel: string
   @Column()
   layout: string;
   @Column({ nullable: true })

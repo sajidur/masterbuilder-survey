@@ -235,6 +235,7 @@ if (subSubItem.templateId) {
         serialNumber: subItem.serialNumber,
         buttonType: subItem.buttonType,
         layout:subItem.layout,
+        buttonLabel:subItem.buttonLabel,
         navigationTo: subItem.navigationTo,
         description: subItem.description,
         itemId: subItem.itemId,
@@ -594,6 +595,7 @@ if (subItem.templateId) {
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
+      buttonLabel:subItem.buttonLabel,
       layout:subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
@@ -756,6 +758,7 @@ if (subItem.templateId) {
     newSubItem.tier = subItem.tier;
     newSubItem.serialNumber=subItem.serialNumber;
     newSubItem.buttonType=subItem.buttonType;
+    newSubItem.buttonLabel=subItem.buttonLabel;
     newSubItem.navigationTo=subItem.navigationTo;
     newSubItem.layout=subItem.layout;
     newSubItem.description=subItem.description;
@@ -836,6 +839,7 @@ if (subItem.templateId) {
     existing.templateText=updated.templateText??existing.templateText;
     existing.serialNumber=updated.serialNumber;
     existing.buttonType=updated.buttonType;
+    existing.buttonLabel=updated.buttonLabel;
     existing.navigationTo=updated.navigationTo;
     existing.description=updated.description;
     existing.layout=updated.layout;
@@ -932,6 +936,7 @@ if (subItem.templateId) {
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
+      buttonLabel:subItem.buttonLabel,
       layout:subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
