@@ -179,7 +179,7 @@ const ItemManager: React.FC = () => {
       {/* Top Row: Module, App, Menu */}
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📁</span> Item Manager
+          <span className="text-blue-600 ">📁</span> Item
         </h2>
         {/* Module */}
         <div className="flex">
