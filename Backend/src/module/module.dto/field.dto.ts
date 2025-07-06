@@ -7,7 +7,8 @@ export class FieldDto {
   serialNumber: string;
   name: string;
   displayType: string;
-  fieldType: string;
+  dataType: string;
+  tier:string;
   description: string;
   fieldGroupCode: string;
   isRequired: boolean;
@@ -24,10 +25,10 @@ export class CreateFieldDto {
   @IsString()
   @IsNotEmpty()
   serialNumber: string;
-  @ApiProperty({ description: 'Description of the field' })
-  @IsString()
-  @IsNotEmpty()
-  description: string;
+  // @ApiProperty({ description: 'Description of the field' })
+  // @IsString()
+  // @IsNotEmpty()
+  // description: string;
   @ApiProperty({ description: 'Serial Number of the field' })
   @IsString()
   @IsNotEmpty()
@@ -36,10 +37,14 @@ export class CreateFieldDto {
   @IsString()
   @IsNotEmpty()
   displayType: string;
-  @ApiProperty({ description: 'Field Type of the field' })
+   @ApiProperty({ description: 'Tier of the field' })
   @IsString()
   @IsNotEmpty()
-  fieldType: string;
+  tier: string;
+  @ApiProperty({ description: 'Data Type of the field' })
+  @IsString()
+  @IsNotEmpty()
+  dataType: string;
   @ApiProperty({ description: 'Is the field required' })
   @IsBoolean()
   isRequired: boolean;

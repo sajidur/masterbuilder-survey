@@ -268,7 +268,7 @@ export const addSubSubSubitem = async (data: {
   try {
     const response = await apiClient.post('/survey-module/addSubSubSubItem', {
       ...data,
-      layout: null,
+      layout: "default",
       templateId: null,
       templateText: null,
     });
@@ -292,7 +292,7 @@ export const updateSubSubSubitem = async (
   try {
     const response = await apiClient.put(`/survey-module/updateSubSubSubItem/${id}`, {
       ...data,
-      layout: null,
+      layout: "default",
       templateId: null,
       templateText: null,
     });
@@ -320,12 +320,13 @@ export const deleteSubSubSubItem = async (id: string) => {
 export const addField = async (data: {
   name: string;
   displayType: string;
-  fieldType: string;
+  dataType: string;
   isRequired: boolean;
   subSubSubItemId: string;
   serialNumber: string;
   fieldGroupCode: string;
   tier: string;
+  
 }) => {
   try {
     const response = await apiClient.post('/survey-module/addField', data);
@@ -342,7 +343,7 @@ export const updateField = async (
   data: {
     name: string;
     displayType: string;
-    fieldType: string;
+    dataType: string;
     isRequired: boolean;
     subSubSubItemId: string;
     serialNumber: string;

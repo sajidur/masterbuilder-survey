@@ -60,6 +60,7 @@ subsubitem:
   "serialNumber": "SUBSUBITEM-001",
   "templateId": "TEMPLATE-001",
   "subItemId": "SUBITEM-001"
+  
 }
 SubSubSubItem:
 {

@@ -36,7 +36,7 @@ export class CreateSubItemDto {
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()
   serialNumber: string;
-@ApiProperty({ description: 'P for Primary, S for Secondary of the subItem' })
+ @ApiProperty({ description: 'P for Primary, S for Secondary of the subItem' })
   @IsString()
   buttonType: ButtonGroup;
   @ApiProperty({ description: 'Button label such as Export, Print, etc.' })

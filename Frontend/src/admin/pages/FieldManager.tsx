@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,7 +56,7 @@ interface Field {
   id?: string;
   name: string;
   displayType: string;
-  fieldType: string;
+  dataType: string;
   isRequired: boolean;
   subSubSubItem: SubSubSubItem;
   serialNumber?: string;
@@ -154,7 +155,7 @@ const FieldManager: React.FC = () => {
     const payload = {
       name: fieldName.trim(),
       displayType: selectedDisplayType,
-      fieldType: selectedFieldType,
+      dataType: selectedFieldType,
       isRequired,
       subSubSubItemId: subSubSubObj.id,
       serialNumber,
@@ -503,7 +504,7 @@ const FieldManager: React.FC = () => {
 
                 <td className="p-2">{f.displayType}</td>
                 <td className="p-2">{f.name}</td>
-                <td className="p-2">{f.fieldType}</td>
+                <td className="p-2">{f.dataType}</td>
                 <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
 
                 <td className="px-4 py-3 flex gap-3">
@@ -512,7 +513,7 @@ const FieldManager: React.FC = () => {
                       setEditFieldId(f.id || "");
                       setFieldName(f.name);
                       setSelectedDisplayType(f.displayType);
-                      setSelectedFieldType(f.fieldType);
+                      setSelectedFieldType(f.dataType);
                       setIsRequired(f.isRequired);
                       setSerialNumber(f.serialNumber || "");
 

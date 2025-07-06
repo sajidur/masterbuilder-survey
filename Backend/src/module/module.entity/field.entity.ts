@@ -14,6 +14,8 @@ export class Field {
   description:string;
   @Column()
   fieldGroupCode:string;
+   @Column()
+  tier:string;
   @Column()
   @ApiProperty({ description: 'Name of the field' })
   name: string;
@@ -35,7 +37,7 @@ export class Field {
   @Column()
   displayType:string;
     @Column()
-  fieldType:string;
+  dataType:string;
     @Column()
   isRequired:boolean;
     

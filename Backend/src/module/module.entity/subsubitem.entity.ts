@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { SubItem } from './subitem.entity';
 import { Field } from './field.entity';
+import { ButtonGroup } from './item.entity';
 //import { DesignDefinition } from 'src/design-definition/design-defination.entity/design-definition.entity';
 //import { ApiProperty } from '@nestjs/swagger';
 //import { SubSubItemAnswer } from 'src/survey-config/survey-config.entity/subSubItemAnswer.entity';
@@ -30,8 +31,11 @@ export class SubSubItem {
   tier: string;
   @Column()
   layout: string;
+  buttonType: ButtonGroup;
   @Column()
-  editButton: string;
+  buttonLabel: string
+    @Column()
+  navigationTo: string
   @Column()
   serialNumber: string;
   @ManyToOne(() => SubItem, (subItem) => subItem.subSubItems, {

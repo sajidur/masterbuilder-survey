@@ -104,7 +104,9 @@ if (subSubItem.templateId) {
       name: subSubItem.name,
       tier: subSubItem.tier,
       layout:subSubItem.layout,
-      editButton:subSubItem.editButton,
+      buttonType:subSubItem.buttonType,
+      buttonLabel:subSubItem.buttonLabel,
+      navigationTo:subSubItem.navigationTo,
       serialNumber:subSubItem.serialNumber,
       subItemId: subSubItem?.subItemId,
       subItem: await this.toSubItemDto(subItem),
@@ -145,7 +147,9 @@ if (subSubItem.templateId) {
       tier: subSubItem.tier,
       serialNumber:subSubItem.serialNumber,
       layout:subSubItem.layout,
-      editButton:subSubItem.editButton,
+      buttonType:subSubItem.buttonType,
+      buttonLabel:subSubItem.buttonLabel,
+      navigationTo:subSubItem.navigationTo,
       subItemId: subSubItem.subItemId,
       subItem: subItemDto,
       templateText:subSubItem.templateText||null,
@@ -273,7 +277,9 @@ if (subSubItem.templateId) {
     subSubItem.updatedBy = user.username;
     subSubItem.userId = user.id;
     subSubItem.tier = data.tier;
-    subSubItem.editButton=data.editButton;
+    subSubItem.buttonType=data.buttonType;
+    subSubItem.buttonLabel=data.buttonLabel;
+    subSubItem.navigationTo=data.navigationTo;
     subSubItem.layout=data.layout;
     subSubItem.serialNumber=data.serialNumber;
     subSubItem.templateId = data.templateId ?? subSubItem.templateId;
@@ -298,7 +304,9 @@ if (subSubItem.templateId) {
     existing.updatedBy = user.username;
     existing.tier = data.tier;
     existing.serialNumber=data.serialNumber;
-    existing.editButton=data.editButton;
+    existing.buttonLabel=data.buttonLabel;
+    existing.buttonType=data.buttonType;
+    existing.navigationTo=data.navigationTo;
     existing.layout=data.layout;
     existing.templateId = data.templateId ?? existing.templateId;
     existing.templateText = data.templateText ?? existing.templateText;
@@ -371,7 +379,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       fieldGroupCode:field.fieldGroupCode,
       description:field.description,
       isRequired: field.isRequired,
-      fieldType: field.fieldType,
+      dataType: field.dataType,
+      tier:field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
@@ -448,7 +457,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       fieldGroupCode:field.fieldGroupCode,
       description:field.description,
       isRequired: field.isRequired,
-      fieldType: field.fieldType,
+      dataType: field.dataType,
+      tier:field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
@@ -466,9 +476,11 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     newField.userId = user.id;
     newField.serialNumber = field.serialNumber;
     newField.displayType = field.displayType;
-    newField.fieldType = field.fieldType;
+    newField.dataType = field.dataType;
+    newField.tier=field.tier;
+    //newField.description="default";
     newField.isRequired = field.isRequired;
-    newField.description=field.description;
+    newField.description="default";
     newField.fieldGroupCode=field.fieldGroupCode;
     const saved = await this.fieldRepository.save(newField);
 
@@ -486,9 +498,10 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       name: saved.name,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
-      description:field.description,
+      description:newField.description,
       fieldGroupCode:field.fieldGroupCode,
-      fieldType: field.fieldType,
+      dataType: field.dataType,
+      tier:field.tier,
       isRequired: field.isRequired,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubItem),
@@ -511,10 +524,11 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     existing.displayType = updated.displayType;
     existing.serialNumber = updated.serialNumber;
     existing.isRequired = updated.isRequired;
-    existing.fieldType = updated.fieldType;
+    existing.dataType = updated.dataType;
+    existing.tier=updated.tier;
     existing.userId = user.id;
     existing.fieldGroupCode=updated.fieldGroupCode;
-    existing.description=updated.description;
+    existing.description="default";
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -532,7 +546,8 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       isRequired: saved.isRequired,
       fieldGroupCode:saved.fieldGroupCode,
       description:saved.description,
-      fieldType: saved.fieldType,
+      dataType: saved.dataType,
+      tier:saved.tier,
       displayType: saved.displayType,
       serialNumber: saved.serialNumber,
       subSubSubItemId: saved.subSubSubItemId,

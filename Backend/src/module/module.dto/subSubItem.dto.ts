@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { SubItemDto } from './subiItem.dto';
 import { Template } from 'src/Template/entity/template';
+import { ButtonGroup } from '../module.entity/item.entity';
 
 export class SubSubItemDto {
   id: string;
@@ -11,7 +12,9 @@ export class SubSubItemDto {
   serialNumber: string;
   layout: string;
   templateText?: string | null;
-  editButton: string;
+  buttonType: ButtonGroup;
+  buttonLabel: string;
+  navigationTo:string;
   subItemId?: string;
   subItem?: SubItemDto | null;
   template?: Template | null;
@@ -27,9 +30,19 @@ export class CreateSubSubItemDto {
   @ApiProperty({ description: 'layout/Placement of the SubSubItem' })
   @IsString()
   layout: string;
-  @ApiProperty({ description: 'Edit button text of the SubSubItem' })
+  @ApiProperty({
+    description: 'P for Primary, S for Secondary of the subSubItem',
+  })
   @IsString()
-  editButton: string;
+  buttonType: ButtonGroup;
+  @ApiProperty({ description: 'Button label such as Export, Print, etc.' })
+  @IsString()
+  buttonLabel: string;
+   @ApiProperty({
+    description: 'NavigationTo of the subSubItem',
+  })
+  @IsString()
+  navigationTo: string;
   @ApiProperty({ description: 'SerialNumber of the SubSubItem' })
   @IsString()
   serialNumber: string;
