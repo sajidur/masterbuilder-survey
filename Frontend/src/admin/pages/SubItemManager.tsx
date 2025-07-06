@@ -195,7 +195,7 @@ const SubItemManager: React.FC = () => {
       {/* Top Filter Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pb-6">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📦</span> SubItem Manager
+          <span className="text-blue-600 ">📦</span> Sub Item
         </h2>
 
         {/* Module */}

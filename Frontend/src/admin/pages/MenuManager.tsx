@@ -135,7 +135,7 @@ const MenuManager: React.FC = () => {
         {/* Top Row: Module and App Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-3">
           <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-            <span className="text-green-600 text-2xl">📁</span> Menu Management
+            <span className="text-green-600 text-2xl">📁</span> Menu
           </h2>
           {/* Module Dropdown */}
           <div className="flex">

@@ -204,7 +204,7 @@ const SubSubSubItemManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 pb-3">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📱</span> SubSubSubItem Manager
+          <span className="text-blue-600 ">📱</span> Sub Sub Sub Item
         </h2>
         {[
           {
