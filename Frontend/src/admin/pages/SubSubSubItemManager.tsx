@@ -93,6 +93,7 @@ const SubSubSubItemManager: React.FC = () => {
   const [editSubSubSubItemId, setEditSubSubSubItemId] = useState<string | null>(
     null
   );
+  const [layout, setLayout] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -160,6 +161,7 @@ const SubSubSubItemManager: React.FC = () => {
       tier: selectedTier,
       // templateId: null,
       serialNumber,
+      layout,
     };
 
     try {
@@ -183,6 +185,7 @@ const SubSubSubItemManager: React.FC = () => {
       setSerialNumber("");
       setSelectedTier("");
       // setSelectedTemplateId("");
+      setLayout("");
     } catch (error) {
       toast.error("Failed to save SubSubSubItem.");
       console.error(error);
@@ -361,6 +364,18 @@ const SubSubSubItemManager: React.FC = () => {
             ))}
           </select>
         </div>
+
+        {/* Layout */}
+        <div>
+          <label className="block mb-1 font-medium">Layout</label>
+          <input
+            type="text"
+            value={layout}
+            onChange={(e) => setLayout(e.target.value)}
+            placeholder="Enter layout"
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
       </div>
 
       {/* 🔹 Buttons */}
@@ -380,6 +395,7 @@ const SubSubSubItemManager: React.FC = () => {
               setSerialNumber("");
               setSelectedTier("");
               // setSelectedTemplateId("");
+              setLayout("");
             }}
             className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
           >
@@ -400,10 +416,12 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SubSubItem</th>
-                            <th className="p-2 text-left">SI</th>
+              <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SubSubSubItem</th>
               <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">Layout</th>
+
               {/* <th className="p-2 text-left">Template</th> */}
               <th className="p-2 text-left">Action</th>
             </tr>
@@ -426,10 +444,12 @@ const SubSubSubItemManager: React.FC = () => {
                 </td>
                 <td className="p-2">{s.subSubItem?.subItem?.name || "—"}</td>
                 <td className="p-2">{s.subSubItem?.name || "—"}</td>
-                                <td className="p-2">{s.serialNumber || "—"}</td>
+                <td className="p-2">{s.serialNumber || "—"}</td>
 
                 <td className="p-2">{s.name}</td>
                 <td className="p-2">{s.tier || "—"}</td>
+                <td className="p-2">{s.layout || "—"}</td>
+
                 {/* <td className="p-2">
                   {templates.find((t) => t.id.toString() === s.templateId)
                     ?.name || "—"}
@@ -456,6 +476,7 @@ const SubSubSubItemManager: React.FC = () => {
                       setSelectedItem(s.subSubItem?.subItem?.item?.id || "");
                       setSelectedSubItem(s.subSubItem?.subItem?.id || "");
                       setSelectedSubSubItem(s.subSubItem?.id || "");
+                      setLayout(s.layout || "");
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >

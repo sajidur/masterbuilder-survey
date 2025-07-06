@@ -68,6 +68,7 @@ const columnKeys = [
   "displayType",
 ];
 
+
 const ReportsPage: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<App[]>([]);
@@ -88,7 +89,8 @@ const ReportsPage: React.FC = () => {
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [selectedField, setSelectedField] = useState("");
 
-  const [visibleColumns, setVisibleColumns] = useState<string[]>([...columnKeys]);
+  const [selectedColumn, setSelectedColumn] = useState<string>("module");
+
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -135,13 +137,10 @@ const ReportsPage: React.FC = () => {
       (!selectedField || f.name === selectedField)
   );
 
-  const toggleColumn = (column: string) => {
-    setVisibleColumns((prev) =>
-      prev.includes(column)
-        ? prev.filter((col) => col !== column)
-        : [...prev, column]
-    );
-  };
+
+
+  const visibleColumns = columnKeys.slice(columnKeys.indexOf(selectedColumn));
+
 
   const columnLabels: Record<string, string> = {
     module: "Module",
@@ -231,21 +230,24 @@ const ReportsPage: React.FC = () => {
         />
       </div>
 
-      <details className="mb-4">
-        <summary className="cursor-pointer font-medium">Show/Hide Columns</summary>
-        <div className="flex flex-wrap gap-4 mt-2">
-          {columnKeys.map((key) => (
-            <label key={key} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={visibleColumns.includes(key)}
-                onChange={() => toggleColumn(key)}
-              />
-              {columnLabels[key]}
-            </label>
-          ))}
-        </div>
-      </details>
+      <div className="mb-4">
+  <h4 className="font-medium mb-2">Select From Column:</h4>
+  <div className="flex flex-wrap gap-4">
+    {columnKeys.map((key) => (
+      <label key={key} className="flex items-center gap-2">
+        <input
+          type="radio"
+          name="columnSelector"
+          value={key}
+          checked={selectedColumn === key}
+          onChange={() => setSelectedColumn(key)}
+        />
+        {columnLabels[key]}
+      </label>
+    ))}
+  </div>
+</div>
+
         <div className="bg-white p-4 rounded shadow">
 
           {filteredFields.length === 0 ? (

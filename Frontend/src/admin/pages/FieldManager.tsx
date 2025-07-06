@@ -16,6 +16,7 @@ import {
   updateField,
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { tiers } from "./data";
 
 interface Module {
   id: string;
@@ -326,14 +327,20 @@ const FieldManager: React.FC = () => {
         {/* Tier */}
         <div>
           <label className="block mb-1 font-medium">Tier</label>
-          <input
-            type="text"
+          <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
-            placeholder="Enter tier"
-          />
+          >
+            <option value="">-- Choose Tier --</option>
+            {tiers.map((tierOption) => (
+              <option key={tierOption.value} value={tierOption.value}>
+                {tierOption.label}
+              </option>
+            ))}
+          </select>
         </div>
+
 
         {/* Display Type */}
         <div>
@@ -455,7 +462,6 @@ const FieldManager: React.FC = () => {
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              {/* <th className="p-2 text-left">SI</th> */}
               <th className="p-2 text-left">Module</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
@@ -467,16 +473,20 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">Tier</th>
 
               <th className="p-2 text-left">Display Type</th>
+
+              <th className="p-2 text-left">SI</th>
+
+
               <th className="p-2 text-left">Field Name</th>
-              <th className="p-2 text-left">Data Type</th>
               <th className="p-2 text-left">Required</th>
+                            <th className="p-2 text-left">Data Type</th>
+
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {fields.map((f) => (
               <tr key={f.id} className="border-t">
-                {/* <td className="p-2">{f.serialNumber || "—"}</td> */}
                 <td className="p-2">
                   {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app?.Module
                     ?.name || "—"}
@@ -503,9 +513,12 @@ const FieldManager: React.FC = () => {
                 <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>
+                                <td className="p-2">{f.serialNumber || "—"}</td>
+
                 <td className="p-2">{f.name}</td>
-                <td className="p-2">{f.dataType}</td>
                 <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
+                                <td className="p-2">{f.dataType}</td>
+
 
                 <td className="px-4 py-3 flex gap-3">
                   <button
@@ -543,6 +556,7 @@ const FieldManager: React.FC = () => {
 
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");
+                      
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >

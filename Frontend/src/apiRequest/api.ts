@@ -264,11 +264,11 @@ export const addSubSubSubitem = async (data: {
   subSubItemId: string;
   tier: string;
   serialNumber: string;
+  layout: string;
 }) => {
   try {
     const response = await apiClient.post('/survey-module/addSubSubSubItem', {
       ...data,
-      layout: "default",
       templateId: null,
       templateText: null,
     });
@@ -287,12 +287,12 @@ export const updateSubSubSubitem = async (
     subSubItemId: string;
     tier: string;
     serialNumber: string;
+    layout: string
   }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateSubSubSubItem/${id}`, {
       ...data,
-      layout: "default",
       templateId: null,
       templateText: null,
     });

@@ -111,6 +111,7 @@ const SubSubItemManager: React.FC = () => {
     };
 
     fetchAll();
+    console.log({ subSubItems });
   }, []);
 
   const handleAdd = async () => {
@@ -475,7 +476,7 @@ const SubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
-                            <th className="p-2 text-left">SI</th>
+              <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SubSubItem</th>
               {/* <th className="p-2 text-left">Template</th> */}
@@ -498,7 +499,7 @@ const SubSubItemManager: React.FC = () => {
                 <td className="p-2">{s.subItem?.item?.menu?.title || "—"}</td>
                 <td className="p-2">{s.subItem?.item?.name || "—"}</td>
                 <td className="p-2">{s.subItem?.name || "—"}</td>
-                                <td className="p-2">{s.serialNumber}</td>
+                <td className="p-2">{s.serialNumber}</td>
 
                 <td className="p-2">{s.name}</td>
                 {/* <td className="p-2">
