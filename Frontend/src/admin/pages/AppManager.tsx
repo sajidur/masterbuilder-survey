@@ -124,7 +124,7 @@ const AppManager: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-6">
           {/* Header */}
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 ">📱</span> App Management
+            <span className="text-blue-600 ">📱</span> App
           </h2>
 
           <div className="flex">
