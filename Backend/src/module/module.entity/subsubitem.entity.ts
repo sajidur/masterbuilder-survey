@@ -31,6 +31,7 @@ export class SubSubItem {
   tier: string;
   @Column()
   layout: string;
+  @Column()
   buttonType: ButtonGroup;
   @Column()
   buttonLabel: string
