@@ -70,7 +70,7 @@ import { JwtModule } from '@nestjs/jwt';
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: 'root',
+  password: 'Root@pass1',
   database: 'survey_app_db',
   synchronize: false,
   autoLoadEntities: true,
