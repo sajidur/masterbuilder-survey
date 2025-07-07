@@ -203,9 +203,9 @@ const FieldManager: React.FC = () => {
   };
 
   return (
-    <div className="px-4">
+    <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 p-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
           Field Manager
         </h2>
@@ -297,10 +297,9 @@ const FieldManager: React.FC = () => {
             .map((s) => ({ label: s.name, value: s.id }))}
           onChange={(val) => setSelectedSubSubSubItem(val)}
         />
-      </div>
+      {/* </div>
 
-      {/* 🔹 Field Configuration Section */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6"> */}
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -332,7 +331,7 @@ const FieldManager: React.FC = () => {
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Choose Tier --</option>
+            <option value="">Choose Tier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
@@ -350,7 +349,7 @@ const FieldManager: React.FC = () => {
             onChange={(e) => setSelectedDisplayType(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select Display Type --</option>
+            <option value="">Select Display Type</option>
             {displayTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -379,7 +378,7 @@ const FieldManager: React.FC = () => {
             onChange={(e) => setSelectedFieldType(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select Field Type --</option>
+            <option value="">Select Field Type</option>
             {fieldTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -428,15 +427,14 @@ const FieldManager: React.FC = () => {
             Required Field
           </label>
         </div>
-      </div>
 
-      {/* 🔹 Action Buttons */}
-      <div className="mb-4">
+        {/* 🔹 Action Buttons */}
+      <div className="">
         <button
           onClick={handleAddOrUpdateField}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="px-6 py-2 mt-6 mr-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
         >
-          {editFieldId ? "Update Field" : "+ Add Field"}
+          {editFieldId ? "Update" : "+ Add"}
         </button>
 
         {editFieldId && (
@@ -449,12 +447,18 @@ const FieldManager: React.FC = () => {
               setSelectedFieldType("");
               setIsRequired(false);
             }}
-            className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 ml-4"
+              className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
           >
             Cancel
           </button>
         )}
       </div>
+
+
+
+      </div>
+
+      
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
@@ -592,14 +596,14 @@ const Dropdown = ({
   options: { label: string; value: string }[];
   onChange: (value: string) => void;
 }) => (
-  <div className="flex">
-    <label className="block mt-2 mr-2 font-medium text-gray-700">{label}</label>
+  <div className="">
+    <label className="block font-medium text-gray-700">{label}</label>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      <option value="">-- Select {label} --</option>
+      <option value="">Select {label}</option>
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}

@@ -23,13 +23,13 @@ const navItems = [
   { label: 'App', path: '/admin/app', icon: <AppWindow size={18} /> },
   { label: 'Menu', path: '/admin/menu', icon: <List size={18} /> },
   { label: 'Item', path: '/admin/item', icon: <Layers size={18} /> },
-  { label: 'Sub-Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
-  { label: 'Sub-Sub-Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
-  { label: 'Sub-Sub-Sub-Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
+  { label: 'Sub Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
+  { label: 'SS Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
+  { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'Field', path: '/admin/field', icon: <ListTree size={18} /> },
   { label: 'Document Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> },
   { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },
-  { label: 'Template Configuration', path: '/admin/template-configuration', icon: <ClipboardCheckIcon size={18} /> },
+  { label: 'Configuration', path: '/admin/template-configuration', icon: <ClipboardCheckIcon size={18} /> },
   { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
 ];
 
@@ -41,20 +41,19 @@ const AdminLayout: React.FC = () => {
       {/* Sidebar */}
       <aside
         className={`${
-          sidebarOpen ? 'w-64' : 'w-16'
+          sidebarOpen ? 'w-52' : 'w-16'
         } bg-[#304C7C] text-white shadow-md border-r border-gray-200 flex flex-col transition-all duration-300`}
         style={{ position: 'sticky', top: 0, height: '100vh' }}
       >
         <div className="p-5 border-b border-blue-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {sidebarOpen ? (
-              <>
-                <img src="/logo.jpeg" alt="Logo" className="h-6 w-6" />
-                <h1 className="text-lg font-bold">MUKUT ERP</h1>
-              </>
-            ) : (
-                <img src="/logo.jpeg" alt="Logo" className="h-6 w-6" />
-            )}
+            {sidebarOpen && (
+  <>
+    <img src="/logo.jpeg" alt="Logo" className="h-6 w-6" />
+    <h1 className="text-lg font-bold">MUKUT ERP</h1>
+  </>
+)}
+
           </div>
 
           <button

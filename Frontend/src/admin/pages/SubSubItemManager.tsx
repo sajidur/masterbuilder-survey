@@ -13,7 +13,7 @@ import {
   // getAllTemplates,
   deleteSubSubItem,
 } from "../../apiRequest/api";
-import { tiers } from "./data";
+import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
@@ -188,20 +188,18 @@ const SubSubItemManager: React.FC = () => {
   };
 
   return (
-    <div className="px-4">
+    <div className="">
       {/* Page Title */}
 
       {/* 🔹 Top Filter Layout: Module → App → Menu → Item → SubItem */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 pb-3">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 rounded-lg mb-4 bg-white">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">📱</span> Sub Sub Item
         </h2>
 
         {/* Module */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Module
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">Module</label>
           <select
             value={selectedModule}
             onChange={(e) => {
@@ -213,7 +211,7 @@ const SubSubItemManager: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select Module --</option>
+            <option value="">Select Module</option>
             {modules.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name}
@@ -223,10 +221,8 @@ const SubSubItemManager: React.FC = () => {
         </div>
 
         {/* App */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            App
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">App</label>
           <select
             value={selectedApp}
             onChange={(e) => {
@@ -237,7 +233,7 @@ const SubSubItemManager: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select App --</option>
+            <option value="">Select App</option>
             {apps
               .filter((a) => a.Module?.id === selectedModule)
               .map((a) => (
@@ -249,10 +245,8 @@ const SubSubItemManager: React.FC = () => {
         </div>
 
         {/* Menu */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Menu
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">Menu</label>
           <select
             value={selectedMenu}
             onChange={(e) => {
@@ -262,7 +256,7 @@ const SubSubItemManager: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select Menu --</option>
+            <option value="">Select Menu</option>
             {menus
               .filter((m) => m.app?.id === selectedApp)
               .map((m) => (
@@ -274,10 +268,8 @@ const SubSubItemManager: React.FC = () => {
         </div>
 
         {/* Item */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Item
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">Item</label>
           <select
             value={selectedItem}
             onChange={(e) => {
@@ -286,7 +278,7 @@ const SubSubItemManager: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select Item --</option>
+            <option value="">Select Item</option>
             {items
               .filter((i) => i.menu?.id === selectedMenu)
               .map((i) => (
@@ -298,16 +290,14 @@ const SubSubItemManager: React.FC = () => {
         </div>
 
         {/* SubItem */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            SubItem
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">SubItem</label>
           <select
             value={selectedSubItem}
             onChange={(e) => setSelectedSubItem(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Select SubItem --</option>
+            <option value="">Select SubItem</option>
             {subItems
               .filter((s) => s.item?.id === selectedItem)
               .map((s) => (
@@ -317,10 +307,9 @@ const SubSubItemManager: React.FC = () => {
               ))}
           </select>
         </div>
-      </div>
+        {/* </div>
 
-      {/* 🔹 SubSubItem Form */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 pb-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 pb-6"> */}
         {/* Serial Number */}
         <div>
           <label className="block mb-1 font-medium text-gray-700">
@@ -372,7 +361,7 @@ const SubSubItemManager: React.FC = () => {
             onChange={(e) => setSelectedTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">-- Choose Tier --</option>
+            <option value="">Choose Tier</option>
             {tiers.map((tier) => (
               <option key={tier.value} value={tier.value}>
                 {tier.label}
@@ -386,26 +375,31 @@ const SubSubItemManager: React.FC = () => {
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             Layout
           </label>
-          <input
-            type="text"
+          <select
             value={layout}
             onChange={(e) => setLayout(e.target.value)}
-            placeholder="Enter layout info"
             className="w-full px-3 py-2 border rounded"
-          />
+          >
+            <option value="" disabled>Select layout</option>
+            {layoutOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Button Type
+            Edit Button
           </label>
           <select
             value={buttonType}
             onChange={(e) => setButtonType(e.target.value)}
             className="w-full px-3 py-2 border rounded"
           >
-            <option value="">-- Select Button Type --</option>
+            <option value="">Select Button Type</option>
             <option value="Primary Button">Primary Button</option>
             <option value="Second Button">Second Button</option>
           </select>
@@ -438,31 +432,31 @@ const SubSubItemManager: React.FC = () => {
             className="w-full px-3 py-2 border rounded"
           />
         </div>
-      </div>
 
-      {/* 🔹 Buttons */}
-      <div className="flex gap-4 mb-4">
-        <button
-          onClick={handleAdd}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-        >
-          {editSubSubItemId ? "Update SubSubItem" : "+ Add SubSubItem"}
-        </button>
-
-        {editSubSubItemId && (
+        {/* 🔹 Buttons */}
+        <div className="flex gap-4 ">
           <button
-            onClick={() => {
-              setEditSubSubItemId(null);
-              setSubSubItemName("");
-              setSelectedTier("");
-              // setSelectedTemplateId("");
-              setSerialNumber("");
-            }}
-            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+            onClick={handleAdd}
+            className="px-6 py-2 mt-6 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
           >
-            Cancel
+            {editSubSubItemId ? "Update" : "+ Add"}
           </button>
-        )}
+
+          {editSubSubItemId && (
+            <button
+              onClick={() => {
+                setEditSubSubItemId(null);
+                setSubSubItemName("");
+                setSelectedTier("");
+                // setSelectedTemplateId("");
+                setSerialNumber("");
+              }}
+              className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       {/* SubSubItems Table */}

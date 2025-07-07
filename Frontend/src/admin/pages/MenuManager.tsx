@@ -129,16 +129,16 @@ const MenuManager: React.FC = () => {
   };
 
   return (
-    <div className=" px-4">
+    <div className="">
       {/* Add Menu Form */}
-      <div className="rounded-xl px-6">
+      <div className="rounded-xl bg-white px-4 mb-4">
         {/* Top Row: Module and App Dropdowns */}
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-3">
-          <h2 className="font-semibold text-gray-800 flex items-center gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 ">
+          <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-green-600 text-2xl">📁</span> Menu
           </h2>
           {/* Module Dropdown */}
-          <div className="flex">
+          <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">
               Module
             </label>
@@ -147,7 +147,7 @@ const MenuManager: React.FC = () => {
               onChange={(e) => setSelectedModule(e.target.value)}
               className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <option value="">-- Select Module --</option>
+              <option value="">Select Module</option>
               {modules.map((mod) => (
                 <option key={mod.id} value={mod.name}>
                   {mod.name}
@@ -157,7 +157,7 @@ const MenuManager: React.FC = () => {
           </div>
 
           {/* App Dropdown */}
-          <div className="flex">
+          <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">
               App
             </label>
@@ -166,7 +166,7 @@ const MenuManager: React.FC = () => {
               onChange={(e) => setSelectedApp(e.target.value)}
               className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <option value="">-- Select App --</option>
+              <option value="">Select App</option>
               {apps
                 .filter((app) => app.Module?.name === selectedModule)
                 .map((app) => (
@@ -179,7 +179,7 @@ const MenuManager: React.FC = () => {
         </div>
 
         {/* Grid Form Row: Serial Number, Menu Name, Tier */}
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6">
           {/* Serial Number */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -216,7 +216,7 @@ const MenuManager: React.FC = () => {
               onChange={(e) => setSelectedTier(e.target.value)}
               className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <option value="">-- Choose Tier --</option>
+              <option value="">Choose Tier</option>
               {tiers.map((tier) => (
                 <option key={tier.value} value={tier.value}>
                   {tier.label}
@@ -224,15 +224,15 @@ const MenuManager: React.FC = () => {
               ))}
             </select>
           </div>
-        </div>
 
-        {/* Add / Cancel Buttons */}
+
+          {/* Add / Cancel Buttons */}
         <div className="my-4 flex items-center gap-4">
           <button
             onClick={handleAddMenu}
-            className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 mt-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
           >
-            {editMenuId ? "Update Menu" : "+ Add Menu"}
+            {editMenuId ? "Update" : "+ Add"}
           </button>
           {editMenuId && (
             <button
@@ -244,12 +244,18 @@ const MenuManager: React.FC = () => {
                 setSelectedTier("");
                 setSerialNumber("");
               }}
-              className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
+              className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
           )}
         </div>
+
+
+
+        </div>
+
+        
       </div>
 
       {/* Menu List */}

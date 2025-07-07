@@ -117,17 +117,17 @@ const AppManager: React.FC = () => {
   };
 
   return (
-    <div className="px-4">
+    <div className="">
       {/* Add App Form */}
-      <div className="rounded-xl px-6">
+      <div className="rounded-xl bg-white px-4 mb-4">
         {/* Top Layout: Module Dropdown */}
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 mb-4">
           {/* Header */}
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">📱</span> App
           </h2>
 
-          <div className="flex">
+          <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">
               Module
             </label>
@@ -136,7 +136,7 @@ const AppManager: React.FC = () => {
               onChange={(e) => setSelectedModule(e.target.value)}
               className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">-- Select Module --</option>
+              <option value="">Select Module</option>
               {modules.map((mod) => (
                 <option key={mod.id} value={mod.name}>
                   {mod.name}
@@ -147,7 +147,7 @@ const AppManager: React.FC = () => {
         </div>
 
         {/* App Form Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6">
           {/* Serial Number */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -184,7 +184,7 @@ const AppManager: React.FC = () => {
               onChange={(e) => setSelectedTier(e.target.value)}
               className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">-- Choose Tier --</option>
+              <option value="">Choose Tier</option>
               {tiers.map((tier) => (
                 <option key={tier.value} value={tier.value}>
                   {tier.label}
@@ -192,15 +192,14 @@ const AppManager: React.FC = () => {
               ))}
             </select>
           </div>
-        </div>
 
-        {/* Buttons */}
+          {/* Buttons */}
         <div className="my-4 flex items-center gap-4">
           <button
             onClick={handleAddApp}
-            className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 mt-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
           >
-            {editAppId ? "Update App" : "+ Add App"}
+            {editAppId ? "Update" : "+ Add"}
           </button>
           {editAppId && (
             <button
@@ -211,12 +210,15 @@ const AppManager: React.FC = () => {
                 setSelectedTier("");
                 setSerialNumber("");
               }}
-              className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
+              className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
           )}
         </div>
+        </div>
+
+        
       </div>
 
       {/* App List */}

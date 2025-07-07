@@ -12,7 +12,7 @@ import {
   // getAllTemplates,
   deleteSubItem,
 } from "../../apiRequest/api";
-import { tiers } from "./data";
+import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Module {
@@ -191,139 +191,132 @@ const SubItemManager: React.FC = () => {
   };
 
   return (
-    <div className="px-4">
-      {/* Top Filter Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pb-6">
-        <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📦</span> Sub Item
-        </h2>
+    <div className="">
+      <div className=" p-4 bg-white mb-4 rounded-lg">
+        {/* Top Filter Row */}
+        <div className="grid grid-cols-1  md:grid-cols-6 gap-4">
+          <h2 className="font-light text-gray-800 flex items-center gap-2">
+            <span className="text-blue-600 ">📦</span> Sub Item
+          </h2>
 
-        {/* Module */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Module
-          </label>
-          <select
-            className="w-full px-3 py-2 border rounded"
-            value={selectedModule}
-            onChange={(e) => {
-              setSelectedModule(e.target.value);
-              setSelectedApp("");
-              setSelectedMenu("");
-              setSelectedItem("");
-            }}
-          >
-            <option value="">Select Module</option>
-            {modules.map((m) => (
-              <option key={m.id} value={m.name}>
-                {m.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* App */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            App
-          </label>
-          <select
-            className="w-full px-3 py-2 border rounded"
-            value={selectedApp}
-            onChange={(e) => {
-              setSelectedApp(e.target.value);
-              setSelectedMenu("");
-              setSelectedItem("");
-            }}
-          >
-            <option value="">Select App</option>
-            {apps
-              .filter((a) => a.Module?.name === selectedModule)
-              .map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
+          {/* Module */}
+          <div className="">
+            <label className="block  font-medium text-gray-700">Module</label>
+            <select
+              className="w-full px-3 py-2 border rounded"
+              value={selectedModule}
+              onChange={(e) => {
+                setSelectedModule(e.target.value);
+                setSelectedApp("");
+                setSelectedMenu("");
+                setSelectedItem("");
+              }}
+            >
+              <option value="">Select Module</option>
+              {modules.map((m) => (
+                <option key={m.id} value={m.name}>
+                  {m.name}
                 </option>
               ))}
-          </select>
+            </select>
+          </div>
+
+          {/* App */}
+          <div className="">
+            <label className="block  font-medium text-gray-700">App</label>
+            <select
+              className="w-full px-3 py-2 border rounded"
+              value={selectedApp}
+              onChange={(e) => {
+                setSelectedApp(e.target.value);
+                setSelectedMenu("");
+                setSelectedItem("");
+              }}
+            >
+              <option value="">Select App</option>
+              {apps
+                .filter((a) => a.Module?.name === selectedModule)
+                .map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Menu */}
+          <div className="">
+            <label className="block font-medium text-gray-700">Menu</label>
+            <select
+              className="w-full px-3 py-2 border rounded"
+              value={selectedMenu}
+              onChange={(e) => {
+                setSelectedMenu(e.target.value);
+                setSelectedItem("");
+              }}
+            >
+              <option value="">Select Menu</option>
+              {menus
+                .filter((m) => m.app?.id === selectedApp)
+                .map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.title}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Item */}
+          <div className="">
+            <label className="block font-medium text-gray-700">Item</label>
+            <select
+              className="w-full px-3 py-2 border rounded"
+              value={selectedItem}
+              onChange={(e) => setSelectedItem(e.target.value)}
+            >
+              <option value="">Select Item</option>
+              {items
+                .filter((i) => i.menu?.id === selectedMenu)
+                .map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i.name}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
-        {/* Menu */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Menu
-          </label>
-          <select
-            className="w-full px-3 py-2 border rounded"
-            value={selectedMenu}
-            onChange={(e) => {
-              setSelectedMenu(e.target.value);
-              setSelectedItem("");
-            }}
-          >
-            <option value="">Select Menu</option>
-            {menus
-              .filter((m) => m.app?.id === selectedApp)
-              .map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.title}
-                </option>
-              ))}
-          </select>
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 ">
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Serial Number
+            </label>
+            <input
+              type="text"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+              placeholder="Enter serial number"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
 
-        {/* Item */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Item
-          </label>
-          <select
-            className="w-full px-3 py-2 border rounded"
-            value={selectedItem}
-            onChange={(e) => setSelectedItem(e.target.value)}
-          >
-            <option value="">Select Item</option>
-            {items
-              .filter((i) => i.menu?.id === selectedMenu)
-              .map((i) => (
-                <option key={i.id} value={i.id}>
-                  {i.name}
-                </option>
-              ))}
-          </select>
-        </div>
-      </div>
+          {/* SubItem Name */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              SubItem Name
+            </label>
+            <input
+              className="w-full px-3 py-2 border rounded"
+              type="text"
+              placeholder="Enter subitem name"
+              value={subItemName}
+              onChange={(e) => setSubItemName(e.target.value)}
+            />
+          </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
-        {/* Serial Number */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Serial Number
-          </label>
-          <input
-            type="text"
-            value={serialNumber}
-            onChange={(e) => setSerialNumber(e.target.value)}
-            placeholder="Enter serial number"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-
-        {/* SubItem Name */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            SubItem Name
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            placeholder="Enter subitem name"
-            value={subItemName}
-            onChange={(e) => setSubItemName(e.target.value)}
-          />
-        </div>
-
-        {/* Template */}
-        {/* <div>
+          {/* Template */}
+          {/* <div>
           <label className="block mb-1 font-medium">Template</label>
           <select
             value={selectedTemplateId}
@@ -339,125 +332,133 @@ const SubItemManager: React.FC = () => {
           </select>
         </div> */}
 
-        {/* Tier */}
-        <div>
-          <label className="block mb-1 font-medium">Tier</label>
-          <select
-            value={selectedTier}
-            onChange={(e) => setSelectedTier(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">-- Choose Tier --</option>
-            {tiers.map((tier) => (
-              <option key={tier.value} value={tier.value}>
-                {tier.label}
+          {/* Tier */}
+          <div>
+            <label className="block mb-1 font-medium">Tier</label>
+            <select
+              value={selectedTier}
+              onChange={(e) => setSelectedTier(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Choose Tier</option>
+              {tiers.map((tier) => (
+                <option key={tier.value} value={tier.value}>
+                  {tier.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Layout */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Layout
+            </label>
+            <select
+              value={layout}
+              onChange={(e) => setLayout(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+            >
+              <option value="" disabled>
+                Select layout
               </option>
-            ))}
-          </select>
+              {layoutOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Description
+            </label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter description"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
+          {/* Button Type */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Button Type
+            </label>
+            <select
+              value={buttonType}
+              onChange={(e) => setButtonType(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+            >
+              <option value="">Select Button Type</option>
+              <option value="Primary Button">Primary Button</option>
+              <option value="Second Button">Second Button</option>
+            </select>
+          </div>
+
+          {/* Button Label */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Button Name
+            </label>
+            <input
+              type="text"
+              value={buttonLabel}
+              onChange={(e) => setButtonLabel(e.target.value)}
+              placeholder="Enter button label"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
+          {/* Navigate To */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Navigate To
+            </label>
+            <input
+              type="text"
+              value={navigationTo}
+              onChange={(e) => setNavigationTo(e.target.value)}
+              placeholder="Enter route or URL"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
+          <div className="flex gap-4 items-center mb-4">
+            <button
+              onClick={handleAddSubItem}
+              className="px-6 py-2 mt-6 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              {editSubItemId ? "Update" : "+ Add"}
+            </button>
+
+            {editSubItemId && (
+              <button
+                onClick={() => {
+                  setEditSubItemId(null);
+                  setSubItemName("");
+                  setSelectedTier("");
+                  // setSelectedTemplateId("");
+                  setSerialNumber("");
+                  setButtonType("");
+                  setNavigationTo("");
+                  setDescription("");
+                }}
+                className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
         </div>
-
-        {/* Layout */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Layout
-          </label>
-          <input
-            type="text"
-            value={layout}
-            onChange={(e) => setLayout(e.target.value)}
-            placeholder="Enter layout info"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Description
-          </label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter description"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-
-        {/* Button Type */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Button Type
-          </label>
-          <select
-            value={buttonType}
-            onChange={(e) => setButtonType(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-          >
-            <option value="">-- Select Button Type --</option>
-            <option value="Primary Button">Primary Button</option>
-            <option value="Second Button">Second Button</option>
-          </select>
-        </div>
-
-        {/* Button Label */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Button Name
-          </label>
-          <input
-            type="text"
-            value={buttonLabel}
-            onChange={(e) => setButtonLabel(e.target.value)}
-            placeholder="Enter button label"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-
-        {/* Navigate To */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Navigate To
-          </label>
-          <input
-            type="text"
-            value={navigationTo}
-            onChange={(e) => setNavigationTo(e.target.value)}
-            placeholder="Enter route or URL"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-4 items-center mb-4">
-        <button
-          onClick={handleAddSubItem}
-          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-        >
-          {editSubItemId ? "Update SubItem" : "+ Add SubItem"}
-        </button>
-
-        {editSubItemId && (
-          <button
-            onClick={() => {
-              setEditSubItemId(null);
-              setSubItemName("");
-              setSelectedTier("");
-              // setSelectedTemplateId("");
-              setSerialNumber("");
-              setButtonType("");
-              setNavigationTo("");
-              setDescription("");
-            }}
-            className="px-6 py-2 bg-gray-500 text-white font-medium rounded hover:bg-gray-600"
-          >
-            Cancel
-          </button>
-        )}
       </div>
 
       {/* SubItem List */}
-      <div className="bg-white p-4 rounded shadow">
+      <div className="bg-white p-4 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-3">SubItem List</h3>
         {subItems.length === 0 ? (
           <p>No subitems found.</p>
@@ -480,7 +481,6 @@ const SubItemManager: React.FC = () => {
                 {/* <th className="p-2 text-left">Button Type</th> */}
                 <th className="p-2 text-left">Navigate To</th>
 
-
                 <th className="p-2 text-left">Actions</th>
               </tr>
             </thead>
@@ -501,7 +501,7 @@ const SubItemManager: React.FC = () => {
 
                   <td className="p-2">{s.tier}</td>
 
-                                    <td className="p-2">
+                  <td className="p-2">
                     {s.buttonType === "Primary Button"
                       ? `P-Button[${s.buttonLabel || ""}]`
                       : s.buttonType === "Second Button"
@@ -513,10 +513,6 @@ const SubItemManager: React.FC = () => {
 
                   <td className="p-2">{s.buttonType}</td> */}
                   <td className="p-2">{s.navigationTo}</td>
-
-
-
-
 
                   <td className="px-4 py-3 flex gap-3">
                     <button

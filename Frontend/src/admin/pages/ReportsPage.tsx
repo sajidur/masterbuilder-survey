@@ -155,10 +155,11 @@ const ReportsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Report</h2>
+    <div className="">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white">
+              <h2 className="text-2xl font-light mb-4 text-gray-800">Report</h2>
+
         <Dropdown
           label="Module"
           value={selectedModule}
@@ -342,7 +343,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       onChange={(e) => onChange(e.target.value)}
       className="w-full border border-gray-300 rounded px-3 py-2"
     >
-      <option value="">-- Select {label} --</option>
+      <option value="">Select {label}</option>
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}

@@ -7,3 +7,11 @@ export const tiers = [
   { label: '4, 5', value: '4,5' },
   { label: '3, 4, 5', value: '3, 4, 5' },
 ];
+
+export const layoutOptions = [
+  { label: 'Tab', value: 'Tab' },
+  { label: 'Mix-Tab', value: 'Mix-Tab' },
+  { label: 'Mix-Section', value: 'Mix-Section' },
+  { label: 'Section', value: 'Section' },
+  { label: 'Sub-section', value: 'Sub-section' },
+];

@@ -175,23 +175,21 @@ const ItemManager: React.FC = () => {
   };
 
   return (
-    <div className="px-4">
+    <div className="">
       {/* Top Row: Module, App, Menu */}
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
+      <div className=" bg-white grid grid-cols-1 sm:grid-cols-6 gap-4 rounded-lg p-4">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">📁</span> Item
         </h2>
         {/* Module */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Module
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">Module</label>
           <select
             value={selectedModule}
             onChange={(e) => setSelectedModule(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">-- Select Module --</option>
+            <option value="">Select Module</option>
             {modules.map((mod) => (
               <option key={mod.id} value={mod.name}>
                 {mod.name}
@@ -201,16 +199,14 @@ const ItemManager: React.FC = () => {
         </div>
 
         {/* App */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            App
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">App</label>
           <select
             value={selectedApp}
             onChange={(e) => setSelectedApp(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">-- Select App --</option>
+            <option value="">Select App</option>
             {filteredApps.map((app) => (
               <option key={app.id} value={app.name}>
                 {app.name}
@@ -220,16 +216,14 @@ const ItemManager: React.FC = () => {
         </div>
 
         {/* Menu */}
-        <div className="flex">
-          <label className="block mt-2 mr-2 font-medium text-gray-700">
-            Menu
-          </label>
+        <div className="">
+          <label className="block font-medium text-gray-700">Menu</label>
           <select
             value={selectedMenu}
             onChange={(e) => setSelectedMenu(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">-- Select Menu --</option>
+            <option value="">Select Menu</option>
             {filteredMenus.map((menu) => (
               <option key={menu.id} value={menu.title}>
                 {menu.title}
@@ -237,9 +231,9 @@ const ItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-      </div>
+        {/* </div> */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 items-end"> */}
         {/* Serial Number */}
         <div>
           <label className="block mb-1 font-medium text-gray-700">
@@ -278,7 +272,7 @@ const ItemManager: React.FC = () => {
             onChange={(e) => setSelectedTier(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">-- Choose Tier --</option>
+            <option value="">Choose Tier</option>
             {tiers.map((tier) => (
               <option key={tier.value} value={tier.value}>
                 {tier.label}
@@ -311,7 +305,7 @@ const ItemManager: React.FC = () => {
             onChange={(e) => setButtonType(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">-- Select Button Type --</option>
+            <option value="">Select Button Type</option>
             <option value="Primary Button">Primary Button</option>
             <option value="Second Button">Second Button</option>
           </select>
@@ -344,36 +338,36 @@ const ItemManager: React.FC = () => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-      </div>
 
-      {/* Add Button */}
-      <div className="mt-4 flex gap-4">
-        <button
-          onClick={handleAddItem}
-          className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          {editItemId ? "Update Item" : "+ Add item"}
-        </button>
-
-        {editItemId && (
+        {/* Add Button */}
+        <div className="mt-4 flex gap-4">
           <button
-            onClick={() => {
-              setEditItemId(null);
-              setItemName("");
-              setSelectedModule("");
-              setSelectedApp("");
-              setSelectedMenu("");
-              setSelectedTier("");
-              setSerialNumber("");
-              setButtonType("");
-              setNavigationTo("");
-              setDescription("");
-            }}
-            className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+            onClick={handleAddItem}
+            className="px-6 py-2 mt-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
           >
-            Cancel
+            {editItemId ? "Update" : "+ Add"}
           </button>
-        )}
+
+          {editItemId && (
+            <button
+              onClick={() => {
+                setEditItemId(null);
+                setItemName("");
+                setSelectedModule("");
+                setSelectedApp("");
+                setSelectedMenu("");
+                setSelectedTier("");
+                setSerialNumber("");
+                setButtonType("");
+                setNavigationTo("");
+                setDescription("");
+              }}
+              className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Items Table */}
