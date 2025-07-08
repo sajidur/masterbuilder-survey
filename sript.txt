@@ -152,3 +152,9 @@ Displays a *Report Manager* interface that allows users to filter and view neste
 ---
 
 This script gives a *modular report-viewing tool*, customizable through chained filters and toggled views 
+
+
+
+update ssitem query in db for rename buttonType to editButton
+ALTER TABLE survey_app_db.sub_sub_item
+CHANGE COLUMN buttonType editButton VARCHAR(255);
