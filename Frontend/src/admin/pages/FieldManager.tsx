@@ -90,6 +90,7 @@ const FieldManager: React.FC = () => {
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [fieldGroupCode, setFieldGroupCode] = useState("");
   const [tier, setTier] = useState("");
+  const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["tree", "graph", "table", "individual field"];
@@ -207,11 +208,11 @@ const FieldManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 p-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          Field Manager
+          DP Manager
         </h2>
 
         <Dropdown
-          label="Module"
+          label="Mod"
           value={selectedModule}
           options={modules.map((m) => ({ label: m.name, value: m.id }))}
           onChange={(val) => {
@@ -264,6 +265,13 @@ const FieldManager: React.FC = () => {
             setSelectedSubItem("");
             setSelectedSubSubItem("");
             setSelectedSubSubSubItem("");
+
+            const selectedItemObj = items.find((i) => i.id === val);
+            if (selectedItemObj) {
+              const prefix = `${selectedItemObj.name}/`;
+              setFieldGroupPrefix(prefix);
+              setFieldGroupCode(prefix); // sets full fieldGroupCode
+            }
           }}
         />
         <Dropdown
@@ -279,7 +287,7 @@ const FieldManager: React.FC = () => {
           }}
         />
         <Dropdown
-          label="SubSubItem"
+          label="S-S-Item"
           value={selectedSubSubItem}
           options={subSubItems
             .filter((s) => s.subItem?.id === selectedSubItem)
@@ -290,14 +298,14 @@ const FieldManager: React.FC = () => {
           }}
         />
         <Dropdown
-          label="SubSubSubItem"
+          label="S-S-S-Item"
           value={selectedSubSubSubItem}
           options={subSubSubItems
             .filter((s) => s.subSubItem?.id === selectedSubSubItem)
             .map((s) => ({ label: s.name, value: s.id }))}
           onChange={(val) => setSelectedSubSubSubItem(val)}
         />
-      {/* </div>
+        {/* </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6"> */}
         <div>
@@ -313,6 +321,24 @@ const FieldManager: React.FC = () => {
 
         {/* Field Group Code */}
         <div>
+          <label className="block mb-1 font-medium">DP Group Code</label>
+          <input
+            type="text"
+            value={fieldGroupCode}
+            onChange={(e) => {
+              const typedValue = e.target.value;
+
+              // Prevent deletion/modification of prefix
+              if (typedValue.startsWith(fieldGroupPrefix)) {
+                setFieldGroupCode(typedValue);
+              }
+            }}
+            className="w-full border px-3 py-2 rounded"
+            placeholder="Enter field group code"
+          />
+        </div>
+
+        {/* <div>
           <label className="block mb-1 font-medium">Field Group Code</label>
           <input
             type="text"
@@ -321,7 +347,7 @@ const FieldManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
             placeholder="Enter field group code"
           />
-        </div>
+        </div> */}
 
         {/* Tier */}
         <div>
@@ -339,7 +365,6 @@ const FieldManager: React.FC = () => {
             ))}
           </select>
         </div>
-
 
         {/* Display Type */}
         <div>
@@ -360,7 +385,7 @@ const FieldManager: React.FC = () => {
 
         {/* Field Name */}
         <div>
-          <label className="block mb-1 font-medium">Field Name</label>
+          <label className="block mb-1 font-medium">DP Name</label>
           <input
             type="text"
             value={fieldName}
@@ -424,66 +449,61 @@ const FieldManager: React.FC = () => {
             htmlFor="required-checkbox"
             className="text-sm font-medium text-gray-700"
           >
-            Required Field
+            Required
           </label>
         </div>
 
         {/* 🔹 Action Buttons */}
-      <div className="">
-        <button
-          onClick={handleAddOrUpdateField}
-            className="px-6 py-2 mt-6 mr-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          {editFieldId ? "Update" : "+ Add"}
-        </button>
-
-        {editFieldId && (
+        <div className="">
           <button
-            onClick={() => {
-              setEditFieldId(null);
-              setFieldName("");
-              setSerialNumber("");
-              setSelectedDisplayType("");
-              setSelectedFieldType("");
-              setIsRequired(false);
-            }}
-              className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+            onClick={handleAddOrUpdateField}
+            className="px-6 py-2 mt-6 mr-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
           >
-            Cancel
+            {editFieldId ? "Update" : "+ Add"}
           </button>
-        )}
+
+          {editFieldId && (
+            <button
+              onClick={() => {
+                setEditFieldId(null);
+                setFieldName("");
+                setSerialNumber("");
+                setSelectedDisplayType("");
+                setSelectedFieldType("");
+                setIsRequired(false);
+              }}
+              className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
-
-
-
-      </div>
-
-      
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-4">Fields List</h3>
+        <h3 className="text-lg font-semibold mb-4">DP List</h3>
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Module</th>
+              <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
-              <th className="p-2 text-left">SubSubItem</th>
-              <th className="p-2 text-left">SubSubSubItem</th>
-              <th className="p-2 text-left">Field Group Code</th>
+              <th className="p-2 text-left">S-S-Item</th>
+              <th className="p-2 text-left">S-S-S-Item</th>
+              <th className="p-2 text-left">DP Group Code</th>
               <th className="p-2 text-left">Tier</th>
 
               <th className="p-2 text-left">Display Type</th>
 
               <th className="p-2 text-left">SI</th>
 
-
-              <th className="p-2 text-left">Field Name</th>
+              <th className="p-2 text-left">DP Name</th>
               <th className="p-2 text-left">Required</th>
-                            <th className="p-2 text-left">Data Type</th>
+              <th className="p-2 text-left">Hide</th>
+              <th className="p-2 text-left">Data Type</th>
 
               <th className="p-2 text-left">Action</th>
             </tr>
@@ -517,12 +537,12 @@ const FieldManager: React.FC = () => {
                 <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>
-                                <td className="p-2">{f.serialNumber || "—"}</td>
+                <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.name}</td>
                 <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
-                                <td className="p-2">{f.dataType}</td>
-
+                <td className="p-2">-</td>
+                <td className="p-2">{f.dataType}</td>
 
                 <td className="px-4 py-3 flex gap-3">
                   <button
@@ -560,7 +580,6 @@ const FieldManager: React.FC = () => {
 
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");
-                      
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >

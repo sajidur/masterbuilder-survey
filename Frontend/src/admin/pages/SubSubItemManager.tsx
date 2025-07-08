@@ -326,7 +326,7 @@ const SubSubItemManager: React.FC = () => {
 
         {/* SubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SubSubItem Name</label>
+          <label className="block mb-1 font-medium">S-S-Item Name</label>
           <input
             type="text"
             value={subSubItemName}
@@ -392,7 +392,7 @@ const SubSubItemManager: React.FC = () => {
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Edit Button
+            Button Type
           </label>
           <select
             value={buttonType}
@@ -400,8 +400,8 @@ const SubSubItemManager: React.FC = () => {
             className="w-full px-3 py-2 border rounded"
           >
             <option value="">Select Button Type</option>
-            <option value="Primary Button">Primary Button</option>
-            <option value="Second Button">Second Button</option>
+            <option selected value="Edit Button">Edit Button</option>
+            {/* <option value="Second Button">Second Button</option> */}
           </select>
         </div>
 
@@ -472,7 +472,7 @@ const SubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">SubItem</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">SubSubItem</th>
+              <th className="p-2 text-left">S-S-Item</th>
               {/* <th className="p-2 text-left">Template</th> */}
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Layout</th>

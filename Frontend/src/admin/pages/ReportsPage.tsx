@@ -68,7 +68,6 @@ const columnKeys = [
   "displayType",
 ];
 
-
 const ReportsPage: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<App[]>([]);
@@ -89,7 +88,9 @@ const ReportsPage: React.FC = () => {
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [selectedField, setSelectedField] = useState("");
 
-  const [selectedColumn, setSelectedColumn] = useState<string>("module");
+const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
+const [rangeSelection, setRangeSelection] = useState<string[]>([]);
+const [showHideDropdown, setShowHideDropdown] = useState(false);
 
 
   useEffect(() => {
@@ -137,9 +138,30 @@ const ReportsPage: React.FC = () => {
       (!selectedField || f.name === selectedField)
   );
 
+  // const visibleColumns = columnKeys.slice(columnKeys.indexOf(selectedColumn));
+
+let visibleColumns: string[] = [];
+
+if (rangeSelection.length === 2) {
+  const [first, second] = rangeSelection;
+  const firstIndex = columnKeys.indexOf(first);
+  const secondIndex = columnKeys.indexOf(second);
+
+  const startIndex = Math.min(firstIndex, secondIndex);
+  const endIndex = Math.max(firstIndex, secondIndex);
+
+  visibleColumns = columnKeys.slice(startIndex + 1, endIndex + 1);
+} else if (rangeSelection.length === 1) {
+  const index = columnKeys.indexOf(rangeSelection[0]);
+  visibleColumns = columnKeys.slice(index + 1);
+} else {
+  visibleColumns = columnKeys;
+}
+
+// ❗️Remove any hidden columns from visibleColumns
+visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
 
 
-  const visibleColumns = columnKeys.slice(columnKeys.indexOf(selectedColumn));
 
 
   const columnLabels: Record<string, string> = {
@@ -156,9 +178,8 @@ const ReportsPage: React.FC = () => {
 
   return (
     <div className="">
-
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white">
-              <h2 className="text-2xl font-light mb-4 text-gray-800">Report</h2>
+        <h2 className="text-2xl font-light mb-4 text-gray-800">Report</h2>
 
         <Dropdown
           label="Module"
@@ -231,17 +252,23 @@ const ReportsPage: React.FC = () => {
         />
       </div>
 
-      <div className="mb-4">
-  <h4 className="font-medium mb-2">Select From Column:</h4>
+
+      <div className="flex">
+        <div className="mb-4">
+  <h4 className="font-medium mb-2">Select Column Range (2 max):</h4>
   <div className="flex flex-wrap gap-4">
     {columnKeys.map((key) => (
-      <label key={key} className="flex items-center gap-2">
+      <label key={key} className="flex items-center gap-1 text-sm">
         <input
-          type="radio"
-          name="columnSelector"
-          value={key}
-          checked={selectedColumn === key}
-          onChange={() => setSelectedColumn(key)}
+          type="checkbox"
+          checked={rangeSelection.includes(key)}
+          onChange={() => {
+            if (rangeSelection.includes(key)) {
+              setRangeSelection(rangeSelection.filter((k) => k !== key));
+            } else if (rangeSelection.length < 2) {
+              setRangeSelection([...rangeSelection, key]);
+            }
+          }}
         />
         {columnLabels[key]}
       </label>
@@ -249,74 +276,138 @@ const ReportsPage: React.FC = () => {
   </div>
 </div>
 
-        <div className="bg-white p-4 rounded shadow">
 
-          {filteredFields.length === 0 ? (
-            <p className="text-gray-500">No fields found.</p>
-          ) : (
-            <table className="w-full border text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  {visibleColumns.includes("module") && <th className="p-2 text-left">Module</th>}
-                  {visibleColumns.includes("app") && <th className="p-2 text-left">App</th>}
-                  {visibleColumns.includes("menu") && <th className="p-2 text-left">Menu</th>}
-                  {visibleColumns.includes("item") && <th className="p-2 text-left">Item</th>}
-                  {visibleColumns.includes("subItem") && <th className="p-2 text-left">SubItem</th>}
-                  {visibleColumns.includes("subSubItem") && <th className="p-2 text-left">SubSubItem</th>}
-                  {visibleColumns.includes("subSubSubItem") && <th className="p-2 text-left">SubSubSubItem</th>}
-                  {visibleColumns.includes("field") && <th className="p-2 text-left">Field</th>}
-                  {visibleColumns.includes("field") && <th className="p-2 text-left">Display Type</th>}
+{visibleColumns.length > 0 && (
+  <div className="relative mt-6 ml-auto inline-block text-left">
+    <button
+      type="button"
+      onClick={() => setShowHideDropdown(!showHideDropdown)}
+      className="inline-flex justify-between items-center px-4 py-2 border border-gray-300 rounded shadow-sm text-sm font-medium bg-white hover:bg-gray-50"
+    >
+      Hide Columns ▾
+    </button>
+
+    {showHideDropdown && (
+      <div className="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-3">
+        {visibleColumns.concat(hiddenColumns)
+          .filter((col, index, self) => self.indexOf(col) === index)
+          .map((colKey) => (
+            <label
+              key={colKey}
+              className="flex items-center gap-2 text-sm mb-1 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                checked={!hiddenColumns.includes(colKey)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setHiddenColumns(hiddenColumns.filter((key) => key !== colKey));
+                  } else {
+                    setHiddenColumns([...hiddenColumns, colKey]);
+                  }
+                }}
+              />
+              {columnLabels[colKey]}
+            </label>
+          ))}
+      </div>
+    )}
+  </div>
+)}
+
+
+      </div>
+
+      <div className="bg-white p-4 rounded shadow">
+        {filteredFields.length === 0 ? (
+          <p className="text-gray-500">No fields found.</p>
+        ) : (
+          <table className="w-full border text-sm">
+            <thead className="bg-gray-100">
+              <tr>
+                {visibleColumns.includes("module") && (
+                  <th className="p-2 text-left">Module</th>
+                )}
+                {visibleColumns.includes("app") && (
+                  <th className="p-2 text-left">App</th>
+                )}
+                {visibleColumns.includes("menu") && (
+                  <th className="p-2 text-left">Menu</th>
+                )}
+                {visibleColumns.includes("item") && (
+                  <th className="p-2 text-left">Item</th>
+                )}
+                {visibleColumns.includes("subItem") && (
+                  <th className="p-2 text-left">SubItem</th>
+                )}
+                {visibleColumns.includes("subSubItem") && (
+                  <th className="p-2 text-left">SubSubItem</th>
+                )}
+                {visibleColumns.includes("subSubSubItem") && (
+                  <th className="p-2 text-left">SubSubSubItem</th>
+                )}
+                {visibleColumns.includes("field") && (
+                  <th className="p-2 text-left">Field</th>
+                )}
+                {visibleColumns.includes("field") && (
+                  <th className="p-2 text-left">Display Type</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredFields.map((f) => (
+                <tr key={f.id} className="border-t">
+                  {visibleColumns.includes("module") && (
+                    <td className="p-2">
+                      {modules.find((m) => m.id === selectedModule)?.name || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("app") && (
+                    <td className="p-2">
+                      {apps.find((a) => a.id === selectedApp)?.name || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("menu") && (
+                    <td className="p-2">
+                      {menus.find((m) => m.id === selectedMenu)?.title || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("item") && (
+                    <td className="p-2">
+                      {items.find((i) => i.id === selectedItem)?.name || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("subItem") && (
+                    <td className="p-2">
+                      {subItems.find((s) => s.id === selectedSubItem)?.name ||
+                        ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("subSubItem") && (
+                    <td className="p-2">
+                      {subSubItems.find((s) => s.id === selectedSubSubItem)
+                        ?.name || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("subSubSubItem") && (
+                    <td className="p-2">
+                      {subSubSubItems.find(
+                        (s) => s.id === selectedSubSubSubItem
+                      )?.name || ""}
+                    </td>
+                  )}
+                  {visibleColumns.includes("field") && (
+                    <td className="p-2">{f.name}</td>
+                  )}
+                  {visibleColumns.includes("displayType") && (
+                    <td className="p-2">{selectedDisplayType}</td>
+                  )}
                 </tr>
-              </thead>
-              <tbody>
-                {filteredFields.map((f) => (
-                  <tr key={f.id} className="border-t">
-                    {visibleColumns.includes("module") && (
-                      <td className="p-2">
-                        {modules.find(m => m.id === selectedModule)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("app") && (
-                      <td className="p-2">
-                        {apps.find(a => a.id === selectedApp)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("menu") && (
-                      <td className="p-2">
-                        {menus.find(m => m.id === selectedMenu)?.title || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("item") && (
-                      <td className="p-2">
-                        {items.find(i => i.id === selectedItem)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("subItem") && (
-                      <td className="p-2">
-                        {subItems.find(s => s.id === selectedSubItem)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("subSubItem") && (
-                      <td className="p-2">
-                        {subSubItems.find(s => s.id === selectedSubSubItem)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("subSubSubItem") && (
-                      <td className="p-2">
-                        {subSubSubItems.find(s => s.id === selectedSubSubSubItem)?.name || ""}
-                      </td>
-                    )}
-                    {visibleColumns.includes("field") && <td className="p-2">{f.name}</td>}
-                    {visibleColumns.includes("displayType") && <td className="p-2">{selectedDisplayType}</td>}
-
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-
-
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
 
       <ToastContainer />
     </div>

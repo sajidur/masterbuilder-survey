@@ -14,4 +14,5 @@ export const layoutOptions = [
   { label: 'Mix-Section', value: 'Mix-Section' },
   { label: 'Section', value: 'Section' },
   { label: 'Sub-section', value: 'Sub-section' },
+  { label: 'S-S-section', value: 'S-S-section' },
 ];

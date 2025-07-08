@@ -207,7 +207,7 @@ const SubSubSubItemManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 mb-4 bg-white">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📱</span> Sub Sub Sub Item
+          <span className="text-blue-600 ">📱</span> S-S-S-Item
         </h2>
         {[
           {
@@ -274,7 +274,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "SubSubItem",
+            label: "S-S-Item",
             value: selectedSubSubItem,
             setter: setSelectedSubSubItem,
             options: subSubItems
@@ -318,7 +318,7 @@ const SubSubSubItemManager: React.FC = () => {
 
         {/* SubSubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SubSubSubItem Name</label>
+          <label className="block mb-1 font-medium">S-S-S-Item Name</label>
           <input
             type="text"
             value={subSubSubItemName}
@@ -419,10 +419,10 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">SubItem</th>
-              <th className="p-2 text-left">SubSubItem</th>
+              <th className="p-2 text-left">S-S-Item</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">SubSubSubItem</th>
+              <th className="p-2 text-left">S-S-S-Item</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Layout</th>
 
