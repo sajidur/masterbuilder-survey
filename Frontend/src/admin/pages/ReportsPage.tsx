@@ -64,7 +64,8 @@ const columnKeys = [
   "subItem",
   "subSubItem",
   "subSubSubItem",
-  "field",
+  "DPGroupCode",
+  "Data Point",
   "displayType",
 ];
 
@@ -169,9 +170,9 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
     app: "App",
     menu: "Menu",
     item: "Item",
-    subItem: "SubItem",
-    subSubItem: "S-S Item",
-    subSubSubItem: "S-S-S Item",
+    subItem: "Sub Item",
+    subSubItem: "SS Item",
+    subSubSubItem: "SSS Item",
     field: "Field",
     displayType: "Display Type",
   };
@@ -206,7 +207,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedItem}
         />
         <Dropdown
-          label="SubItem"
+          label="Sub Item"
           value={selectedSubItem}
           options={filteredSubItems.map((s) => ({
             label: s.name,
@@ -215,7 +216,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubItem}
         />
         <Dropdown
-          label="S-S Item"
+          label="SS Item"
           value={selectedSubSubItem}
           options={filteredSubSubItems.map((s) => ({
             label: s.name,
@@ -224,7 +225,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubSubItem}
         />
         <Dropdown
-          label="S-S-S Item"
+          label="SSS Item"
           value={selectedSubSubSubItem}
           options={filteredSubSubSubItems.map((s) => ({
             label: s.name,
@@ -233,7 +234,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubSubSubItem}
         />
         <Dropdown
-          label="Display Type"
+          label="DP Group Code"
           value={selectedDisplayType}
           options={displayTypeOptions.map((opt) => ({
             label: opt,
@@ -242,7 +243,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedDisplayType}
         />
         <Dropdown
-          label="Field"
+          label="Data Point"
           value={selectedField}
           options={filteredFields.map((f) => ({
             label: f.name,
@@ -338,13 +339,13 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                   <th className="p-2 text-left">Item</th>
                 )}
                 {visibleColumns.includes("subItem") && (
-                  <th className="p-2 text-left">SubItem</th>
+                  <th className="p-2 text-left">Sub Item</th>
                 )}
                 {visibleColumns.includes("subSubItem") && (
-                  <th className="p-2 text-left">S-S Item</th>
+                  <th className="p-2 text-left">SS Item</th>
                 )}
                 {visibleColumns.includes("subSubSubItem") && (
-                  <th className="p-2 text-left">S-S-S Item</th>
+                  <th className="p-2 text-left">SSS Item</th>
                 )}
                 {visibleColumns.includes("field") && (
                   <th className="p-2 text-left">Field</th>

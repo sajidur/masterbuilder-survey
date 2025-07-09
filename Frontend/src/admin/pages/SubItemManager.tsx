@@ -304,7 +304,7 @@ const SubItemManager: React.FC = () => {
           {/* SubItem Name */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              SubItem Name
+              Sub Item Name
             </label>
             <input
               className="w-full px-3 py-2 border rounded"
@@ -352,7 +352,7 @@ const SubItemManager: React.FC = () => {
           {/* Layout */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Layout
+              Layout Type
             </label>
             <select
               value={layout}
@@ -395,8 +395,8 @@ const SubItemManager: React.FC = () => {
               className="w-full px-3 py-2 border rounded"
             >
               <option value="">Select Button Type</option>
-              <option value="Primary Button">Primary Button</option>
-              <option value="Second Button">Second Button</option>
+              <option value="P-Button">Primary Button</option>
+              <option value="S-Button">Second Button</option>
             </select>
           </div>
 
@@ -459,7 +459,7 @@ const SubItemManager: React.FC = () => {
 
       {/* SubItem List */}
       <div className="bg-white p-4 rounded-lg shadow">
-        <h3 className="text-lg font-semibold mb-3">SubItem List</h3>
+        <h3 className="text-lg font-semibold mb-3">Sub Item List</h3>
         {subItems.length === 0 ? (
           <p>No subitems found.</p>
         ) : (
@@ -472,11 +472,11 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">Item</th>
                 <th className="p-2 text-left">SI</th>
 
-                <th className="p-2 text-left">SubItem</th>
+                <th className="p-2 text-left">Sub Item</th>
                 <th className="p-2 text-left">Layout</th>
                 <th className="p-2 text-left">Description</th>
                 <th className="p-2 text-left">Tier</th>
-                <th className="p-2 text-left">P/S Button Name</th>
+                <th className="p-2 text-left">P/S Button</th>
 
                 {/* <th className="p-2 text-left">Button Type</th> */}
                 <th className="p-2 text-left">Navigate To</th>

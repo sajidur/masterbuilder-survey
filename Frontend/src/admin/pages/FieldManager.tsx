@@ -209,7 +209,7 @@ const FieldManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 p-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          DP Group
+          DP Group Code
         </h2>
 
         <Dropdown
@@ -276,7 +276,7 @@ const FieldManager: React.FC = () => {
           }}
         />
         <Dropdown
-          label="SubItem"
+          label="Sub Item"
           value={selectedSubItem}
           options={subItems
             .filter((s) => s.item?.id === selectedItem)
@@ -288,7 +288,7 @@ const FieldManager: React.FC = () => {
           }}
         />
         <Dropdown
-          label="S-S-Item"
+          label="SS Item"
           value={selectedSubSubItem}
           options={subSubItems
             .filter((s) => s.subItem?.id === selectedSubItem)
@@ -299,7 +299,7 @@ const FieldManager: React.FC = () => {
           }}
         />
         <Dropdown
-          label="S-S-S-Item"
+          label="SSS Item"
           value={selectedSubSubSubItem}
           options={subSubSubItems
             .filter((s) => s.subSubItem?.id === selectedSubSubItem)
@@ -386,7 +386,7 @@ const FieldManager: React.FC = () => {
 
         {/* Field Name */}
         <div>
-          <label className="block mb-1 font-medium">DP Name</label>
+          <label className="block mb-1 font-medium">Data Point</label>
           <input
             type="text"
             value={fieldName}
@@ -505,14 +505,14 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">SubItem</th>
-              <th className="p-2 text-left">S-S-Item</th>
-              <th className="p-2 text-left">S-S-S-Item</th>
+              <th className="p-2 text-left">Sub Item</th>
+              <th className="p-2 text-left">SS Item</th>
+              <th className="p-2 text-left">SSS Item</th>
               <th className="p-2 text-left">DP Group Code</th>
               <th className="p-2 text-left">Tier</th>
-              <th className="p-2 text-left">Display Type</th>
+              <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">SI</th>
-              <th className="p-2 text-left">DP Name</th>
+              <th className="p-2 text-left">Data Point</th>
               <th className="p-2 text-left">Required</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Data Type</th>

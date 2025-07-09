@@ -95,19 +95,20 @@ const ModuleManager: React.FC = () => {
 
 
   return (
-    <div className=" ">
+    <div className=" px-4">
+      <h2 className=" font-light mb-6 text-gray-800 flex items-center gap-2">
+        <span className="text-blue-600 ">📋</span> Survey Module
+      </h2>
+
       {/* Add Module Form Card */}
-      <div className=" rounded-xl px-4 bg-white mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 py-6">
-          <h2 className=" font-light mb-6 text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 ">📋</span> Survey Module Management
-          </h2>
+      <div className=" rounded-xl px-4">
+
+
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-6">
 
           {/* Serial Number */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Serial Number
-            </label>
+            <label className="block mb-1 font-medium text-gray-700">Serial Number</label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -116,6 +117,7 @@ const ModuleManager: React.FC = () => {
               onChange={(e) => setSerialNumber(e.target.value)}
             />
           </div>
+
 
           {/* Module Name */}
           <div>
@@ -147,42 +149,46 @@ const ModuleManager: React.FC = () => {
               ))}
             </select>
           </div>
+        </div>
 
-          <div className="mb-4">
+        <div className="mb-4">
+          <button
+            onClick={handleAddModule}
+            className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow"
+          >
+            {editId ? "Update Module" : "+ Add Module"}
+
+          </button>
+          {editId !== null && (
             <button
-              onClick={handleAddModule}
-              className="px-6 py-2 mt-7 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow"
+              onClick={() => {
+                setEditId(null);
+                setNewModuleName("");
+                setSerialNumber("");
+                setSelectedTier("");
+              }}
+              className="ml-4 px-6 py-2.5 bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-500 transition-colors shadow"
             >
-              {editId ? "Update" : "+ Add"}
+              Cancel
             </button>
-            {editId !== null && (
-              <button
-                onClick={() => {
-                  setEditId(null);
-                  setNewModuleName("");
-                  setSerialNumber("");
-                  setSelectedTier("");
-                }}
-                className="ml-4 px-6 py-2 mt-7 bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-500 transition-colors shadow"
-              >
-                Cancel
-              </button>
-            )}
-          </div>
+          )}
+
         </div>
       </div>
 
       {/* Module List */}
       <div className="bg-white shadow-md rounded-xl p-6">
+
         {modules.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
                   <th className="px-4 py-3 text-left">SI</th>
-                  <th className="px-4 py-3 text-left">Module Name</th>
+                  <th className="px-4 py-3 text-left">Module</th>
                   <th className="px-4 py-3 text-left">Tier</th>
                   <th className="px-4 py-3 text-left">Actions</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -191,9 +197,7 @@ const ModuleManager: React.FC = () => {
                     key={module.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
-                    <td className="px-4 py-3 text-gray-800">
-                      {module.serialNumber}
-                    </td>
+                    <td className="px-4 py-3 text-gray-800">{module.serialNumber}</td>
                     <td className="px-4 py-3 text-gray-800">{module.name}</td>
                     <td className="px-4 py-3 text-gray-800">{module.tier}</td>
                     <td className="px-4 py-3 flex gap-3">
@@ -208,13 +212,11 @@ const ModuleManager: React.FC = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button
-                        onClick={() => handleDeleteModule(module.id)}
-                        className="text-red-600 hover:text-red-800"
-                      >
+                      <button onClick={() => handleDeleteModule(module.id)} className="text-red-600 hover:text-red-800">
                         <FaTrash />
                       </button>
                     </td>
+
                   </tr>
                 ))}
               </tbody>

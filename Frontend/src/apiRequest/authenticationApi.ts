@@ -1,7 +1,7 @@
 // src/services/authService.ts
 import axios from "axios";
 
-const baseURL = "http://localhost:3000/"
+const baseURL = "http://192.168.5.171:3000/"
 
 interface LoginPayload {
   username: string;
