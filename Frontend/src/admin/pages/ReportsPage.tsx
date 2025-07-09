@@ -65,8 +65,7 @@ const columnKeys = [
   "subSubItem",
   "subSubSubItem",
   "DPGroupCode",
-  "Data Point",
-  "displayType",
+  "DataPoint"
 ];
 
 const ReportsPage: React.FC = () => {
@@ -173,8 +172,8 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
     subItem: "Sub Item",
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
-    field: "Field",
-    displayType: "Display Type",
+    field: "Data Point",
+    displayType: "DP Group Code",
   };
 
   return (
@@ -256,12 +255,11 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
 
       <div className="flex">
         <div className="mb-4">
-  <h4 className="font-medium mb-2">Select Column Range (2 max):</h4>
   <div className="flex flex-wrap gap-4">
     {columnKeys.map((key) => (
       <label key={key} className="flex items-center gap-1 text-sm">
         <input
-          type="checkbox"
+          type="radio"
           checked={rangeSelection.includes(key)}
           onChange={() => {
             if (rangeSelection.includes(key)) {
@@ -276,45 +274,6 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
     ))}
   </div>
 </div>
-
-
-{visibleColumns.length > 0 && (
-  <div className="relative mt-6 ml-auto inline-block text-left">
-    <button
-      type="button"
-      onClick={() => setShowHideDropdown(!showHideDropdown)}
-      className="inline-flex justify-between items-center px-4 py-2 border border-gray-300 rounded shadow-sm text-sm font-medium bg-white hover:bg-gray-50"
-    >
-      Hide Columns ▾
-    </button>
-
-    {showHideDropdown && (
-      <div className="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-3">
-        {visibleColumns.concat(hiddenColumns)
-          .filter((col, index, self) => self.indexOf(col) === index)
-          .map((colKey) => (
-            <label
-              key={colKey}
-              className="flex items-center gap-2 text-sm mb-1 cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                checked={!hiddenColumns.includes(colKey)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setHiddenColumns(hiddenColumns.filter((key) => key !== colKey));
-                  } else {
-                    setHiddenColumns([...hiddenColumns, colKey]);
-                  }
-                }}
-              />
-              {columnLabels[colKey]}
-            </label>
-          ))}
-      </div>
-    )}
-  </div>
-)}
 
 
       </div>
@@ -347,11 +306,11 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                 {visibleColumns.includes("subSubSubItem") && (
                   <th className="p-2 text-left">SSS Item</th>
                 )}
-                {visibleColumns.includes("field") && (
-                  <th className="p-2 text-left">Field</th>
+                {visibleColumns.includes("DataPoint") && (
+                  <th className="p-2 text-left">Data Point</th>
                 )}
-                {visibleColumns.includes("field") && (
-                  <th className="p-2 text-left">Display Type</th>
+                {visibleColumns.includes("DPGroupCode") && (
+                  <th className="p-2 text-left">DP Group Code</th>
                 )}
               </tr>
             </thead>
@@ -397,10 +356,10 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                       )?.name || ""}
                     </td>
                   )}
-                  {visibleColumns.includes("field") && (
+                  {visibleColumns.includes("DataPoint") && (
                     <td className="p-2">{f.name}</td>
                   )}
-                  {visibleColumns.includes("displayType") && (
+                  {visibleColumns.includes("DP Group Code") && (
                     <td className="p-2">{selectedDisplayType}</td>
                   )}
                 </tr>
