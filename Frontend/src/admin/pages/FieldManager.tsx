@@ -59,6 +59,7 @@ interface Field {
   displayType: string;
   dataType: string;
   isRequired: boolean;
+  isHide: boolean;
   subSubSubItem: SubSubSubItem;
   serialNumber?: string;
   fieldGroupCode?: string;
@@ -164,6 +165,7 @@ const FieldManager: React.FC = () => {
       serialNumber,
       fieldGroupCode,
       tier,
+      isHide
     };
 
     try {
@@ -188,6 +190,7 @@ const FieldManager: React.FC = () => {
       setSelectedDisplayType("");
       setSelectedFieldType("");
       setIsRequired(false);
+      setIsHide(false);
       setSelectedSubSubSubItem("");
     } catch (e) {
       toast.error("Failed to save field.");
@@ -437,7 +440,7 @@ const FieldManager: React.FC = () => {
           options={fieldTypes.map((f) => ({ label: f, value: f }))}
           onChange={(val) => setSelectedFieldType(val)}
         /> */}
-        <div className="flex items-center space-x-2 mt-2">
+        <div className="flex justify-bwteen items-center space-x-2 mt-2">
           <input
             type="checkbox"
             checked={isHide}
@@ -451,8 +454,8 @@ const FieldManager: React.FC = () => {
           >
             Is Hide
           </label>
-        </div>
-        <div className="flex items-center space-x-2 mt-2">
+        {/* </div> */}
+        {/* <div className="flex items-center space-x-2 mt-2"> */}
           <input
             type="checkbox"
             checked={isRequired}
@@ -552,7 +555,7 @@ const FieldManager: React.FC = () => {
 
                 <td className="p-2">{f.name}</td>
                 <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
-                <td className="p-2">-</td>
+                <td className="p-2">{f.isHide ? "Yes" : "No"}</td>
                 <td className="p-2">{f.dataType}</td>
 
                 <td className="px-4 py-3 flex gap-3">

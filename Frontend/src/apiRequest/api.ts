@@ -326,6 +326,7 @@ export const addField = async (data: {
   serialNumber: string;
   fieldGroupCode: string;
   tier: string;
+  isHide: boolean
   
 }) => {
   try {
@@ -349,6 +350,7 @@ export const updateField = async (
     serialNumber: string;
     fieldGroupCode: string;
     tier: string;
+    isHide: boolean
   }
 ) => {
   try {
