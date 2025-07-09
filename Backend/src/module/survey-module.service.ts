@@ -480,6 +480,7 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     newField.displayType = field.displayType;
     newField.dataType = field.dataType;
     newField.tier=field.tier;
+    newField.isHide=field.isHide;
     //newField.description="default";
     newField.isRequired = field.isRequired;
     newField.description="default";
@@ -532,6 +533,7 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     existing.userId = user.id;
     existing.fieldGroupCode=updated.fieldGroupCode;
     existing.description="default";
+    existing.isHide=updated.isHide;
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
