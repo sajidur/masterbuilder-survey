@@ -86,6 +86,7 @@ const FieldManager: React.FC = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedFieldType, setSelectedFieldType] = useState("");
   const [isRequired, setIsRequired] = useState(false);
+  const [isHide, setIsHide] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [fieldGroupCode, setFieldGroupCode] = useState("");
@@ -208,11 +209,11 @@ const FieldManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 p-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          DP Manager
+          DP Group
         </h2>
 
         <Dropdown
-          label="Mod"
+          label="Module"
           value={selectedModule}
           options={modules.map((m) => ({ label: m.name, value: m.id }))}
           onChange={(val) => {
@@ -436,7 +437,21 @@ const FieldManager: React.FC = () => {
           options={fieldTypes.map((f) => ({ label: f, value: f }))}
           onChange={(val) => setSelectedFieldType(val)}
         /> */}
-
+        <div className="flex items-center space-x-2 mt-2">
+          <input
+            type="checkbox"
+            checked={isHide}
+            onChange={(e) => setIsHide(e.target.checked)}
+            className="w-4 h-4"
+            id="ishide-checkbox"
+          />
+          <label
+            htmlFor="ishide-checkbox"
+            className="text-sm font-medium text-gray-700"
+          >
+            Is Hide
+          </label>
+        </div>
         <div className="flex items-center space-x-2 mt-2">
           <input
             type="checkbox"
@@ -495,16 +510,12 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">S-S-S-Item</th>
               <th className="p-2 text-left">DP Group Code</th>
               <th className="p-2 text-left">Tier</th>
-
               <th className="p-2 text-left">Display Type</th>
-
               <th className="p-2 text-left">SI</th>
-
               <th className="p-2 text-left">DP Name</th>
               <th className="p-2 text-left">Required</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Data Type</th>
-
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>

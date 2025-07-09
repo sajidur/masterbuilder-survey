@@ -54,7 +54,7 @@ interface Field {
   subSubSubItem?: SubSubSubItem;
 }
 
-const displayTypeOptions = ["tree", "graph", "table", "individual field"];
+const displayTypeOptions = ["Tree", "Graph", "Table", "DP","Card"];
 
 const columnKeys = [
   "module",
@@ -170,8 +170,8 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
     menu: "Menu",
     item: "Item",
     subItem: "SubItem",
-    subSubItem: "SubSubItem",
-    subSubSubItem: "SubSubSubItem",
+    subSubItem: "S-S Item",
+    subSubSubItem: "S-S-S Item",
     field: "Field",
     displayType: "Display Type",
   };
@@ -215,7 +215,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubItem}
         />
         <Dropdown
-          label="SubSubItem"
+          label="S-S Item"
           value={selectedSubSubItem}
           options={filteredSubSubItems.map((s) => ({
             label: s.name,
@@ -224,7 +224,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubSubItem}
         />
         <Dropdown
-          label="SubSubSubItem"
+          label="S-S-S Item"
           value={selectedSubSubSubItem}
           options={filteredSubSubSubItems.map((s) => ({
             label: s.name,
@@ -341,10 +341,10 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                   <th className="p-2 text-left">SubItem</th>
                 )}
                 {visibleColumns.includes("subSubItem") && (
-                  <th className="p-2 text-left">SubSubItem</th>
+                  <th className="p-2 text-left">S-S Item</th>
                 )}
                 {visibleColumns.includes("subSubSubItem") && (
-                  <th className="p-2 text-left">SubSubSubItem</th>
+                  <th className="p-2 text-left">S-S-S Item</th>
                 )}
                 {visibleColumns.includes("field") && (
                   <th className="p-2 text-left">Field</th>
