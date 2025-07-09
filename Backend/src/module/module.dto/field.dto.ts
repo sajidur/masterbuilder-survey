@@ -12,6 +12,7 @@ export class FieldDto {
   description: string;
   fieldGroupCode: string;
   isRequired: boolean;
+  isHide:boolean;
   subSubSubItemId: string;
   subSubSubItem?: SubSubSubItemDto | null;
 }
@@ -48,6 +49,9 @@ export class CreateFieldDto {
   @ApiProperty({ description: 'Is the field required' })
   @IsBoolean()
   isRequired: boolean;
+   @ApiProperty({ description: 'Is the field hidden' })
+  @IsBoolean()
+  isHide: boolean;
   @ApiProperty({ description: 'SubSubSubItem ID' })
   @IsString()
   @IsNotEmpty()

@@ -40,5 +40,6 @@ export class Field {
   dataType:string;
     @Column()
   isRequired:boolean;
-    
+     @Column()
+  isHide:boolean;
 }

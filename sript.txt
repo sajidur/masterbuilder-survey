@@ -155,6 +155,6 @@ This script gives a *modular report-viewing tool*, customizable through chained 
 
 
 
-update ssitem query in db for rename buttonType to editButton
-ALTER TABLE survey_app_db.sub_sub_item
-CHANGE COLUMN buttonType editButton VARCHAR(255);
+in field db (mysql) run below command to add isHide boolean type data
+ALTER TABLE table_name
+ADD COLUMN isHide BOOLEAN DEFAULT false;
