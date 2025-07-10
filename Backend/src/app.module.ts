@@ -70,8 +70,8 @@ import { JwtModule } from '@nestjs/jwt';
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: '',
-  database: 'mukut_feature_db',
+  password: 'Root@pass1',
+  database: 'survey_app_db',
   synchronize: false,
   autoLoadEntities: true,
   charset: 'utf8mb4_unicode_ci',
@@ -92,6 +92,7 @@ import { JwtModule } from '@nestjs/jwt';
     SurveyModuleModule,
     SurveyConfigModule,
     TemplateModule
+    
   ],
 })
 export class AppModule {

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
- 
+
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -61,6 +61,9 @@ import {
 import { Template } from 'src/Template/entity/template';
 import { memoryUsage } from 'process';
 import { escapeId } from 'mysql2';
+import { DataPoint } from './module.entity/dataPoint.entity';
+import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
+import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -80,6 +83,8 @@ export class SurveyModuleService {
     private readonly subSubSubItemRepo: Repository<SubSubSubItem>,
     @InjectRepository(Template)
     private readonly TemplateRepo: Repository<Template>,
+    @InjectRepository(DataPoint)
+    private readonly dataPointRepo: Repository<DataPoint>,
   ) {}
   //subsubitem
   async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
@@ -92,25 +97,25 @@ export class SurveyModuleService {
         `SubItem with ID ${subSubItem.subItemId} not found`,
       );
     }
-   let template: Template | null = null;
+    let template: Template | null = null;
 
-if (subSubItem.templateId) {
-  template = await this.TemplateRepo.findOne({
-    where: { id: subSubItem.templateId },
-  });
-}
+    if (subSubItem.templateId) {
+      template = await this.TemplateRepo.findOne({
+        where: { id: subSubItem.templateId },
+      });
+    }
     return {
       id: subSubItem.id,
       name: subSubItem.name,
       tier: subSubItem.tier,
-      layout:subSubItem.layout,
-      buttonType:subSubItem.buttonType,
-      buttonLabel:subSubItem.buttonLabel,
-      navigationTo:subSubItem.navigationTo,
-      serialNumber:subSubItem.serialNumber,
+      layout: subSubItem.layout,
+      buttonType: subSubItem.buttonType,
+      buttonLabel: subSubItem.buttonLabel,
+      navigationTo: subSubItem.navigationTo,
+      serialNumber: subSubItem.serialNumber,
       subItemId: subSubItem?.subItemId,
       subItem: await this.toSubItemDto(subItem),
-      templateText:subSubItem.templateText||null,
+      templateText: subSubItem.templateText || null,
       template: template || null,
     };
   }
@@ -133,26 +138,26 @@ if (subSubItem.templateId) {
         `SubItem with ID ${subSubItem.subItemId} not found in cache`,
       );
     }
- let template: Template | null = null;
+    let template: Template | null = null;
 
-if (subSubItem.templateId) {
-  template = await this.TemplateRepo.findOne({
-    where: { id: subSubItem.templateId },
-  });
-}
+    if (subSubItem.templateId) {
+      template = await this.TemplateRepo.findOne({
+        where: { id: subSubItem.templateId },
+      });
+    }
 
     return {
       id: subSubItem.id,
       name: subSubItem.name,
       tier: subSubItem.tier,
-      serialNumber:subSubItem.serialNumber,
-      layout:subSubItem.layout,
-      buttonType:subSubItem.buttonType,
-      buttonLabel:subSubItem.buttonLabel,
-      navigationTo:subSubItem.navigationTo,
+      serialNumber: subSubItem.serialNumber,
+      layout: subSubItem.layout,
+      buttonType: subSubItem.buttonType,
+      buttonLabel: subSubItem.buttonLabel,
+      navigationTo: subSubItem.navigationTo,
       subItemId: subSubItem.subItemId,
       subItem: subItemDto,
-      templateText:subSubItem.templateText||null,
+      templateText: subSubItem.templateText || null,
       template: template || null,
     };
   }
@@ -183,18 +188,29 @@ if (subSubItem.templateId) {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -210,7 +226,7 @@ if (subSubItem.templateId) {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
-        buttonLabel:item.buttonLabel,
+        buttonLabel: item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -238,8 +254,8 @@ if (subSubItem.templateId) {
         tier: subItem.tier,
         serialNumber: subItem.serialNumber,
         buttonType: subItem.buttonType,
-        layout:subItem.layout,
-        buttonLabel:subItem.buttonLabel,
+        layout: subItem.layout,
+        buttonLabel: subItem.buttonLabel,
         navigationTo: subItem.navigationTo,
         description: subItem.description,
         itemId: subItem.itemId,
@@ -277,11 +293,11 @@ if (subSubItem.templateId) {
     subSubItem.updatedBy = user.username;
     subSubItem.userId = user.id;
     subSubItem.tier = data.tier;
-    subSubItem.buttonType=data.buttonType;
-    subSubItem.buttonLabel=data.buttonLabel;
-    subSubItem.navigationTo=data.navigationTo;
-    subSubItem.layout=data.layout;
-    subSubItem.serialNumber=data.serialNumber;
+    subSubItem.buttonType = data.buttonType;
+    subSubItem.buttonLabel = data.buttonLabel;
+    subSubItem.navigationTo = data.navigationTo;
+    subSubItem.layout = data.layout;
+    subSubItem.serialNumber = data.serialNumber;
     subSubItem.templateId = data.templateId ?? subSubItem.templateId;
     subSubItem.templateText = data.templateText ?? subSubItem.templateText;
 
@@ -303,47 +319,64 @@ if (subSubItem.templateId) {
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
     existing.tier = data.tier;
-    existing.serialNumber=data.serialNumber;
-    existing.buttonLabel=data.buttonLabel;
-    existing.buttonType=data.buttonType;
-    existing.navigationTo=data.navigationTo;
-    existing.layout=data.layout;
+    existing.serialNumber = data.serialNumber;
+    existing.buttonLabel = data.buttonLabel;
+    existing.buttonType = data.buttonType;
+    existing.navigationTo = data.navigationTo;
+    existing.layout = data.layout;
     existing.templateId = data.templateId ?? existing.templateId;
     existing.templateText = data.templateText ?? existing.templateText;
     var updatedData = await this.subSubItemRepository.save(existing);
     return this.toSubSubItemDto(updatedData);
   }
 
-async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if SubSubItem exists
-  const subSubItem = await this.subSubItemRepository.findOne({ where: { id: subSubItemId } });
-  if (!subSubItem) {
-    return { status: 'error', message: `SubSubItem with ID ${subSubItemId} not found.` };
-  }
-
-  try {
-    // 2. Get all SubSubSubItems under this SubSubItem
-    const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId } });
-
-    for (const subSubSubItem of subSubSubItems) {
-      const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-
-      if (fields.length > 0) {
-        await this.fieldRepository.remove(fields);
-      }
-
-      await this.subSubSubItemRepo.remove(subSubSubItem);
+  async deleteSubSubItem(
+    subSubItemId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if SubSubItem exists
+    const subSubItem = await this.subSubItemRepository.findOne({
+      where: { id: subSubItemId },
+    });
+    if (!subSubItem) {
+      return {
+        status: 'error',
+        message: `SubSubItem with ID ${subSubItemId} not found.`,
+      };
     }
 
-    // 3. Remove the SubSubItem itself
-    await this.subSubItemRepository.remove(subSubItem);
+    try {
+      // 2. Get all SubSubSubItems under this SubSubItem
+      const subSubSubItems = await this.subSubSubItemRepo.find({
+        where: { subSubItemId },
+      });
 
-    return { status: 'success', message: 'SubSubItem and related data deleted successfully.' };
-  } catch (error) {
-    console.error('SubSubItem deletion failed:', error);
-    return { status: 'error', message: 'Failed to delete SubSubItem and related data.' };
+      for (const subSubSubItem of subSubSubItems) {
+        const fields = await this.fieldRepository.find({
+          where: { subSubSubItemId: subSubSubItem.id },
+        });
+
+        if (fields.length > 0) {
+          await this.fieldRepository.remove(fields);
+        }
+
+        await this.subSubSubItemRepo.remove(subSubSubItem);
+      }
+
+      // 3. Remove the SubSubItem itself
+      await this.subSubItemRepository.remove(subSubItem);
+
+      return {
+        status: 'success',
+        message: 'SubSubItem and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('SubSubItem deletion failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete SubSubItem and related data.',
+      };
+    }
   }
-}
 
   //field
   // async toFieldDto(field: Field): Promise<FieldDto> {
@@ -376,12 +409,12 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     return {
       id: field.id,
       name: field.name,
-      fieldGroupCode:field.fieldGroupCode,
-      description:field.description,
+      fieldGroupCode: field.fieldGroupCode,
+      description: field.description,
       isRequired: field.isRequired,
-      isHide:field.isHide,
+      isHide: field.isHide,
       dataType: field.dataType,
-      tier:field.tier,
+      tier: field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
@@ -455,12 +488,12 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     return {
       id: field.id,
       name: field.name,
-      fieldGroupCode:field.fieldGroupCode,
-      description:field.description,
+      fieldGroupCode: field.fieldGroupCode,
+      description: field.description,
       isRequired: field.isRequired,
-      isHide:field.isHide,
+      isHide: field.isHide,
       dataType: field.dataType,
-      tier:field.tier,
+      tier: field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
       subSubSubItemId: field.subSubSubItemId,
@@ -479,12 +512,12 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     newField.serialNumber = field.serialNumber;
     newField.displayType = field.displayType;
     newField.dataType = field.dataType;
-    newField.tier=field.tier;
-    newField.isHide=field.isHide;
+    newField.tier = field.tier;
+    newField.isHide = field.isHide;
     //newField.description="default";
     newField.isRequired = field.isRequired;
-    newField.description="default";
-    newField.fieldGroupCode=field.fieldGroupCode;
+    newField.description = 'default';
+    newField.fieldGroupCode = field.fieldGroupCode;
     const saved = await this.fieldRepository.save(newField);
 
     const subSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -501,12 +534,12 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       name: saved.name,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
-      description:newField.description,
-      fieldGroupCode:field.fieldGroupCode,
+      description: newField.description,
+      fieldGroupCode: field.fieldGroupCode,
       dataType: field.dataType,
-      tier:field.tier,
+      tier: field.tier,
       isRequired: field.isRequired,
-      isHide:field.isHide,
+      isHide: field.isHide,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubItem),
     };
@@ -529,11 +562,11 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     existing.serialNumber = updated.serialNumber;
     existing.isRequired = updated.isRequired;
     existing.dataType = updated.dataType;
-    existing.tier=updated.tier;
+    existing.tier = updated.tier;
     existing.userId = user.id;
-    existing.fieldGroupCode=updated.fieldGroupCode;
-    existing.description="default";
-    existing.isHide=updated.isHide;
+    existing.fieldGroupCode = updated.fieldGroupCode;
+    existing.description = 'default';
+    existing.isHide = updated.isHide;
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -549,11 +582,11 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
       id: saved.id,
       name: saved.name,
       isRequired: saved.isRequired,
-      isHide:saved.isHide,
-      fieldGroupCode:saved.fieldGroupCode,
-      description:saved.description,
+      isHide: saved.isHide,
+      fieldGroupCode: saved.fieldGroupCode,
+      description: saved.description,
       dataType: saved.dataType,
-      tier:saved.tier,
+      tier: saved.tier,
       displayType: saved.displayType,
       serialNumber: saved.serialNumber,
       subSubSubItemId: saved.subSubSubItemId,
@@ -561,23 +594,30 @@ async deleteSubSubItem(subSubItemId: string): Promise<{ status: string; message:
     };
   }
 
-async deleteField(fieldId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if field exists
-  const field = await this.fieldRepository.findOne({ where: { id: fieldId } });
-  if (!field) {
-    return { status: 'error', message: `Field with ID ${fieldId} not found.` };
-  }
+  async deleteField(
+    fieldId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if field exists
+    const field = await this.fieldRepository.findOne({
+      where: { id: fieldId },
+    });
+    if (!field) {
+      return {
+        status: 'error',
+        message: `Field with ID ${fieldId} not found.`,
+      };
+    }
 
-  try {
-    // 2. Remove the field
-    await this.fieldRepository.remove(field);
+    try {
+      // 2. Remove the field
+      await this.fieldRepository.remove(field);
 
-    return { status: 'success', message: 'Field deleted successfully.' };
-  } catch (error) {
-    console.error('Field deletion failed:', error);
-    return { status: 'error', message: 'Failed to delete field.' };
+      return { status: 'success', message: 'Field deleted successfully.' };
+    } catch (error) {
+      console.error('Field deletion failed:', error);
+      return { status: 'error', message: 'Failed to delete field.' };
+    }
   }
-}
 
   //subitem
   //    async findAllSubItems(): Promise<SubItem[]> {
@@ -604,11 +644,11 @@ async deleteField(fieldId: string): Promise<{ status: string; message: string }>
     }
     let template: Template | null = null;
 
-if (subItem.templateId) {
-  template = await this.TemplateRepo.findOne({
-    where: { id: subItem.templateId },
-  });
-}
+    if (subItem.templateId) {
+      template = await this.TemplateRepo.findOne({
+        where: { id: subItem.templateId },
+      });
+    }
 
     return {
       id: subItem.id,
@@ -616,13 +656,13 @@ if (subItem.templateId) {
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
-      buttonLabel:subItem.buttonLabel,
-      layout:subItem.layout,
+      buttonLabel: subItem.buttonLabel,
+      layout: subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
       itemId,
       item: itemDto,
-      templateText:subItem.templateText||null,
+      templateText: subItem.templateText || null,
       template: template || null,
     };
   }
@@ -650,18 +690,29 @@ if (subItem.templateId) {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -677,7 +728,7 @@ if (subItem.templateId) {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
-        buttonLabel:item.buttonLabel,
+        buttonLabel: item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -719,18 +770,29 @@ if (subItem.templateId) {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -747,7 +809,7 @@ if (subItem.templateId) {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
-        buttonLabel:item.buttonLabel,
+        buttonLabel: item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -777,12 +839,12 @@ if (subItem.templateId) {
     newSubItem.templateId = subItem.templateId ?? newSubItem.templateId;
     newSubItem.templateText = subItem.templateText ?? newSubItem.templateText;
     newSubItem.tier = subItem.tier;
-    newSubItem.serialNumber=subItem.serialNumber;
-    newSubItem.buttonType=subItem.buttonType;
-    newSubItem.buttonLabel=subItem.buttonLabel;
-    newSubItem.navigationTo=subItem.navigationTo;
-    newSubItem.layout=subItem.layout;
-    newSubItem.description=subItem.description;
+    newSubItem.serialNumber = subItem.serialNumber;
+    newSubItem.buttonType = subItem.buttonType;
+    newSubItem.buttonLabel = subItem.buttonLabel;
+    newSubItem.navigationTo = subItem.navigationTo;
+    newSubItem.layout = subItem.layout;
+    newSubItem.description = subItem.description;
     var data = this.subItemRepository.save(newSubItem);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -803,18 +865,29 @@ if (subItem.templateId) {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -831,7 +904,7 @@ if (subItem.templateId) {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
-        buttonLabel:item.buttonLabel,
+        buttonLabel: item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -856,14 +929,14 @@ if (subItem.templateId) {
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
     existing.tier = updated.tier;
-    existing.templateId = updated.templateId??existing.templateId;
-    existing.templateText=updated.templateText??existing.templateText;
-    existing.serialNumber=updated.serialNumber;
-    existing.buttonType=updated.buttonType;
-    existing.buttonLabel=updated.buttonLabel;
-    existing.navigationTo=updated.navigationTo;
-    existing.description=updated.description;
-    existing.layout=updated.layout;
+    existing.templateId = updated.templateId ?? existing.templateId;
+    existing.templateText = updated.templateText ?? existing.templateText;
+    existing.serialNumber = updated.serialNumber;
+    existing.buttonType = updated.buttonType;
+    existing.buttonLabel = updated.buttonLabel;
+    existing.navigationTo = updated.navigationTo;
+    existing.description = updated.description;
+    existing.layout = updated.layout;
     const data = this.subItemRepository.save(existing);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -884,18 +957,29 @@ if (subItem.templateId) {
       const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -912,7 +996,7 @@ if (subItem.templateId) {
         tier: item.tier,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
-        buttonLabel:item.buttonLabel,
+        buttonLabel: item.buttonLabel,
         navigationTo: item.navigationTo,
         description: item.description,
         menu: menuDto,
@@ -943,13 +1027,13 @@ if (subItem.templateId) {
     }
 
     itemDto = await this.toItemDto(item);
-  let template: Template | null = null;
+    let template: Template | null = null;
 
-if (subItem.templateId) {
-  template = await this.TemplateRepo.findOne({
-    where: { id: subItem.templateId },
-  });
-}
+    if (subItem.templateId) {
+      template = await this.TemplateRepo.findOne({
+        where: { id: subItem.templateId },
+      });
+    }
 
     return {
       id: subItem.id,
@@ -957,53 +1041,72 @@ if (subItem.templateId) {
       tier: subItem.tier,
       serialNumber: subItem.serialNumber,
       buttonType: subItem.buttonType,
-      buttonLabel:subItem.buttonLabel,
-      layout:subItem.layout,
+      buttonLabel: subItem.buttonLabel,
+      layout: subItem.layout,
       navigationTo: subItem.navigationTo,
       description: subItem.description,
       itemId: itemId, // Now guaranteed to be number
       item: itemDto,
-      templateText:subItem.templateText||null,
+      templateText: subItem.templateText || null,
       template: template || null,
     };
   }
 
-async deleteSubItem(subItemId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if subItem exists
-  const subItem = await this.subItemRepository.findOne({ where: { id: subItemId } });
-  if (!subItem) {
-    return { status: 'error', message: `SubItem with ID ${subItemId} not found.` };
-  }
-
-  try {
-    // 2. Get all subSubItems under this subItem
-    const subSubItems = await this.subSubItemRepository.find({ where: { subItemId } });
-
-    for (const subSubItem of subSubItems) {
-      const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
-
-      for (const subSubSubItem of subSubSubItems) {
-        const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-
-        if (fields.length > 0) {
-          await this.fieldRepository.remove(fields);
-        }
-
-        await this.subSubSubItemRepo.remove(subSubSubItem);
-      }
-
-      await this.subSubItemRepository.remove(subSubItem);
+  async deleteSubItem(
+    subItemId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if subItem exists
+    const subItem = await this.subItemRepository.findOne({
+      where: { id: subItemId },
+    });
+    if (!subItem) {
+      return {
+        status: 'error',
+        message: `SubItem with ID ${subItemId} not found.`,
+      };
     }
 
-    // 3. Remove the subItem
-    await this.subItemRepository.remove(subItem);
+    try {
+      // 2. Get all subSubItems under this subItem
+      const subSubItems = await this.subSubItemRepository.find({
+        where: { subItemId },
+      });
 
-    return { status: 'success', message: 'SubItem and related data deleted successfully.' };
-  } catch (error) {
-    console.error('SubItem deletion failed:', error);
-    return { status: 'error', message: 'Failed to delete subItem and related data.' };
+      for (const subSubItem of subSubItems) {
+        const subSubSubItems = await this.subSubSubItemRepo.find({
+          where: { subSubItemId: subSubItem.id },
+        });
+
+        for (const subSubSubItem of subSubSubItems) {
+          const fields = await this.fieldRepository.find({
+            where: { subSubSubItemId: subSubSubItem.id },
+          });
+
+          if (fields.length > 0) {
+            await this.fieldRepository.remove(fields);
+          }
+
+          await this.subSubSubItemRepo.remove(subSubSubItem);
+        }
+
+        await this.subSubItemRepository.remove(subSubItem);
+      }
+
+      // 3. Remove the subItem
+      await this.subItemRepository.remove(subItem);
+
+      return {
+        status: 'success',
+        message: 'SubItem and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('SubItem deletion failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete subItem and related data.',
+      };
+    }
   }
-}
 
   //item
   private async toItemDto(item: Item): Promise<ItemDto> {
@@ -1021,7 +1124,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       tier: item.tier,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
-      buttonLabel:item.buttonLabel,
+      buttonLabel: item.buttonLabel,
       navigationTo: item.navigationTo,
       description: item.description,
       menu: await this.toMenuDto(menu),
@@ -1048,7 +1151,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       tier: item.tier,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
-      buttonLabel:item.buttonLabel,
+      buttonLabel: item.buttonLabel,
       navigationTo: item.navigationTo,
       description: item.description,
       menu: menuDto,
@@ -1078,18 +1181,29 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -1118,18 +1232,29 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
 
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -1146,11 +1271,11 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
     newItem.updatedAt = new Date();
     newItem.updatedBy = user.username;
     newItem.userId = user.id;
-    newItem.serialNumber=item.serialNumber;
-    newItem.buttonType=item.buttonType;
-    newItem.navigationTo=item.navigationTo;
-    newItem.description=item.description;
-    newItem.buttonLabel=item.buttonLabel;
+    newItem.serialNumber = item.serialNumber;
+    newItem.buttonType = item.buttonType;
+    newItem.navigationTo = item.navigationTo;
+    newItem.description = item.description;
+    newItem.buttonLabel = item.buttonLabel;
     const created = await this.itemRepository.save(newItem);
     const [menus, apps, modules] = await Promise.all([
       this.menuRepository.find(),
@@ -1165,18 +1290,29 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       const app = appsMap.get(menu.appId);
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier,serialNumber:app.serialNumber, Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -1204,10 +1340,10 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
     item.name = updatedItem.name;
     item.updatedAt = new Date();
     item.updatedBy = user.username;
-    item.serialNumber=updatedItem.serialNumber;
-    item.buttonType=updatedItem.buttonType;
-    item.navigationTo=updatedItem.navigationTo;
-    item.description=updatedItem.description;
+    item.serialNumber = updatedItem.serialNumber;
+    item.buttonType = updatedItem.buttonType;
+    item.navigationTo = updatedItem.navigationTo;
+    item.description = updatedItem.description;
     item.tier = updatedItem.tier;
     const saved = await this.itemRepository.save(item);
     const appsMap = new Map(apps.map((app) => [app.id, app]));
@@ -1218,18 +1354,29 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       const app = appsMap.get(menu.appId);
       const module = app?.moduleId ? modulesMap.get(app.moduleId) : null;
       const moduleDto: ModuleDto | null = module
-        ? { id: module.id, name: module.name, tier: module.tier,serialNumber:module.serialNumber }
+        ? {
+            id: module.id,
+            name: module.name,
+            tier: module.tier,
+            serialNumber: module.serialNumber,
+          }
         : null;
 
       const appDto: AppDto | null = app
-        ? { id: app.id, name: app.name, tier: app.tier, serialNumber:app.serialNumber,Module: moduleDto }
+        ? {
+            id: app.id,
+            name: app.name,
+            tier: app.tier,
+            serialNumber: app.serialNumber,
+            Module: moduleDto,
+          }
         : null;
 
       menuDtoMap.set(menu.id, {
         id: menu.id,
         title: menu.title,
         tier: menu.tier,
-        serialNumber:menu.serialNumber,
+        serialNumber: menu.serialNumber,
         app: appDto,
       });
     }
@@ -1239,52 +1386,71 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
     //  return this.toItemDto(saved);
   }
 
- async deleteItem(itemId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if item exists
-  const item = await this.itemRepository.findOne({ where: { id: itemId } });
-  if (!item) {
-    return { status: 'error', message: `Item with ID ${itemId} not found.` };
-  }
-
-  try {
-    // 2. Get all subItems under the item
-    const subItems = await this.subItemRepository.find({ where: { itemId } });
-
-    for (const subItem of subItems) {
-      const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
-
-      for (const subSubItem of subSubItems) {
-        const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
-
-        for (const subSubSubItem of subSubSubItems) {
-          const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-
-          if (fields.length) {
-            await this.fieldRepository.remove(fields);
-          }
-
-          await this.subSubSubItemRepo.remove(subSubSubItem);
-        }
-
-        await this.subSubItemRepository.remove(subSubItem);
-      }
-
-      await this.subItemRepository.remove(subItem);
+  async deleteItem(
+    itemId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if item exists
+    const item = await this.itemRepository.findOne({ where: { id: itemId } });
+    if (!item) {
+      return { status: 'error', message: `Item with ID ${itemId} not found.` };
     }
 
-    // 3. Delete the item itself
-    await this.itemRepository.remove(item);
+    try {
+      // 2. Get all subItems under the item
+      const subItems = await this.subItemRepository.find({ where: { itemId } });
 
-    return { status: 'success', message: 'Item and related data deleted successfully.' };
-  } catch (error) {
-    console.error('Item delete failed:', error);
-    return { status: 'error', message: 'Failed to delete item and related data.' };
+      for (const subItem of subItems) {
+        const subSubItems = await this.subSubItemRepository.find({
+          where: { subItemId: subItem.id },
+        });
+
+        for (const subSubItem of subSubItems) {
+          const subSubSubItems = await this.subSubSubItemRepo.find({
+            where: { subSubItemId: subSubItem.id },
+          });
+
+          for (const subSubSubItem of subSubSubItems) {
+            const fields = await this.fieldRepository.find({
+              where: { subSubSubItemId: subSubSubItem.id },
+            });
+
+            if (fields.length) {
+              await this.fieldRepository.remove(fields);
+            }
+
+            await this.subSubSubItemRepo.remove(subSubSubItem);
+          }
+
+          await this.subSubItemRepository.remove(subSubItem);
+        }
+
+        await this.subItemRepository.remove(subItem);
+      }
+
+      // 3. Delete the item itself
+      await this.itemRepository.remove(item);
+
+      return {
+        status: 'success',
+        message: 'Item and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('Item delete failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete item and related data.',
+      };
+    }
   }
-}
 
   //modules
   findAll(): Promise<Modules[]> {
-    return this.modulesRepository.find();
+    // return this.modulesRepository.find();
+    return this.modulesRepository.find({
+      order: {
+        serialNumber: 'ASC', // use 'DESC' for descending order
+      },
+    });
   }
 
   async findOne(id: string): Promise<Modules> {
@@ -1308,7 +1474,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       updatedAt: now,
       updatedBy: user.username, // retain existing if not provided
       tier: dto.tier,
-      serialNumber:dto.serialNumber,
+      serialNumber: dto.serialNumber,
       name: dto.name,
     });
 
@@ -1323,7 +1489,7 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
       userId: userId,
       createdAt: new Date(),
       createdBy: user.username,
-      serialNumber:dto.serialNumber,
+      serialNumber: dto.serialNumber,
       updatedAt: new Date(),
       updatedBy: user.username,
     });
@@ -1337,65 +1503,84 @@ async deleteSubItem(subItemId: string): Promise<{ status: string; message: strin
 
   //   await this.modulesRepository.delete(id);
   // }
-async remove(moduleId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if module exists
-  const module = await this.modulesRepository.findOne({ where: { id: moduleId } });
-  if (!module) {
-    return { status: 'error', message: 'No such module found.' };
-  }
-
-  try {
-    // 2. Get all apps under the module
-    const apps = await this.appRepository.find({ where: { moduleId } });
-
-    for (const app of apps) {
-      const menus = await this.menuRepository.find({ where: { appId: app.id } });
-
-      for (const menu of menus) {
-        const items = await this.itemRepository.find({ where: { menuId: menu.id } });
-
-        for (const item of items) {
-          const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
-
-          for (const subItem of subItems) {
-            const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
-
-            for (const subSubItem of subSubItems) {
-              const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
-
-              for (const subSubSubItem of subSubSubItems) {
-                const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-                if (fields.length) {
-                  await this.fieldRepository.remove(fields);
-                }
-                await this.subSubSubItemRepo.remove(subSubSubItem);
-              }
-
-              await this.subSubItemRepository.remove(subSubItem);
-            }
-
-            await this.subItemRepository.remove(subItem);
-          }
-
-          await this.itemRepository.remove(item);
-        }
-
-        await this.menuRepository.remove(menu);
-      }
-
-      await this.appRepository.remove(app);
+  async remove(moduleId: string): Promise<{ status: string; message: string }> {
+    // 1. Check if module exists
+    const module = await this.modulesRepository.findOne({
+      where: { id: moduleId },
+    });
+    if (!module) {
+      return { status: 'error', message: 'No such module found.' };
     }
 
-    // 3. Delete the module itself
-    await this.modulesRepository.remove(module);
+    try {
+      // 2. Get all apps under the module
+      const apps = await this.appRepository.find({ where: { moduleId } });
 
-    return { status: 'success', message: 'Module and related data deleted successfully.' };
-  } catch (error) {
-    console.error('Delete failed:', error);
-    return { status: 'error', message: 'Failed to delete module and related data.' };
+      for (const app of apps) {
+        const menus = await this.menuRepository.find({
+          where: { appId: app.id },
+        });
+
+        for (const menu of menus) {
+          const items = await this.itemRepository.find({
+            where: { menuId: menu.id },
+          });
+
+          for (const item of items) {
+            const subItems = await this.subItemRepository.find({
+              where: { itemId: item.id },
+            });
+
+            for (const subItem of subItems) {
+              const subSubItems = await this.subSubItemRepository.find({
+                where: { subItemId: subItem.id },
+              });
+
+              for (const subSubItem of subSubItems) {
+                const subSubSubItems = await this.subSubSubItemRepo.find({
+                  where: { subSubItemId: subSubItem.id },
+                });
+
+                for (const subSubSubItem of subSubSubItems) {
+                  const fields = await this.fieldRepository.find({
+                    where: { subSubSubItemId: subSubSubItem.id },
+                  });
+                  if (fields.length) {
+                    await this.fieldRepository.remove(fields);
+                  }
+                  await this.subSubSubItemRepo.remove(subSubSubItem);
+                }
+
+                await this.subSubItemRepository.remove(subSubItem);
+              }
+
+              await this.subItemRepository.remove(subItem);
+            }
+
+            await this.itemRepository.remove(item);
+          }
+
+          await this.menuRepository.remove(menu);
+        }
+
+        await this.appRepository.remove(app);
+      }
+
+      // 3. Delete the module itself
+      await this.modulesRepository.remove(module);
+
+      return {
+        status: 'success',
+        message: 'Module and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('Delete failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete module and related data.',
+      };
+    }
   }
-}
-
 
   // ---------- APP METHODS ----------
   //    private async toDto(app: App): Promise<AppDto> {
@@ -1430,7 +1615,7 @@ async remove(moduleId: string): Promise<{ status: string; message: string }> {
       id: app.id,
       name: app.name,
       tier: app.tier,
-      serialNumber:app.serialNumber,
+      serialNumber: app.serialNumber,
       Module: module,
     };
   }
@@ -1490,7 +1675,7 @@ async remove(moduleId: string): Promise<{ status: string; message: string }> {
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: user.id,
-      serialNumber:createAppDto.serialNumber,
+      serialNumber: createAppDto.serialNumber,
       createdBy: user.username,
       updatedBy: user.username,
     });
@@ -1528,61 +1713,76 @@ async remove(moduleId: string): Promise<{ status: string; message: string }> {
     return this.toDto(updated, modulesMap);
   }
 
-async deleteApp(appId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if app exists
-  const app = await this.appRepository.findOne({ where: { id: appId } });
-  if (!app) {
-    return { status: 'error', message: 'No such app found.' };
-  }
-
-  try {
-    // 2. Get all menus under the app
-    const menus = await this.menuRepository.find({ where: { appId } });
-
-    for (const menu of menus) {
-      const items = await this.itemRepository.find({ where: { menuId: menu.id } });
-
-      for (const item of items) {
-        const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
-
-        for (const subItem of subItems) {
-          const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
-
-          for (const subSubItem of subSubItems) {
-            const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
-
-            for (const subSubSubItem of subSubSubItems) {
-              const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-
-              if (fields.length) {
-                await this.fieldRepository.remove(fields);
-              }
-
-              await this.subSubSubItemRepo.remove(subSubSubItem);
-            }
-
-            await this.subSubItemRepository.remove(subSubItem);
-          }
-
-          await this.subItemRepository.remove(subItem);
-        }
-
-        await this.itemRepository.remove(item);
-      }
-
-      await this.menuRepository.remove(menu);
+  async deleteApp(appId: string): Promise<{ status: string; message: string }> {
+    // 1. Check if app exists
+    const app = await this.appRepository.findOne({ where: { id: appId } });
+    if (!app) {
+      return { status: 'error', message: 'No such app found.' };
     }
 
-    // 3. Delete the app itself
-    await this.appRepository.remove(app);
+    try {
+      // 2. Get all menus under the app
+      const menus = await this.menuRepository.find({ where: { appId } });
 
-    return { status: 'success', message: 'App and related data deleted successfully.' };
-  } catch (error) {
-    console.error('App delete failed:', error);
-    return { status: 'error', message: 'Failed to delete app and related data.' };
+      for (const menu of menus) {
+        const items = await this.itemRepository.find({
+          where: { menuId: menu.id },
+        });
+
+        for (const item of items) {
+          const subItems = await this.subItemRepository.find({
+            where: { itemId: item.id },
+          });
+
+          for (const subItem of subItems) {
+            const subSubItems = await this.subSubItemRepository.find({
+              where: { subItemId: subItem.id },
+            });
+
+            for (const subSubItem of subSubItems) {
+              const subSubSubItems = await this.subSubSubItemRepo.find({
+                where: { subSubItemId: subSubItem.id },
+              });
+
+              for (const subSubSubItem of subSubSubItems) {
+                const fields = await this.fieldRepository.find({
+                  where: { subSubSubItemId: subSubSubItem.id },
+                });
+
+                if (fields.length) {
+                  await this.fieldRepository.remove(fields);
+                }
+
+                await this.subSubSubItemRepo.remove(subSubSubItem);
+              }
+
+              await this.subSubItemRepository.remove(subSubItem);
+            }
+
+            await this.subItemRepository.remove(subItem);
+          }
+
+          await this.itemRepository.remove(item);
+        }
+
+        await this.menuRepository.remove(menu);
+      }
+
+      // 3. Delete the app itself
+      await this.appRepository.remove(app);
+
+      return {
+        status: 'success',
+        message: 'App and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('App delete failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete app and related data.',
+      };
+    }
   }
-}
-
 
   //manu
   private async toMenuDto(menu: Menu): Promise<MenuDto> {
@@ -1599,22 +1799,22 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
       id: module.id,
       name: module.name,
       tier: module.tier,
-      serialNumber:module.serialNumber
+      serialNumber: module.serialNumber,
     };
 
     const appDto: AppDto | null = app && {
       id: app.id,
       name: app.name,
       tier: app.tier,
-      serialNumber:app.serialNumber,
-      Module: moduleDto
+      serialNumber: app.serialNumber,
+      Module: moduleDto,
     };
 
     return {
       id: menu.id,
       title: menu.title,
       tier: menu.tier,
-      serialNumber:menu.serialNumber,
+      serialNumber: menu.serialNumber,
       app: appDto,
     };
   }
@@ -1646,7 +1846,7 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
       id: module.id,
       name: module.name,
       tier: module.tier,
-      serialNumber:module.serialNumber
+      serialNumber: module.serialNumber,
     };
 
     const appDto: AppDto | null = app && {
@@ -1654,14 +1854,14 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
       name: app.name,
       tier: app.tier,
       Module: moduleDto,
-      serialNumber:app.serialNumber
+      serialNumber: app.serialNumber,
     };
 
     return {
       id: menu.id,
       title: menu.title,
       tier: menu.tier,
-      serialNumber:menu.serialNumber,
+      serialNumber: menu.serialNumber,
       app: appDto,
     };
   }
@@ -1725,7 +1925,7 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
     menu.createdBy = user.username;
     menu.updatedBy = user.username;
     menu.tier = menuDto.tier;
-    menu.serialNumber=menuDto.serialNumber;
+    menu.serialNumber = menuDto.serialNumber;
     // Save entity to DB
     const saved = await this.menuRepository.save(menu);
     console.log('menu appId ' + saved.appId);
@@ -1772,7 +1972,7 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
     menu.updatedAt = new Date();
     menu.updatedBy = user.username;
     menu.tier = updateDto.tier;
-    menu.serialNumber=updateDto.serialNumber;
+    menu.serialNumber = updateDto.serialNumber;
     const merged = this.menuRepository.merge(menu, updateDto);
 
     // Save updated entity
@@ -1783,54 +1983,70 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
     // return await this.toMenuDto(saved);
   }
 
- async deleteMenu(menuId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if menu exists
-  const menu = await this.menuRepository.findOne({ where: { id: menuId } });
-  if (!menu) {
-    return { status: 'error', message: `Menu with ID ${menuId} not found.` };
-  }
-
-  try {
-    // 2. Get all items under the menu
-    const items = await this.itemRepository.find({ where: { menuId } });
-
-    for (const item of items) {
-      const subItems = await this.subItemRepository.find({ where: { itemId: item.id } });
-
-      for (const subItem of subItems) {
-        const subSubItems = await this.subSubItemRepository.find({ where: { subItemId: subItem.id } });
-
-        for (const subSubItem of subSubItems) {
-          const subSubSubItems = await this.subSubSubItemRepo.find({ where: { subSubItemId: subSubItem.id } });
-
-          for (const subSubSubItem of subSubSubItems) {
-            const fields = await this.fieldRepository.find({ where: { subSubSubItemId: subSubSubItem.id } });
-
-            if (fields.length) {
-              await this.fieldRepository.remove(fields);
-            }
-
-            await this.subSubSubItemRepo.remove(subSubSubItem);
-          }
-
-          await this.subSubItemRepository.remove(subSubItem);
-        }
-
-        await this.subItemRepository.remove(subItem);
-      }
-
-      await this.itemRepository.remove(item);
+  async deleteMenu(
+    menuId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if menu exists
+    const menu = await this.menuRepository.findOne({ where: { id: menuId } });
+    if (!menu) {
+      return { status: 'error', message: `Menu with ID ${menuId} not found.` };
     }
 
-    // 3. Delete the menu itself
-    await this.menuRepository.remove(menu);
+    try {
+      // 2. Get all items under the menu
+      const items = await this.itemRepository.find({ where: { menuId } });
 
-    return { status: 'success', message: 'Menu and related data deleted successfully.' };
-  } catch (error) {
-    console.error('Menu delete failed:', error);
-    return { status: 'error', message: 'Failed to delete menu and related data.' };
+      for (const item of items) {
+        const subItems = await this.subItemRepository.find({
+          where: { itemId: item.id },
+        });
+
+        for (const subItem of subItems) {
+          const subSubItems = await this.subSubItemRepository.find({
+            where: { subItemId: subItem.id },
+          });
+
+          for (const subSubItem of subSubItems) {
+            const subSubSubItems = await this.subSubSubItemRepo.find({
+              where: { subSubItemId: subSubItem.id },
+            });
+
+            for (const subSubSubItem of subSubSubItems) {
+              const fields = await this.fieldRepository.find({
+                where: { subSubSubItemId: subSubSubItem.id },
+              });
+
+              if (fields.length) {
+                await this.fieldRepository.remove(fields);
+              }
+
+              await this.subSubSubItemRepo.remove(subSubSubItem);
+            }
+
+            await this.subSubItemRepository.remove(subSubItem);
+          }
+
+          await this.subItemRepository.remove(subItem);
+        }
+
+        await this.itemRepository.remove(item);
+      }
+
+      // 3. Delete the menu itself
+      await this.menuRepository.remove(menu);
+
+      return {
+        status: 'success',
+        message: 'Menu and related data deleted successfully.',
+      };
+    } catch (error) {
+      console.error('Menu delete failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete menu and related data.',
+      };
+    }
   }
-}
 
   private async toSubSubSubItemDto(
     entity: SubSubSubItem,
@@ -1850,28 +2066,28 @@ async deleteApp(appId: string): Promise<{ status: string; message: string }> {
 
       subSubItemDto = await this.toSubSubItemDto(subSubItem);
     }
-  let template: Template | null = null;
+    let template: Template | null = null;
 
-if (entity.templateId) {
-  template = await this.TemplateRepo.findOne({
-    where: { id: entity.templateId },
-  });
-}
+    if (entity.templateId) {
+      template = await this.TemplateRepo.findOne({
+        where: { id: entity.templateId },
+      });
+    }
 
     return {
       id: entity.id,
       name: entity.name,
       tier: entity.tier,
       subSubItemId: entity.subSubItemId,
-      serialNumber:entity.serialNumber,
+      serialNumber: entity.serialNumber,
       subSubItem: subSubItemDto,
-      layout:entity.layout,
+      layout: entity.layout,
       userId: entity.userId,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       createdBy: entity.createdBy,
       updatedBy: entity.updatedBy,
-      templateText:entity.templateText||null,
+      templateText: entity.templateText || null,
       template: template || null,
     };
   }
@@ -1889,32 +2105,32 @@ if (entity.templateId) {
     return this.toSubSubSubItemDto(item);
   }
 
-async createSubSubSubItem(
-  dto: CreateSubSubSubItemDto,
-  user: any,
-): Promise<SubSubSubItemDto> {
-  const now = new Date();
+  async createSubSubSubItem(
+    dto: CreateSubSubSubItemDto,
+    user: any,
+  ): Promise<SubSubSubItemDto> {
+    const now = new Date();
 
-  const entity = this.subSubSubItemRepo.create({
-    name: dto.name,
-    tier: dto.tier,
-    layout: dto.layout,
-    serialNumber: dto.serialNumber,
-    templateId: dto.templateId ?? null,
-    templateText: dto.templateText ?? null,
-    subSubItemId: dto.subSubItemId ?? null,
-    userId: user.id,
-    createdBy: user.username,
-    updatedBy: user.username,
-    createdAt: now,
-    updatedAt: now,
-  } as Partial<SubSubSubItem>); // 👈 Ensure correct typing
-  // or you can cast like this if you imported SubSubSubItem directly:
-  // } as DeepPartial<SubSubSubItem>);
+    const entity = this.subSubSubItemRepo.create({
+      name: dto.name,
+      tier: dto.tier,
+      layout: dto.layout,
+      serialNumber: dto.serialNumber,
+      templateId: dto.templateId ?? null,
+      templateText: dto.templateText ?? null,
+      subSubItemId: dto.subSubItemId ?? null,
+      userId: user.id,
+      createdBy: user.username,
+      updatedBy: user.username,
+      createdAt: now,
+      updatedAt: now,
+    } as Partial<SubSubSubItem>); // 👈 Ensure correct typing
+    // or you can cast like this if you imported SubSubSubItem directly:
+    // } as DeepPartial<SubSubSubItem>);
 
-  const saved = await this.subSubSubItemRepo.save(entity);
-  return this.toSubSubSubItemDto(saved);
-}
+    const saved = await this.subSubSubItemRepo.save(entity);
+    return this.toSubSubSubItemDto(saved);
+  }
   async updateSubSubSubItem(
     id: string,
     dto: CreateSubSubSubItemDto,
@@ -1934,29 +2150,142 @@ async createSubSubSubItem(
     const updated = await this.subSubSubItemRepo.save(existing);
     return this.toSubSubSubItemDto(updated);
   }
-async deleteSubSubSubItem(subSubSubItemId: string): Promise<{ status: string; message: string }> {
-  // 1. Check if SubSubSubItem exists
-  const subSubSubItem = await this.subSubSubItemRepo.findOne({ where: { id: subSubSubItemId } });
-  if (!subSubSubItem) {
-    return { status: 'error', message: `SubSubSubItem with ID ${subSubSubItemId} not found.` };
-  }
-
-  try {
-    // 2. Get all fields under this SubSubSubItem
-    const fields = await this.fieldRepository.find({ where: { subSubSubItemId } });
-
-    if (fields.length > 0) {
-      await this.fieldRepository.remove(fields);
+  async deleteSubSubSubItem(
+    subSubSubItemId: string,
+  ): Promise<{ status: string; message: string }> {
+    // 1. Check if SubSubSubItem exists
+    const subSubSubItem = await this.subSubSubItemRepo.findOne({
+      where: { id: subSubSubItemId },
+    });
+    if (!subSubSubItem) {
+      return {
+        status: 'error',
+        message: `SubSubSubItem with ID ${subSubSubItemId} not found.`,
+      };
     }
 
-    // 3. Remove the SubSubSubItem itself
-    await this.subSubSubItemRepo.remove(subSubSubItem);
+    try {
+      // 2. Get all fields under this SubSubSubItem
+      const fields = await this.fieldRepository.find({
+        where: { subSubSubItemId },
+      });
 
-    return { status: 'success', message: 'SubSubSubItem and related fields deleted successfully.' };
-  } catch (error) {
-    console.error('SubSubSubItem deletion failed:', error);
-    return { status: 'error', message: 'Failed to delete SubSubSubItem and related fields.' };
+      if (fields.length > 0) {
+        await this.fieldRepository.remove(fields);
+      }
+
+      // 3. Remove the SubSubSubItem itself
+      await this.subSubSubItemRepo.remove(subSubSubItem);
+
+      return {
+        status: 'success',
+        message: 'SubSubSubItem and related fields deleted successfully.',
+      };
+    } catch (error) {
+      console.error('SubSubSubItem deletion failed:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete SubSubSubItem and related fields.',
+      };
+    }
   }
+   private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
+    if (!entity.itemId) {
+      throw new BadRequestException('DataPoint must have a valid itemId');
+    }
+
+    const item = await this.itemRepository.findOne({
+      where: { id: entity.itemId },
+    });
+
+    if (!item) {
+      throw new NotFoundException(`Item with ID ${entity.itemId} not found`);
+    }
+
+    const itemDto: ItemDto = await this.toItemDto(item); // Assuming this method exists
+
+    const dto = new DataPointDto();
+    dto.id = entity.id;
+    dto.dpGroupCode = entity.dpGroupCode;
+    dto.dataPoint = entity.dataPoint;
+    dto.serialNumber = entity.serialNumber;
+    dto.dataType = entity.dataType;
+    dto.isRequired = entity.isRequired;
+    dto.isHide = entity.isHide;
+    dto.createdAt = entity.createdAt;
+    dto.updatedAt = entity.updatedAt;
+    dto.createdBy = entity.createdBy;
+    dto.updatedBy = entity.updatedBy;
+    dto.userId = entity.userId;
+    dto.Item = itemDto;
+    return dto;
+  }
+
+  async findAllDataPoint(): Promise<DataPointDto[]> {
+  const list = await this.dataPointRepo.find({
+    order: {
+      serialNumber: 'ASC', // use 'DESC' for descending order
+    },
+  });
+
+  const dtoList = await Promise.all(list.map((dp) => this.toDataPointDto(dp)));
+  return dtoList;
 }
+ 
+
+  async findOneDataPoint(id: string): Promise<DataPointDto> {
+    const dp = await this.dataPointRepo.findOne({ where: { id } });
+    if (!dp) throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    return this.toDataPointDto(dp);
+  }
+
+  async createDataPoint(
+    dto: CreateDataPointDto,
+    user: any,
+  ): Promise<DataPointDto> {
+    const newEntity = this.dataPointRepo.create({
+      ...dto,
+      userId: user?.userId,
+      createdBy: user?.userId || 'system',
+      updatedBy: user?.userId || 'system',
+    });
+
+    const saved = await this.dataPointRepo.save(newEntity);
+    return this.toDataPointDto(saved);
+  }
+
+  async updateDataPoint(
+    id: string,
+    dto: CreateDataPointDto,
+    user: any,
+  ): Promise<DataPointDto> {
+    const existing = await this.dataPointRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    Object.assign(existing, dto, {
+      userId: user?.userId,
+      updatedBy: user?.userId || 'system',
+    });
+
+    const updated = await this.dataPointRepo.save(existing);
+    return this.toDataPointDto(updated);
+  }
+
+  async deleteDataPoint(id: string): Promise<{ status: string; message: string }> {
+    const existing = await this.dataPointRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    await this.dataPointRepo.delete(id);
+    return {
+      status: 'success',
+      message: `DataPoint ${id} deleted successfully.`,
+    };
+  }
+
+ 
 
 }

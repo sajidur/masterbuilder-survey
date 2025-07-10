@@ -34,6 +34,7 @@ export class UserService {
 
  async login(loginDto: LoginUserDto): Promise<any> {
   let user = await this.userRepository.findOneBy({ username: loginDto.username });
+  console.log(user);
   if(!user){
     user=await this.userRepository.findOneBy({ email: loginDto.username });
   }

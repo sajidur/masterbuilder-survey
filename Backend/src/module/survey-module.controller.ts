@@ -1,5 +1,9 @@
 /* eslint-disable prettier/prettier */
  
+/* eslint-disable prettier/prettier */
+ 
+/* eslint-disable prettier/prettier */
+ 
  
  
  
@@ -30,6 +34,7 @@ import { CreateSubSubItemDto, SubSubItemDto } from './module.dto/subSubItem.dto'
 import { CreateFieldDto, FieldDto } from './module.dto/field.dto';
 import { CreateModuleDto, UpdateModuleDto } from './module.dto/create-module.dto';
 import { SubSubSubItemDto, CreateSubSubSubItemDto } from './module.dto/subsubsubitem.dto';
+import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -370,5 +375,48 @@ async updateSubSubItem(
     return this.moduleService.deleteSubSubSubItem(id);
   }
 
+  @Get('allDataPoints')
+  @ApiResponse({ status: 200, type: [DataPointDto] })
+  findDataPointAll(): Promise<DataPointDto[]> {
+    return this.moduleService.findAllDataPoint();
+  }
 
+  @Get('getDataPoint/:id')
+  @ApiResponse({ status: 200, type: DataPointDto })
+  async findOneDataPoint(@Param('id') id: string): Promise<DataPointDto> {
+    const dp = await this.moduleService.findOneDataPoint(id);
+    if (!dp) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+    return dp;
+  }
+
+  @Post('addDataPoint')
+  @ApiBody({ type: CreateDataPointDto })
+  @ApiResponse({ status: 201, type: DataPointDto })
+  createDataPoint(
+    @Body() createDto: CreateDataPointDto,
+    @Req() req: Request
+  ): Promise<DataPointDto | null> {
+    const user = req['user'];
+    return this.moduleService.createDataPoint(createDto, user);
+  }
+
+  @Put('updateDataPoint/:id')
+  @ApiBody({ type: CreateDataPointDto })
+  @ApiResponse({ status: 200, type: DataPointDto })
+  updateDataPoint(
+    @Param('id') id: string,
+    @Body() updateDto: CreateDataPointDto,
+    @Req() req: Request
+  ): Promise<DataPointDto | null> {
+    const user = req['user'];
+    return this.moduleService.updateDataPoint(id, updateDto, user);
+  }
+
+  @Delete('deleteDataPoint/:id')
+  @ApiResponse({ status: 204, description: 'DataPoint deleted' })
+  deleteDataPoint(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deleteDataPoint(id);
+  }
 }
