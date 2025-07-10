@@ -151,7 +151,7 @@ const SubSubSubItemManager: React.FC = () => {
     const subSubItemObj = subSubItems.find((s) => s.id === selectedSubSubItem);
 
     if (!subSubItemObj) {
-      toast.error("Invalid SubSubItem selected.");
+      toast.error("Invalid SSItem selected.");
       return;
     }
 
@@ -168,11 +168,11 @@ const SubSubSubItemManager: React.FC = () => {
       if (editSubSubSubItemId) {
         // Update logic
         await updateSubSubSubitem(editSubSubSubItemId, payload);
-        toast.success("SubSubSubItem updated!");
+        toast.success("SSSItem updated!");
         setEditSubSubSubItemId(null);
       } else {
         const newSubSubSubItem = await addSubSubSubitem(payload);
-        toast.success("SubSubSubItem added!");
+        toast.success("SSSItem added!");
         setSubSubSubItems((prev) => [...prev, newSubSubSubItem]);
       }
 
@@ -195,10 +195,10 @@ const SubSubSubItemManager: React.FC = () => {
   const handleDeleteSubSubSubItem = async (id: string) => {
     try {
       await deleteSubSubSubItem(id);
-      toast.success("SubSubSubItem deleted successfully!");
+      toast.success("SSSItem deleted successfully!");
       window.location.reload();
     } catch (error) {
-      toast.error("Failed to delete SubSubSubItem.");
+      toast.error("Failed to delete SSSItem.");
     }
   };
 
@@ -207,7 +207,7 @@ const SubSubSubItemManager: React.FC = () => {
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 mb-4 bg-white">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📱</span> S-S-S-Item
+          <span className="text-blue-600 ">📱</span> SSS Item
         </h2>
         {[
           {
@@ -274,7 +274,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "S-S-Item",
+            label: "SSItem",
             value: selectedSubSubItem,
             setter: setSelectedSubSubItem,
             options: subSubItems
@@ -318,12 +318,12 @@ const SubSubSubItemManager: React.FC = () => {
 
         {/* SubSubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">S-S-S-Item Name</label>
+          <label className="block mb-1 font-medium">SSS Item Name</label>
           <input
             type="text"
             value={subSubSubItemName}
             onChange={(e) => setSubSubSubItemName(e.target.value)}
-            placeholder="Enter SubSubSubItem"
+            placeholder="Enter SSSItem"
             className="w-full border px-3 py-2 rounded"
           />
         </div>
@@ -364,7 +364,7 @@ const SubSubSubItemManager: React.FC = () => {
 
         {/* Layout */}
         <div>
-          <label className="block mb-1 font-medium">Layout</label>
+          <label className="block mb-1 font-medium">Layout Type</label>
           <select
             value={layout}
             onChange={(e) => setLayout(e.target.value)}
@@ -410,7 +410,7 @@ const SubSubSubItemManager: React.FC = () => {
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-4">SubSubSubItems List</h3>
+        <h3 className="text-lg font-semibold mb-4">SSS Items List</h3>
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
@@ -418,11 +418,11 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">SubItem</th>
-              <th className="p-2 text-left">S-S-Item</th>
+              <th className="p-2 text-left">Sub Item</th>
+              <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">S-S-S-Item</th>
+              <th className="p-2 text-left">SSS Item</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Layout</th>
 
