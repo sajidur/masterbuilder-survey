@@ -98,7 +98,7 @@ const ModuleManager: React.FC = () => {
     <div className=" ">
       {/* Add Module Form Card */}
       <div className=" rounded-xl px-4 bg-white mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 py-6">
           <h2 className=" font-light mb-6 text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">📋</span> Survey Module Management
           </h2>

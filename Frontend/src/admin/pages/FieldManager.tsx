@@ -454,8 +454,8 @@ const FieldManager: React.FC = () => {
           >
             Is Hide
           </label>
-        {/* </div> */}
-        {/* <div className="flex items-center space-x-2 mt-2"> */}
+          {/* </div> */}
+          {/* <div className="flex items-center space-x-2 mt-2"> */}
           <input
             type="checkbox"
             checked={isRequired}

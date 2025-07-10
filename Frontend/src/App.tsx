@@ -24,6 +24,7 @@ import SubSubSubItemManager from "./admin/pages/SubSubSubItemManager";
 import TemplateConfiguration from "./admin/pages/TemplateConfiguration";
 import ReportsPage from "./admin/pages/ReportsPage";
 import LoginPage from "./pages/Login";
+import DataPointManager from "./admin/pages/DataPointManager";
 
 function AppContent() {
   const location = useLocation();
@@ -68,6 +69,9 @@ function AppContent() {
             <Route path="sub-sub-item" element={<SubSubItemManager />} />
             <Route path="sub-sub-sub-item" element={<SubSubSubItemManager />} />
             <Route path="field" element={<FieldManager />} />
+            <Route path="datapoint" element={<DataPointManager />} />
+
+
             <Route path="template-configuration" element={<TemplateConfiguration />} />
             <Route path="question" element={<SurveyBuilder />} />
             <Route path="document-upload" element={<DocumentUploader />} />

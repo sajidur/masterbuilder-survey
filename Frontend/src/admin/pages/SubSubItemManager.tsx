@@ -193,7 +193,7 @@ const SubSubItemManager: React.FC = () => {
 
       {/* 🔹 Top Filter Layout: Module → App → Menu → Item → SubItem */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 rounded-lg mb-4 bg-white">
-        <h2 className="font-liight text-gray-800 flex items-center gap-2">
+        <h2 className="font-light text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">📱</span> Sub Sub Item
         </h2>
 

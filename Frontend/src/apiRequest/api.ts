@@ -374,6 +374,68 @@ export const deleteField = async (id: string) => {
 };
 
 
+// Add DataPoint
+export const addDataPoint = async (data: {
+  itemId: string;
+  dpGroupCode: string;
+  dataPoint: string;
+  serialNumber: string;
+  dataType: string;
+  isRequired: boolean;
+  isHide: boolean;
+}) => {
+  try {
+    const response = await apiClient.post('/survey-module/addDataPoint', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding DataPoint:', error);
+    throw error;
+  }
+};
+
+// Update DataPoint
+export const updateDataPoint = async (
+  id: string,
+  data: {
+    itemId: string;
+    dpGroupCode: string;
+    dataPoint: string;
+    serialNumber: string;
+    dataType: string;
+    isRequired: boolean;
+    isHide: boolean;
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateDataPoint/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating DataPoint:', error);
+    throw error;
+  }
+};
+
+// Delete DataPoint
+export const deleteDataPoint = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteDataPoint/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting DataPoint:", error);
+    throw error;
+  }
+};
+
+// Optional: Get all DataPoints
+export const getAllDataPoints = async () => {
+  try {
+    const response = await apiClient.get(`/survey-module/getAllDataPoints`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching DataPoints:", error);
+    throw error;
+  }
+};
 
 
 
