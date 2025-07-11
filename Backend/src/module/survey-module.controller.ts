@@ -1,3 +1,5 @@
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
  
 /* eslint-disable prettier/prettier */
@@ -35,6 +37,7 @@ import { CreateFieldDto, FieldDto } from './module.dto/field.dto';
 import { CreateModuleDto, UpdateModuleDto } from './module.dto/create-module.dto';
 import { SubSubSubItemDto, CreateSubSubSubItemDto } from './module.dto/subsubsubitem.dto';
 import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
+import { TotalCount } from './module.dto/totalCount.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -396,9 +399,10 @@ async updateSubSubItem(
   @ApiResponse({ status: 201, type: DataPointDto })
   createDataPoint(
     @Body() createDto: CreateDataPointDto,
-    @Req() req: Request
+    @Req() req: Request,
   ): Promise<DataPointDto | null> {
-    const user = req['user'];
+   const user = req['user'];
+   console.log(user);
     return this.moduleService.createDataPoint(createDto, user);
   }
 
@@ -418,5 +422,20 @@ async updateSubSubItem(
   @ApiResponse({ status: 204, description: 'DataPoint deleted' })
   deleteDataPoint(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteDataPoint(id);
+  }
+   @Get('getDataCount')
+    @ApiResponse({ status: 200, type: TotalCount })
+  async getDataCount( @Req() req: Request): Promise<TotalCount> {
+   
+     const user = req['user'];
+    var cnt=new TotalCount();
+    // cnt.modules=0;
+     if(!user||user==null)
+     {
+      return cnt;
+     }
+     cnt = await this.moduleService.getDataCount(user);
+   
+    return cnt;
   }
 }

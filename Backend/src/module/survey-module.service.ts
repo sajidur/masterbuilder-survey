@@ -64,6 +64,7 @@ import { escapeId } from 'mysql2';
 import { DataPoint } from './module.entity/dataPoint.entity';
 import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { plainToInstance } from 'class-transformer';
+import { TotalCount } from './module.dto/totalCount.dto';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -2472,9 +2473,11 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
       isRequired: dto.isRequired,
       itemId: dto.itemId,
       serialNumber: dto.serialNumber,
-      userId: user?.userId,
-      createdBy: user?.userId || null,
-      updatedBy: user?.userId || null,
+      userId: user?.id||null,
+      createdAt:Date(),
+      updatedAt:Date(),
+      createdBy: user?.username || null,
+      updatedBy: user?.username || null,
     });
 
     const saved = await this.dataPointRepo.save(newEntity);
@@ -2492,8 +2495,9 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
     }
 
     Object.assign(existing, dto, {
-      userId: user?.userId,
-      updatedBy: user?.userId || 'system',
+      userId: user?.id,
+      updatedAt:Date(),
+      updatedBy: user?.username
     });
 
     const updated = await this.dataPointRepo.save(existing);
@@ -2514,4 +2518,34 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
       message: `DataPoint ${id} deleted successfully.`,
     };
   }
+  async getDataCount(user: any): Promise<TotalCount> {
+  const userId = user.id;
+
+  const [modules, apps, menus, items, subItems, subSubItems, subSubSubItems, fields, dataPoints] =
+    await Promise.all([
+      this.modulesRepository.count({ where: { userId } }),
+      this.appRepository.count({ where: { userId } }),
+      this.menuRepository.count({ where: { userId } }),
+      this.itemRepository.count({ where: { userId } }),
+      this.subItemRepository.count({ where: { userId } }),
+      this.subSubItemRepository.count({ where: { userId } }),
+      this.subSubSubItemRepo.count({ where: { userId } }),
+      this.fieldRepository.count({ where: { userId } }),
+      this.dataPointRepo.count({ where: { userId } }),
+    ]);
+
+  const count = new TotalCount();
+  count.modules = modules;
+  count.apps = apps;
+  count.menus = menus;
+  count.items = items;
+  count.subItems = subItems;
+  count.subSubItems = subSubItems;
+  count.subSubSubItems = subSubSubItems;
+  count.fields = fields;
+  count.dataPoints = dataPoints;
+
+  return count;
+}
+
 }
