@@ -68,7 +68,6 @@ const DataPointManager: React.FC = () => {
   const [isHide, setIsHide] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [dpPrefix, setDpPrefix] = useState("");
   const [dpGroups, setDpGroups] = useState<any[]>([]);
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
@@ -149,7 +148,7 @@ const DataPointManager: React.FC = () => {
       isHide,
       isRequired,
     };
-    
+
 
     try {
       if (editId) {
@@ -270,7 +269,6 @@ const DataPointManager: React.FC = () => {
                 const selected = items.find((item) => item.id === selectedId);
                 const prefix = selected ? `${selected.name}/` : "";
 
-                setDpPrefix(prefix);
                 setDpGroupCode(prefix);
               }}
               className="w-full border px-3 py-2 rounded"
@@ -408,9 +406,9 @@ const DataPointManager: React.FC = () => {
               <th className="p-2 text-left">DP Group</th>
                             <th className="p-2 text-left">Serial</th>
 
-              <th className="p-2 text-left">DataPoint</th>
+              <th className="p-2 text-left">Data Point</th>
               <th className="p-2 text-left">Hide</th>
-              <th className="p-2 text-left">Required</th>
+              <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>
               <th className="p-2 text-left">Action</th>
             </tr>
@@ -452,8 +450,6 @@ const DataPointManager: React.FC = () => {
                         setSelectedItem(item?.id || "");
 
                         // Set DP prefix so the group code input behaves correctly
-                        const prefix = item ? `${item.name}/` : "";
-                        setDpPrefix(prefix);
                       }, 100);
                     }}
                     className="text-blue-600 hover:text-blue-800"
