@@ -195,9 +195,12 @@ const SubItemManager: React.FC = () => {
     <div className="">
       <div className=" p-4 bg-white mb-4 rounded-lg">
         {/* Top Filter Row */}
-        <div className="grid grid-cols-1  md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1  md:grid-cols-6 gap-4 pb-4">
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 "><ListChecks size={18} /></span> Sub Item
+            <span className="text-blue-600 ">
+              <ListChecks size={18} />
+            </span>{" "}
+            Sub Item
           </h2>
 
           {/* Module */}
@@ -287,7 +290,7 @@ const SubItemManager: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 ">
           {/* Serial Number */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -315,7 +318,6 @@ const SubItemManager: React.FC = () => {
               onChange={(e) => setSubItemName(e.target.value)}
             />
           </div>
-
 
           {/* Tier */}
           <div>
@@ -369,6 +371,8 @@ const SubItemManager: React.FC = () => {
             />
           </div>
 
+          <div></div>
+
           {/* Button Type */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -413,7 +417,7 @@ const SubItemManager: React.FC = () => {
             />
           </div>
 
-          <div className="flex gap-4 items-center mb-4">
+          <div className="flex gap-4 items-center mb-2">
             <button
               onClick={handleAddSubItem}
               className="px-6 py-2 mt-6 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"

@@ -110,6 +110,8 @@ const DataPointManager: React.FC = () => {
     (item) => item.menu?.title === selectedMenu
   );
 
+  
+
   const resetForm = () => {
     setSelectedModule("");
     setSelectedApp("");
@@ -390,7 +392,7 @@ const DataPointManager: React.FC = () => {
           <tbody>
             {dataPoints.map((dp) => (
               <tr key={dp.id} className="border-t">
-                <td className="p-2">{dp.itemName}</td>
+                <td className="p-2">{dp.Item.name}</td>
                 <td className="p-2">{dp.dpGroupCode}</td>
                 <td className="p-2">{dp.dataPoint}</td>
                 <td className="p-2">{dp.serialNumber}</td>
@@ -399,27 +401,36 @@ const DataPointManager: React.FC = () => {
                 <td className="p-2">{dp.dataType}</td>
                 <td className="p-2 flex gap-2">
                   <button
-                    onClick={() => {
-                      setEditId(dp.id);
-                      setDataPointName(dp.dataPoint);
-                      setDpGroupCode(dp.dpGroupCode);
-                      setSerialNumber(dp.serialNumber);
-                      setDataType(dp.dataType);
-                      setIsRequired(dp.isRequired);
-                      setIsHide(dp.isHide);
+                  onClick={() => {
+  setEditId(dp.id);
+  setDataPointName(dp.dataPoint);
+  setDpGroupCode(dp.dpGroupCode);
+  setSerialNumber(dp.serialNumber);
+  setDataType(dp.dataType);
+  setIsRequired(dp.isRequired);
+  setIsHide(dp.isHide);
 
-                      const item = items.find((i) => i.id === dp.itemId);
-                      if (item) {
-                        const menu = item.menu;
-                        const app = menu?.app;
-                        const module = app?.module;
+  const item = dp.Item;
+  const menu = item?.menu;
+  const app = menu?.app;
+  const module = app?.Module;
 
-                        setSelectedModule(module?.id || "");
-                        setSelectedApp(app?.id || "");
-                        setSelectedMenu(menu?.id || "");
-                        setSelectedItem(item.id);
-                      }
-                    }}
+  // ✅ Set them in proper order (important for dropdown filter dependencies)
+  setSelectedModule(module?.id || "");
+
+  // Delay is optional but sometimes helps with async state updates
+  setTimeout(() => {
+    setSelectedApp(app?.id || "");
+    setSelectedMenu(menu?.id || "");
+    setSelectedItem(item?.id || "");
+
+    // Set DP prefix so the group code input behaves correctly
+    const prefix = item ? `${item.name}/` : "";
+    setDpPrefix(prefix);
+  }, 100);
+}}
+
+
                     className="text-blue-600 hover:text-blue-800"
                   >
                     <FaEdit />
