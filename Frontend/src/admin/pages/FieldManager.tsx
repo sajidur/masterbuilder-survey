@@ -85,8 +85,8 @@ const FieldManager: React.FC = () => {
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
-  const [fieldName, setFieldName] = useState("");
-  const [selectedFieldType, setSelectedFieldType] = useState("");
+  // const [fieldName, setFieldName] = useState("");
+  // const [selectedFieldType, setSelectedFieldType] = useState("");
   // const [isRequired, setIsRequired] = useState(false);
   // const [isHide, setIsHide] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
@@ -136,9 +136,9 @@ const FieldManager: React.FC = () => {
       !selectedApp ||
       !selectedMenu ||
       !selectedItem ||
-      !selectedSubItem ||
-      !selectedSubSubItem ||
-      !selectedSubSubSubItem ||
+      // !selectedSubItem ||
+      // !selectedSubSubItem ||
+      // !selectedSubSubSubItem ||
       !selectedDisplayType 
         ) {
       toast.warn("Please fill all fields.");
@@ -181,10 +181,10 @@ const payload = {
       }
 
       // Clear form
-      setFieldName("");
+      // setFieldName("");
       setSerialNumber("");
       setSelectedDisplayType("");
-      setSelectedFieldType("");
+      // setSelectedFieldType("");
       // setIsRequired(false);
       // setIsHide(false);
       setSelectedSubSubSubItem("");
