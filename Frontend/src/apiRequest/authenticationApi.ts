@@ -1,7 +1,7 @@
 // src/services/authService.ts
 import axios from "axios";
+import config from "../config";
 
-const baseURL = "http://localhost:3000/"
 
 interface LoginPayload {
   username: string;
@@ -9,6 +9,6 @@ interface LoginPayload {
 }
 
 export const loginUser = async (payload: LoginPayload) => {
-  const response = await axios.post(`${baseURL}users/login`, payload);
+  const response = await axios.post(`${config.BASE_URL}users/login`, payload);
   return response.data;
 };

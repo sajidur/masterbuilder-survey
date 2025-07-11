@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from '../config';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: config.BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -564,9 +565,11 @@ export const getAllFields = async () => {
 
 
 
-//demo
+
+
+// demo
 export const uploadDocument = async (formData: FormData) => {
-  return await axios.post("/api/documents/upload", formData, {
+  return await axios.post(`${config.BASE_URL}/api/documents/upload`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -574,7 +577,7 @@ export const uploadDocument = async (formData: FormData) => {
 };
 
 export const getUploadedDocuments = async () => {
-  const res = await fetch("/api/documents"); // update with your actual endpoint
+  const res = await fetch(`${config.BASE_URL}/api/documents`);
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 };
