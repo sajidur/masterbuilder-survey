@@ -11,8 +11,6 @@ export class Field {
   @Column()
   serialNumber:string;
   @Column()
-  description:string;
-  @Column()
   fieldGroupCode:string;
    @Column()
   tier:string;
