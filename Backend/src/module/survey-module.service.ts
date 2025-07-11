@@ -1550,6 +1550,12 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     }
 
     try {
+       const dataPoints=await this.dataPointRepo.find({
+              where: { itemId: item.id },
+            });
+            for (const data of dataPoints) {
+                await this.dataPointRepo.remove(data);
+              }
       // 2. Get all subItems under the item
       const subItems = await this.subItemRepository.find({ where: { itemId } });
 
@@ -1684,6 +1690,12 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
             const subItems = await this.subItemRepository.find({
               where: { itemId: item.id },
             });
+            const dataPoints=await this.dataPointRepo.find({
+              where: { itemId: item.id },
+            });
+            for (const data of dataPoints) {
+                await this.dataPointRepo.remove(data);
+              }
 
             for (const subItem of subItems) {
               const subSubItems = await this.subSubItemRepository.find({
@@ -1787,17 +1799,28 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
         },
       }),
     ]);
+// Build a Map of Module ID => Module
+  const modulesMap = new Map<string, Modules>(
+    modules.map((module) => [module.id, module]),
+  );
 
-    if (!apps.length || !modules.length) return [];
-    const modulesMap = new Map<string, Modules>(
-      modules.map((m) => [m.id, m as unknown as Modules]),
-    );
-    const appDtos = await Promise.all(
-      apps.map((app) => this.toDto(app, modulesMap)),
-    );
+  // Convert to DTOs and filter out any nulls (in case a module is missing)
+  const appDtos = (
+    await Promise.all(apps.map((app) => this.toDto(app, modulesMap)))
+  ).filter((dto): dto is AppDto => dto !== null);
 
-    // Filter out nulls (apps whose modules were not found)
-    return appDtos.filter((dto): dto is AppDto => dto !== null);
+  // Sort by Module.serialNumber, then App.serialNumber
+  appDtos.sort((a, b) => {
+  const moduleA = a.Module!.serialNumber;
+  const moduleB = b.Module!.serialNumber;
+
+  const moduleCompare = moduleA.localeCompare(moduleB);
+  if (moduleCompare !== 0) return moduleCompare;
+
+  return a.serialNumber.localeCompare(b.serialNumber);
+});
+
+  return appDtos;
   }
 
   async findOneApp(id: string): Promise<AppDto | null> {
@@ -1895,7 +1918,12 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
           const subItems = await this.subItemRepository.find({
             where: { itemId: item.id },
           });
-
+           const dataPoints=await this.dataPointRepo.find({
+              where: { itemId: item.id },
+            });
+            for (const data of dataPoints) {
+                await this.dataPointRepo.remove(data);
+              }
           for (const subItem of subItems) {
             const subSubItems = await this.subSubItemRepository.find({
               where: { subItemId: subItem.id },
@@ -2174,7 +2202,12 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
         const subItems = await this.subItemRepository.find({
           where: { itemId: item.id },
         });
-
+         const dataPoints=await this.dataPointRepo.find({
+              where: { itemId: item.id },
+            });
+            for (const data of dataPoints) {
+                await this.dataPointRepo.remove(data);
+              }
         for (const subItem of subItems) {
           const subSubItems = await this.subSubItemRepository.find({
             where: { subItemId: subItem.id },
