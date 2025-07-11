@@ -66,6 +66,7 @@ const DataPointManager: React.FC = () => {
   const [isHide, setIsHide] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
+  const [dpPrefix, setDpPrefix] = useState("");
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
 
@@ -100,9 +101,13 @@ const DataPointManager: React.FC = () => {
   }, []);
 
   // Filter logic updated to match nested structure
-  const filteredApps = apps.filter((app) => app.Module?.name === selectedModule);
+  const filteredApps = apps.filter(
+    (app) => app.Module?.name === selectedModule
+  );
   const filteredMenus = menus.filter((menu) => menu.app?.name === selectedApp);
-  const filteredItems = items.filter((item) => item.menu?.title === selectedMenu);
+  const filteredItems = items.filter(
+    (item) => item.menu?.title === selectedMenu
+  );
 
   const resetForm = () => {
     setSelectedModule("");
@@ -170,7 +175,7 @@ const DataPointManager: React.FC = () => {
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          <h2 className=" font-light mb-4">DataPoint Manager</h2>
+          <h2 className=" font-light mb-4">DataPoint</h2>
 
           {/* Module */}
           <div>
@@ -238,18 +243,29 @@ const DataPointManager: React.FC = () => {
           {/* Item */}
           <div>
             <label className="block mb-1 font-medium">Item</label>
+            
             <select
-              value={selectedItem}
-              onChange={(e) => setSelectedItem(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-            >
-              <option value="">Select Item</option>
-              {filteredItems.map((item) => (
-                <option key={item.id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+  value={selectedItem}
+  onChange={(e) => {
+    const selectedId = e.target.value;
+    setSelectedItem(selectedId);
+
+    const selected = items.find((item) => item.id === selectedId);
+    const prefix = selected ? `${selected.name}/` : "";
+
+    setDpPrefix(prefix);
+    setDpGroupCode(prefix);
+  }}
+  className="w-full border px-3 py-2 rounded"
+>
+  <option value="">Select Item</option>
+  {filteredItems.map((item) => (
+    <option key={item.id} value={item.id}>
+      {item.name}
+    </option>
+  ))}
+</select>
+
           </div>
 
           {/* Group Code */}
@@ -258,8 +274,16 @@ const DataPointManager: React.FC = () => {
             <input
               type="text"
               value={dpGroupCode}
-              onChange={(e) => setDpGroupCode(e.target.value)}
+              onChange={(e) => {
+                const input = e.target.value;
+
+                // If user tries to modify before prefix, prevent it
+                if (!input.startsWith(dpPrefix)) return;
+
+                setDpGroupCode(input);
+              }}
               className="w-full border px-3 py-2 rounded"
+              placeholder="Enter dp group code"
             />
           </div>
         </div>
@@ -272,20 +296,22 @@ const DataPointManager: React.FC = () => {
               value={serialNumber}
               onChange={(e) => setSerialNumber(e.target.value)}
               className="w-full border px-3 py-2 rounded"
+              placeholder="Enter SI number"
             />
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">DataPoint</label>
+            <label className="block mb-1 font-medium">Data Point</label>
             <input
               type="text"
               value={dataPointName}
               onChange={(e) => setDataPointName(e.target.value)}
               className="w-full border px-3 py-2 rounded"
+              placeholder="Enter data point"
             />
           </div>
 
-                    <div className="flex justify-between items-center space-x-2 mt-7">
+          <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -320,8 +346,6 @@ const DataPointManager: React.FC = () => {
               ))}
             </select>
           </div>
-
-
 
           <div className="">
             <button

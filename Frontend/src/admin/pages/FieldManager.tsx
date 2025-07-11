@@ -338,7 +338,7 @@ const FieldManager: React.FC = () => {
               }
             }}
             className="w-full border px-3 py-2 rounded"
-            placeholder="Enter field group code"
+            placeholder="Enter dp group code"
           />
         </div>
 
