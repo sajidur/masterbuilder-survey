@@ -21,19 +21,19 @@ interface Module {
 interface App {
   id: string;
   name: string;
-  moduleId: string;
+  module: Module; // Fixed to match nested structure
 }
 
 interface Menu {
   id: string;
   title: string;
-  appId: string;
+  app: App; // Fixed to match nested structure
 }
 
 interface Item {
   id: string;
   name: string;
-  menuId: string;
+  menu: Menu; // Fixed to match nested structure
 }
 
 interface DataPoint {
@@ -80,12 +80,18 @@ const DataPointManager: React.FC = () => {
             getAllItems(),
             getAllDataPoints(),
           ]);
+
+        console.log("✅ Modules:", moduleData);
+        console.log("✅ Apps:", appData);
+        console.log("✅ Menus:", menuData);
+
         setModules(moduleData);
         setApps(appData);
         setMenus(menuData);
         setItems(itemData);
         setDataPoints(dataPointData);
-      } catch {
+      } catch (error) {
+        console.error("❌ Data fetch error:", error);
         toast.error("Failed to load data.");
       }
     };
@@ -93,9 +99,10 @@ const DataPointManager: React.FC = () => {
     fetchInitialData();
   }, []);
 
-  const filteredApps = apps.filter((app) => app.moduleId === selectedModule);
-  const filteredMenus = menus.filter((menu) => menu.appId === selectedApp);
-  const filteredItems = items.filter((item) => item.menuId === selectedMenu);
+  // Filter logic updated to match nested structure
+  const filteredApps = apps.filter((app) => app.Module?.name === selectedModule);
+  const filteredMenus = menus.filter((menu) => menu.app?.name === selectedApp);
+  const filteredItems = items.filter((item) => item.menu?.title === selectedMenu);
 
   const resetForm = () => {
     setSelectedModule("");
@@ -180,7 +187,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Module</option>
               {modules.map((m) => (
-                <option key={m.id} value={m.id}>
+                <option key={m.id} value={m.name}>
                   {m.name}
                 </option>
               ))}
@@ -201,7 +208,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select App</option>
               {filteredApps.map((a) => (
-                <option key={a.id} value={a.id}>
+                <option key={a.id} value={a.name}>
                   {a.name}
                 </option>
               ))}
@@ -221,7 +228,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Menu</option>
               {filteredMenus.map((m) => (
-                <option key={m.id} value={m.id}>
+                <option key={m.id} value={m.title}>
                   {m.title}
                 </option>
               ))}
@@ -238,7 +245,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Item</option>
               {filteredItems.map((item) => (
-                <option key={item.id} value={item.id}>
+                <option key={item.id} value={item.name}>
                   {item.name}
                 </option>
               ))}
@@ -256,8 +263,8 @@ const DataPointManager: React.FC = () => {
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          {/* Serial Number */}
+
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
           <div>
             <label className="block mb-1 font-medium">Serial No</label>
             <input
@@ -268,7 +275,6 @@ const DataPointManager: React.FC = () => {
             />
           </div>
 
-          {/* DataPoint Name */}
           <div>
             <label className="block mb-1 font-medium">DataPoint</label>
             <input
@@ -279,25 +285,7 @@ const DataPointManager: React.FC = () => {
             />
           </div>
 
-          {/* Data Type */}
-          <div>
-            <label className="block mb-1 font-medium">Data Type</label>
-            <select
-              value={dataType}
-              onChange={(e) => setDataType(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-            >
-              <option value="">Select Type</option>
-              {fieldTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Checkboxes & Buttons */}
-          <div className="flex justify-bwteen items-center space-x-2 mt-7">
+                    <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -317,28 +305,46 @@ const DataPointManager: React.FC = () => {
             </label>
           </div>
 
+          <div>
+            <label className="block mb-1 font-medium">Data Type</label>
+            <select
+              value={dataType}
+              onChange={(e) => setDataType(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Select Type</option>
+              {fieldTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+
           <div className="">
             <button
-            onClick={handleAddOrUpdate}
-            className="px-6 py-2 mt-7 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            {editId ? "Update" : "+ Add"}
-          </button>
-
-          {editId && (
-            <button
-              onClick={handleCancelEdit}
-              className="px-6 py-2 mt-7 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
+              onClick={handleAddOrUpdate}
+              className="px-6 py-2 mt-7 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
             >
-              Cancel
+              {editId ? "Update" : "+ Add"}
             </button>
-          )}
+
+            {editId && (
+              <button
+                onClick={handleCancelEdit}
+                className="px-6 py-2 mt-7 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition ml-2"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white shadow rounded">
+      <div className="overflow-x-auto bg-white shadow rounded mt-6">
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
@@ -372,11 +378,14 @@ const DataPointManager: React.FC = () => {
                       setDataType(dp.dataType);
                       setIsRequired(dp.isRequired);
                       setIsHide(dp.isHide);
+
                       const item = items.find((i) => i.id === dp.itemId);
                       if (item) {
-                        const menu = menus.find((m) => m.id === item.menuId);
-                        const app = apps.find((a) => a.id === menu?.appId);
-                        setSelectedModule(app?.moduleId || "");
+                        const menu = item.menu;
+                        const app = menu?.app;
+                        const module = app?.module;
+
+                        setSelectedModule(module?.id || "");
                         setSelectedApp(app?.id || "");
                         setSelectedMenu(menu?.id || "");
                         setSelectedItem(item.id);

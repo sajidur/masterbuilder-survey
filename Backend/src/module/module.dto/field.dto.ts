@@ -13,7 +13,7 @@ export class FieldDto {
   fieldGroupCode: string;
   isRequired: boolean;
   isHide:boolean;
-  subSubSubItemId: string;
+  subSubSubItemId?: string;
   subSubSubItem?: SubSubSubItemDto | null;
 }
 

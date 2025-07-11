@@ -150,7 +150,7 @@ const SubSubItemManager: React.FC = () => {
     try {
       if (editSubSubItemId) {
         await updateSubSubitem(editSubSubItemId, payload);
-        toast.success("SubSubItem updated!");
+        toast.success("SS Item updated!");
 
         // Refresh list
         const updated = await getAllSubSubitems();
@@ -159,7 +159,7 @@ const SubSubItemManager: React.FC = () => {
       } else {
         const newSubSubItem = await addSubSubitem(payload);
         setSubSubItems((prev) => [...prev, newSubSubItem]);
-        toast.success("SubSubItem added!");
+        toast.success("SS Item added!");
       }
 
       // Reset form
@@ -172,7 +172,7 @@ const SubSubItemManager: React.FC = () => {
       setButtonLabel("");
       setNavigationTo("");
     } catch (error) {
-      toast.error("Failed to save SubSubItem.");
+      toast.error("Failed to save SSItem.");
       console.error(error);
     }
   };
@@ -180,10 +180,10 @@ const SubSubItemManager: React.FC = () => {
   const handleDeleteSubSubItem = async (id: string) => {
     try {
       await deleteSubSubItem(id);
-      toast.success("SubSubItem deleted successfully!");
+      toast.success("SSItem deleted successfully!");
       window.location.reload();
     } catch (error) {
-      toast.error("Failed to delete SubSubItem.");
+      toast.error("Failed to delete SSItem.");
     }
   };
 
@@ -194,7 +194,7 @@ const SubSubItemManager: React.FC = () => {
       {/* 🔹 Top Filter Layout: Module → App → Menu → Item → SubItem */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 rounded-lg mb-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📱</span> Sub Sub Item
+          <span className="text-blue-600 ">📱</span> SS Item
         </h2>
 
         {/* Module */}
@@ -291,13 +291,13 @@ const SubSubItemManager: React.FC = () => {
 
         {/* SubItem */}
         <div className="">
-          <label className="block font-medium text-gray-700">SubItem</label>
+          <label className="block font-medium text-gray-700">Sub Item</label>
           <select
             value={selectedSubItem}
             onChange={(e) => setSelectedSubItem(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Select SubItem</option>
+            <option value="">Select Sub Item</option>
             {subItems
               .filter((s) => s.item?.id === selectedItem)
               .map((s) => (
@@ -326,13 +326,13 @@ const SubSubItemManager: React.FC = () => {
 
         {/* SubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">S-S-Item Name</label>
+          <label className="block mb-1 font-medium">SS Item Name</label>
           <input
             type="text"
             value={subSubItemName}
             onChange={(e) => setSubSubItemName(e.target.value)}
             className="w-full px-3 py-2 border rounded"
-            placeholder="Enter SubSubItem"
+            placeholder="Enter SS Item"
           />
         </div>
 
@@ -373,7 +373,7 @@ const SubSubItemManager: React.FC = () => {
         {/* Layout */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Layout
+            Layout Type
           </label>
           <select
             value={layout}
@@ -461,7 +461,7 @@ const SubSubItemManager: React.FC = () => {
 
       {/* SubSubItems Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-4">SubSubItems List</h3>
+        <h3 className="text-lg font-semibold mb-4">SS Items List</h3>
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
@@ -469,14 +469,14 @@ const SubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">SubItem</th>
+              <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">S-S-Item</th>
+              <th className="p-2 text-left">SS Item</th>
               {/* <th className="p-2 text-left">Template</th> */}
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Layout</th>
-              <th className="p-2 text-left">P/S Button Name</th>
+              <th className="p-2 text-left">P/S Button</th>
               <th className="p-2 text-left">Navigate To</th>
               <th className="p-2 text-left">Actions</th>
             </tr>

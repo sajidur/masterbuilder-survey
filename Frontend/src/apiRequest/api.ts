@@ -429,7 +429,7 @@ export const deleteDataPoint = async (id: string) => {
 // Optional: Get all DataPoints
 export const getAllDataPoints = async () => {
   try {
-    const response = await apiClient.get(`/survey-module/getAllDataPoints`);
+    const response = await apiClient.get(`/survey-module/allDataPoints`);
     return response.data;
   } catch (error) {
     console.error("Error fetching DataPoints:", error);

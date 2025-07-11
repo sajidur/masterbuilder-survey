@@ -18,50 +18,24 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", path: "/admin", icon: <LayoutDashboard size={18} /> },
-  { label: "Module", path: "/admin/module", icon: <Puzzle size={18} /> },
-  { label: "App", path: "/admin/app", icon: <AppWindow size={18} /> },
-  { label: "Menu", path: "/admin/menu", icon: <List size={18} /> },
-  { label: "Item", path: "/admin/item", icon: <Layers size={18} /> },
-  {
-    label: "Sub Item",
-    path: "/admin/sub-item",
-    icon: <ListChecks size={18} />,
-  },
-  {
-    label: "SS Item",
-    path: "/admin/sub-sub-item",
-    icon: <ListPlus size={18} />,
-  },
-  {
-    label: "SSS Item",
-    path: "/admin/sub-sub-sub-item",
-    icon: <ListPlus size={18} />,
-  },
-  { label: "Field", path: "/admin/field", icon: <ListTree size={18} /> },
-
-    {
-    label: "DataPoint", // ✅ New Entry
-    path: "/admin/datapoint", // ✅ Match route to your new page
+  { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
+  { label: 'Module', path: '/admin/module', icon: <Puzzle size={18} /> },
+  { label: 'App', path: '/admin/app', icon: <AppWindow size={18} /> },
+  { label: 'Menu', path: '/admin/menu', icon: <List size={18} /> },
+  { label: 'Item', path: '/admin/item', icon: <Layers size={18} /> },
+  { label: 'Sub Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
+  { label: 'SS Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
+  { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
+  { label: 'DP Group Code', path: '/admin/field', icon: <ListTree size={18} /> },
+      {
+    label: "DataPoint", 
+    path: "/admin/datapoint",
     icon: <ListTree size={18} />,
   },
-  
-  {
-    label: "Document Upload",
-    path: "/admin/document-upload",
-    icon: <ClipboardCheck size={18} />,
-  },
-  {
-    label: "Question",
-    path: "/admin/question",
-    icon: <MessageSquare size={18} />,
-  },
-  {
-    label: "Configuration",
-    path: "/admin/template-configuration",
-    icon: <ClipboardCheckIcon size={18} />,
-  },
-  { label: "Reports", path: "/admin/reports", icon: <BarChart4 size={18} /> },
+  { label: 'Document Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> },
+  { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },
+  { label: 'Configuration', path: '/admin/template-configuration', icon: <ClipboardCheckIcon size={18} /> },
+  { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
 ];
 
 const AdminLayout: React.FC = () => {

@@ -17,6 +17,7 @@ import { SubSubItem } from './module.entity/subsubitem.entity';
 import { AuthModule } from '../auth/auth.module';
 import { SubSubSubItem } from './module.entity/subSubSubItem.entity';
 import { Template } from 'src/Template/entity/template';
+import { DataPoint } from './module.entity/dataPoint.entity';
 
 
 @Module({
@@ -30,7 +31,8 @@ import { Template } from 'src/Template/entity/template';
       SubItem,
       SubSubItem,
       SubSubSubItem,
-      Field
+      Field,
+      DataPoint
     ]),AuthModule
   ],
   providers: [SurveyModuleService],
