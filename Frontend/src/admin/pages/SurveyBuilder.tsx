@@ -413,7 +413,7 @@ const updateQuestion = (
   return (
     <div className="mx-auto p-6 space-y-8 bg-gray-50 min-h-screen font-sans">
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-light">Survey Builder</h1>
+        <h1 className=" font-light">Survey Builder</h1>
         <button
           onClick={addSection}
           className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md px-4 py-2 shadow transition"

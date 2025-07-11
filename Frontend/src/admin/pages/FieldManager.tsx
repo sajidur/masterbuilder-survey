@@ -17,6 +17,7 @@ import {
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { tiers } from "./data";
+import { ListTree } from "lucide-react";
 
 interface Module {
   id: string;
@@ -165,7 +166,7 @@ const FieldManager: React.FC = () => {
       serialNumber,
       fieldGroupCode,
       tier,
-      isHide
+      isHide,
     };
 
     try {
@@ -210,8 +211,11 @@ const FieldManager: React.FC = () => {
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 p-4 bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-8 gap-4 p-4 bg-white">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
+          <span className="text-blue-600 ">
+            <ListTree size={18} />
+          </span>
           DP Group Code
         </h2>
 
@@ -309,9 +313,9 @@ const FieldManager: React.FC = () => {
             .map((s) => ({ label: s.name, value: s.id }))}
           onChange={(val) => setSelectedSubSubSubItem(val)}
         />
-        {/* </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6"> */}
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -325,7 +329,7 @@ const FieldManager: React.FC = () => {
 
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">DP Group Code</label>
+          <label className="block mb-1 font-medium">DP Group</label>
           <input
             type="text"
             value={fieldGroupCode}
@@ -338,7 +342,7 @@ const FieldManager: React.FC = () => {
               }
             }}
             className="w-full border px-3 py-2 rounded"
-            placeholder="Enter dp group code"
+            placeholder="Enter dp group"
           />
         </div>
 
@@ -388,7 +392,7 @@ const FieldManager: React.FC = () => {
         </div>
 
         {/* Field Name */}
-        <div>
+        {/* <div>
           <label className="block mb-1 font-medium">Data Point</label>
           <input
             type="text"
@@ -397,10 +401,10 @@ const FieldManager: React.FC = () => {
             className="w-full border px-3 py-2 rounded"
             placeholder="Enter field name"
           />
-        </div>
+        </div> */}
 
         {/* Field Type */}
-        <div>
+        {/* <div>
           <label className="block mb-1 font-medium">Data Type</label>
           <select
             value={selectedFieldType}
@@ -414,7 +418,7 @@ const FieldManager: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* <Dropdown
           label="Display Type"
@@ -440,7 +444,7 @@ const FieldManager: React.FC = () => {
           options={fieldTypes.map((f) => ({ label: f, value: f }))}
           onChange={(val) => setSelectedFieldType(val)}
         /> */}
-        <div className="flex justify-bwteen items-center space-x-2 mt-2">
+        {/* <div className="flex justify-bwteen items-center space-x-2 mt-2">
           <input
             type="checkbox"
             checked={isHide}
@@ -454,8 +458,7 @@ const FieldManager: React.FC = () => {
           >
             Is Hide
           </label>
-          {/* </div> */}
-          {/* <div className="flex items-center space-x-2 mt-2"> */}
+
           <input
             type="checkbox"
             checked={isRequired}
@@ -469,7 +472,7 @@ const FieldManager: React.FC = () => {
           >
             Required
           </label>
-        </div>
+        </div> */}
 
         {/* 🔹 Action Buttons */}
         <div className="">
@@ -511,7 +514,7 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SSS Item</th>
-              <th className="p-2 text-left">DP Group Code</th>
+              <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">SI</th>

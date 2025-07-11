@@ -12,6 +12,7 @@ import {
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { Layers } from "lucide-react";
 
 interface Module {
   id: string;
@@ -179,7 +180,7 @@ const ItemManager: React.FC = () => {
       {/* Top Row: Module, App, Menu */}
       <div className=" bg-white grid grid-cols-1 sm:grid-cols-6 gap-4 rounded-lg p-4">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📁</span> Item
+          <span className="text-blue-600 "><Layers size={18} /></span> Item
         </h2>
         {/* Module */}
         <div className="">

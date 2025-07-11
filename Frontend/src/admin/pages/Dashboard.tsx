@@ -8,18 +8,7 @@ const Dashboard: React.FC = () => {
     { label: "New Entries Today", value: 7, icon: "🆕" },
   ];
 
-  const recentEntries = [
-    { id: 101, module: "Sales", app: "CRM", menu: "Clients", item: "John Doe", date: "2025-05-23" },
-    { id: 102, module: "Inventory", app: "Warehouse", menu: "Stock", item: "Item #223", date: "2025-05-22" },
-    { id: 103, module: "Support", app: "Helpdesk", menu: "Tickets", item: "Ticket #556", date: "2025-05-21" },
-  ];
 
-
-  const activityFeed = [
-    { id: 1, user: "Admin", action: "Added new module 'Billing'", time: "2 hours ago" },
-    { id: 2, user: "Admin", action: "Updated menu 'Clients'", time: "5 hours ago" },
-    { id: 3, user: "User123", action: "Submitted new support ticket", time: "1 day ago" },
-  ];
 
   const summaryCards = [
     { label: "Pending Approvals", value: 5, icon: "⏳" },
@@ -68,59 +57,11 @@ const Dashboard: React.FC = () => {
         ))}
       </section>
 
-      {/* Recent Entries Table */}
-      <section className="bg-white rounded-lg shadow p-6 mb-8">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">Recent Entries</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">ID</th>
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">Module</th>
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">App</th>
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">Menu</th>
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">Item</th>
-                <th className="border border-gray-300 px-5 py-3 text-left text-sm font-medium text-gray-700">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentEntries.map(({ id, module, app, menu, item, date }) => (
-                <tr
-                  key={id}
-                  className="hover:bg-gray-50 transition cursor-pointer"
-                  onClick={() => alert(`Clicked entry ${id}`)}
-                >
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{id}</td>
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{module}</td>
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{app}</td>
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{menu}</td>
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{item}</td>
-                  <td className="border border-gray-300 px-5 py-3 text-sm text-gray-900">{date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
 
-      {/* Activity Feed */}
-      <section className="bg-white rounded-lg shadow p-6 mb-8">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">Activity Feed</h3>
-        <ul className="divide-y divide-gray-200">
-          {activityFeed.map(({ id, user, action, time }) => (
-            <li key={id} className="py-3 flex justify-between items-center">
-              <div>
-                <p className="text-gray-900"><strong>{user}</strong> {action}</p>
-              </div>
-              <div className="text-sm text-gray-500">{time}</div>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       {/* Footer */}
-      <footer className="text-center text-gray-400 text-sm mt-12 mb-4 select-none">
-        &copy; {new Date().getFullYear()} Your Company. All rights reserved. v1.0.0
+      <footer className="text-center text-gray-400 text-sm mb-auto select-none">
+        &copy; {new Date().getFullYear()} Sim Solutions. All rights reserved. v1.0.0
       </footer>
     </div>
   );

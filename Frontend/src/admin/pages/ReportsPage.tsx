@@ -1,3 +1,4 @@
+import { BarChart4 } from "lucide-react";
 import {
   getAllModules,
   getAllApps,
@@ -179,7 +180,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
   return (
     <div className="">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white">
-        <h2 className="text-2xl font-light mb-4 text-gray-800">Report</h2>
+        <h2 className="font-light text-gray-800 flex items-center gap-2"><BarChart4 size={18} />Report</h2>
 
         <Dropdown
           label="Module"

@@ -26,7 +26,7 @@ const navItems = [
   { label: 'Sub Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
   { label: 'SS Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
-  { label: 'DP Group Code', path: '/admin/field', icon: <ListTree size={18} /> },
+  { label: 'DP Group', path: '/admin/field', icon: <ListTree size={18} /> },
       {
     label: "Data Point", 
     path: "/admin/datapoint",

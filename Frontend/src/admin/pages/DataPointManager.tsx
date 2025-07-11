@@ -12,6 +12,7 @@ import {
   getAllApps,
   getAllMenus,
 } from "../../apiRequest/api";
+import { ListTree } from "lucide-react";
 
 interface Module {
   id: string;
@@ -175,7 +176,12 @@ const DataPointManager: React.FC = () => {
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          <h2 className=" font-light mb-4">DataPoint</h2>
+          <h2 className="font-light text-gray-800 flex items-center gap-2">
+            <span className="text-blue-600 ">
+              <ListTree size={18} />
+            </span>
+            DataPoint
+          </h2>
 
           {/* Module */}
           <div>
@@ -243,29 +249,28 @@ const DataPointManager: React.FC = () => {
           {/* Item */}
           <div>
             <label className="block mb-1 font-medium">Item</label>
-            
+
             <select
-  value={selectedItem}
-  onChange={(e) => {
-    const selectedId = e.target.value;
-    setSelectedItem(selectedId);
+              value={selectedItem}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                setSelectedItem(selectedId);
 
-    const selected = items.find((item) => item.id === selectedId);
-    const prefix = selected ? `${selected.name}/` : "";
+                const selected = items.find((item) => item.id === selectedId);
+                const prefix = selected ? `${selected.name}/` : "";
 
-    setDpPrefix(prefix);
-    setDpGroupCode(prefix);
-  }}
-  className="w-full border px-3 py-2 rounded"
->
-  <option value="">Select Item</option>
-  {filteredItems.map((item) => (
-    <option key={item.id} value={item.id}>
-      {item.name}
-    </option>
-  ))}
-</select>
-
+                setDpPrefix(prefix);
+                setDpGroupCode(prefix);
+              }}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Select Item</option>
+              {filteredItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Group Code */}

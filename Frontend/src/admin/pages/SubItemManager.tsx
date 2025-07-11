@@ -14,6 +14,7 @@ import {
 } from "../../apiRequest/api";
 import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { ListChecks } from "lucide-react";
 
 interface Module {
   id: string;
@@ -196,7 +197,7 @@ const SubItemManager: React.FC = () => {
         {/* Top Filter Row */}
         <div className="grid grid-cols-1  md:grid-cols-6 gap-4">
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 ">📦</span> Sub Item
+            <span className="text-blue-600 "><ListChecks size={18} /></span> Sub Item
           </h2>
 
           {/* Module */}

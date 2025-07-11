@@ -11,6 +11,7 @@ import {
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { List } from "lucide-react";
 
 interface Module {
   id: string;
@@ -135,7 +136,7 @@ const MenuManager: React.FC = () => {
         {/* Top Row: Module and App Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 ">
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-green-600 text-2xl">📁</span> Menu
+            <span className="text-green-600 "><List size={18} /></span> Menu
           </h2>
           {/* Module Dropdown */}
           <div className="">

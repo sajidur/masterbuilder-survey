@@ -18,6 +18,7 @@ import {
 } from "../../apiRequest/api";
 import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { ListPlus } from "lucide-react";
 
 interface Module {
   id: string;
@@ -205,9 +206,9 @@ const SubSubSubItemManager: React.FC = () => {
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 mb-4 bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 mb-4 bg-white">
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 ">📱</span> SSS Item
+          <span className="text-blue-600 "><ListPlus size={18} /></span> SSS Item
         </h2>
         {[
           {
