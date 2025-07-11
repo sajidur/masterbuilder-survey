@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity("DataPoint")
 export class DataPoint {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
- 
- 
+
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { SurveyModuleController } from './survey-module.controller';
@@ -19,11 +18,10 @@ import { SubSubSubItem } from './module.entity/subSubSubItem.entity';
 import { Template } from 'src/Template/entity/template';
 import { DataPoint } from './module.entity/dataPoint.entity';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-       Template,
+      Template,
       Modules,
       App, // ✅ This is likely what’s missing
       Menu,
@@ -32,13 +30,11 @@ import { DataPoint } from './module.entity/dataPoint.entity';
       SubSubItem,
       SubSubSubItem,
       Field,
-      DataPoint
-    ]),AuthModule
+      DataPoint,
+    ]),
+    AuthModule,
   ],
   providers: [SurveyModuleService],
   controllers: [SurveyModuleController],
-
 })
-export class SurveyModuleModule {
-
-}
+export class SurveyModuleModule {}

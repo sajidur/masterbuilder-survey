@@ -2227,9 +2227,11 @@ export class SurveyModuleService {
       serialNumber: 'ASC', // use 'DESC' for descending order
     },
   });
-
+if(list!=null){
   const dtoList = await Promise.all(list.map((dp) => this.toDataPointDto(dp)));
   return dtoList;
+}
+return list;
 }
  
 
