@@ -165,7 +165,11 @@ export class SurveyModuleService {
   async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     const [subSubItems, subItems, items, menus, apps, modules] =
       await Promise.all([
-        this.subSubItemRepository.find(),
+        this.subSubItemRepository.find({
+          order: {
+            serialNumber: 'ASC',
+          },
+        }),
         this.subItemRepository.find(),
         this.itemRepository.find(),
         this.menuRepository.find(),
@@ -422,7 +426,11 @@ export class SurveyModuleService {
     };
   }
   async findAllFields(): Promise<FieldDto[]> {
-    const fields = await this.fieldRepository.find();
+    const fields = await this.fieldRepository.find({
+      order: {
+        serialNumber: 'ASC',
+      },
+    });
 
     if (!fields.length) return [];
 
@@ -669,7 +677,11 @@ export class SurveyModuleService {
 
   async findAllSubItems(): Promise<SubItemDto[]> {
     const [subItems, items, menus, apps, modules] = await Promise.all([
-      this.subItemRepository.find(),
+      this.subItemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
       this.itemRepository.find(),
       this.menuRepository.find(),
       this.appRepository.find(),
@@ -1160,7 +1172,11 @@ export class SurveyModuleService {
 
   async findAllItems(): Promise<ItemDto[]> {
     const [items, menus, apps, modules] = await Promise.all([
-      this.itemRepository.find(),
+      this.itemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
       this.menuRepository.find(),
       this.appRepository.find(),
       this.modulesRepository.find(),
@@ -1622,7 +1638,11 @@ export class SurveyModuleService {
 
   async findAllApps(): Promise<AppDto[]> {
     const [apps, modules] = await Promise.all([
-      this.appRepository.find(),
+      this.appRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
       this.modulesRepository.find(),
     ]);
 
@@ -1868,7 +1888,11 @@ export class SurveyModuleService {
 
   async findAllMenus(): Promise<MenuDto[]> {
     const [menus, apps, modules] = await Promise.all([
-      this.menuRepository.find(),
+      this.menuRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
       this.appRepository.find(),
       this.modulesRepository.find(),
     ]);
@@ -2093,7 +2117,11 @@ export class SurveyModuleService {
   }
 
   async findAllSubSubSubItems(): Promise<SubSubSubItemDto[]> {
-    const items = await this.subSubSubItemRepo.find();
+    const items = await this.subSubSubItemRepo.find({
+      order: {
+        serialNumber: 'ASC',
+      },
+    });
     return Promise.all(items.map((i) => this.toSubSubSubItemDto(i)));
   }
 
@@ -2189,7 +2217,7 @@ export class SurveyModuleService {
       };
     }
   }
-   private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
+  private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
     if (!entity.itemId) {
       throw new BadRequestException('DataPoint must have a valid itemId');
     }
@@ -2222,18 +2250,19 @@ export class SurveyModuleService {
   }
 
   async findAllDataPoint(): Promise<DataPointDto[]> {
-  const list = await this.dataPointRepo.find({
-    order: {
-      serialNumber: 'ASC', // use 'DESC' for descending order
-    },
-  });
-if(list!=null){
-  const dtoList = await Promise.all(list.map((dp) => this.toDataPointDto(dp)));
-  return dtoList;
-}
-return list;
-}
- 
+    const list = await this.dataPointRepo.find({
+      order: {
+        serialNumber: 'ASC', // use 'DESC' for descending order
+      },
+    });
+    if (list != null) {
+      const dtoList = await Promise.all(
+        list.map((dp) => this.toDataPointDto(dp)),
+      );
+      return dtoList;
+    }
+    return list;
+  }
 
   async findOneDataPoint(id: string): Promise<DataPointDto> {
     const dp = await this.dataPointRepo.findOne({ where: { id } });
@@ -2246,10 +2275,16 @@ return list;
     user: any,
   ): Promise<DataPointDto> {
     const newEntity = this.dataPointRepo.create({
-      ...dto,
+      dataPoint: dto.dataPoint,
+      dataType: dto.dataType,
+      dpGroupCode: dto.dpGroupCode,
+      isHide: dto.isHide,
+      isRequired: dto.isRequired,
+      itemId: dto.itemId,
+      serialNumber: dto.serialNumber,
       userId: user?.userId,
-      createdBy: user?.userId || 'system',
-      updatedBy: user?.userId || 'system',
+      createdBy: user?.userId || null,
+      updatedBy: user?.userId || null,
     });
 
     const saved = await this.dataPointRepo.save(newEntity);
@@ -2275,7 +2310,9 @@ return list;
     return this.toDataPointDto(updated);
   }
 
-  async deleteDataPoint(id: string): Promise<{ status: string; message: string }> {
+  async deleteDataPoint(
+    id: string,
+  ): Promise<{ status: string; message: string }> {
     const existing = await this.dataPointRepo.findOne({ where: { id } });
     if (!existing) {
       throw new NotFoundException(`DataPoint with ID ${id} not found`);
@@ -2287,7 +2324,4 @@ return list;
       message: `DataPoint ${id} deleted successfully.`,
     };
   }
-
- 
-
 }
