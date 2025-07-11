@@ -491,9 +491,9 @@ const SubItemManager: React.FC = () => {
                   <td className="p-2">{s.tier}</td>
 
                   <td className="p-2">
-                    {s.buttonType === "Primary Button"
+                    {s.buttonType === "P-Button"
                       ? `P-Button[${s.buttonLabel || ""}]`
-                      : s.buttonType === "Second Button"
+                      : s.buttonType === "S-Button"
                       ? `S-Button[${s.buttonLabel || ""}]`
                       : ""}
                   </td>

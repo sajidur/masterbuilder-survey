@@ -277,7 +277,7 @@ const DataPointManager: React.FC = () => {
 
           {/* Group Code */}
           <div>
-            <label className="block mb-1 font-medium">DP Group Code</label>
+            <label className="block mb-1 font-medium">DP Group</label>
             <input
               type="text"
               value={dpGroupCode}
@@ -290,7 +290,7 @@ const DataPointManager: React.FC = () => {
                 setDpGroupCode(input);
               }}
               className="w-full border px-3 py-2 rounded"
-              placeholder="Enter dp group code"
+              placeholder="Enter dp group"
             />
           </div>
         </div>
@@ -380,7 +380,7 @@ const DataPointManager: React.FC = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">DP Group Code</th>
+              <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">DataPoint</th>
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Hide</th>
