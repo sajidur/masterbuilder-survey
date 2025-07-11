@@ -287,7 +287,7 @@ const SubItemManager: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 ">
           {/* Serial Number */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -316,22 +316,6 @@ const SubItemManager: React.FC = () => {
             />
           </div>
 
-          {/* Template */}
-          {/* <div>
-          <label className="block mb-1 font-medium">Template</label>
-          <select
-            value={selectedTemplateId}
-            onChange={(e) => setSelectedTemplateId(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">-- Choose a Template --</option>
-            {templates.map((template) => (
-              <option key={template.id} value={template.id}>
-                {template.name}
-              </option>
-            ))}
-          </select>
-        </div> */}
 
           {/* Tier */}
           <div>

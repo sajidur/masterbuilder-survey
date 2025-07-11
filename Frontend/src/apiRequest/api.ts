@@ -319,15 +319,15 @@ export const deleteSubSubSubItem = async (id: string) => {
 
 // Add Field
 export const addField = async (data: {
-  name: string;
+  // name: string;
   displayType: string;
-  dataType: string;
-  isRequired: boolean;
+  // dataType: string;
+  // isRequired: boolean;
   subSubSubItemId: string;
   serialNumber: string;
   fieldGroupCode: string;
   tier: string;
-  isHide: boolean
+  remarks: string
   
 }) => {
   try {
@@ -343,15 +343,15 @@ export const addField = async (data: {
 export const updateField = async (
   id: string,
   data: {
-    name: string;
+    // name: string;
     displayType: string;
-    dataType: string;
-    isRequired: boolean;
+    // dataType: string;
+    // isRequired: boolean;
     subSubSubItemId: string;
     serialNumber: string;
     fieldGroupCode: string;
     tier: string;
-    isHide: boolean
+    remarks: string
   }
 ) => {
   try {

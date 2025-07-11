@@ -56,14 +56,14 @@ interface SubSubSubItem {
 
 interface Field {
   id?: string;
-  name: string;
+  // name: string;
   displayType: string;
-  dataType: string;
-  isRequired: boolean;
-  isHide: boolean;
+  // dataType: string;
+  // isRequired: boolean;
+  // isHide: boolean;
   subSubSubItem: SubSubSubItem;
   serialNumber?: string;
-  fieldGroupCode?: string;
+  // fieldGroupCode?: string;
   tier?: string;
 }
 
@@ -87,15 +87,17 @@ const FieldManager: React.FC = () => {
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [fieldName, setFieldName] = useState("");
   const [selectedFieldType, setSelectedFieldType] = useState("");
-  const [isRequired, setIsRequired] = useState(false);
-  const [isHide, setIsHide] = useState(false);
+  // const [isRequired, setIsRequired] = useState(false);
+  // const [isHide, setIsHide] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [fieldGroupCode, setFieldGroupCode] = useState("");
   const [tier, setTier] = useState("");
   const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
+  const [remarks, setRemarks] = useState("");
 
-  const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
+
+  // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["tree", "graph", "table", "individual field"];
 
   useEffect(() => {
@@ -157,17 +159,15 @@ const FieldManager: React.FC = () => {
       return;
     }
 
-    const payload = {
-      name: fieldName.trim(),
-      displayType: selectedDisplayType,
-      dataType: selectedFieldType,
-      isRequired,
-      subSubSubItemId: subSubSubObj.id,
-      serialNumber,
-      fieldGroupCode,
-      tier,
-      isHide,
-    };
+const payload = {
+  displayType: selectedDisplayType,
+  subSubSubItemId: subSubSubObj.id,
+  serialNumber,
+  fieldGroupCode,
+  tier,
+  remarks,
+};
+
 
     try {
       if (editFieldId) {
@@ -190,8 +190,8 @@ const FieldManager: React.FC = () => {
       setSerialNumber("");
       setSelectedDisplayType("");
       setSelectedFieldType("");
-      setIsRequired(false);
-      setIsHide(false);
+      // setIsRequired(false);
+      // setIsHide(false);
       setSelectedSubSubSubItem("");
     } catch (e) {
       toast.error("Failed to save field.");
@@ -216,7 +216,7 @@ const FieldManager: React.FC = () => {
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          DP Group Code
+          DP Group
         </h2>
 
         <Dropdown
@@ -391,17 +391,17 @@ const FieldManager: React.FC = () => {
           </select>
         </div>
 
-        {/* Field Name */}
-        {/* <div>
-          <label className="block mb-1 font-medium">Data Point</label>
+        {/* Remarks */}
+        <div>
+          <label className="block mb-1 font-medium">Remarks</label>
           <input
             type="text"
-            value={fieldName}
-            onChange={(e) => setFieldName(e.target.value)}
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
             className="w-full border px-3 py-2 rounded"
             placeholder="Enter field name"
           />
-        </div> */}
+        </div>
 
         {/* Field Type */}
         {/* <div>
@@ -487,11 +487,11 @@ const FieldManager: React.FC = () => {
             <button
               onClick={() => {
                 setEditFieldId(null);
-                setFieldName("");
+                // setFieldName("");
                 setSerialNumber("");
                 setSelectedDisplayType("");
-                setSelectedFieldType("");
-                setIsRequired(false);
+                // setSelectedFieldType("");
+                // setIsRequired(false);
               }}
               className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
             >
@@ -514,14 +514,15 @@ const FieldManager: React.FC = () => {
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SSS Item</th>
+                            <th className="p-2 text-left">SI</th>
+
               <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
-              <th className="p-2 text-left">SI</th>
-              <th className="p-2 text-left">Data Point</th>
-              <th className="p-2 text-left">Required</th>
-              <th className="p-2 text-left">Hide</th>
-              <th className="p-2 text-left">Data Type</th>
+              {/* <th className="p-2 text-left">Data Point</th> */}
+              {/* <th className="p-2 text-left">Required</th> */}
+              {/* <th className="p-2 text-left">Hide</th> */}
+              {/* <th className="p-2 text-left">Data Type</th> */}
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
@@ -550,25 +551,26 @@ const FieldManager: React.FC = () => {
                   {f.subSubSubItem?.subSubItem?.name || "—"}
                 </td>
                 <td className="p-2">{f.subSubSubItem?.name || "—"}</td>
+                                <td className="p-2">{f.serialNumber || "—"}</td>
+
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>
-                <td className="p-2">{f.serialNumber || "—"}</td>
 
-                <td className="p-2">{f.name}</td>
-                <td className="p-2">{f.isRequired ? "Yes" : "No"}</td>
-                <td className="p-2">{f.isHide ? "Yes" : "No"}</td>
-                <td className="p-2">{f.dataType}</td>
+                {/* <td className="p-2">{f.name}</td> */}
+                {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
+                {/* <td className="p-2">{f.isHide ? "Yes" : "No"}</td> */}
+                {/* <td className="p-2">{f.dataType}</td> */}
 
                 <td className="px-4 py-3 flex gap-3">
                   <button
                     onClick={() => {
                       setEditFieldId(f.id || "");
-                      setFieldName(f.name);
+                      // setFieldName(f.name);
                       setSelectedDisplayType(f.displayType);
-                      setSelectedFieldType(f.dataType);
-                      setIsRequired(f.isRequired);
+                      // setSelectedFieldType(f.dataType);
+                      // setIsRequired(f.isRequired);
                       setSerialNumber(f.serialNumber || "");
 
                       // Pre-select the hierarchy for edit
