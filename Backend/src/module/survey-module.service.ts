@@ -162,117 +162,249 @@ export class SurveyModuleService {
     };
   }
 
-  async findAllSubSubItem(): Promise<SubSubItemDto[]> {
-    const [subSubItems, subItems, items, menus, apps, modules] =
-      await Promise.all([
-        this.subSubItemRepository.find({
-          order: {
-            serialNumber: 'ASC',
-          },
-        }),
-        this.subItemRepository.find(),
-        this.itemRepository.find(),
-        this.menuRepository.find(),
-        this.appRepository.find(),
-        this.modulesRepository.find(),
-      ]);
+  // async findAllSubSubItem(): Promise<SubSubItemDto[]> {
+  //   const [subSubItems, subItems, items, menus, apps, modules] =
+  //     await Promise.all([
+  //       this.subSubItemRepository.find({
+  //         order: {
+  //           serialNumber: 'ASC',
+  //         },
+  //       }),
+  //       this.subItemRepository.find(),
+  //       this.itemRepository.find(),
+  //       this.menuRepository.find(),
+  //       this.appRepository.find(),
+  //       this.modulesRepository.find(),
+  //     ]);
 
-    if (!subSubItems.length) {
-      console.log('No sub-sub-items found.');
-      return [];
-    }
+  //   if (!subSubItems.length) {
+  //     console.log('No sub-sub-items found.');
+  //     return [];
+  //   }
 
-    // Build maps for quick lookup
-    const appMap = new Map(apps.map((app) => [app.id, app]));
-    const moduleMap = new Map(modules.map((mod) => [mod.id, mod]));
+  //   // Build maps for quick lookup
+  //   const appMap = new Map(apps.map((app) => [app.id, app]));
+  //   const moduleMap = new Map(modules.map((mod) => [mod.id, mod]));
 
-    const menuDtoMap = new Map<string, MenuDto>();
-    for (const menu of menus) {
-      const app = appMap.get(menu.appId);
-      const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+  //   const menuDtoMap = new Map<string, MenuDto>();
+  //   for (const menu of menus) {
+  //     const app = appMap.get(menu.appId);
+  //     const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
 
-      const moduleDto: ModuleDto | null = module
-        ? {
-            id: module.id,
-            name: module.name,
-            tier: module.tier,
-            serialNumber: module.serialNumber,
-          }
-        : null;
+  //     const moduleDto: ModuleDto | null = module
+  //       ? {
+  //           id: module.id,
+  //           name: module.name,
+  //           tier: module.tier,
+  //           serialNumber: module.serialNumber,
+  //         }
+  //       : null;
 
-      const appDto: AppDto | null = app
-        ? {
-            id: app.id,
-            name: app.name,
-            tier: app.tier,
-            serialNumber: app.serialNumber,
-            Module: moduleDto,
-          }
-        : null;
+  //     const appDto: AppDto | null = app
+  //       ? {
+  //           id: app.id,
+  //           name: app.name,
+  //           tier: app.tier,
+  //           serialNumber: app.serialNumber,
+  //           Module: moduleDto,
+  //         }
+  //       : null;
 
-      menuDtoMap.set(menu.id, {
-        id: menu.id,
-        title: menu.title,
-        tier: menu.tier,
-        serialNumber: menu.serialNumber,
-        app: appDto,
-      });
-    }
+  //     menuDtoMap.set(menu.id, {
+  //       id: menu.id,
+  //       title: menu.title,
+  //       tier: menu.tier,
+  //       serialNumber: menu.serialNumber,
+  //       app: appDto,
+  //     });
+  //   }
 
-    const itemDtoMap = new Map<string, ItemDto>();
-    for (const item of items) {
-      const menuDto = menuDtoMap.get(item.menuId);
-      if (!menuDto) continue;
+  //   const itemDtoMap = new Map<string, ItemDto>();
+  //   for (const item of items) {
+  //     const menuDto = menuDtoMap.get(item.menuId);
+  //     if (!menuDto) continue;
 
-      itemDtoMap.set(item.id, {
-        id: item.id,
-        name: item.name,
-        tier: item.tier,
-        serialNumber: item.serialNumber,
-        buttonType: item.buttonType,
-        buttonLabel: item.buttonLabel,
-        navigationTo: item.navigationTo,
-        description: item.description,
-        menu: menuDto,
-      });
-    }
+  //     itemDtoMap.set(item.id, {
+  //       id: item.id,
+  //       name: item.name,
+  //       tier: item.tier,
+  //       serialNumber: item.serialNumber,
+  //       buttonType: item.buttonType,
+  //       buttonLabel: item.buttonLabel,
+  //       navigationTo: item.navigationTo,
+  //       description: item.description,
+  //       menu: menuDto,
+  //     });
+  //   }
 
-    const subItemDtoMap = new Map<string, SubItemDto>();
-    for (const subItem of subItems) {
-      if (!subItem.itemId) {
-        console.warn(`SubItem ${subItem.id} has no itemId.`);
-        continue;
-      }
+  //   const subItemDtoMap = new Map<string, SubItemDto>();
+  //   for (const subItem of subItems) {
+  //     if (!subItem.itemId) {
+  //       console.warn(`SubItem ${subItem.id} has no itemId.`);
+  //       continue;
+  //     }
 
-      const itemDto = itemDtoMap.get(subItem.itemId);
-      if (!itemDto) {
-        console.warn(
-          `Item with ID ${subItem.itemId} not found for SubItem ${subItem.id}`,
-        );
-        continue;
-      }
+  //     const itemDto = itemDtoMap.get(subItem.itemId);
+  //     if (!itemDto) {
+  //       console.warn(
+  //         `Item with ID ${subItem.itemId} not found for SubItem ${subItem.id}`,
+  //       );
+  //       continue;
+  //     }
 
-      subItemDtoMap.set(subItem.id, {
-        id: subItem.id,
-        name: subItem.name,
-        tier: subItem.tier,
-        serialNumber: subItem.serialNumber,
-        buttonType: subItem.buttonType,
-        layout: subItem.layout,
-        buttonLabel: subItem.buttonLabel,
-        navigationTo: subItem.navigationTo,
-        description: subItem.description,
-        itemId: subItem.itemId,
-        item: itemDto,
-      });
-    }
+  //     subItemDtoMap.set(subItem.id, {
+  //       id: subItem.id,
+  //       name: subItem.name,
+  //       tier: subItem.tier,
+  //       serialNumber: subItem.serialNumber,
+  //       buttonType: subItem.buttonType,
+  //       layout: subItem.layout,
+  //       buttonLabel: subItem.buttonLabel,
+  //       navigationTo: subItem.navigationTo,
+  //       description: subItem.description,
+  //       itemId: subItem.itemId,
+  //       item: itemDto,
+  //     });
+  //   }
 
-    return Promise.all(
-      subSubItems.map((subSubItem) =>
-        this.toSubSubItemDto1(subSubItem, subItemDtoMap),
-      ),
-    );
+  //   return Promise.all(
+  //     subSubItems.map((subSubItem) =>
+  //       this.toSubSubItemDto1(subSubItem, subItemDtoMap),
+  //     ),
+  //   );
+  // }
+async findAllSubSubItem(): Promise<SubSubItemDto[]> {
+  const [subSubItems, subItems, items, menus, apps, modules] =
+    await Promise.all([
+      this.subSubItemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.subItemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.itemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.menuRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.appRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.modulesRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+    ]);
+
+  if (!subSubItems.length) {
+    console.log('No sub-sub-items found.');
+    return [];
   }
+
+  // Build maps for quick lookup
+  const appMap = new Map(apps.map(app => [app.id, app]));
+  const moduleMap = new Map(modules.map(mod => [mod.id, mod]));
+
+  const menuDtoMap = new Map<string, MenuDto>();
+  for (const menu of menus) {
+    const app = appMap.get(menu.appId);
+    const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
+
+    const moduleDto: ModuleDto | null = module
+      ? {
+          id: module.id,
+          name: module.name,
+          tier: module.tier,
+          serialNumber: module.serialNumber,
+        }
+      : null;
+
+    const appDto: AppDto | null = app
+      ? {
+          id: app.id,
+          name: app.name,
+          tier: app.tier,
+          serialNumber: app.serialNumber,
+          Module: moduleDto,
+        }
+      : null;
+
+    menuDtoMap.set(menu.id, {
+      id: menu.id,
+      title: menu.title,
+      tier: menu.tier,
+      serialNumber: menu.serialNumber,
+      app: appDto,
+    });
+  }
+
+  const itemDtoMap = new Map<string, ItemDto>();
+  for (const item of items) {
+    const menuDto = menuDtoMap.get(item.menuId);
+    if (!menuDto) continue;
+
+    itemDtoMap.set(item.id, {
+      id: item.id,
+      name: item.name,
+      tier: item.tier,
+      serialNumber: item.serialNumber,
+      buttonType: item.buttonType,
+      buttonLabel: item.buttonLabel,
+      navigationTo: item.navigationTo,
+      description: item.description,
+      menu: menuDto,
+    });
+  }
+
+  const subItemDtoMap = new Map<string, SubItemDto>();
+  for (const subItem of subItems) {
+    if (!subItem.itemId) {
+      console.warn(`SubItem ${subItem.id} has no itemId.`);
+      continue;
+    }
+
+    const itemDto = itemDtoMap.get(subItem.itemId);
+    if (!itemDto) {
+      console.warn(
+        `Item with ID ${subItem.itemId} not found for SubItem ${subItem.id}`,
+      );
+      continue;
+    }
+
+    subItemDtoMap.set(subItem.id, {
+      id: subItem.id,
+      name: subItem.name,
+      tier: subItem.tier,
+      serialNumber: subItem.serialNumber,
+      buttonType: subItem.buttonType,
+      layout: subItem.layout,
+      buttonLabel: subItem.buttonLabel,
+      navigationTo: subItem.navigationTo,
+      description: subItem.description,
+      itemId: subItem.itemId,
+      item: itemDto,
+    });
+  }
+
+  // subSubItems is already sorted by serialNumber, no need to sort again
+  return Promise.all(
+    subSubItems.map((subSubItem) =>
+      this.toSubSubItemDto1(subSubItem, subItemDtoMap),
+    ),
+  );
+}
 
   async findOneSubSubItem(id: string): Promise<SubSubItemDto> {
     const item = await this.subSubItemRepository.findOne({
@@ -682,10 +814,26 @@ export class SurveyModuleService {
           serialNumber: 'ASC',
         },
       }),
-      this.itemRepository.find(),
-      this.menuRepository.find(),
-      this.appRepository.find(),
-      this.modulesRepository.find(),
+      this.itemRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.menuRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.appRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.modulesRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
     ]);
 
     if (!subItems.length) {
@@ -1177,9 +1325,21 @@ export class SurveyModuleService {
           serialNumber: 'ASC',
         },
       }),
-      this.menuRepository.find(),
-      this.appRepository.find(),
-      this.modulesRepository.find(),
+      this.menuRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.appRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.modulesRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
     ]);
 
     if (!items.length) {
@@ -1643,7 +1803,11 @@ export class SurveyModuleService {
           serialNumber: 'ASC',
         },
       }),
-      this.modulesRepository.find(),
+      this.modulesRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
     ]);
 
     if (!apps.length || !modules.length) return [];
@@ -1893,8 +2057,16 @@ export class SurveyModuleService {
           serialNumber: 'ASC',
         },
       }),
-      this.appRepository.find(),
-      this.modulesRepository.find(),
+      this.appRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
+      this.modulesRepository.find({
+        order: {
+          serialNumber: 'ASC',
+        },
+      }),
     ]);
     // console.log(apps);
     // console.log(menus);
@@ -2116,14 +2288,28 @@ export class SurveyModuleService {
     };
   }
 
-  async findAllSubSubSubItems(): Promise<SubSubSubItemDto[]> {
-    const items = await this.subSubSubItemRepo.find({
-      order: {
-        serialNumber: 'ASC',
-      },
-    });
-    return Promise.all(items.map((i) => this.toSubSubSubItemDto(i)));
+async findAllSubSubSubItems(): Promise<SubSubSubItemDto[]> {
+  const items = await this.subSubSubItemRepo.find({
+    order: {
+      serialNumber: 'ASC',
+    },
+  });
+
+  if (!items.length) {
+    console.log('No SubSubSubItems found.');
+    return [];
   }
+
+  // Map to DTOs with nested resolution
+  const dtoList = await Promise.all(
+    items.map((i) => this.toSubSubSubItemDto(i)),
+  );
+
+  // Sort again in case any async resolution affected ordering
+  var data=dtoList.sort((a, b) => a.serialNumber.localeCompare(b.serialNumber));
+  //console.log(data);
+  return dtoList;
+}
 
   async findOneSubSubSubItem(id: string): Promise<SubSubSubItemDto> {
     const item = await this.subSubSubItemRepo.findOne({ where: { id } });
@@ -2217,52 +2403,56 @@ export class SurveyModuleService {
       };
     }
   }
-  private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
-    if (!entity.itemId) {
-      throw new BadRequestException('DataPoint must have a valid itemId');
-    }
-
-    const item = await this.itemRepository.findOne({
-      where: { id: entity.itemId },
-    });
-
-    if (!item) {
-      throw new NotFoundException(`Item with ID ${entity.itemId} not found`);
-    }
-
-    const itemDto: ItemDto = await this.toItemDto(item); // Assuming this method exists
-
-    const dto = new DataPointDto();
-    dto.id = entity.id;
-    dto.dpGroupCode = entity.dpGroupCode;
-    dto.dataPoint = entity.dataPoint;
-    dto.serialNumber = entity.serialNumber;
-    dto.dataType = entity.dataType;
-    dto.isRequired = entity.isRequired;
-    dto.isHide = entity.isHide;
-    dto.createdAt = entity.createdAt;
-    dto.updatedAt = entity.updatedAt;
-    dto.createdBy = entity.createdBy;
-    dto.updatedBy = entity.updatedBy;
-    dto.userId = entity.userId;
-    dto.Item = itemDto;
-    return dto;
+private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
+  if (!entity.itemId) {
+    throw new BadRequestException('DataPoint must have a valid itemId');
   }
 
-  async findAllDataPoint(): Promise<DataPointDto[]> {
-    const list = await this.dataPointRepo.find({
-      order: {
-        serialNumber: 'ASC', // use 'DESC' for descending order
-      },
-    });
-    if (list != null) {
-      const dtoList = await Promise.all(
-        list.map((dp) => this.toDataPointDto(dp)),
-      );
-      return dtoList;
-    }
-    return list;
+  const item = await this.itemRepository.findOne({
+    where: { id: entity.itemId },
+  });
+
+  if (!item) {
+    throw new NotFoundException(`Item with ID ${entity.itemId} not found`);
   }
+
+  const itemDto: ItemDto = await this.toItemDto(item); // Assuming this method exists
+
+  return {
+    id: entity.id,
+    dpGroupCode: entity.dpGroupCode,
+    dataPoint: entity.dataPoint,
+    serialNumber: entity.serialNumber,
+    dataType: entity.dataType,
+    isRequired: entity.isRequired,
+    isHide: entity.isHide,
+    createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
+    createdBy: entity.createdBy,
+    updatedBy: entity.updatedBy,
+    userId: entity.userId,
+    Item: itemDto,
+  } as DataPointDto;
+}
+
+async findAllDataPoint(): Promise<DataPointDto[]> {
+  const dataPoints = await this.dataPointRepo.find({
+    order: {
+      serialNumber: 'ASC',
+    },
+  });
+
+  if (!dataPoints.length) {
+    console.log('No data points found.');
+    return [];
+  }
+
+  const dtoList = await Promise.all(
+    dataPoints.map((dp) => this.toDataPointDto(dp)),
+  );
+
+  return dtoList;
+}
 
   async findOneDataPoint(id: string): Promise<DataPointDto> {
     const dp = await this.dataPointRepo.findOne({ where: { id } });
