@@ -168,3 +168,31 @@ DROP COLUMN name,
 DROP COLUMN description;
 ALTER TABLE survey_app_db.field
 ADD COLUMN remarks VARCHAR(255);
+
+to modify fieldTable (DP)
+
+ALTER TABLE survey_app_db.field
+ADD COLUMN itemId VARCHAR(255) Null;
+ALTER TABLE survey_app_db.field
+ADD COLUMN subItemId VARCHAR(255) Null;
+ALTER TABLE survey_app_db.field
+ADD COLUMN subSubItemId VARCHAR(255) Null;
+ALTER TABLE survey_app_db.field
+MODIFY COLUMN subSubSubItemId VARCHAR(255) NULL;
+
+all tier should be optional except DP(Field)
+
+ALTER TABLE survey_app_db.modules
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.app
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.menu
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.item
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.sub_item
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.sub_sub_item
+MODIFY COLUMN tier VARCHAR(255) NULL;
+ALTER TABLE survey_app_db.sub_sub_sub_item
+MODIFY COLUMN tier VARCHAR(255) NULL;

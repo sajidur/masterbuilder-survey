@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable prettier/prettier */
 
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -640,6 +642,9 @@ if (!item) {
     const newField = new Field();
     newField.remarks = field.remarks;
     newField.subSubSubItemId = field.subSubSubItemId;
+    newField.subItemId=field.subItemId,
+    newField.subSubItemId=field.subItemId,
+    newField.itemId=field.itemId,
     newField.updatedAt = new Date();
     newField.updatedBy = user.username;
     newField.createdAt = new Date();
@@ -671,7 +676,10 @@ if (!item) {
     if (!existing) {
       throw new NotFoundException(`Field with ID ${id} not found`);
     }
-
+   existing.itemId=updated.itemId,
+   existing.subItemId=updated.subItemId,
+   existing.subSubItemId=updated.subSubItemId,
+   
     existing.remarks = updated.remarks;
     existing.subSubSubItemId = updated.subSubSubItemId;
     existing.updatedAt = new Date();
