@@ -149,6 +149,7 @@ const DataPointManager: React.FC = () => {
       isHide,
       isRequired,
     };
+    
 
     try {
       if (editId) {
