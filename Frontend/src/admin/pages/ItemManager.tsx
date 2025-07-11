@@ -232,9 +232,9 @@ const ItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-        {/* </div> */}
+        </div>
 
-        {/* <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 items-end"> */}
+        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 items-end bg-white  rounded-lg px-4 pb-4">
         {/* Serial Number */}
         <div>
           <label className="block mb-1 font-medium text-gray-700">

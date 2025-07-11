@@ -139,9 +139,8 @@ const FieldManager: React.FC = () => {
       !selectedSubItem ||
       !selectedSubSubItem ||
       !selectedSubSubSubItem ||
-      !selectedDisplayType ||
-      !fieldName.trim()
-    ) {
+      !selectedDisplayType 
+        ) {
       toast.warn("Please fill all fields.");
       return;
     }
@@ -154,10 +153,6 @@ const FieldManager: React.FC = () => {
       return;
     }
 
-    if (!selectedFieldType) {
-      toast.warn("Please select field type.");
-      return;
-    }
 
 const payload = {
   displayType: selectedDisplayType,
@@ -519,7 +514,7 @@ const payload = {
               <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
-              {/* <th className="p-2 text-left">Data Point</th> */}
+              <th className="p-2 text-left">Remarks</th>
               {/* <th className="p-2 text-left">Required</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Data Type</th> */}
@@ -558,7 +553,7 @@ const payload = {
 
                 <td className="p-2">{f.displayType}</td>
 
-                {/* <td className="p-2">{f.name}</td> */}
+                <td className="p-2">{f.remarks || "-"}</td>
                 {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{f.isHide ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{f.dataType}</td> */}
