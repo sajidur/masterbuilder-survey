@@ -11,6 +11,7 @@ import {
   getAllModules,
   getAllApps,
   getAllMenus,
+  getAllFields,
 } from "../../apiRequest/api";
 import { ListTree } from "lucide-react";
 
@@ -68,20 +69,28 @@ const DataPointManager: React.FC = () => {
   const [isRequired, setIsRequired] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [dpPrefix, setDpPrefix] = useState("");
+  const [dpGroups, setDpGroups] = useState<any[]>([]);
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [moduleData, appData, menuData, itemData, dataPointData] =
-          await Promise.all([
-            getAllModules(),
-            getAllApps(),
-            getAllMenus(),
-            getAllItems(),
-            getAllDataPoints(),
-          ]);
+        const [
+          moduleData,
+          appData,
+          menuData,
+          itemData,
+          dataPointData,
+          dpGroups,
+        ] = await Promise.all([
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+          getAllItems(),
+          getAllDataPoints(),
+          getAllFields(),
+        ]);
 
         console.log("✅ Modules:", moduleData);
         console.log("✅ Apps:", appData);
@@ -92,6 +101,7 @@ const DataPointManager: React.FC = () => {
         setMenus(menuData);
         setItems(itemData);
         setDataPoints(dataPointData);
+        setDpGroups(dpGroups);
       } catch (error) {
         console.error("❌ Data fetch error:", error);
         toast.error("Failed to load data.");
@@ -109,8 +119,6 @@ const DataPointManager: React.FC = () => {
   const filteredItems = items.filter(
     (item) => item.menu?.title === selectedMenu
   );
-
-  
 
   const resetForm = () => {
     setSelectedModule("");
@@ -182,7 +190,7 @@ const DataPointManager: React.FC = () => {
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            DataPoint
+            Data Point
           </h2>
 
           {/* Module */}
@@ -276,7 +284,7 @@ const DataPointManager: React.FC = () => {
           </div>
 
           {/* Group Code */}
-          <div>
+          {/* <div>
             <label className="block mb-1 font-medium">DP Group</label>
             <input
               type="text"
@@ -284,7 +292,6 @@ const DataPointManager: React.FC = () => {
               onChange={(e) => {
                 const input = e.target.value;
 
-                // If user tries to modify before prefix, prevent it
                 if (!input.startsWith(dpPrefix)) return;
 
                 setDpGroupCode(input);
@@ -292,6 +299,23 @@ const DataPointManager: React.FC = () => {
               className="w-full border px-3 py-2 rounded"
               placeholder="Enter dp group"
             />
+          </div> */}
+
+          {/* Group Code */}
+          <div>
+            <label className="block mb-1 font-medium">DP Group</label>
+            <select
+              value={dpGroupCode}
+              onChange={(e) => setDpGroupCode(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Select Group</option>
+              {dpGroups.map((group) => (
+                <option key={group.id} value={group.fieldGroupCode}>
+                  {group.fieldGroupCode}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -381,8 +405,9 @@ const DataPointManager: React.FC = () => {
             <tr>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">DP Group</th>
+                            <th className="p-2 text-left">Serial</th>
+
               <th className="p-2 text-left">DataPoint</th>
-              <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Required</th>
               <th className="p-2 text-left">Data Type</th>
@@ -394,43 +419,42 @@ const DataPointManager: React.FC = () => {
               <tr key={dp.id} className="border-t">
                 <td className="p-2">{dp.Item.name}</td>
                 <td className="p-2">{dp.dpGroupCode}</td>
+                                <td className="p-2">{dp.serialNumber}</td>
+
                 <td className="p-2">{dp.dataPoint}</td>
-                <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.dataType}</td>
                 <td className="p-2 flex gap-2">
                   <button
-                  onClick={() => {
-  setEditId(dp.id);
-  setDataPointName(dp.dataPoint);
-  setDpGroupCode(dp.dpGroupCode);
-  setSerialNumber(dp.serialNumber);
-  setDataType(dp.dataType);
-  setIsRequired(dp.isRequired);
-  setIsHide(dp.isHide);
+                    onClick={() => {
+                      setEditId(dp.id);
+                      setDataPointName(dp.dataPoint);
+                      setDpGroupCode(dp.dpGroupCode);
+                      setSerialNumber(dp.serialNumber);
+                      setDataType(dp.dataType);
+                      setIsRequired(dp.isRequired);
+                      setIsHide(dp.isHide);
 
-  const item = dp.Item;
-  const menu = item?.menu;
-  const app = menu?.app;
-  const module = app?.Module;
+                      const item = dp.Item;
+                      const menu = item?.menu;
+                      const app = menu?.app;
+                      const module = app?.Module;
 
-  // ✅ Set them in proper order (important for dropdown filter dependencies)
-  setSelectedModule(module?.id || "");
+                      // ✅ Set them in proper order (important for dropdown filter dependencies)
+                      setSelectedModule(module?.id || "");
 
-  // Delay is optional but sometimes helps with async state updates
-  setTimeout(() => {
-    setSelectedApp(app?.id || "");
-    setSelectedMenu(menu?.id || "");
-    setSelectedItem(item?.id || "");
+                      // Delay is optional but sometimes helps with async state updates
+                      setTimeout(() => {
+                        setSelectedApp(app?.id || "");
+                        setSelectedMenu(menu?.id || "");
+                        setSelectedItem(item?.id || "");
 
-    // Set DP prefix so the group code input behaves correctly
-    const prefix = item ? `${item.name}/` : "";
-    setDpPrefix(prefix);
-  }, 100);
-}}
-
-
+                        // Set DP prefix so the group code input behaves correctly
+                        const prefix = item ? `${item.name}/` : "";
+                        setDpPrefix(prefix);
+                      }, 100);
+                    }}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     <FaEdit />

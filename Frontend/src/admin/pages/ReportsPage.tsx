@@ -55,7 +55,7 @@ interface Field {
   subSubSubItem?: SubSubSubItem;
 }
 
-const displayTypeOptions = ["Tree", "Graph", "Table", "DP","Card"];
+const displayTypeOptions = ["Tree", "Graph", "Table", "DP", "Card"];
 
 const columnKeys = [
   "module",
@@ -66,7 +66,6 @@ const columnKeys = [
   "subSubItem",
   "subSubSubItem",
   "DPGroupCode",
-  "DataPoint"
 ];
 
 const ReportsPage: React.FC = () => {
@@ -88,11 +87,8 @@ const ReportsPage: React.FC = () => {
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [selectedField, setSelectedField] = useState("");
-
-const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
-const [rangeSelection, setRangeSelection] = useState<string[]>([]);
-const [showHideDropdown, setShowHideDropdown] = useState(false);
-
+  const [selectedRadioKey, setSelectedRadioKey] = useState<string>(""); // for the radio
+  const [showDataPoint, setShowDataPoint] = useState<boolean>(false); // for checkbox
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -141,29 +137,22 @@ const [showHideDropdown, setShowHideDropdown] = useState(false);
 
   // const visibleColumns = columnKeys.slice(columnKeys.indexOf(selectedColumn));
 
-let visibleColumns: string[] = [];
+  let visibleColumns: string[] = [];
 
-if (rangeSelection.length === 2) {
-  const [first, second] = rangeSelection;
-  const firstIndex = columnKeys.indexOf(first);
-  const secondIndex = columnKeys.indexOf(second);
+  if (selectedRadioKey) {
+    const index = columnKeys.indexOf(selectedRadioKey);
+    visibleColumns = columnKeys.slice(index + 1);
+  } else {
+    visibleColumns = columnKeys;
+  }
 
-  const startIndex = Math.min(firstIndex, secondIndex);
-  const endIndex = Math.max(firstIndex, secondIndex);
+  // Always remove DataPoint from main columns
+  visibleColumns = visibleColumns.filter((col) => col !== "DataPoint");
 
-  visibleColumns = columnKeys.slice(startIndex + 1, endIndex + 1);
-} else if (rangeSelection.length === 1) {
-  const index = columnKeys.indexOf(rangeSelection[0]);
-  visibleColumns = columnKeys.slice(index + 1);
-} else {
-  visibleColumns = columnKeys;
-}
-
-// ❗️Remove any hidden columns from visibleColumns
-visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
-
-
-
+  // Append DataPoint at the end **only if checkbox is checked**
+  if (showDataPoint) {
+    visibleColumns.push("DataPoint");
+  }
 
   const columnLabels: Record<string, string> = {
     module: "Module",
@@ -173,14 +162,17 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
     subItem: "Sub Item",
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
-    field: "Data Point",
-    displayType: "DP Group Code",
+    DPGroupCode: "DP Group",
+    DataPoint: "Data Point",
   };
 
   return (
     <div className="">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white">
-        <h2 className="font-light text-gray-800 flex items-center gap-2"><BarChart4 size={18} />Report</h2>
+        <h2 className="font-light text-gray-800 flex items-center gap-2">
+          <BarChart4 size={18} />
+          Report
+        </h2>
 
         <Dropdown
           label="Module"
@@ -234,7 +226,7 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
           onChange={setSelectedSubSubSubItem}
         />
         <Dropdown
-          label="DP Group Code"
+          label="DP Group"
           value={selectedDisplayType}
           options={displayTypeOptions.map((opt) => ({
             label: opt,
@@ -253,30 +245,27 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
         />
       </div>
 
+      <div className="flex flex-wrap gap-4 items-center">
+        {columnKeys.map((key) => (
+          <label key={key} className="flex items-center gap-1 text-sm">
+            <input
+              type="radio"
+              name="columnSelector"
+              checked={selectedRadioKey === key}
+              onChange={() => setSelectedRadioKey(key)}
+            />
+            {columnLabels[key] || key}
+          </label>
+        ))}
 
-      <div className="flex">
-        <div className="mb-4">
-  <div className="flex flex-wrap gap-4">
-    {columnKeys.map((key) => (
-      <label key={key} className="flex items-center gap-1 text-sm">
-        <input
-          type="radio"
-          checked={rangeSelection.includes(key)}
-          onChange={() => {
-            if (rangeSelection.includes(key)) {
-              setRangeSelection(rangeSelection.filter((k) => k !== key));
-            } else if (rangeSelection.length < 2) {
-              setRangeSelection([...rangeSelection, key]);
-            }
-          }}
-        />
-        {columnLabels[key]}
-      </label>
-    ))}
-  </div>
-</div>
-
-
+        <label className="flex items-center gap-1 text-sm ml-4">
+          <input
+            type="checkbox"
+            checked={showDataPoint}
+            onChange={(e) => setShowDataPoint(e.target.checked)}
+          />
+          Data Point
+        </label>
       </div>
 
       <div className="bg-white p-4 rounded shadow">
@@ -307,11 +296,12 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                 {visibleColumns.includes("subSubSubItem") && (
                   <th className="p-2 text-left">SSS Item</th>
                 )}
-                {visibleColumns.includes("DataPoint") && (
-                  <th className="p-2 text-left">Data Point</th>
-                )}
+
                 {visibleColumns.includes("DPGroupCode") && (
-                  <th className="p-2 text-left">DP Group Code</th>
+                  <th className="p-2 text-left">DP Group</th>
+                )}
+                                {visibleColumns.includes("DataPoint") && (
+                  <th className="p-2 text-left">Data Point</th>
                 )}
               </tr>
             </thead>
@@ -357,11 +347,12 @@ visibleColumns = visibleColumns.filter((col) => !hiddenColumns.includes(col));
                       )?.name || ""}
                     </td>
                   )}
-                  {visibleColumns.includes("DataPoint") && (
-                    <td className="p-2">{f.name}</td>
-                  )}
+
                   {visibleColumns.includes("DP Group Code") && (
                     <td className="p-2">{selectedDisplayType}</td>
+                  )}
+                  {visibleColumns.includes("DataPoint") && (
+                    <td className="p-2">{f.name}</td>
                   )}
                 </tr>
               ))}
