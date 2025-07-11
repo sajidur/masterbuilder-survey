@@ -158,3 +158,13 @@ This script gives a *modular report-viewing tool*, customizable through chained 
 in field db (mysql) run below command to add isHide boolean type data
 ALTER TABLE table_name
 ADD COLUMN isHide BOOLEAN DEFAULT false;
+
+in filed do below command:
+ALTER TABLE survey_app_db.field
+DROP COLUMN isHide,
+DROP COLUMN isRequired,
+DROP COLUMN dataType,
+DROP COLUMN name,
+DROP COLUMN description;
+ALTER TABLE survey_app_db.field
+ADD COLUMN remarks VARCHAR(255);

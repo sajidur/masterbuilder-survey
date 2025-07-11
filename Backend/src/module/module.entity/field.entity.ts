@@ -16,9 +16,7 @@ export class Field {
   fieldGroupCode:string;
    @Column()
   tier:string;
-  @Column()
-  @ApiProperty({ description: 'Name of the field' })
-  name: string;
+
   @Column()
   @ApiProperty({ description: 'SubSubSubItem ID' })
   subSubSubItemId: string;
@@ -37,9 +35,6 @@ export class Field {
   @Column()
   displayType:string;
     @Column()
-  dataType:string;
-    @Column()
-  isRequired:boolean;
-     @Column()
-  isHide:boolean;
+  remarks:string;
+ 
 }

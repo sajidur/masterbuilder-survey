@@ -545,12 +545,8 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     return {
       id: field.id,
-      name: field.name,
+      remarks: field.remarks,
       fieldGroupCode: field.fieldGroupCode,
-      description: field.description,
-      isRequired: field.isRequired,
-      isHide: field.isHide,
-      dataType: field.dataType,
       tier: field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
@@ -628,12 +624,8 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     return {
       id: field.id,
-      name: field.name,
+      remarks: field.remarks,
       fieldGroupCode: field.fieldGroupCode,
-      description: field.description,
-      isRequired: field.isRequired,
-      isHide: field.isHide,
-      dataType: field.dataType,
       tier: field.tier,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
@@ -643,7 +635,7 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
   }
   async createField(field: CreateFieldDto, user: User): Promise<FieldDto> {
     const newField = new Field();
-    newField.name = field.name;
+    newField.remarks = field.remarks;
     newField.subSubSubItemId = field.subSubSubItemId;
     newField.updatedAt = new Date();
     newField.updatedBy = user.username;
@@ -652,12 +644,7 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     newField.userId = user.id;
     newField.serialNumber = field.serialNumber;
     newField.displayType = field.displayType;
-    newField.dataType = field.dataType;
     newField.tier = field.tier;
-    newField.isHide = field.isHide;
-    //newField.description="default";
-    newField.isRequired = field.isRequired;
-    newField.description = 'default';
     newField.fieldGroupCode = field.fieldGroupCode;
     const saved = await this.fieldRepository.save(newField);
 
@@ -672,15 +659,11 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     return {
       id: saved.id,
-      name: saved.name,
+      remarks: saved.remarks,
       displayType: field.displayType,
       serialNumber: field.serialNumber,
-      description: newField.description,
       fieldGroupCode: field.fieldGroupCode,
-      dataType: field.dataType,
       tier: field.tier,
-      isRequired: field.isRequired,
-      isHide: field.isHide,
       subSubSubItemId: saved.subSubSubItemId,
       subSubSubItem: await this.toSubSubSubItemDto(subSubItem),
     };
@@ -695,19 +678,17 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
       throw new NotFoundException(`Field with ID ${id} not found`);
     }
 
-    existing.name = updated.name;
+    existing.remarks = updated.remarks;
     existing.subSubSubItemId = updated.subSubSubItemId;
     existing.updatedAt = new Date();
     existing.updatedBy = user.username;
     existing.displayType = updated.displayType;
     existing.serialNumber = updated.serialNumber;
-    existing.isRequired = updated.isRequired;
-    existing.dataType = updated.dataType;
+
     existing.tier = updated.tier;
     existing.userId = user.id;
     existing.fieldGroupCode = updated.fieldGroupCode;
-    existing.description = 'default';
-    existing.isHide = updated.isHide;
+
     const saved = await this.fieldRepository.save(existing);
 
     const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -721,12 +702,8 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     return {
       id: saved.id,
-      name: saved.name,
-      isRequired: saved.isRequired,
-      isHide: saved.isHide,
+      remarks: saved.remarks,
       fieldGroupCode: saved.fieldGroupCode,
-      description: saved.description,
-      dataType: saved.dataType,
       tier: saved.tier,
       displayType: saved.displayType,
       serialNumber: saved.serialNumber,
