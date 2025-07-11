@@ -10,11 +10,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
+
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Field } from './field.entity';
+
 import { SubSubItem } from './subsubitem.entity';
 //import { DesignDefinition } from 'src/design-definition/design-defination.entity/design-definition.entity';
 //import { ApiProperty } from '@nestjs/swagger';
@@ -42,8 +42,6 @@ export class SubSubSubItem {
   templateId?: string;
    @Column({ nullable: true })
   templateText?: string;
-  @OneToMany(() => Field, (field) => field.subSubSubItem)
-  fields: Field[];
   @Column()
   userId: string;
   @CreateDateColumn()

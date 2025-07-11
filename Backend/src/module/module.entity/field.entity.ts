@@ -1,25 +1,32 @@
 /* eslint-disable prettier/prettier */
- 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
-import { SubSubSubItem } from './subSubSubItem.entity';
+
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 
 @Entity()
 export class Field {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
-  serialNumber:string;
+  serialNumber: string;
   @Column()
-  fieldGroupCode:string;
-   @Column()
-  tier:string;
-
+  fieldGroupCode: string;
   @Column()
-  @ApiProperty({ description: 'SubSubSubItem ID' })
-  subSubSubItemId: string;
-  @ManyToOne(() => SubSubSubItem, (subSubSubItem) => subSubSubItem.fields)
-  subSubSubItem: SubSubSubItem;
+  tier: string;
+  @Column()
+  itemId: string;
+  @Column({ nullable: true })
+  subItemId?: string;
+  @Column({ nullable: true })
+  subSubItemId?: string;
+  @Column({ nullable: true })
+  subSubSubItemId?: string;
   @Column()
   userId: string;
   @CreateDateColumn()
@@ -31,8 +38,7 @@ export class Field {
   @Column({ nullable: true })
   updatedBy?: string;
   @Column()
-  displayType:string;
-    @Column()
-  remarks:string;
- 
+  displayType: string;
+  @Column()
+  remarks: string;
 }

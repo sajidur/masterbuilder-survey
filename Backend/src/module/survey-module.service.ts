@@ -532,28 +532,42 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
   //     subSubSubItem: await this.toSubSubItemDto(subSubItem1),
   //   };
   // }
-  async toFieldDto1(
-    field: Field,
-    subSubSubItemMap: Map<string, SubSubSubItem>,
-  ): Promise<FieldDto> {
-    const subSubSubItem = subSubSubItemMap.get(field.subSubSubItemId);
-    if (!subSubSubItem) {
-      throw new NotFoundException(
-        `SubSubItem with ID ${field.subSubSubItemId} not found`,
-      );
-    }
+async toFieldDto1(
+  field: Field
+): Promise<FieldDto> {
+ const item: Item | null = await this.itemRepository.findOne({ where: { id: field.itemId } });
 
-    return {
-      id: field.id,
-      remarks: field.remarks,
-      fieldGroupCode: field.fieldGroupCode,
-      tier: field.tier,
-      displayType: field.displayType,
-      serialNumber: field.serialNumber,
-      subSubSubItemId: field.subSubSubItemId,
-      subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
-    };
-  }
+if (!item) {
+  throw new NotFoundException(`Item with ID ${field.itemId} not found`);
+}
+
+  const subItem = field.subItemId
+    ? await this.subItemRepository.findOne({ where: { id: field.subItemId } })
+    : null;
+  const subSubItem = field.subSubItemId
+    ? await this.subSubItemRepository.findOne({ where: { id: field.subSubItemId } })
+    : null;
+
+  const subSubSubItem = field.subSubSubItemId
+    ? await this.subSubSubItemRepo.findOne({ where: { id: field.subSubSubItemId } })
+    : null;
+
+  return {
+    id: field.id,
+    remarks: field.remarks,
+    fieldGroupCode: field.fieldGroupCode,
+    tier: field.tier,
+    displayType: field.displayType,
+    serialNumber: field.serialNumber,
+    Item: item ? await this.toItemDto(item):null,
+    subItem: subItem ? await this.toSubItemDto(subItem) : null,
+    subSubItem: subSubItem ? await this.toSubSubItemDto(subSubItem) : null,
+    subSubSubItem: subSubSubItem
+      ? await this.toSubSubSubItemDto(subSubSubItem)
+      : null,
+  };
+}
+
   async findAllFields(): Promise<FieldDto[]> {
     const fields = await this.fieldRepository.find({
       order: {
@@ -563,16 +577,16 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     if (!fields.length) return [];
 
-    const subSuSubItemIds = Array.from(
-      new Set(fields.map((f) => f.subSubSubItemId)),
-    );
-    const subSubSubItems =
-      await this.subSubSubItemRepo.findByIds(subSuSubItemIds);
-    const subSubSubItemMap = new Map(
-      subSubSubItems.map((sub) => [sub.id, sub]),
-    );
+    // const subSuSubItemIds = Array.from(
+    //   new Set(fields.map((f) => f.subSubSubItemId)),
+    // );
+    // const subSubSubItems =
+    //   await this.subSubSubItemRepo.findByIds(subSuSubItemIds);
+    // const subSubSubItemMap = new Map(
+    //   subSubSubItems.map((sub) => [sub.id, sub]),
+    // );
     return Promise.all(
-      fields.map((field) => this.toFieldDto1(field, subSubSubItemMap)),
+      fields.map((field) => this.toFieldDto1(field)),
     );
   }
 
@@ -613,25 +627,16 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     const field = await this.fieldRepository.findOne({ where: { id } });
     if (!field) return null;
 
-    const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
-      id: field.subSubSubItemId,
-    });
-    if (!subSubSubItem) {
-      throw new NotFoundException(
-        `SubSubItem with ID ${field.subSubSubItemId} not found`,
-      );
-    }
+    // const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
+    //   id: field.subSubSubItemId,
+    // });
+    // if (!subSubSubItem) {
+    //   throw new NotFoundException(
+    //     `SubSubItem with ID ${field.subSubSubItemId} not found`,
+    //   );
+    // }
 
-    return {
-      id: field.id,
-      remarks: field.remarks,
-      fieldGroupCode: field.fieldGroupCode,
-      tier: field.tier,
-      displayType: field.displayType,
-      serialNumber: field.serialNumber,
-      subSubSubItemId: field.subSubSubItemId,
-      subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
-    };
+    return await this.toFieldDto1(field);
   }
   async createField(field: CreateFieldDto, user: User): Promise<FieldDto> {
     const newField = new Field();
@@ -648,25 +653,16 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     newField.fieldGroupCode = field.fieldGroupCode;
     const saved = await this.fieldRepository.save(newField);
 
-    const subSubItem = await this.subSubSubItemRepo.findOneBy({
-      id: saved.subSubSubItemId,
-    });
-    if (!subSubItem) {
-      throw new NotFoundException(
-        `SubSubItem with ID ${saved.subSubSubItemId} not found`,
-      );
-    }
+    // const subSubItem = await this.subSubSubItemRepo.findOneBy({
+    //   id: saved.subSubSubItemId,
+    // });
+    // if (!subSubItem) {
+    //   throw new NotFoundException(
+    //     `SubSubItem with ID ${saved.subSubSubItemId} not found`,
+    //   );
+    // }
 
-    return {
-      id: saved.id,
-      remarks: saved.remarks,
-      displayType: field.displayType,
-      serialNumber: field.serialNumber,
-      fieldGroupCode: field.fieldGroupCode,
-      tier: field.tier,
-      subSubSubItemId: saved.subSubSubItemId,
-      subSubSubItem: await this.toSubSubSubItemDto(subSubItem),
-    };
+     return await this.toFieldDto1(saved);
   }
   async updateField(
     id: string,
@@ -691,25 +687,26 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
 
     const saved = await this.fieldRepository.save(existing);
 
-    const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
-      id: saved.subSubSubItemId,
-    });
-    if (!subSubSubItem) {
-      throw new NotFoundException(
-        `SubSubSubItem with ID ${saved.subSubSubItemId} not found`,
-      );
-    }
+    // const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
+    //   id: saved.subSubSubItemId,
+    // });
+    // if (!subSubSubItem) {
+    //   throw new NotFoundException(
+    //     `SubSubSubItem with ID ${saved.subSubSubItemId} not found`,
+    //   );
+    // }
 
-    return {
-      id: saved.id,
-      remarks: saved.remarks,
-      fieldGroupCode: saved.fieldGroupCode,
-      tier: saved.tier,
-      displayType: saved.displayType,
-      serialNumber: saved.serialNumber,
-      subSubSubItemId: saved.subSubSubItemId,
-      subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
-    };
+    // return {
+    //   id: saved.id,
+    //   remarks: saved.remarks,
+    //   fieldGroupCode: saved.fieldGroupCode,
+    //   tier: saved.tier,
+    //   displayType: saved.displayType,
+    //   serialNumber: saved.serialNumber,
+    //   subSubSubItemId: saved.subSubSubItemId,
+    //   subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
+    // };
+    return await this.toFieldDto1(saved);
   }
 
   async deleteField(
@@ -727,6 +724,12 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     }
 
     try {
+      const dataPoints=await this.dataPointRepo.find({
+              where: { dpGroupCode: field.id },
+            });
+            for (const data of dataPoints) {
+                await this.dataPointRepo.remove(data);
+              }
       // 2. Remove the field
       await this.fieldRepository.remove(field);
 
@@ -2428,10 +2431,12 @@ private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
   }
 
   const itemDto: ItemDto = await this.toItemDto(item); // Assuming this method exists
-
+  var field=await this.fieldRepository.findOne({
+    where: { id: entity.dpGroupCode },
+  });
   return {
     id: entity.id,
-    dpGroupCode: entity.dpGroupCode,
+    dpGroupCode: field?.fieldGroupCode,
     dataPoint: entity.dataPoint,
     serialNumber: entity.serialNumber,
     dataType: entity.dataType,

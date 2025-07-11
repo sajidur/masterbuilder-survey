@@ -1,7 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { SubSubSubItemDto } from './subsubsubitem.dto';
+import { ItemDto } from './item.dto';
+import { SubItemDto } from './subiItem.dto';
+import { SubSubItemDto } from './subSubItem.dto';
 export class FieldDto {
   id: string;
   serialNumber: string;
@@ -9,7 +12,9 @@ export class FieldDto {
   remarks: string;
   tier:string;
   fieldGroupCode: string;
-  subSubSubItemId?: string;
+  Item?: ItemDto | null;
+  subItem?: SubItemDto | null;
+  subSubItem?: SubSubItemDto | null;
   subSubSubItem?: SubSubSubItemDto | null;
 }
 
@@ -34,8 +39,23 @@ export class CreateFieldDto {
   @IsString()
   @IsNotEmpty()
   tier: string;
-  @ApiProperty({ description: 'SubSubSubItem ID' })
+ @ApiProperty({ description: 'Item ID' })
   @IsString()
   @IsNotEmpty()
-  subSubSubItemId: string;
+  itemId: string;
+
+  @ApiProperty({ description: 'Sub Item ID', required: false })
+  @IsString()
+  @IsOptional()
+  subItemId?: string;
+
+  @ApiProperty({ description: 'Sub Sub Item ID', required: false })
+  @IsString()
+  @IsOptional()
+  subSubItemId?: string;
+
+  @ApiProperty({ description: 'Sub Sub Sub Item ID', required: false })
+  @IsString()
+  @IsOptional()
+  subSubSubItemId?: string;
 }
