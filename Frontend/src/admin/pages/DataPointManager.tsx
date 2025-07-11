@@ -408,9 +408,9 @@ const DataPointManager: React.FC = () => {
               <th className="p-2 text-left">DP Group</th>
                             <th className="p-2 text-left">Serial</th>
 
-              <th className="p-2 text-left">DataPoint</th>
+              <th className="p-2 text-left">Data Point</th>
               <th className="p-2 text-left">Hide</th>
-              <th className="p-2 text-left">Required</th>
+              <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>
               <th className="p-2 text-left">Action</th>
             </tr>
