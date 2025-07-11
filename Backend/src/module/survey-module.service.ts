@@ -643,7 +643,7 @@ if (!item) {
     newField.remarks = field.remarks;
     newField.subSubSubItemId = field.subSubSubItemId;
     newField.subItemId=field.subItemId,
-    newField.subSubItemId=field.subItemId,
+    newField.subSubItemId=field.subSubItemId,
     newField.itemId=field.itemId,
     newField.updatedAt = new Date();
     newField.updatedBy = user.username;
