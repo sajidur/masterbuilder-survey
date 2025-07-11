@@ -34,7 +34,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Tier of the SubSubSubItem', example: 'Level 4' }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "tier", void 0);
 __decorate([

@@ -317,51 +317,50 @@ export const deleteSubSubSubItem = async (id: string) => {
 
 
 
-// Add Field
 export const addField = async (data: {
-  // name: string;
+  itemId: string;
   displayType: string;
-  // dataType: string;
-  // isRequired: boolean;
-  subSubSubItemId: string;
   serialNumber: string;
   fieldGroupCode: string;
   tier: string;
-  remarks: string
-  
+  remarks: string;
+  subItemId?: string | null;
+  subSubItemId?: string | null;
+  subSubSubItemId?: string | null;
 }) => {
   try {
-    const response = await apiClient.post('/survey-module/addField', data);
+    const response = await apiClient.post("/survey-module/addField", data);
     return response.data;
   } catch (error) {
-    console.error('Error adding field:', error);
+    console.error("Error adding field:", error);
     throw error;
   }
 };
 
-// Update Field
 export const updateField = async (
   id: string,
   data: {
-    // name: string;
+    itemId: string;
     displayType: string;
-    // dataType: string;
-    // isRequired: boolean;
-    subSubSubItemId: string;
     serialNumber: string;
     fieldGroupCode: string;
     tier: string;
-    remarks: string
+    remarks: string;
+    subItemId?: string | null;
+    subSubItemId?: string | null;
+    subSubSubItemId?: string | null;
   }
 ) => {
   try {
     const response = await apiClient.put(`/survey-module/updateField/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error('Error updating field:', error);
+    console.error("Error updating field:", error);
     throw error;
   }
 };
+
+
 
 // delete field
 export const deleteField = async (id: string) => {

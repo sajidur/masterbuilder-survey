@@ -89,35 +89,44 @@ const ReportsPage: React.FC = () => {
   const [selectedField, setSelectedField] = useState("");
   const [selectedRadioKey, setSelectedRadioKey] = useState<string>(""); // for the radio
   const [showDataPoint, setShowDataPoint] = useState<boolean>(false); // for checkbox
+  const [dpGroups, setDpGroups] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub, field] =
-          await Promise.all([
-            getAllModules(),
-            getAllApps(),
-            getAllMenus(),
-            getAllItems(),
-            getAllSubitems(),
-            getAllSubSubitems(),
-            getAllSubSubSubitems(),
-            getAllFields(),
-          ]);
-        setModules(mod);
-        setApps(app);
-        setMenus(menu);
-        setItems(item);
-        setSubItems(subItem);
-        setSubSubItems(subSub);
-        setSubSubSubItems(subSubSub);
-        setFields(field);
-      } catch (err) {
-        console.error("Data load failed", err);
-      }
-    };
-    fetchAllData();
-  }, []);
+
+useEffect(() => {
+  const fetchAllData = async () => {
+    try {
+      const [mod, app, menu, item, subItem, subSub, subSubSub, field] =
+        await Promise.all([
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+          getAllItems(),
+          getAllSubitems(),
+          getAllSubSubitems(),
+          getAllSubSubSubitems(),
+          getAllFields(),
+        ]);
+      setModules(mod);
+      setApps(app);
+      setMenus(menu);
+      setItems(item);
+      setSubItems(subItem);
+      setSubSubItems(subSub);
+      setSubSubSubItems(subSubSub);
+      setFields(field);
+
+      // Extract and set unique fieldGroupCode values
+      const groupCodes = Array.from(
+        new Set(field.map((f) => f.fieldGroupCode).filter(Boolean))
+      );
+      setDpGroups(groupCodes);
+    } catch (err) {
+      console.error("Data load failed", err);
+    }
+  };
+  fetchAllData();
+}, []);
+
 
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
@@ -225,7 +234,7 @@ const ReportsPage: React.FC = () => {
           }))}
           onChange={setSelectedSubSubSubItem}
         />
-        <Dropdown
+        {/* <Dropdown
           label="DP Group"
           value={selectedDisplayType}
           options={displayTypeOptions.map((opt) => ({
@@ -233,7 +242,15 @@ const ReportsPage: React.FC = () => {
             value: opt,
           }))}
           onChange={setSelectedDisplayType}
-        />
+        /> */}
+        <Dropdown
+  label="DP Group"
+  value={selectedDisplayType}
+  options={dpGroups.map((code) => ({ label: code, value: code }))}
+  onChange={setSelectedDisplayType}
+/>
+
+
         <Dropdown
           label="Data Point"
           value={selectedField}

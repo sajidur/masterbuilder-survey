@@ -12,7 +12,7 @@ export declare class CreateSubSubSubItemDto {
 export declare class SubSubSubItemDto {
     id: string;
     name: string;
-    tier: string;
+    tier?: string | null;
     templateText?: string | null;
     userId: string;
     subSubItemId?: string;

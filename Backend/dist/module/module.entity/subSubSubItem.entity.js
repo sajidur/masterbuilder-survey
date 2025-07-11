@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubSubSubItem = void 0;
 const typeorm_1 = require("typeorm");
-const field_entity_1 = require("./field.entity");
 const subsubitem_entity_1 = require("./subsubitem.entity");
 let SubSubSubItem = class SubSubSubItem {
     id;
@@ -23,7 +22,6 @@ let SubSubSubItem = class SubSubSubItem {
     subSubItem;
     templateId;
     templateText;
-    fields;
     userId;
     createdAt;
     updatedAt;
@@ -44,7 +42,7 @@ __decorate([
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "subSubItemId", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "tier", void 0);
 __decorate([
@@ -69,10 +67,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "templateText", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => field_entity_1.Field, (field) => field.subSubSubItem),
-    __metadata("design:type", Array)
-], SubSubSubItem.prototype, "fields", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

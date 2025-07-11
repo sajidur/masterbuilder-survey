@@ -1,4 +1,3 @@
-import { Field } from './field.entity';
 import { SubSubItem } from './subsubitem.entity';
 export declare class SubSubSubItem {
     id: string;
@@ -10,7 +9,6 @@ export declare class SubSubSubItem {
     subSubItem: SubSubItem;
     templateId?: string;
     templateText?: string;
-    fields: Field[];
     userId: string;
     createdAt: Date;
     updatedAt: Date;

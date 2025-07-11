@@ -96,7 +96,6 @@ const FieldManager: React.FC = () => {
   const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
   const [remarks, setRemarks] = useState("");
 
-
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["tree", "graph", "table", "individual field"];
 
@@ -136,57 +135,52 @@ const FieldManager: React.FC = () => {
       !selectedApp ||
       !selectedMenu ||
       !selectedItem ||
-      // !selectedSubItem ||
-      // !selectedSubSubItem ||
-      // !selectedSubSubSubItem ||
-      !selectedDisplayType 
-        ) {
-      toast.warn("Please fill all fields.");
+      !selectedDisplayType
+    ) {
+      toast.warn("Please fill all required fields.");
       return;
     }
-
-    const subSubSubObj = subSubSubItems.find(
-      (s) => s.id === selectedSubSubSubItem
-    );
-    if (!subSubSubObj) {
-      toast.error("Invalid SubSubSubItem.");
-      return;
-    }
-
-
-const payload = {
+const payload: {
+  itemId: string;
+  displayType: string;
+  serialNumber: string;
+  fieldGroupCode: string;
+  tier: string;
+  remarks: string;
+  subItemId?: string | null;
+  subSubItemId?: string | null;
+  subSubSubItemId?: string | null;
+} = {
+  itemId: selectedItem,
   displayType: selectedDisplayType,
-  subSubSubItemId: subSubSubObj.id,
   serialNumber,
   fieldGroupCode,
   tier,
   remarks,
+  subItemId: selectedSubItem || null,
+  subSubItemId: selectedSubSubItem || null,
+  subSubSubItemId: selectedSubSubSubItem || null,
 };
+
 
 
     try {
       if (editFieldId) {
         await updateField(editFieldId, payload);
-        toast.success("Field updated successfully!");
-
-        // Update local list
+        toast.success("DP updated successfully!");
         const updatedFields = await getAllFields();
         setFields(updatedFields);
         setEditFieldId(null);
       } else {
         await addField(payload);
-        toast.success("Field added successfully!");
+        toast.success("DP added successfully!");
         const updatedFields = await getAllFields();
         setFields(updatedFields);
       }
 
-      // Clear form
-      // setFieldName("");
+      // Reset form
       setSerialNumber("");
       setSelectedDisplayType("");
-      // setSelectedFieldType("");
-      // setIsRequired(false);
-      // setIsHide(false);
       setSelectedSubSubSubItem("");
     } catch (e) {
       toast.error("Failed to save field.");
@@ -509,7 +503,7 @@ const payload = {
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SSS Item</th>
-                            <th className="p-2 text-left">SI</th>
+              <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">Tier</th>
@@ -525,28 +519,15 @@ const payload = {
             {fields.map((f) => (
               <tr key={f.id} className="border-t">
                 <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app?.Module
-                    ?.name || "—"}
+                  {f.Item?.menu?.app?.Module?.name || "—"}
                 </td>
-                <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
-                    ?.name || "—"}
-                </td>
-                <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.title ||
-                    "—"}
-                </td>
-                <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.subItem?.item?.name || "—"}
-                </td>
-                <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.subItem?.name || "—"}
-                </td>
-                <td className="p-2">
-                  {f.subSubSubItem?.subSubItem?.name || "—"}
-                </td>
+                <td className="p-2">{f.Item?.menu?.app?.name || "—"}</td>
+                <td className="p-2">{f.Item?.menu?.title || "—"}</td>
+                <td className="p-2">{f.Item.name || "—"}</td>
+                <td className="p-2">{f.subItem?.name || "—"}</td>
+                <td className="p-2">{f.subSubItem?.name || "—"}</td>
                 <td className="p-2">{f.subSubSubItem?.name || "—"}</td>
-                                <td className="p-2">{f.serialNumber || "—"}</td>
+                <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 <td className="p-2">{f.tier || "—"}</td>
@@ -570,30 +551,31 @@ const payload = {
 
                       // Pre-select the hierarchy for edit
                       setSelectedModule(
-                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
+                        f.Item?.menu?.app
                           ?.Module?.id || ""
                       );
                       setSelectedApp(
-                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.app
+                        f.Item?.menu?.app
                           ?.id || ""
                       );
                       setSelectedMenu(
-                        f.subSubSubItem?.subSubItem?.subItem?.item?.menu?.id ||
+                        f.Item?.menu?.id ||
                           ""
                       );
                       setSelectedItem(
-                        f.subSubSubItem?.subSubItem?.subItem?.item?.id || ""
+                        f.Item?.id || ""
                       );
                       setSelectedSubItem(
-                        f.subSubSubItem?.subSubItem?.subItem?.id || ""
+                        f.subItem?.id || ""
                       );
                       setSelectedSubSubItem(
-                        f.subSubSubItem?.subSubItem?.id || ""
+                        f.subSubItem?.id || ""
                       );
                       setSelectedSubSubSubItem(f.subSubSubItem?.id || "");
 
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");
+                      setRemarks(f.remarks || "")
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >
