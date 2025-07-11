@@ -29,7 +29,7 @@ export class Menu {
   items: Item[];
   @Column()
   userId: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
   @Column()
   serialNumber: string;

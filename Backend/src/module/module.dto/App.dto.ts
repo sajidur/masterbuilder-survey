@@ -2,12 +2,12 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleDto } from './create-module.dto';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AppDto {
   id: string;
   name: string;
-  tier: string;
+  tier?: string|null;
   serialNumber: string;
   Module: ModuleDto | null;
 }
@@ -18,6 +18,7 @@ export class CreateAppDto {
   name: string;
   @ApiProperty({ description: 'Tier of the App' })
   @IsString()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'SerialNumber of the App' })
   @IsString()
@@ -34,6 +35,7 @@ export class UpdateAppDto {
   name: string;
   @ApiProperty({ description: 'Tier of the App' })
   @IsString()
+ @IsOptional()
   tier: string;
   @ApiProperty({ description: 'SerialNumber of the App' })
   @IsString()

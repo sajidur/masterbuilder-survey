@@ -8,7 +8,7 @@ import { ButtonGroup } from '../module.entity/item.entity';
 export class SubSubItemDto {
   id: string;
   name: string;
-  tier: string;
+  tier?: string|null;
   serialNumber: string;
   layout: string;
   templateText?: string | null;
@@ -26,6 +26,7 @@ export class CreateSubSubItemDto {
   name: string;
   @ApiProperty({ description: 'Tier of the SubSubItem' })
   @IsString()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'layout/Placement of the SubSubItem' })
   @IsString()

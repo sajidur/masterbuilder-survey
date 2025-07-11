@@ -23,7 +23,7 @@ export class SubItem {
   id: string;
   @Column()
   name: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
   @Column()
   itemId?: string;

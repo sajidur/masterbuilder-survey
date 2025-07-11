@@ -8,16 +8,16 @@ import { ButtonGroup } from '../module.entity/item.entity';
 export class SubItemDto {
   id: string;
   name: string;
-  tier: string;
+  tier?: string | null;
   serialNumber: string;
   layout: string;
-  buttonType:ButtonGroup;
-  buttonLabel:string;
+  buttonType: ButtonGroup;
+  buttonLabel: string;
   navigationTo: string;
   description: string;
   itemId: string;
   item?: ItemDto | null;
-  templateText?:string|null;
+  templateText?: string | null;
   template?: Template | null;
 }
 
@@ -28,6 +28,7 @@ export class CreateSubItemDto {
   name: string;
   @ApiProperty({ description: 'Tier of the SubItem' })
   @IsString()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'layout/Placement of the SubItem' })
   @IsString()
@@ -36,24 +37,32 @@ export class CreateSubItemDto {
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()
   serialNumber: string;
- @ApiProperty({ description: 'P for Primary, S for Secondary of the subItem' })
+  @ApiProperty({ description: 'P for Primary, S for Secondary of the subItem' })
   @IsString()
   buttonType: ButtonGroup;
   @ApiProperty({ description: 'Button label such as Export, Print, etc.' })
   @IsString()
-  buttonLabel:string;
+  buttonLabel: string;
   @ApiProperty({ description: 'navigationTo of the SubItem' })
   @IsString()
   navigationTo: string;
   @ApiProperty({ description: 'Description of the SubItem' })
   @IsString()
   description: string;
-  @ApiProperty({ description: 'Template ID of the SubItem', required: false, nullable: true })
+  @ApiProperty({
+    description: 'Template ID of the SubItem',
+    required: false,
+    nullable: true,
+  })
   @IsOptional()
   @IsString()
   templateId?: string | null;
 
-  @ApiProperty({ description: 'Template of text box of the SubItem', required: false, nullable: true })
+  @ApiProperty({
+    description: 'Template of text box of the SubItem',
+    required: false,
+    nullable: true,
+  })
   @IsOptional()
   @IsString()
   templateText?: string | null;

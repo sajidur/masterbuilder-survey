@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional} from 'class-validator';
 import { MenuDto } from './menu.dto';
 import { ButtonGroup } from '../module.entity/item.entity';
 export class ItemDto {
  
   id: string;
   name: string;
-  tier:string;
+  tier?:string|null;
   serialNumber:string;
   buttonType:ButtonGroup;
   buttonLabel:string;
@@ -23,6 +23,7 @@ export class CreateItemDto {
   name: string;
  @ApiProperty({ description: 'Tier of the Item' })
   @IsString()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()

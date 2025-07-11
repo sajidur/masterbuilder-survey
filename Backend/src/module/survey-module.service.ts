@@ -560,11 +560,9 @@ if (!item) {
     displayType: field.displayType,
     serialNumber: field.serialNumber,
     Item: item ? await this.toItemDto(item):null,
-    subItem: subItem ? await this.toSubItemDto(subItem) : null,
-    subSubItem: subSubItem ? await this.toSubSubItemDto(subSubItem) : null,
-    subSubSubItem: subSubSubItem
-      ? await this.toSubSubSubItemDto(subSubSubItem)
-      : null,
+    subItem: subItem ,
+    subSubItem: subSubItem ,
+    subSubSubItem: subSubSubItem,
   };
 }
 
@@ -1858,8 +1856,9 @@ if (!item) {
 
     const app = this.appRepository.create({
       name: createAppDto.name,
+      
       moduleId: createAppDto.moduleId,
-      tier: createAppDto.tier,
+      tier: createAppDto.tier??null,
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: user.id,

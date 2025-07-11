@@ -28,7 +28,7 @@ export class SubSubSubItem {
   name: string;
   @Column()
   subSubItemId?: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
     @Column()
  layout: string;

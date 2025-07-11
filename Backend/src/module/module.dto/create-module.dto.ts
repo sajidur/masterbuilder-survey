@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateModuleDto {
   @ApiProperty({ description: 'Name of the module' })
@@ -20,6 +20,7 @@ export class UpdateModuleDto {
   name?: string;
   @ApiProperty({ description: 'Tier of the module' })
   @IsString()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'SerialNumber of the module' })
   @IsString()
@@ -29,5 +30,5 @@ export class ModuleDto {
   id: string;
   name: string;
   serialNumber: string;
-  tier: string;
+  tier?: string|null;
 }

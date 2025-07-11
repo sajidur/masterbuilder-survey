@@ -8,7 +8,7 @@
 import { AppDto } from './App.dto';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateMenuDto {
   @ApiProperty({ description: 'Title of the menu' })
@@ -20,6 +20,7 @@ export class CreateMenuDto {
   appId: string;
   @ApiProperty({ description: 'Tier of the Menu' })
   @IsString()
+ @IsOptional()
   tier: string;
   @ApiProperty({ description: 'SerialNumber of the Menu' })
   @IsString()
@@ -29,7 +30,7 @@ export class CreateMenuDto {
 export class MenuDto {
   id: string;
   title: string;
-  tier: string;
+  tier?: string|null;
   serialNumber: string;
   app: AppDto | null;
 }

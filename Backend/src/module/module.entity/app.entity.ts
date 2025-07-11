@@ -22,7 +22,7 @@ export class App {
   @Column()
   @ApiProperty({ description: 'Name of the app' })
   name: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
   @Column()
   serialNumber: string;

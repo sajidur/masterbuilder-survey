@@ -40,7 +40,7 @@ export class Item {
   subItems: SubItem[];
   @Column()
   userId: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
   @CreateDateColumn()
   createdAt: Date;

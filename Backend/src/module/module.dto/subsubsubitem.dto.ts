@@ -15,7 +15,7 @@ export class CreateSubSubSubItemDto {
 
   @ApiProperty({ description: 'Tier of the SubSubSubItem', example: 'Level 4' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   tier: string;
   @ApiProperty({ description: 'layout/Placement of the SubItem' })
   @IsString()
@@ -52,7 +52,7 @@ export class CreateSubSubSubItemDto {
 export class SubSubSubItemDto {
   id: string;
   name: string;
-  tier: string;
+  tier?: string | null;
   templateText?: string | null;
   userId: string;
   subSubItemId?: string;

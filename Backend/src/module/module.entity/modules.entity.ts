@@ -18,7 +18,7 @@ export class Modules {
   @Column()
   @ApiProperty({ description: 'Name of the module' })
   name: string;
-  @Column()
+  @Column({ nullable: true })
   tier: string;
   @Column()
   serialNumber: string;

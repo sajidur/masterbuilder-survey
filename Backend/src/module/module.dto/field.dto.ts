@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
-import { SubSubSubItemDto } from './subsubsubitem.dto';
+
 import { ItemDto } from './item.dto';
-import { SubItemDto } from './subiItem.dto';
-import { SubSubItemDto } from './subSubItem.dto';
+
+import { SubItem } from '../module.entity/subitem.entity';
+import { SubSubItem } from '../module.entity/subsubitem.entity';
+import { SubSubSubItem } from '../module.entity/subSubSubItem.entity';
 export class FieldDto {
   id: string;
   serialNumber: string;
@@ -13,9 +15,9 @@ export class FieldDto {
   tier:string;
   fieldGroupCode: string;
   Item?: ItemDto | null;
-  subItem?: SubItemDto | null;
-  subSubItem?: SubSubItemDto | null;
-  subSubSubItem?: SubSubSubItemDto | null;
+  subItem?: SubItem | null;
+  subSubItem?: SubSubItem | null;
+  subSubSubItem?: SubSubSubItem| null;
 }
 
 export class CreateFieldDto {
