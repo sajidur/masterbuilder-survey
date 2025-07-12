@@ -107,7 +107,8 @@ export class AppModule {
       .apply(JwtAuthMiddleware)
       .exclude(
         { path: 'users/login', method: RequestMethod.POST },  // ✅ bypass JWT for login
-        { path: 'users/addUser', method: RequestMethod.POST }, // ✅ bypass for user registration
+        { path: 'users/addUser', method: RequestMethod.POST }
+        // { path: 'users/getAllUser', method: RequestMethod.GET } // ✅ bypass for user registration
       )
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }

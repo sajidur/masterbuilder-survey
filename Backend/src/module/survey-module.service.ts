@@ -589,30 +589,9 @@ if (!item) {
       fields.map((field) => this.toFieldDto1(field)),
     );
   }
- async findAllData(): Promise<FieldDto[]> {
-    const fields = await this.fieldRepository.find({
-      order: {
-        serialNumber: 'ASC',
-      },
-    });
 
-    if (!fields.length) return [];
-
-    // const subSuSubItemIds = Array.from(
-    //   new Set(fields.map((f) => f.subSubSubItemId)),
-    // );
-    // const subSubSubItems =
-    //   await this.subSubSubItemRepo.findByIds(subSuSubItemIds);
-    // const subSubSubItemMap = new Map(
-    //   subSubSubItems.map((sub) => [sub.id, sub]),
-    // );
-    return Promise.all(
-      fields.map((field) => this.toFieldDto1(field)),
-    );
-  }
 async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
  const fields = await this.fieldRepository.find({
-  where: { userId: user.id },
   order: { serialNumber: 'ASC' },
 });
 
