@@ -2443,7 +2443,7 @@ private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
   });
   return {
     id: entity.id,
-    dpGroupCode: field?.fieldGroupCode,
+    DpGroup: field,
     dataPoint: entity.dataPoint,
     serialNumber: entity.serialNumber,
     dataType: entity.dataType,

@@ -3,11 +3,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsBoolean, IsNotEmpty } from 'class-validator';
 
 import { ItemDto } from './item.dto';
+import { Field } from '../module.entity/field.entity';
 
 export class DataPointDto {
   id: string;
-
-  dpGroupCode: string;
+  DpGroup: Field;
   dataPoint: string;
   serialNumber: string;
   dataType: string;
