@@ -97,6 +97,7 @@ const ReportsPage: React.FC = () => {
   const [selectedRadioKey, setSelectedRadioKey] = useState<string>("");
   const [showDataPoint, setShowDataPoint] = useState<boolean>(false);
   const [dpGroups, setDpGroups] = useState<string[]>([]);
+  
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
     subSubItemMap: Record<string, SubSubItem>;
@@ -210,18 +211,16 @@ const ReportsPage: React.FC = () => {
     return true;
   });
 
-  let visibleColumns: string[] = [];
+const visibleColumns = React.useMemo(() => {
+  const index = selectedRadioKey
+    ? columnKeys.indexOf(selectedRadioKey)
+    : 0;
 
-  if (selectedRadioKey) {
-    const index = columnKeys.indexOf(selectedRadioKey);
-    visibleColumns = columnKeys.slice(index);
-  } else {
-    visibleColumns = columnKeys;
-  }
+  const baseColumns = columnKeys.slice(index);
+  return showDataPoint ? [...baseColumns, "DataPoint"] : baseColumns;
+}, [selectedRadioKey, showDataPoint]);
 
-  if (showDataPoint) {
-    visibleColumns.push("DataPoint");
-  }
+
 
   const columnLabels: Record<string, string> = {
     module: "Module",
@@ -232,7 +231,7 @@ const ReportsPage: React.FC = () => {
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
     DPGroupCode: "DP Group",
-    DataPoint: "Data Point",
+    // DataPoint: "Data Point",
   };
 
   return (
@@ -312,17 +311,22 @@ const ReportsPage: React.FC = () => {
       </div>
 
       <div className="flex flex-wrap gap-4 items-center mb-4">
-        {columnKeys.map((key) => (
-          <label key={key} className="flex items-center gap-1 text-sm">
-            <input
-              type="radio"
-              name="columnSelector"
-              checked={selectedRadioKey === key}
-              onChange={() => setSelectedRadioKey(key)}
-            />
-            {columnLabels[key] || key}
-          </label>
-        ))}
+        {columnKeys.map((key) =>
+  key !== "DataPoint" ? (
+    <label key={key} className="flex items-center gap-1 text-sm">
+      <input
+        type="radio"
+        name="columnSelector"
+        checked={selectedRadioKey === key}
+        onChange={() => setSelectedRadioKey(key)}
+      />
+      {columnLabels[key] || key}
+    </label>
+  ) : null
+)}
+
+
+        {/* Separate checkbox for DataPoint */}
         <label className="flex items-center gap-1 text-sm ml-4">
           <input
             type="checkbox"
@@ -332,6 +336,7 @@ const ReportsPage: React.FC = () => {
           Data Point
         </label>
       </div>
+
 
       <div className="bg-white p-4 rounded shadow">
         {filteredFields.length === 0 ? (

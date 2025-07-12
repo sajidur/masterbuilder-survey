@@ -440,6 +440,16 @@ export const getAllDataPoints = async () => {
 
 
 
+// Get all DataFields
+export const getAllDataFields = async () => {
+  try {
+    const response = await apiClient.get(`/survey-module/allDataFields`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching DataFields:", error);
+    throw error;
+  }
+};
 
 
 
