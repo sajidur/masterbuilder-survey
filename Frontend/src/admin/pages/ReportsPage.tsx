@@ -232,7 +232,6 @@ const ReportsPage: React.FC = () => {
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
     DPGroupCode: "DP Group",
-    DataPoint: "Data Point",
   };
 
   return (

@@ -285,7 +285,7 @@ const ItemManager: React.FC = () => {
         {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Description
+            Intro
           </label>
           <input
             type="text"
@@ -373,23 +373,22 @@ const ItemManager: React.FC = () => {
 
       {/* Items Table */}
       <div className="bg-white p-6 mt-6 rounded shadow">
-        <h3 className="text-xl font-semibold mb-4">Items List</h3>
         {filteredItems.length === 0 ? (
           <p>No items available for selected module/app/menu.</p>
         ) : (
           <table className="w-full border border-gray-300 text-sm">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 border-b text-left">Module</th>
+                <th className="p-2 border-b text-left">Mod</th>
                 <th className="p-2 border-b text-left">App</th>
                 <th className="p-2 border-b text-left">Menu</th>
                 <th className="p-2 border-b text-left">SI</th>
 
                 <th className="p-2 border-b text-left">Item</th>
                 <th className="p-2 border-b text-left">Tier</th>
-                <th className="p-2 border-b text-left">Description</th>
+                <th className="p-2 border-b text-left">Intro</th>
 
-                <th className="p-2 border-b text-left">Button Type</th>
+                <th className="p-2 border-b text-left">P/S Button</th>
                 <th className="p-2 border-b text-left">Navigate To</th>
                 <th className="p-2 border-b text-left">Actions</th>
               </tr>

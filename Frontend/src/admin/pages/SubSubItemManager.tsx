@@ -465,7 +465,7 @@ const SubSubItemManager: React.FC = () => {
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Module</th>
+              <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>

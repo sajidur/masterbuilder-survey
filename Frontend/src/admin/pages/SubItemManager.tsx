@@ -360,7 +360,7 @@ const SubItemManager: React.FC = () => {
           {/* Description */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Description
+              Intro
             </label>
             <input
               type="text"
@@ -454,7 +454,7 @@ const SubItemManager: React.FC = () => {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 text-left">Module</th>
+                <th className="p-2 text-left">Mod</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">Item</th>
@@ -462,7 +462,7 @@ const SubItemManager: React.FC = () => {
 
                 <th className="p-2 text-left">Sub Item</th>
                 <th className="p-2 text-left">Layout</th>
-                <th className="p-2 text-left">Description</th>
+                <th className="p-2 text-left">Intro</th>
                 <th className="p-2 text-left">Tier</th>
                 <th className="p-2 text-left">P/S Button</th>
 
