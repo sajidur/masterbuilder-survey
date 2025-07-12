@@ -112,13 +112,17 @@ const DataPointManager: React.FC = () => {
   }, []);
 
   // Filter logic updated to match nested structure
-  const filteredApps = apps.filter(
-    (app) => app.Module?.name === selectedModule
-  );
-  const filteredMenus = menus.filter((menu) => menu.app?.name === selectedApp);
-  const filteredItems = items.filter(
-    (item) => item.menu?.title === selectedMenu
-  );
+  // const filteredApps = apps.filter(
+  //   (app) => app.Module?.name === selectedModule
+  // );
+  // const filteredMenus = menus.filter((menu) => menu.app?.name === selectedApp);
+  // const filteredItems = items.filter(
+  //   (item) => item.menu?.title === selectedMenu
+  // );
+
+  const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
+const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
+const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
 
   const resetForm = () => {
     setSelectedModule("");
@@ -209,7 +213,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Module</option>
               {modules.map((m) => (
-                <option key={m.id} value={m.name}>
+                <option key={m.id} value={m.id}>
                   {m.name}
                 </option>
               ))}
@@ -230,7 +234,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select App</option>
               {filteredApps.map((a) => (
-                <option key={a.id} value={a.name}>
+                <option key={a.id} value={a.id}>
                   {a.name}
                 </option>
               ))}
@@ -250,7 +254,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Menu</option>
               {filteredMenus.map((m) => (
-                <option key={m.id} value={m.title}>
+                <option key={m.id} value={m.id}>
                   {m.title}
                 </option>
               ))}
@@ -311,7 +315,7 @@ const DataPointManager: React.FC = () => {
             >
               <option value="">Select Group</option>
               {dpGroups.map((group) => (
-                <option key={group.id} value={group.fieldGroupCode}>
+                <option key={group.id} value={group.id}>
                   {group.fieldGroupCode}
                 </option>
               ))}
@@ -418,7 +422,7 @@ const DataPointManager: React.FC = () => {
             {dataPoints.map((dp) => (
               <tr key={dp.id} className="border-t">
                 <td className="p-2">{dp.Item.name}</td>
-                <td className="p-2">{dp.dpGroupCode}</td>
+                <td className="p-2">{dp.DpGroup.fieldGroupCode}</td>
                                 <td className="p-2">{dp.serialNumber}</td>
 
                 <td className="p-2">{dp.dataPoint}</td>
@@ -428,31 +432,29 @@ const DataPointManager: React.FC = () => {
                 <td className="p-2 flex gap-2">
                   <button
                     onClick={() => {
-                      setEditId(dp.id);
-                      setDataPointName(dp.dataPoint);
-                      setDpGroupCode(dp.dpGroupCode);
-                      setSerialNumber(dp.serialNumber);
-                      setDataType(dp.dataType);
-                      setIsRequired(dp.isRequired);
-                      setIsHide(dp.isHide);
+  setEditId(dp.id);
+  setDataPointName(dp.dataPoint);
+  setDpGroupCode(dp.DpGroup.id); // Use id here
+  setSerialNumber(dp.serialNumber);
+  setDataType(dp.dataType);
+  setIsRequired(dp.isRequired);
+  setIsHide(dp.isHide);
 
-                      const item = dp.Item;
-                      const menu = item?.menu;
-                      const app = menu?.app;
-                      const module = app?.Module;
+  const item = dp.Item;
+  const menu = item?.menu;
+  const app = menu?.app;
+  const module = app?.Module;
 
-                      // ✅ Set them in proper order (important for dropdown filter dependencies)
-                      setSelectedModule(module?.id || "");
+  // ✅ Set them in proper order using IDs (not names)
+  setSelectedModule(module?.id || "");
 
-                      // Delay is optional but sometimes helps with async state updates
-                      setTimeout(() => {
-                        setSelectedApp(app?.id || "");
-                        setSelectedMenu(menu?.id || "");
-                        setSelectedItem(item?.id || "");
+  setTimeout(() => {
+    setSelectedApp(app?.id || "");
+    setSelectedMenu(menu?.id || "");
+    setSelectedItem(item?.id || "");
+  }, 100);
+}}
 
-                        // Set DP prefix so the group code input behaves correctly
-                      }, 100);
-                    }}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     <FaEdit />

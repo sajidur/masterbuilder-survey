@@ -8,6 +8,7 @@ import {
   getAllSubSubitems,
   getAllSubSubSubitems,
   getAllFields,
+  getAllDataPoints,
 } from "../../apiRequest/api";
 
 import React, { useEffect, useState } from "react";
@@ -52,10 +53,15 @@ interface SubSubSubItem {
 interface Field {
   id: string;
   name: string;
+  fieldGroupCode?: string;
   subSubSubItem?: SubSubSubItem;
 }
 
-const displayTypeOptions = ["Tree", "Graph", "Table", "DP", "Card"];
+interface DataPoint {
+  id: string;
+  name: string;
+  dbGroupCode: string;
+}
 
 const columnKeys = [
   "module",
@@ -77,6 +83,7 @@ const ReportsPage: React.FC = () => {
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
+  const [dataPoints, setDataPoints] = useState<DataPoint[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -87,16 +94,41 @@ const ReportsPage: React.FC = () => {
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
   const [selectedField, setSelectedField] = useState("");
-  const [selectedRadioKey, setSelectedRadioKey] = useState<string>(""); // for the radio
-  const [showDataPoint, setShowDataPoint] = useState<boolean>(false); // for checkbox
+  const [selectedRadioKey, setSelectedRadioKey] = useState<string>("");
+  const [showDataPoint, setShowDataPoint] = useState<boolean>(false);
   const [dpGroups, setDpGroups] = useState<string[]>([]);
+  const [lookups, setLookups] = useState<{
+    subSubSubItemMap: Record<string, SubSubSubItem>;
+    subSubItemMap: Record<string, SubSubItem>;
+    subItemMap: Record<string, SubItem>;
+    itemMap: Record<string, Item>;
+    menuMap: Record<string, Menu>;
+    appMap: Record<string, App>;
+    moduleMap: Record<string, Module>;
+  }>({
+    subSubSubItemMap: {},
+    subSubItemMap: {},
+    subItemMap: {},
+    itemMap: {},
+    menuMap: {},
+    appMap: {},
+    moduleMap: {},
+  });
 
-
-useEffect(() => {
-  const fetchAllData = async () => {
-    try {
-      const [mod, app, menu, item, subItem, subSub, subSubSub, field] =
-        await Promise.all([
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const [
+          mod,
+          app,
+          menu,
+          item,
+          subItem,
+          subSub,
+          subSubSub,
+          field,
+          dataPoint,
+        ] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
@@ -105,28 +137,54 @@ useEffect(() => {
           getAllSubSubitems(),
           getAllSubSubSubitems(),
           getAllFields(),
+          getAllDataPoints(),
         ]);
-      setModules(mod);
-      setApps(app);
-      setMenus(menu);
-      setItems(item);
-      setSubItems(subItem);
-      setSubSubItems(subSub);
-      setSubSubSubItems(subSubSub);
-      setFields(field);
+        setModules(mod);
+        setApps(app);
+        setMenus(menu);
+        setItems(item);
+        setSubItems(subItem);
+        setSubSubItems(subSub);
+        setSubSubSubItems(subSubSub);
+        setFields(field);
+        setDataPoints(dataPoint);
 
-      // Extract and set unique fieldGroupCode values
-      const groupCodes = Array.from(
-        new Set(field.map((f) => f.fieldGroupCode).filter(Boolean))
-      );
-      setDpGroups(groupCodes);
-    } catch (err) {
-      console.error("Data load failed", err);
+        const groupCodes = Array.from(
+          new Set(field.map((f) => f.fieldGroupCode).filter(Boolean))
+        );
+        setDpGroups(groupCodes);
+      } catch (err) {
+        console.error("Data load failed", err);
+      }
+    };
+    fetchAllData();
+  }, []);
+
+  // Build lookup maps once data is loaded
+  useEffect(() => {
+    if (
+      modules.length &&
+      apps.length &&
+      menus.length &&
+      items.length &&
+      subItems.length &&
+      subSubItems.length &&
+      subSubSubItems.length
+    ) {
+      const mapById = <T extends { id: string }>(list: T[]) =>
+        Object.fromEntries(list.map((item) => [item.id, item]));
+
+      setLookups({
+        subSubSubItemMap: mapById(subSubSubItems),
+        subSubItemMap: mapById(subSubItems),
+        subItemMap: mapById(subItems),
+        itemMap: mapById(items),
+        menuMap: mapById(menus),
+        appMap: mapById(apps),
+        moduleMap: mapById(modules),
+      });
     }
-  };
-  fetchAllData();
-}, []);
-
+  }, [modules, apps, menus, items, subItems, subSubItems, subSubSubItems]);
 
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
@@ -138,27 +196,29 @@ useEffect(() => {
   const filteredSubSubSubItems = subSubSubItems.filter(
     (s) => s.subSubItem?.id === selectedSubSubItem
   );
-  const filteredFields = fields.filter(
-    (f) =>
-      f.subSubSubItem?.id === selectedSubSubSubItem &&
-      (!selectedField || f.name === selectedField)
-  );
 
-  // const visibleColumns = columnKeys.slice(columnKeys.indexOf(selectedColumn));
+  const filteredFields = fields.filter((f) => {
+    if (
+      selectedSubSubSubItem &&
+      f.subSubSubItem?.id !== selectedSubSubSubItem
+    ) {
+      return false;
+    }
+    if (selectedField && f.name !== selectedField) {
+      return false;
+    }
+    return true;
+  });
 
   let visibleColumns: string[] = [];
 
   if (selectedRadioKey) {
     const index = columnKeys.indexOf(selectedRadioKey);
-    visibleColumns = columnKeys.slice(index + 1);
+    visibleColumns = columnKeys.slice(index);
   } else {
     visibleColumns = columnKeys;
   }
 
-  // Always remove DataPoint from main columns
-  visibleColumns = visibleColumns.filter((col) => col !== "DataPoint");
-
-  // Append DataPoint at the end **only if checkbox is checked**
   if (showDataPoint) {
     visibleColumns.push("DataPoint");
   }
@@ -176,9 +236,9 @@ useEffect(() => {
   };
 
   return (
-    <div className="">
+    <div>
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white">
-        <h2 className="font-light text-gray-800 flex items-center gap-2">
+        <h2 className="font-light text-gray-800 flex items-center gap-2 col-span-6">
           <BarChart4 size={18} />
           Report
         </h2>
@@ -234,35 +294,24 @@ useEffect(() => {
           }))}
           onChange={setSelectedSubSubSubItem}
         />
-        {/* <Dropdown
+        <Dropdown
           label="DP Group"
           value={selectedDisplayType}
-          options={displayTypeOptions.map((opt) => ({
-            label: opt,
-            value: opt,
-          }))}
+          options={dpGroups.map((code) => ({ label: code, value: code }))}
           onChange={setSelectedDisplayType}
-        /> */}
-        <Dropdown
-  label="DP Group"
-  value={selectedDisplayType}
-  options={dpGroups.map((code) => ({ label: code, value: code }))}
-  onChange={setSelectedDisplayType}
-/>
-
-
+        />
         <Dropdown
           label="Data Point"
           value={selectedField}
-          options={filteredFields.map((f) => ({
-            label: f.name,
-            value: f.name,
+          options={dataPoints.map((dp) => ({
+            label: dp.dbGroupCode,
+            value: dp.dbGroupCode,
           }))}
           onChange={setSelectedField}
         />
       </div>
 
-      <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex flex-wrap gap-4 items-center mb-4">
         {columnKeys.map((key) => (
           <label key={key} className="flex items-center gap-1 text-sm">
             <input
@@ -274,7 +323,6 @@ useEffect(() => {
             {columnLabels[key] || key}
           </label>
         ))}
-
         <label className="flex items-center gap-1 text-sm ml-4">
           <input
             type="checkbox"
@@ -313,67 +361,48 @@ useEffect(() => {
                 {visibleColumns.includes("subSubSubItem") && (
                   <th className="p-2 text-left">SSS Item</th>
                 )}
-
                 {visibleColumns.includes("DPGroupCode") && (
                   <th className="p-2 text-left">DP Group</th>
                 )}
-                                {visibleColumns.includes("DataPoint") && (
+                {visibleColumns.includes("DataPoint") && (
                   <th className="p-2 text-left">Data Point</th>
                 )}
               </tr>
             </thead>
             <tbody>
-              {filteredFields.map((f) => (
-                <tr key={f.id} className="border-t">
-                  {visibleColumns.includes("module") && (
-                    <td className="p-2">
-                      {modules.find((m) => m.id === selectedModule)?.name || ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("app") && (
-                    <td className="p-2">
-                      {apps.find((a) => a.id === selectedApp)?.name || ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("menu") && (
-                    <td className="p-2">
-                      {menus.find((m) => m.id === selectedMenu)?.title || ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("item") && (
-                    <td className="p-2">
-                      {items.find((i) => i.id === selectedItem)?.name || ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("subItem") && (
-                    <td className="p-2">
-                      {subItems.find((s) => s.id === selectedSubItem)?.name ||
-                        ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("subSubItem") && (
-                    <td className="p-2">
-                      {subSubItems.find((s) => s.id === selectedSubSubItem)
-                        ?.name || ""}
-                    </td>
-                  )}
-                  {visibleColumns.includes("subSubSubItem") && (
-                    <td className="p-2">
-                      {subSubSubItems.find(
-                        (s) => s.id === selectedSubSubSubItem
-                      )?.name || ""}
-                    </td>
-                  )}
+  {filteredFields.map((f) => {
+    const item = f.Item;
+    const subItem = f.subItem;
+    const subSubItem = f.subSubItem;
+    const subSubSubItem = f.subSubSubItem;
 
-                  {visibleColumns.includes("DP Group Code") && (
-                    <td className="p-2">{selectedDisplayType}</td>
-                  )}
-                  {visibleColumns.includes("DataPoint") && (
-                    <td className="p-2">{f.name}</td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
+    const menu = item?.menu;
+    const app = menu?.app;
+    const module = app?.Module;
+
+    return (
+      <tr key={f.id}>
+        {visibleColumns.includes("module") && <td>{module?.name || ""}</td>}
+        {visibleColumns.includes("app") && <td>{app?.name || ""}</td>}
+        {visibleColumns.includes("menu") && <td>{menu?.title || ""}</td>}
+        {visibleColumns.includes("item") && <td>{item?.name || ""}</td>}
+        {visibleColumns.includes("subItem") && <td>{subItem?.name || ""}</td>}
+        {visibleColumns.includes("subSubItem") && <td>{subSubItem?.name || ""}</td>}
+        {visibleColumns.includes("subSubSubItem") && <td>{subSubSubItem?.name || ""}</td>}
+        {visibleColumns.includes("DPGroupCode") && <td>{f.fieldGroupCode || ""}</td>}
+        {visibleColumns.includes("DataPoint") && (
+          <td>
+            {dataPoints
+              .filter((dp) => dp.DpGroup?.fieldGroupCode === f.fieldGroupCode)
+              .map((dp) => dp.dataPoint)
+              .join(", ") || ""}
+          </td>
+        )}
+      </tr>
+    );
+  })}
+</tbody>
+
           </table>
         )}
       </div>
