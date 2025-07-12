@@ -43,6 +43,12 @@ const navItems = [
     path: "/admin/register",
     icon: <UserPlus size={18} />,
   },
+  {
+  label: "User List",
+  path: "/admin/user-list",
+  icon: <UserPlus size={18} />,
+},
+
 ];
 
 const AdminLayout: React.FC = () => {
