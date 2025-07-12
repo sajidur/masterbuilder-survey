@@ -180,7 +180,10 @@ const ItemManager: React.FC = () => {
       {/* Top Row: Module, App, Menu */}
       <div className=" bg-white grid grid-cols-1 sm:grid-cols-6 gap-4 rounded-lg p-4">
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 "><Layers size={18} /></span> Item
+          <span className="text-blue-600 ">
+            <Layers size={18} />
+          </span>{" "}
+          Item
         </h2>
         {/* Module */}
         <div className="">
@@ -232,9 +235,9 @@ const ItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-        </div>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 items-end bg-white  rounded-lg px-4 pb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-7 gap-4 items-end bg-white  rounded-lg px-4 pb-4">
         {/* Serial Number */}
         <div>
           <label className="block mb-1 font-medium text-gray-700">
