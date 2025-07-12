@@ -165,11 +165,11 @@ const SubSubItemManager: React.FC = () => {
 
       // Reset form
       setSubSubItemName("");
-      setSelectedTier("");
+      //setSelectedTier("");
       // setSelectedTemplateId("");
       setSerialNumber("");
-      setLayout("");
-      setButtonType("");
+      //setLayout("");
+      //setButtonType("");
       setButtonLabel("");
       setNavigationTo("");
     } catch (error) {

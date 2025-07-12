@@ -150,9 +150,9 @@ const ItemManager: React.FC = () => {
 
       // Reset form
       setItemName("");
-      setSelectedTier("");
+      //setSelectedTier("");
       setSerialNumber("");
-      setButtonType("");
+      //setButtonType("");
       setNavigationTo("");
       setDescription("");
       setEditItemId(null);

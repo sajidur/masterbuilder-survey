@@ -163,15 +163,15 @@ const SubItemManager: React.FC = () => {
 
       // Reset form
       setSubItemName("");
-      setSelectedTier("");
+      //setSelectedTier("");
       // setSelectedTemplateId("");
       setSerialNumber("");
-      setButtonType("");
+      //setButtonType("");
       setNavigationTo("");
       setDescription("");
       setEditSubItemId(null);
-      setButtonLabel("");
-      setLayout("");
+      //setButtonLabel("");
+      //setLayout("");
 
       const updated = await getAllSubitems();
       setSubItems(updated);

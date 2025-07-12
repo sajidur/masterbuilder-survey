@@ -105,9 +105,9 @@ const MenuManager: React.FC = () => {
 
       // Reset form
       setMenuName("");
-      setSelectedModule("");
-      setSelectedApp("");
-      setSelectedTier("");
+      //setSelectedModule("");
+      //setSelectedApp("");
+      //setSelectedTier("");
       setSerialNumber("");
       setEditMenuId(null);
 

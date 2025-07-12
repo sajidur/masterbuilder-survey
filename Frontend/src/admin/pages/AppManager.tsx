@@ -87,7 +87,7 @@ const AppManager: React.FC = () => {
 
       // Reset form
       setAppName("");
-      setSelectedModule("");
+      //setSelectedModule("");
       setSelectedTier("");
       setSerialNumber("");
       setEditAppId(null);
