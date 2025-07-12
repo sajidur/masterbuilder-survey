@@ -47,7 +47,7 @@ import {
   CreateSubSubItemDto,
   SubSubItemDto,
 } from './module.dto/subSubItem.dto';
-import { CreateFieldDto, FieldDto } from './module.dto/field.dto';
+import {  CreateFieldDto, FieldDto } from './module.dto/field.dto';
 import { Module } from '@nestjs/core/injector/module';
 import {
   CreateModuleDto,
@@ -64,7 +64,7 @@ import { Template } from 'src/Template/entity/template';
 import { memoryUsage } from 'process';
 import { escapeId } from 'mysql2';
 import { DataPoint } from './module.entity/dataPoint.entity';
-import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
+import { AllDataPointDto, CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { plainToInstance } from 'class-transformer';
 import { TotalCount } from './module.dto/totalCount.dto';
 @Injectable()
@@ -589,6 +589,78 @@ if (!item) {
       fields.map((field) => this.toFieldDto1(field)),
     );
   }
+ async findAllData(): Promise<FieldDto[]> {
+    const fields = await this.fieldRepository.find({
+      order: {
+        serialNumber: 'ASC',
+      },
+    });
+
+    if (!fields.length) return [];
+
+    // const subSuSubItemIds = Array.from(
+    //   new Set(fields.map((f) => f.subSubSubItemId)),
+    // );
+    // const subSubSubItems =
+    //   await this.subSubSubItemRepo.findByIds(subSuSubItemIds);
+    // const subSubSubItemMap = new Map(
+    //   subSubSubItems.map((sub) => [sub.id, sub]),
+    // );
+    return Promise.all(
+      fields.map((field) => this.toFieldDto1(field)),
+    );
+  }
+async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
+ const fields = await this.fieldRepository.find({
+  where: { userId: user.id },
+  order: { serialNumber: 'ASC' },
+});
+
+
+  if (!fields.length) return [];
+
+  const dataPoints = await this.dataPointRepo.find({
+    order: { serialNumber: 'ASC' },
+  });
+
+  // Group DataPoints by dpGroupCode (which maps to Field.id)
+  const dpGroupMap = new Map<string, DataPoint[]>();
+  for (const dp of dataPoints) {
+    if (!dpGroupMap.has(dp.dpGroupCode)) {
+      dpGroupMap.set(dp.dpGroupCode, []);
+    }
+    dpGroupMap.get(dp.dpGroupCode)!.push(dp);
+  }
+
+  const result: AllDataPointDto[] = await Promise.all(
+    fields.map(async (field) => {
+      const item = field.itemId ? await this.itemRepository.findOne({ where: { id: field.itemId } }) : null;
+      const subItem = field.subItemId ? await this.subItemRepository.findOne({ where: { id: field.subItemId } }) : null;
+      const subSubItem = field.subSubItemId ? await this.subSubItemRepository.findOne({ where: { id: field.subSubItemId } }) : null;
+      const subSubSubItem = field.subSubSubItemId ? await this.subSubSubItemRepo.findOne({ where: { id: field.subSubSubItemId } }) : null;
+
+      const dataPointsForField = dpGroupMap.get(field.id) || [];
+
+      return {
+        id: field.id,
+        serialNumber: field.serialNumber,
+        displayType: field.displayType,
+        remarks: field.remarks,
+        tier: field.tier,
+        fieldGroupCode: field.fieldGroupCode,
+        Item: item ? await this.toItemDto(item) : null,
+        subItem,
+        subSubItem,
+        subSubSubItem,
+        dataPoints: await Promise.all(dataPointsForField.map((dp) => this.toDataPointDto(dp))),
+      };
+    })
+  );
+
+  return result;
+}
+
+
 
   //   async findAllFields(): Promise<FieldDto[]> {
   //   const fields = await this.fieldRepository.find();
@@ -2476,7 +2548,7 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
 
   return dtoList;
 }
-
+ 
   async findOneDataPoint(id: string): Promise<DataPointDto> {
     const dp = await this.dataPointRepo.findOne({ where: { id } });
     if (!dp) throw new NotFoundException(`DataPoint with ID ${id} not found`);

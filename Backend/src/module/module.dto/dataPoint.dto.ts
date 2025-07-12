@@ -1,9 +1,14 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsBoolean, IsNotEmpty } from 'class-validator';
 
 import { ItemDto } from './item.dto';
 import { Field } from '../module.entity/field.entity';
+import { SubItem } from '../module.entity/subitem.entity';
+import { SubSubSubItem } from '../module.entity/subSubSubItem.entity';
+import { SubSubItem } from '../module.entity/subsubitem.entity';
 
 export class DataPointDto {
   id: string;
@@ -20,7 +25,19 @@ export class DataPointDto {
   updatedBy?: string;
   Item?: ItemDto | null;
 }
-
+export class AllDataPointDto {
+  id: string;
+  serialNumber: string;
+  displayType: string;
+  remarks: string;
+  tier: string;
+  fieldGroupCode: string;
+  Item?: ItemDto | null;
+  subItem?: SubItem | null;
+  subSubItem?: SubSubItem | null;
+  subSubSubItem?: SubSubSubItem | null;
+  dataPoints?: DataPointDto[] | null;
+}
 export class CreateDataPointDto {
   @ApiProperty({ description: 'Item ID associated with the data point' })
   @IsString()

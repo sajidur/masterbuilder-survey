@@ -7,6 +7,7 @@ import { ItemDto } from './item.dto';
 import { SubItem } from '../module.entity/subitem.entity';
 import { SubSubItem } from '../module.entity/subsubitem.entity';
 import { SubSubSubItem } from '../module.entity/subSubSubItem.entity';
+
 export class FieldDto {
   id: string;
   serialNumber: string;
@@ -19,6 +20,7 @@ export class FieldDto {
   subSubItem?: SubSubItem | null;
   subSubSubItem?: SubSubSubItem| null;
 }
+
 
 export class CreateFieldDto {
   @ApiProperty({ description: 'Remarks of the field' })

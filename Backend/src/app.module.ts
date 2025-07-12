@@ -73,7 +73,7 @@ import { JwtModule } from '@nestjs/jwt';
   password: 'root',
   database: 'survey_app_db',
   synchronize: false,
-  dropSchema:false,
+  //dropSchema:false,
   autoLoadEntities: true,
   charset: 'utf8mb4_unicode_ci',
 }),
