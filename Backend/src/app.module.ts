@@ -70,7 +70,7 @@ import { JwtModule } from '@nestjs/jwt';
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: 'root',
+  password: 'Root@pass1',
   database: 'survey_app_db',
   synchronize: false,
   //dropSchema:false,
@@ -108,7 +108,7 @@ export class AppModule {
       .exclude(
         { path: 'users/login', method: RequestMethod.POST },  // ✅ bypass JWT for login
         { path: 'users/addUser', method: RequestMethod.POST },
-         { path: 'users/getAllUser', method: RequestMethod.GET } // ✅ bypass for user registration
+         { path: 'users/getAllUsers', method: RequestMethod.GET } // ✅ bypass for user registration
       )
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
