@@ -148,9 +148,16 @@ useEffect(() => {
 
   let visibleColumns: string[] = [];
 
+  // if (selectedRadioKey) {
+  //   const index = columnKeys.indexOf(selectedRadioKey);
+  //   visibleColumns = columnKeys.slice(index + 1);
+  // } else {
+  //   visibleColumns = columnKeys;
+  // }
+
   if (selectedRadioKey) {
     const index = columnKeys.indexOf(selectedRadioKey);
-    visibleColumns = columnKeys.slice(index + 1);
+    visibleColumns = columnKeys.slice(index);
   } else {
     visibleColumns = columnKeys;
   }
