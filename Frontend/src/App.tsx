@@ -26,6 +26,7 @@ import ReportsPage from "./admin/pages/ReportsPage";
 import LoginPage from "./pages/Login";
 import DataPointManager from "./admin/pages/DataPointManager";
 import RegistrationForm from "./pages/RegistrationForm";
+import UserList from "./pages/UserList";
 
 function AppContent() {
   const location = useLocation();
@@ -79,6 +80,7 @@ function AppContent() {
             <Route path="document-details" element={<DocumentDetails />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="register" element={<RegistrationForm />} />
+            <Route path="user-list" element={<UserList />} />
           </Route>
         </Routes>
       </main>
