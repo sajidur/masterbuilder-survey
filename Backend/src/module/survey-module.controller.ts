@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-var */
  
 /* eslint-disable prettier/prettier */
@@ -34,11 +36,11 @@ import { CreateMenuDto, MenuDto } from './module.dto/menu.dto';
 import { CreateItemDto, ItemDto } from './module.dto/item.dto';
 import { CreateSubItemDto, SubItemDto } from './module.dto/subiItem.dto';
 import { CreateSubSubItemDto, SubSubItemDto } from './module.dto/subSubItem.dto';
-import { CreateFieldDto, FieldDto } from './module.dto/field.dto';
 import { CreateModuleDto, UpdateModuleDto } from './module.dto/create-module.dto';
 import { SubSubSubItemDto, CreateSubSubSubItemDto } from './module.dto/subsubsubitem.dto';
-import { CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
+import { AllDataPointDto, CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { TotalCount } from './module.dto/totalCount.dto';
+import { FieldDto, CreateFieldDto } from './module.dto/field.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -439,4 +441,12 @@ async updateSubSubItem(
    
     return cnt;
   }
+
+@Get('allDataFields')
+@ApiResponse({ status: 200, type: [AllDataPointDto] })
+async allDataByModule(@Req() req: Request): Promise<AllDataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.findAllFieldsWithDataPoints(user); // no id needed
+}
 }
