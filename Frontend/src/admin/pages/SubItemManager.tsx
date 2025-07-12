@@ -448,7 +448,6 @@ const SubItemManager: React.FC = () => {
 
       {/* SubItem List */}
       <div className="bg-white p-4 rounded-lg shadow">
-        <h3 className="text-lg font-semibold mb-3">Sub Item List</h3>
         {subItems.length === 0 ? (
           <p>No subitems found.</p>
         ) : (

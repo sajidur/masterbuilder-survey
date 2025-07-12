@@ -411,7 +411,6 @@ const SubSubSubItemManager: React.FC = () => {
 
       {/* Table */}
       <div className="mt-8 bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-4">SSS Items List</h3>
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
