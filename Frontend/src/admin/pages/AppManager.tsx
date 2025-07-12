@@ -231,7 +231,7 @@ const AppManager: React.FC = () => {
             <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left">Module</th>
+                  <th className="px-4 py-3 text-left">Mod</th>
                   <th className="px-4 py-3 text-left">SI</th>
 
                   <th className="px-4 py-3 text-left">App</th>
