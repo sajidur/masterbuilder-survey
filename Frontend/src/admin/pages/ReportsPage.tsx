@@ -9,6 +9,7 @@ import {
   getAllSubSubSubitems,
   getAllFields,
   getAllDataPoints,
+  getAllDataFields,
 } from "../../apiRequest/api";
 
 import React, { useEffect, useState } from "react";
@@ -97,7 +98,8 @@ const ReportsPage: React.FC = () => {
   const [selectedRadioKey, setSelectedRadioKey] = useState<string>("");
   const [showDataPoint, setShowDataPoint] = useState<boolean>(false);
   const [dpGroups, setDpGroups] = useState<string[]>([]);
-  
+  const [dataFields, setDataFields] = useState<any[]>([]);
+
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
     subSubItemMap: Record<string, SubSubItem>;
@@ -129,6 +131,7 @@ const ReportsPage: React.FC = () => {
           subSubSub,
           field,
           dataPoint,
+          dataField,
         ] = await Promise.all([
           getAllModules(),
           getAllApps(),
@@ -139,6 +142,7 @@ const ReportsPage: React.FC = () => {
           getAllSubSubSubitems(),
           getAllFields(),
           getAllDataPoints(),
+          getAllDataFields(),
         ]);
         setModules(mod);
         setApps(app);
@@ -149,6 +153,7 @@ const ReportsPage: React.FC = () => {
         setSubSubSubItems(subSubSub);
         setFields(field);
         setDataPoints(dataPoint);
+        setDataFields(dataField);
 
         const groupCodes = Array.from(
           new Set(field.map((f) => f.fieldGroupCode).filter(Boolean))
@@ -211,16 +216,12 @@ const ReportsPage: React.FC = () => {
     return true;
   });
 
-const visibleColumns = React.useMemo(() => {
-  const index = selectedRadioKey
-    ? columnKeys.indexOf(selectedRadioKey)
-    : 0;
+  const visibleColumns = React.useMemo(() => {
+    const index = selectedRadioKey ? columnKeys.indexOf(selectedRadioKey) : 0;
 
-  const baseColumns = columnKeys.slice(index);
-  return showDataPoint ? [...baseColumns, "DataPoint"] : baseColumns;
-}, [selectedRadioKey, showDataPoint]);
-
-
+    const baseColumns = columnKeys.slice(index);
+    return showDataPoint ? [...baseColumns, "DataPoint"] : baseColumns;
+  }, [selectedRadioKey, showDataPoint]);
 
   const columnLabels: Record<string, string> = {
     module: "Module",
@@ -312,19 +313,18 @@ const visibleColumns = React.useMemo(() => {
 
       <div className="flex flex-wrap gap-4 items-center mb-4">
         {columnKeys.map((key) =>
-  key !== "DataPoint" ? (
-    <label key={key} className="flex items-center gap-1 text-sm">
-      <input
-        type="radio"
-        name="columnSelector"
-        checked={selectedRadioKey === key}
-        onChange={() => setSelectedRadioKey(key)}
-      />
-      {columnLabels[key] || key}
-    </label>
-  ) : null
-)}
-
+          key !== "DataPoint" ? (
+            <label key={key} className="flex items-center gap-1 text-sm">
+              <input
+                type="radio"
+                name="columnSelector"
+                checked={selectedRadioKey === key}
+                onChange={() => setSelectedRadioKey(key)}
+              />
+              {columnLabels[key] || key}
+            </label>
+          ) : null
+        )}
 
         {/* Separate checkbox for DataPoint */}
         <label className="flex items-center gap-1 text-sm ml-4">
@@ -336,7 +336,6 @@ const visibleColumns = React.useMemo(() => {
           Data Point
         </label>
       </div>
-
 
       <div className="bg-white p-4 rounded shadow">
         {filteredFields.length === 0 ? (
@@ -375,39 +374,52 @@ const visibleColumns = React.useMemo(() => {
               </tr>
             </thead>
             <tbody>
-  {filteredFields.map((f) => {
-    const item = f.Item;
-    const subItem = f.subItem;
-    const subSubItem = f.subSubItem;
-    const subSubSubItem = f.subSubSubItem;
+              {dataFields.map((f) => {
+                const module = f?.Item?.menu?.app?.Module;
+                const app = f?.Item?.menu?.app;
+                const menu = f?.Item?.menu;
+                const item = f?.Item;
+                const subItem = f?.subItem;
+                const subSubItem = f?.subSubItem;
+                const subSubSubItem = f?.subSubSubItem;
 
-    const menu = item?.menu;
-    const app = menu?.app;
-    const module = app?.Module;
+                const dpNames = f?.dataPoints
+                  ?.map((dp: any) => dp.dataPoint)
+                  .join(", ");
 
-    return (
-      <tr key={f.id}>
-        {visibleColumns.includes("module") && <td>{module?.name || ""}</td>}
-        {visibleColumns.includes("app") && <td>{app?.name || ""}</td>}
-        {visibleColumns.includes("menu") && <td>{menu?.title || ""}</td>}
-        {visibleColumns.includes("item") && <td>{item?.name || ""}</td>}
-        {visibleColumns.includes("subItem") && <td>{subItem?.name || ""}</td>}
-        {visibleColumns.includes("subSubItem") && <td>{subSubItem?.name || ""}</td>}
-        {visibleColumns.includes("subSubSubItem") && <td>{subSubSubItem?.name || ""}</td>}
-        {visibleColumns.includes("DPGroupCode") && <td>{f.fieldGroupCode || ""}</td>}
-        {visibleColumns.includes("DataPoint") && (
-          <td>
-            {dataPoints
-              .filter((dp) => dp.DpGroup?.fieldGroupCode === f.fieldGroupCode)
-              .map((dp) => dp.dataPoint)
-              .join(", ") || ""}
-          </td>
-        )}
-      </tr>
-    );
-  })}
-</tbody>
-
+                return (
+                  <tr key={f.id}>
+                    {visibleColumns.includes("module") && (
+                      <td>{module?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("app") && (
+                      <td>{app?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("menu") && (
+                      <td>{menu?.title || ""}</td>
+                    )}
+                    {visibleColumns.includes("item") && (
+                      <td>{item?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("subItem") && (
+                      <td>{subItem?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("subSubItem") && (
+                      <td>{subSubItem?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("subSubSubItem") && (
+                      <td>{subSubSubItem?.name || ""}</td>
+                    )}
+                    {visibleColumns.includes("DPGroupCode") && (
+                      <td>{f.fieldGroupCode || ""}</td>
+                    )}
+                    {visibleColumns.includes("DataPoint") && (
+                      <td>{dpNames || ""}</td>
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         )}
       </div>

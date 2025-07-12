@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ClipboardCheck,
@@ -15,6 +15,8 @@ import {
   BarChart4,
   Menu as MenuIcon,
   ChevronLeft,
+  UserPlus,
+  LogOut,
 } from "lucide-react";
 
 const navItems = [
@@ -36,10 +38,23 @@ const navItems = [
   { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },
   { label: 'Configuration', path: '/admin/template-configuration', icon: <ClipboardCheckIcon size={18} /> },
   { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
+  {
+    label: "Register",
+    path: "/admin/register",
+    icon: <UserPlus size={18} />,
+  },
 ];
 
 const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();         // remove stored token or session
+    navigate("/login");           // redirect to login
+  };
+
 
   return (
     <div className="min-h-screen flex bg-gray-100 text-gray-800">
@@ -95,11 +110,27 @@ const AdminLayout: React.FC = () => {
           ))}
         </nav>
 
-        {sidebarOpen && (
+        {/* {sidebarOpen && (
           <div className="p-4 text-xs text-gray-300 border-t border-blue-900">
             © {new Date().getFullYear()} Mukut ERP
           </div>
+        )} */}
+
+        {sidebarOpen && (
+          <div className="border-t border-blue-900">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-8 py-3 w-full text-sm text-red-300 hover:bg-red-600 hover:text-white transition-all"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+            <div className="px-4 pt-2 text-xs text-gray-300">
+              © {new Date().getFullYear()} Mukut ERP
+            </div>
+          </div>
         )}
+
       </aside>
 
       {/* Content */}

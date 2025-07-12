@@ -25,6 +25,7 @@ import TemplateConfiguration from "./admin/pages/TemplateConfiguration";
 import ReportsPage from "./admin/pages/ReportsPage";
 import LoginPage from "./pages/Login";
 import DataPointManager from "./admin/pages/DataPointManager";
+import RegistrationForm from "./pages/RegistrationForm";
 
 function AppContent() {
   const location = useLocation();
@@ -77,6 +78,7 @@ function AppContent() {
             <Route path="document-upload" element={<DocumentUploader />} />
             <Route path="document-details" element={<DocumentDetails />} />
             <Route path="reports" element={<ReportsPage />} />
+            <Route path="register" element={<RegistrationForm />} />
           </Route>
         </Routes>
       </main>
