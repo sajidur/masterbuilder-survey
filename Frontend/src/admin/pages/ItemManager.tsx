@@ -267,6 +267,8 @@ const ItemManager: React.FC = () => {
         </div>
 
         {/* Tier */}
+                  {false && (
+
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             Tier
@@ -284,7 +286,7 @@ const ItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-
+                  )}
         {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -388,7 +390,7 @@ const ItemManager: React.FC = () => {
                 <th className="p-2 border-b text-left">SI</th>
 
                 <th className="p-2 border-b text-left">Item</th>
-                <th className="p-2 border-b text-left">Tier</th>
+                {/* <th className="p-2 border-b text-left">Tier</th> */}
                 <th className="p-2 border-b text-left">Intro</th>
 
                 <th className="p-2 border-b text-left">P/S Button</th>
@@ -405,7 +407,7 @@ const ItemManager: React.FC = () => {
                   <td className="p-2">{item.serialNumber}</td>
 
                   <td className="p-2">{item.name}</td>
-                  <td className="p-2">{item.tier}</td>
+                  {/* <td className="p-2">{item.tier}</td> */}
                   <td className="p-2">{item.description}</td>
 
                   <td className="p-2">{item.buttonType}</td>

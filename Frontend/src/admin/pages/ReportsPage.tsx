@@ -695,17 +695,19 @@ const ReportsPage: React.FC = () => {
 
                     {visibleColumns.includes("DataPoint") && (
                       <>
-                        {!isHidden("si") && (
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            SL
-                          </th>
+                        {(
+                          <>
+                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                              SL
+                            </th>
+                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                              Datapoint
+                            </th>
+                          </>
                         )}
 
                         {!isHidden("extraDp") && (
                           <>
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Datapoint
-                            </th>
                             <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
                               Hide
                             </th>
@@ -724,7 +726,7 @@ const ReportsPage: React.FC = () => {
 
                 <tbody>
                   {dataFields.map((f, i) => {
-                    const dpList = f?.dataPoints ?? [{}];
+                    const dpList = f?.dataPoints?.length > 0 ? f.dataPoints : [{}];
                     return dpList.map((dp, j) => (
                       <tr
                         key={`${f.id}-${j}`}
@@ -922,12 +924,12 @@ const ReportsPage: React.FC = () => {
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {dp?.serialNumber || ""}
                             </td>
-
-                            {!isHidden("extraDp") && (
-                              <>
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {dp?.dataPoint || ""}
                                 </td>
+                            {!isHidden("extraDp") && (
+                              <>
+
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {dp?.isHide ? "Yes" : "No"}
                                 </td>

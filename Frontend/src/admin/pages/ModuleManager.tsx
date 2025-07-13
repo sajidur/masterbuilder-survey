@@ -134,6 +134,8 @@ const ModuleManager: React.FC = () => {
             </div>
 
             {/* Tier Dropdown */}
+                      {false && (
+
             <div>
               <label className="block mb-1 font-medium text-gray-700">
                 Tier
@@ -151,7 +153,7 @@ const ModuleManager: React.FC = () => {
                 ))}
               </select>
             </div>
-
+            )}
             <div className="mt-4 flex gap-4">
               <button
                 onClick={handleAddModule}
@@ -186,7 +188,7 @@ const ModuleManager: React.FC = () => {
                 <tr>
                   <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Module</th>
-                  <th className="px-4 py-3 text-left">Tier</th>
+                  {/* <th className="px-4 py-3 text-left">Tier</th> */}
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
@@ -200,7 +202,7 @@ const ModuleManager: React.FC = () => {
                       {module.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{module.name}</td>
-                    <td className="px-4 py-3 text-gray-800">{module.tier}</td>
+                    {/* <td className="px-4 py-3 text-gray-800">{module.tier}</td> */}
                     <td className="px-4 py-3 flex gap-3">
                       <button
                         onClick={() => {

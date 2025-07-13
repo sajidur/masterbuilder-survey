@@ -178,6 +178,7 @@ const AppManager: React.FC = () => {
           </div>
 
           {/* Tier Dropdown */}
+          {false && (
           <div>
             <label className="block mb-1 font-medium text-gray-700">Tier</label>
             <select
@@ -193,7 +194,7 @@ const AppManager: React.FC = () => {
               ))}
             </select>
           </div>
-
+          )}
           {/* Buttons */}
         <div className="my-4 flex items-center gap-4">
           <button
@@ -235,7 +236,7 @@ const AppManager: React.FC = () => {
                   <th className="px-4 py-3 text-left">SI</th>
 
                   <th className="px-4 py-3 text-left">App</th>
-                  <th className="px-4 py-3 text-left">Tier</th>
+                  {/* <th className="px-4 py-3 text-left">Tier</th> */}
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
@@ -254,7 +255,7 @@ const AppManager: React.FC = () => {
                       {app.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{app.name}</td>
-                    <td className="px-4 py-3 text-gray-800">{app.tier}</td>
+                    {/* <td className="px-4 py-3 text-gray-800">{app.tier}</td> */}
 
                     <td className="px-4 py-3 flex gap-3">
                       <button

@@ -125,14 +125,14 @@ const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
 const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
 
   const resetForm = () => {
-    setSelectedModule("");
-    setSelectedApp("");
-    setSelectedMenu("");
-    setSelectedItem("");
-    setDpGroupCode("");
+    // setSelectedModule("");
+    // setSelectedApp("");
+    // setSelectedMenu("");
+    // setSelectedItem("");
+    // setDpGroupCode("");
     setDataPointName("");
     setSerialNumber("");
-    setDataType("");
+    //setDataType("");
     setIsHide(false);
     setIsRequired(false);
     setEditId(null);

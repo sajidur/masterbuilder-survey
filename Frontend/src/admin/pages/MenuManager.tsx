@@ -210,6 +210,8 @@ const MenuManager: React.FC = () => {
           </div>
 
           {/* Tier Dropdown */}
+                    {false && (
+
           <div>
             <label className="block mb-1 font-medium text-gray-700">Tier</label>
             <select
@@ -225,7 +227,7 @@ const MenuManager: React.FC = () => {
               ))}
             </select>
           </div>
-
+                    )}
 
           {/* Add / Cancel Buttons */}
         <div className="my-4 flex items-center gap-4">
@@ -273,7 +275,7 @@ const MenuManager: React.FC = () => {
                   <th className="px-4 py-3 text-left">SI</th>
 
                   <th className="px-4 py-3 text-left">Menu</th>
-                  <th className="px-4 py-3 text-left">Tier</th>
+                  {/* <th className="px-4 py-3 text-left">Tier</th> */}
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
@@ -293,7 +295,7 @@ const MenuManager: React.FC = () => {
                       {menu.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{menu.title}</td>
-                    <td className="px-4 py-3 text-gray-800">{menu.tier}</td>
+                    {/* <td className="px-4 py-3 text-gray-800">{menu.tier}</td> */}
 
                     <td className="px-4 py-3 flex gap-3">
                       <button

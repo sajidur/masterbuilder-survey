@@ -347,6 +347,8 @@ const SubSubSubItemManager: React.FC = () => {
         </div> */}
 
         {/* Tier */}
+                                    {false && (
+
         <div>
           <label className="block mb-1 font-medium">Tier</label>
           <select
@@ -362,7 +364,7 @@ const SubSubSubItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-
+                                    )}
         {/* Layout */}
         <div>
           <label className="block mb-1 font-medium">Layout Type</label>
@@ -423,7 +425,7 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SSS Item</th>
-              <th className="p-2 text-left">Tier</th>
+              {/* <th className="p-2 text-left">Tier</th> */}
               <th className="p-2 text-left">Layout</th>
 
               {/* <th className="p-2 text-left">Template</th> */}
@@ -451,7 +453,7 @@ const SubSubSubItemManager: React.FC = () => {
                 <td className="p-2">{s.serialNumber || "—"}</td>
 
                 <td className="p-2">{s.name}</td>
-                <td className="p-2">{s.tier || "—"}</td>
+                {/* <td className="p-2">{s.tier || "—"}</td> */}
                 <td className="p-2">{s.layout || "—"}</td>
 
                 {/* <td className="p-2">

@@ -122,9 +122,9 @@ const SubSubItemManager: React.FC = () => {
       !selectedMenu ||
       !selectedItem ||
       !selectedSubItem ||
-      !subSubItemName.trim() ||
+      !subSubItemName.trim() //||
       // !selectedTemplateId ||
-      !selectedTier
+      //!selectedTier
     ) {
       toast.warn("Please fill all fields.");
       return;
@@ -355,6 +355,8 @@ const SubSubItemManager: React.FC = () => {
         </div> */}
 
         {/* Tier */}
+                            {false && (
+
         <div>
           <label className="block mb-1 font-medium">Tier</label>
           <select
@@ -370,7 +372,7 @@ const SubSubItemManager: React.FC = () => {
             ))}
           </select>
         </div>
-
+                            )}
         {/* Layout */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -474,7 +476,7 @@ const SubSubItemManager: React.FC = () => {
 
               <th className="p-2 text-left">SS Item</th>
               {/* <th className="p-2 text-left">Template</th> */}
-              <th className="p-2 text-left">Tier</th>
+              {/* <th className="p-2 text-left">Tier</th> */}
               <th className="p-2 text-left">Layout</th>
               <th className="p-2 text-left">P/S Button</th>
               <th className="p-2 text-left">Navigate To</th>
@@ -499,11 +501,11 @@ const SubSubItemManager: React.FC = () => {
                 {/* <td className="p-2">
                   {s.template?.name}
                 </td> */}
-                <td className="p-2">{s.tier}</td>
+                {/* <td className="p-2">{s.tier}</td> */}
                 <td className="p-2">{s.layout || "—"}</td>
                 <td className="p-2">
-                  {s.buttonType === "Primary Button"
-                    ? `P-Button[${s.buttonLabel || ""}]`
+                  {s.buttonType === "Edit Button"
+                    ? `Edit Button[${s.buttonLabel || ""}]`
                     : s.buttonType === "Second Button"
                     ? `S-Button[${s.buttonLabel || ""}]`
                     : ""}
