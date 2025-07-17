@@ -2623,7 +2623,7 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
 
 async GetallItemBySP(): Promise<DataPointDto[]> {
   // Call the stored procedure via raw SQL query
-  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL ItemsData()');
 
   // rawResult is an array where rawResult[0] contains the actual rows
   const rows = rawResult[0];

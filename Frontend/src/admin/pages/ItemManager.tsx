@@ -401,9 +401,9 @@ const ItemManager: React.FC = () => {
             <tbody>
               {filteredItems.map((item) => (
                 <tr key={item.id} className="border-t">
-                  <td className="p-2">{item.menu.app.Module?.name}</td>
-                  <td className="p-2">{item.menu.app?.name}</td>
-                  <td className="p-2">{item.menu?.title}</td>
+                  <td className="p-2">{item.moduleName}</td>
+                  <td className="p-2">{item.appName}</td>
+                  <td className="p-2">{item.menuTitle}</td>
                   <td className="p-2">{item.serialNumber}</td>
 
                   <td className="p-2">{item.name}</td>
@@ -418,13 +418,13 @@ const ItemManager: React.FC = () => {
                       onClick={() => {
                         setEditItemId(item.id);
                         setItemName(item.name);
-                        setSelectedModule(item.menu.app.Module.name);
+                        setSelectedModule(item.moduleName);
                         // setSelectedApp(item.menu.app.name);
                         // setSelectedMenu(item.menu.title);
                         setTimeout(() => {
-                          setSelectedApp(item.menu.app.name);
+                          setSelectedApp(item.appName);
                           setTimeout(() => {
-                            setSelectedMenu(item.menu.title);
+                            setSelectedMenu(item.menuTitle);
                           }, 50);
                         }, 50);
 
