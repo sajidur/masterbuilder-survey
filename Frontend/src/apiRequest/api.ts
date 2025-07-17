@@ -564,7 +564,7 @@ export const getAllSubSubSubitems = async () => {
 // Get all fields
 export const getAllFields = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allFields');
+    const response = await apiClient.get('/survey-module/allDataBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);

@@ -15,6 +15,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { tiers } from "./data";
 
 interface Module {
   id: string;
@@ -126,6 +127,7 @@ const ReportsPage: React.FC = () => {
   const [showDataPoint, setShowDataPoint] = useState<boolean>(false);
   const [dpGroups, setDpGroups] = useState<string[]>([]);
   const [dataFields, setDataFields] = useState<any[]>([]);
+  const [selectedTier, setSelectedTier] = useState("");
 
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
@@ -394,6 +396,12 @@ const ReportsPage: React.FC = () => {
           onChange={setSelectedDisplayType}
         />
         <Dropdown
+          label="Tier"
+          value={selectedDisplayType}
+          options={tiers}
+          onChange={setSelectedDisplayType}
+        />
+        <Dropdown
           label="Data Point"
           value={selectedField}
           options={dataPoints.map((dp) => ({
@@ -430,24 +438,6 @@ const ReportsPage: React.FC = () => {
         </label>
 
         <div className="flex gap-2">
-          {/* <label htmlFor="distinct-select" className="mt-2 font-semibold">
-            Distinct:
-          </label> */}
-          <select
-            id="distinct-select"
-            className="border rounded px-3 py-2 mb-4"
-            value={distinctColumn || ""}
-            onChange={(e) =>
-              setDistinctColumn(e.target.value === "" ? null : e.target.value)
-            }
-          >
-            <option value="">Distinct column</option>
-            {mainColumns.map((col) => (
-              <option key={col} value={col}>
-                {col}
-              </option>
-            ))}
-          </select>
 
           {/* <label className="mr-2 font-semibold">Hide:</label> */}
           <div className="relative ">
@@ -502,6 +492,24 @@ const ReportsPage: React.FC = () => {
               </div>
             )}
           </div>
+                   {/* <label htmlFor="distinct-select" className="mt-2 font-semibold">
+            Distinct:
+          </label> */}
+          <select
+            id="distinct-select"
+            className="border rounded px-3 py-2 mb-4"
+            value={distinctColumn || ""}
+            onChange={(e) =>
+              setDistinctColumn(e.target.value === "" ? null : e.target.value)
+            }
+          >
+            <option value="">Distinct column</option>
+            {mainColumns.map((col) => (
+              <option key={col} value={col}>
+                {col}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

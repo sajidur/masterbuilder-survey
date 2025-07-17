@@ -449,4 +449,12 @@ async allDataByModule(@Req() req: Request): Promise<AllDataPointDto[]> {
  console.log(user);
   return this.moduleService.findAllFieldsWithDataPoints(user); // no id needed
 }
+
+@Get('allDataBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async allDataBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.findAllDataBySP(); // no id needed
+}
 }

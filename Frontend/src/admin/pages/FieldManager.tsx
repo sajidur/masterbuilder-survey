@@ -518,20 +518,20 @@ const payload: {
             {fields.map((f) => (
               <tr key={f.id} className="border-t">
                 <td className="p-2">
-                  {f.Item?.menu?.app?.Module?.name || "—"}
+                  {f.moduleName || "—"}
                 </td>
-                <td className="p-2">{f.Item?.menu?.app?.name || "—"}</td>
-                <td className="p-2">{f.Item?.menu?.title || "—"}</td>
-                <td className="p-2">{f.Item.name || "—"}</td>
-                <td className="p-2">{f.subItem?.name || "—"}</td>
-                <td className="p-2">{f.subSubItem?.name || "—"}</td>
-                <td className="p-2">{f.subSubSubItem?.name || "—"}</td>
-                <td className="p-2">{f.serialNumber || "—"}</td>
+                <td className="p-2">{f.appName || "—"}</td>
+                <td className="p-2">{f.menuTitle || "—"}</td>
+                <td className="p-2">{f.itemName || "—"}</td>
+                <td className="p-2">{f.subItemName || "—"}</td>
+                <td className="p-2">{f.subSubItemName || "—"}</td>
+                <td className="p-2">{f.subsubsubItemName || "—"}</td>
+                <td className="p-2">{f.fieldGroupCodeSerialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 <td className="p-2">{f.tier || "—"}</td>
 
-                <td className="p-2">{f.displayType}</td>
+                <td className="p-2">{f.DisplayType}</td>
 
                 <td className="p-2">{f.remarks || "-"}</td>
                 {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}

@@ -2621,4 +2621,129 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
   return count;
 }
 
+async GetallItemBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
+async GetallSubItemBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
+async GetallSSBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
+async GetallSSSBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
+async findAllDataBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+async findAllDataPointBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataPoint()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
+async ReportBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL ReportData()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
 }
