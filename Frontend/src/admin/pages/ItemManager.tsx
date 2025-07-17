@@ -9,6 +9,7 @@ import {
   addItem,
   updateItem,
   deleteItem,
+  getAllItemsBySP,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -64,7 +65,7 @@ const ItemManager: React.FC = () => {
     const fetchData = async () => {
       try {
         const [modulesData, appsData, menusData, itemsData] = await Promise.all(
-          [getAllModules(), getAllApps(), getAllMenus(), getAllItems()]
+          [getAllModules(), getAllApps(), getAllMenus(), getAllItemsBySP()]
         );
         setModules(modulesData);
         setApps(appsData);

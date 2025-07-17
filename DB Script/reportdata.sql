@@ -2,23 +2,9 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportData`()
 BEGIN
     SELECT 
-        md.serialNumber AS moduleSerial,
-        md.name AS moduleName,
-        app.serialNumber AS appSerial,
-        app.name AS appName,
-        menu.serialNumber AS menuSerial,
-        menu.title AS menuTitle,
-        item.serialNumber AS itemSerial,
-        item.name AS itemName,
-        si.serialNumber AS subItemSerial,
-        si.name AS subItemName,
-        ssi.name AS subSubItemName,
-        sssi.name as subsubsubItemName,
-        fi.fieldGroupCode as fieldGroupCode,
-        fi.serialNumber as fieldGroupCodeSerialNumber,
-        fi.DisplayType as DisplayType,
-        fi.remarks as remarks,
-        dp.*
+        md.serialNumber,md.name,app.serialNumber as appserialNumber, app.name as appname,menu.serialNumber as menuserialNumber,
+        menu.title,item.serialNumber as itemserialNumber,item.name as itemName,item.buttonType,item.buttonLabel,item.navigationTo,item.description,
+        si.serialNumber as subserialNumber,si.name as subitem,ssi.*,sssi.*,fi.*,dp.*
     FROM modules md 
     left JOIN app ON md.id = app.moduleId
     left JOIN menu ON app.id = menu.appId

@@ -442,12 +442,12 @@ async updateSubSubItem(
     return cnt;
   }
 
-@Get('allDataFields')
-@ApiResponse({ status: 200, type: [AllDataPointDto] })
-async allDataByModule(@Req() req: Request): Promise<AllDataPointDto[]> {
+@Get('reportdata')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async reportdata(@Req() req: Request): Promise<DataPointDto[]> {
  const user = req['user'];
  console.log(user);
-  return this.moduleService.findAllFieldsWithDataPoints(user); // no id needed
+  return this.moduleService.ReportBySP(); // no id needed
 }
 @Get('getallitemBySP')
 @ApiResponse({ status: 200, type: [DataPointDto] })
@@ -455,6 +455,13 @@ async GetallitemBySP(@Req() req: Request): Promise<DataPointDto[]> {
  const user = req['user'];
  console.log(user);
   return this.moduleService.GetallItemBySP(); // no id needed
+}
+@Get('getallsubitemBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async GetallSubItemBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.GetallSubItemBySP(); // no id needed
 }
 
 @Get('allDataBySP')
