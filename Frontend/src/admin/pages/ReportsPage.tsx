@@ -15,6 +15,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { tiers } from "./data";
 
 interface Module {
   id: string;

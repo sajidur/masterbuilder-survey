@@ -478,11 +478,11 @@ const SubItemManager: React.FC = () => {
               {subItems.map((s) => (
                 <tr key={s.id} className="border-t">
                   <td className="p-2">
-                    {s.item?.menu?.app?.Module?.name || "—"}
+                    {s.moduleName || "—"}
                   </td>
-                  <td className="p-2">{s.item?.menu?.app?.name || "—"}</td>
-                  <td className="p-2">{s.item?.menu?.title || "—"}</td>
-                  <td className="p-2">{s.item?.name || "—"}</td>
+                  <td className="p-2">{s.appName || "—"}</td>
+                  <td className="p-2">{s.menuTitle || "—"}</td>
+                  <td className="p-2">{s.itemName || "—"}</td>
                   <td className="p-2">{s.serialNumber}</td>
 
                   <td className="p-2">{s.name}</td>

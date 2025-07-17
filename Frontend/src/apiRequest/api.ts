@@ -443,7 +443,7 @@ export const getAllDataPoints = async () => {
 // Get all DataFields
 export const getAllDataFields = async () => {
   try {
-    const response = await apiClient.get(`/survey-module/allDataFields`);
+    const response = await apiClient.get(`/survey-module/allDataPoints`);
     return response.data;
   } catch (error) {
     console.error("Error fetching DataFields:", error);
@@ -519,7 +519,18 @@ export const getAllMenus = async () => {
 // Get all items
 export const getAllItems = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allItems');
+    const response = await apiClient.get('/survey-module/allitems');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all items:', error);
+    throw error;
+  }
+};
+
+// Get all items
+export const getAllItemsBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getallitemBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all items:', error);
@@ -530,7 +541,7 @@ export const getAllItems = async () => {
 // Get all subitems
 export const getAllSubitems = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allSubitems');
+    const response = await apiClient.get('/survey-module/getallsubitemBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all subitems:', error);
@@ -564,7 +575,7 @@ export const getAllSubSubSubitems = async () => {
 // Get all fields
 export const getAllFields = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allFields');
+    const response = await apiClient.get('/survey-module/allDataBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);
