@@ -336,7 +336,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">Data Point</label>
+            <label className="block mb-1 font-medium">Datapoint</label>
             <input
               type="text"
               value={dataPointName}
@@ -411,7 +411,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
               <th className="p-2 text-left">DP Group</th>
                             <th className="p-2 text-left">Serial</th>
 
-              <th className="p-2 text-left">Data Point</th>
+              <th className="p-2 text-left">Datapoint</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>

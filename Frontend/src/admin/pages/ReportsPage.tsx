@@ -408,7 +408,7 @@ const ReportsPage: React.FC = () => {
               options={dpGroups.map((code) => ({ label: code, value: code }))}
               onChange={setSelectedDisplayType} />
             <Dropdown
-              label="Data Point"
+              label="Datapoint"
               value={selectedField}
               options={dataPoints.map((dp) => ({
                 label: dp.dbGroupCode,
@@ -434,7 +434,7 @@ const ReportsPage: React.FC = () => {
                   type="checkbox"
                   checked={showDataPoint}
                   onChange={(e) => setShowDataPoint(e.target.checked)} />
-                Data Point
+                Datapoint
               </label>
 
               <div className="flex gap-2">
@@ -523,13 +523,13 @@ Distinct:
                       {visibleColumns.includes("module") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Module (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            Module (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Mod
                           </th>
                         </>
                       )}
@@ -537,13 +537,13 @@ Distinct:
                       {visibleColumns.includes("app") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              App (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            App (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            App
                           </th>
                         </>
                       )}
@@ -551,13 +551,13 @@ Distinct:
                       {visibleColumns.includes("menu") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Menu (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            Menu (Title)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Menu
                           </th>
                         </>
                       )}
@@ -565,30 +565,30 @@ Distinct:
                       {visibleColumns.includes("item") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Item (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            Item (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Item
                           </th>
 
                           {!isHidden("intro") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Intro
                             </th>
                           )}
 
                           {!isHidden("button") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
                               Button
                             </th>
                           )}
 
                           {!isHidden("navigation") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Navigate to
+                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
+                              Navigate
                             </th>
                           )}
                         </>
@@ -597,33 +597,33 @@ Distinct:
                       {visibleColumns.includes("subItem") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Sub Item (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            Sub Item (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Sub_Item
                           </th>
 
                           {!isHidden("layout") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Layout
                             </th>
                           )}
                           {!isHidden("intro") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Intro
                             </th>
                           )}
                           {!isHidden("button") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Button
                             </th>
                           )}
                           {!isHidden("navigation") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              Navigate to
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Navigate
                             </th>
                           )}
                         </>
@@ -632,22 +632,22 @@ Distinct:
                       {visibleColumns.includes("subSubItem") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              SS Item (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            SS Item (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            SS_Item
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Layout
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Button
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            Navigate to
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Navigate
                           </th>
                         </>
                       )}
@@ -655,15 +655,15 @@ Distinct:
                       {visibleColumns.includes("subSubSubItem") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              SSS Item (SL)
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            SSS Item (Name)
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            SSS_Item
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Layout
                           </th>
                         </>
@@ -672,26 +672,26 @@ Distinct:
                       {visibleColumns.includes("DPGroupCode") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                              SL
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                            DP Group
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            DP_Group
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Tier
                           </th>
 
                           {!isHidden("display") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Display
                             </th>
                           )}
 
                           {!isHidden("remarks") && (
-                            <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Remarks
                             </th>
                           )}
@@ -702,10 +702,10 @@ Distinct:
                         <>
                           {(
                             <>
-                              <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                                SL
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                Sl
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Datapoint
                               </th>
                             </>
@@ -713,14 +713,14 @@ Distinct:
 
                           {!isHidden("extraDp") && (
                             <>
-                              <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Hide
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                                Required
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                Reqd
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
-                                Data Type
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                Data_Type
                               </th>
                             </>
                           )}

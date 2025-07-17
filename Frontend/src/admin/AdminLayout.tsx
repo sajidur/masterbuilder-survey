@@ -30,14 +30,14 @@ const navItems = [
   { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'DP Group', path: '/admin/field', icon: <ListTree size={18} /> },
       {
-    label: "Data Point", 
+    label: "Datapoint", 
     path: "/admin/datapoint",
     icon: <ListTree size={18} />,
   },
+  { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
   { label: 'Document Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> },
   { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },
   { label: 'Configuration', path: '/admin/template-configuration', icon: <ClipboardCheckIcon size={18} /> },
-  { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
   {
     label: "Register",
     path: "/admin/register",
