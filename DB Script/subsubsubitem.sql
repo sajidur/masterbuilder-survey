@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Getsubsubitemdata`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Getsubsubsubitemdata`()
 BEGIN
     SELECT 
         m.serialNumber AS moduleSerial,
@@ -10,8 +10,10 @@ BEGIN
         menu.title AS menuTitle,
         i.name as itemName,
         si.name as subitem,
-        ssi.*
-    FROM sub_sub_item ssi
+        ssi.name,
+        sssi.*
+    FROM sub_sub_sub_item sssi
+	left join sub_sub_item ssi on ssi.id=sssi.subSubItemId
 	left join sub_item si on si.id=ssi.subItemId
     left join item i on i.id=si.itemid
 	left JOIN menu ON menu.id = i.menuId
@@ -23,6 +25,7 @@ BEGIN
         menu.serialNumber,
         i.serialNumber,
         si.serialNumber,
-        ssi.serialNumber;
+        ssi.serialNumber,
+        sssi.serialNumber;
 END$$
 DELIMITER ;
