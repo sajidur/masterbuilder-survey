@@ -87,25 +87,27 @@ const ItemManager: React.FC = () => {
     setSelectedMenu("");
   }, [selectedApp]);
 
-  const filteredApps = apps.filter(
-    (app) => app.Module?.name === selectedModule
-  );
-  const filteredMenus = menus.filter(
-    (menu) =>
-      menu.app?.Module?.name === selectedModule &&
-      menu.app?.name === selectedApp
-  );
+ 
 
-  const filteredItems =
-    selectedModule || selectedApp || selectedMenu
-      ? items.filter(
-          (item) =>
-            (!selectedModule ||
-              item.menu?.app?.Module?.name === selectedModule) &&
-            (!selectedApp || item.menu?.app?.name === selectedApp) &&
-            (!selectedMenu || item.menu?.title === selectedMenu)
-        )
-      : items;
+  // const filteredApps = apps.filter(
+  //   (app) => app.Module?.name === selectedModule
+  // );
+  // const filteredMenus = menus.filter(
+  //   (menu) =>
+  //     menu.app?.Module?.name === selectedModule &&
+  //     menu.app?.name === selectedApp
+  // );
+
+  // const filteredItems =
+  //   selectedModule || selectedApp || selectedMenu
+  //     ? items.filter(
+  //         (item) =>
+  //           (!selectedModule ||
+  //             item.menu?.app?.Module?.name === selectedModule) &&
+  //           (!selectedApp || item.menu?.app?.name === selectedApp) &&
+  //           (!selectedMenu || item.menu?.title === selectedMenu)
+  //       )
+  //     : items;
 
   const handleAddItem = async () => {
     if (!selectedModule || !selectedApp || !selectedMenu) {
@@ -174,6 +176,52 @@ const ItemManager: React.FC = () => {
     }
   };
 
+
+//    const filteredApps = selectedModule
+//   ? items.filter((app) => app.moduleName === selectedModule)
+//   : items;
+
+
+// const filteredMenus = selectedApp
+//   ? filteredApps.filter((app) => app.appName === selectedApp)
+//   : filteredApps;
+
+// const filteredItems = selectedMenu
+//   ? filteredMenus.filter((item) => item.menuTitle === selectedMenu)
+//   : filteredMenus;
+const availableApps = Array.from(
+  new Set(
+    items
+      .filter((item) =>
+        selectedModule ? item.moduleName === selectedModule : true
+      )
+      .map((item) => item.appName)
+  )
+);
+
+const availableMenus = Array.from(
+  new Set(
+    items
+      .filter(
+        (item) =>
+          (selectedModule ? item.moduleName === selectedModule : true) &&
+          (selectedApp ? item.appName === selectedApp : true)
+      )
+      .map((item) => item.menuTitle)
+  )
+);
+
+const filteredItems = items.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === selectedModule : true;
+  const matchApp = selectedApp ? item.appName === selectedApp : true;
+  const matchMenu = selectedMenu ? item.menuTitle === selectedMenu : true;
+  return matchModule && matchApp && matchMenu;
+});
+
+
+
+  
+
   return (
     <div className="">
       {/* Top Row: Module, App, Menu */}
@@ -204,7 +252,7 @@ const ItemManager: React.FC = () => {
         {/* App */}
         <div className="">
           <label className="block font-medium text-gray-700">App</label>
-          <select
+          {/* <select
             value={selectedApp}
             onChange={(e) => setSelectedApp(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
@@ -215,13 +263,28 @@ const ItemManager: React.FC = () => {
                 {app.name}
               </option>
             ))}
-          </select>
+          </select> */}
+{/* App Dropdown */}
+<select
+  value={selectedApp}
+  onChange={(e) => setSelectedApp(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+>
+  <option value="">Select App</option>
+{apps
+  .filter((a) => a.Module?.name === selectedModule)
+  .map((a) => (
+    <option key={a.id} value={a.name}>
+      {a.name}
+    </option>
+))}
+</select>
         </div>
 
         {/* Menu */}
         <div className="">
           <label className="block font-medium text-gray-700">Menu</label>
-          <select
+          {/* <select
             value={selectedMenu}
             onChange={(e) => setSelectedMenu(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
@@ -232,7 +295,26 @@ const ItemManager: React.FC = () => {
                 {menu.title}
               </option>
             ))}
-          </select>
+          </select> */}
+{/* Menu Dropdown */}
+<select
+  value={selectedMenu}
+  onChange={(e) => setSelectedMenu(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+>
+  <option value="">Select Menu</option>
+{menus
+  .filter((m) => 
+    m.app?.name === selectedApp &&
+    m.app?.Module?.name === selectedModule
+  )
+  .map((m) => (
+    <option key={m.id} value={m.title}>
+      {m.title}
+    </option>
+))}
+
+</select>
         </div>
       </div>
 

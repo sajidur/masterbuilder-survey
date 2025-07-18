@@ -8,9 +8,10 @@ import {
   getAllItems,
   addSubitem,
   updateSubitem,
-  getAllSubitems,
+  // getAllSubitems,
   // getAllTemplates,
   deleteSubItem,
+  getallsubitemBySP,
 } from "../../apiRequest/api";
 import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -96,7 +97,7 @@ const SubItemManager: React.FC = () => {
           getAllApps(),
           getAllMenus(),
           getAllItems(),
-          getAllSubitems(),
+          getallsubitemBySP(),
           // getAllTemplates(),
         ]);
 
@@ -173,7 +174,7 @@ const SubItemManager: React.FC = () => {
       //setButtonLabel("");
       //setLayout("");
 
-      const updated = await getAllSubitems();
+      const updated = await getallsubitemBySP();
       setSubItems(updated);
     } catch (error) {
       console.error("Subitem save error:", error);
@@ -191,6 +192,17 @@ const SubItemManager: React.FC = () => {
     }
   };
 
+  const filteredSubItems = subItems.filter((s) => {
+  const matchModule = selectedModule ? s.moduleName === selectedModule : true;
+  const matchApp = selectedApp ? s.appName === selectedApp : true;
+  const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
+  const matchItem = selectedItem ? s.itemName === selectedItem : true;
+  return matchModule && matchApp && matchMenu && matchItem;
+});
+
+
+
+
   return (
     <div className="">
       <div className=" p-4 bg-white mb-4 rounded-lg">
@@ -206,7 +218,7 @@ const SubItemManager: React.FC = () => {
           {/* Module */}
           <div className="">
             <label className="block  font-medium text-gray-700">Module</label>
-            <select
+            {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedModule}
               onChange={(e) => {
@@ -222,13 +234,31 @@ const SubItemManager: React.FC = () => {
                   {m.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <select
+  value={selectedModule}
+  onChange={(e) => {
+    setSelectedModule(e.target.value);
+    setSelectedApp("");
+    setSelectedMenu("");
+    setSelectedItem("");
+  }}
+                className="w-full px-3 py-2 border rounded"
+
+>
+  <option value="">Select Module</option>
+  {modules.map((m) => (
+    <option key={m.id} value={m.name}>
+      {m.name}
+    </option>
+  ))}
+</select>
           </div>
 
           {/* App */}
           <div className="">
             <label className="block  font-medium text-gray-700">App</label>
-            <select
+            {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedApp}
               onChange={(e) => {
@@ -245,13 +275,32 @@ const SubItemManager: React.FC = () => {
                     {a.name}
                   </option>
                 ))}
-            </select>
+            </select> */}
+            {/* App */}
+<select
+  value={selectedApp}
+  onChange={(e) => {
+    setSelectedApp(e.target.value);
+    setSelectedMenu("");
+    setSelectedItem("");
+  }}
+  className="w-full px-3 py-2 border rounded"
+>
+  <option value="">Select App</option>
+  {apps
+    .filter((a) => a.Module?.name === selectedModule)
+    .map((a) => (
+      <option key={a.id} value={a.name}>
+        {a.name}
+      </option>
+    ))}
+</select>
           </div>
 
           {/* Menu */}
           <div className="">
             <label className="block font-medium text-gray-700">Menu</label>
-            <select
+            {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedMenu}
               onChange={(e) => {
@@ -267,13 +316,31 @@ const SubItemManager: React.FC = () => {
                     {m.title}
                   </option>
                 ))}
-            </select>
+            </select> */}
+            {/* Menu */}
+<select
+  value={selectedMenu}
+  onChange={(e) => {
+    setSelectedMenu(e.target.value);
+    setSelectedItem("");
+  }}
+  className="w-full px-3 py-2 border rounded"
+>
+  <option value="">Select Menu</option>
+  {menus
+    .filter((m) => m.app?.name === selectedApp)
+    .map((m) => (
+      <option key={m.id} value={m.title}>
+        {m.title}
+      </option>
+    ))}
+</select>
           </div>
 
           {/* Item */}
           <div className="">
             <label className="block font-medium text-gray-700">Item</label>
-            <select
+            {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedItem}
               onChange={(e) => setSelectedItem(e.target.value)}
@@ -286,7 +353,22 @@ const SubItemManager: React.FC = () => {
                     {i.name}
                   </option>
                 ))}
-            </select>
+            </select> */}
+            {/* Item */}
+<select
+  value={selectedItem}
+  onChange={(e) => setSelectedItem(e.target.value)}
+  className="w-full px-3 py-2 border rounded"
+>
+  <option value="">Select Item</option>
+  {items
+    .filter((i) => i.menu?.title === selectedMenu)
+    .map((i) => (
+      <option key={i.id} value={i.name}>
+        {i.name}
+      </option>
+    ))}
+</select>
           </div>
         </div>
 
@@ -475,7 +557,7 @@ const SubItemManager: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {subItems.map((s) => (
+              {filteredSubItems.map((s) => (
                 <tr key={s.id} className="border-t">
                   <td className="p-2">
                     {s.moduleName || "—"}
@@ -507,23 +589,26 @@ const SubItemManager: React.FC = () => {
                   <td className="px-4 py-3 flex gap-3">
                     <button
                       onClick={() => {
-                        setEditSubItemId(s.id);
-                        setSubItemName(s.name);
-                        setSelectedModule(
-                          s.item?.menu?.app?.Module?.name || ""
-                        );
-                        setSelectedApp(s.item?.menu?.app?.id || "");
-                        setSelectedMenu(s.item?.menu?.id || "");
-                        setSelectedItem(s.item?.id || "");
-                        // setSelectedTemplateId(s.template?.id || "");
-                        setSelectedTier(s.tier || "");
-                        setSerialNumber(s.serialNumber || "");
-                        setButtonType(s.buttonType || "");
-                        setNavigationTo(s.navigationTo || "");
-                        setDescription(s.description || "");
-                        setButtonLabel(s.buttonLabel || "");
-                        setLayout(s.layout || "");
-                      }}
+  const matchedItem = items.find((itm) => itm.name === s.itemName);
+  const matchedMenu = matchedItem?.menu;
+  const matchedApp = matchedMenu?.app;
+  const matchedModule = matchedApp?.Module;
+
+  setEditSubItemId(s.id);
+  setSubItemName(s.name);
+  setSelectedModule(matchedModule?.name || "");
+  setSelectedApp(matchedApp?.id || "");
+  setSelectedMenu(matchedMenu?.id || "");
+  setSelectedItem(matchedItem?.id || "");
+  setSelectedTier(s.tier || "");
+  setSerialNumber(s.serialNumber || "");
+  setButtonType(s.buttonType || "");
+  setNavigationTo(s.navigationTo || "");
+  setDescription(s.description || "");
+  setButtonLabel(s.buttonLabel || "");
+  setLayout(s.layout || "");
+}}
+
                       className="text-blue-600 hover:text-blue-800"
                     >
                       <FaEdit />

@@ -448,6 +448,17 @@ export const getAllDataPoints = async () => {
 };
 
 
+export const allDataPointBySP = async () => {
+  try {
+    const response = await apiClient.get(`/survey-module/allDataPointBySP`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching DataPoints:", error);
+    throw error;
+  }
+};
+
+
 
 
 // Get all DataFields
@@ -567,11 +578,32 @@ export const getAllSubitems = async () => {
     throw error;
   }
 };
+// Get all subitems
+export const getallsubitemBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getallsubitemBySP');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all subitems:', error);
+    throw error;
+  }
+};
 
 // Get all subSubitems
 export const getAllSubSubitems = async () => {
   try {
     const response = await apiClient.get('/survey-module/allSubSubItems');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all subitems:', error);
+    throw error;
+  }
+};
+
+// Get all subSubitems
+export const getallsubsubitemBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getallsubsubitemBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all subitems:', error);

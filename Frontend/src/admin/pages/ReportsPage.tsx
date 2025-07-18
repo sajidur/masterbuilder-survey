@@ -128,6 +128,8 @@ const ReportsPage: React.FC = () => {
   const [dpGroups, setDpGroups] = useState<string[]>([]);
   const [dataFields, setDataFields] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(true);
+  const [selectedTier, setSelectedTier] = useState("");
+
 
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
@@ -332,101 +334,149 @@ const ReportsPage: React.FC = () => {
 
   return (
     <>
-    <div className="mb-2 px-4">
-      <button
-        onClick={() => setShowFilters(!showFilters)}
-        className="flex items-center gap-2 text-blue-600 font-semibold"
-      >
-        {showFilters ? (
-          <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" strokeWidth="2"
-            viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        ) : (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"
-            viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        )}
-        {showFilters ? 'Hide Filters' : 'Show Filters'}
-      </button>
-    </div>
-    <div>
-{showFilters && (
-  <><div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white rounded shadow transition-all duration-300">
-            <h2 className="font-light text-gray-800 flex items-center gap-2 col-span-6">
-              <BarChart4 size={18} />
-              Report
-            </h2>
+      <div className="mb-2 px-4">
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center gap-2 text-blue-600 font-semibold"
+        >
+          {showFilters ? (
+            <svg
+              className="w-5 h-5 rotate-90"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          )}
+          {showFilters ? "Hide Filters" : "Show Filters"}
+        </button>
+      </div>
+      <div>
+        {showFilters && (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white rounded shadow transition-all duration-300">
+              <h2 className="font-light text-gray-800 flex items-center gap-2 col-span-6">
+                <BarChart4 size={18} />
+                Report
+              </h2>
 
-            <Dropdown
-              label="Module"
-              value={selectedModule}
-              options={modules.map((m) => ({ label: m.name, value: m.id }))}
-              onChange={setSelectedModule} />
-            <Dropdown
-              label="App"
-              value={selectedApp}
-              options={filteredApps.map((a) => ({ label: a.name, value: a.id }))}
-              onChange={setSelectedApp} />
-            <Dropdown
-              label="Menu"
-              value={selectedMenu}
-              options={filteredMenus.map((m) => ({ label: m.title, value: m.id }))}
-              onChange={setSelectedMenu} />
-            <Dropdown
-              label="Item"
-              value={selectedItem}
-              options={filteredItems.map((i) => ({ label: i.name, value: i.id }))}
-              onChange={setSelectedItem} />
-            <Dropdown
-              label="Sub Item"
-              value={selectedSubItem}
-              options={filteredSubItems.map((s) => ({
-                label: s.name,
-                value: s.id,
-              }))}
-              onChange={setSelectedSubItem} />
-            <Dropdown
-              label="SS Item"
-              value={selectedSubSubItem}
-              options={filteredSubSubItems.map((s) => ({
-                label: s.name,
-                value: s.id,
-              }))}
-              onChange={setSelectedSubSubItem} />
-            <Dropdown
-              label="SSS Item"
-              value={selectedSubSubSubItem}
-              options={filteredSubSubSubItems.map((s) => ({
-                label: s.name,
-                value: s.id,
-              }))}
-              onChange={setSelectedSubSubSubItem} />
-            <Dropdown
-              label="DP Group"
-              value={selectedDisplayType}
-              options={dpGroups.map((code) => ({ label: code, value: code }))}
-              onChange={setSelectedDisplayType} />
-            <Dropdown
-              label="Datapoint"
-              value={selectedField}
-              options={dataPoints.map((dp) => ({
-                label: dp.dbGroupCode,
-                value: dp.dbGroupCode,
-              }))}
-              onChange={setSelectedField} />
-          </div><div className="flex flex-wrap gap-4 items-center mb-4">
-              {columnKeys.map((key) => key !== "DataPoint" ? (
-                <label key={key} className="flex items-center gap-1 text-sm">
-                  <input
-                    type="radio"
-                    name="columnSelector"
-                    checked={selectedRadioKey === key}
-                    onChange={() => setSelectedRadioKey(key)} />
-                  {columnLabels[key] || key}
-                </label>
-              ) : null
+              <Dropdown
+                label="Module"
+                value={selectedModule}
+                options={modules.map((m) => ({ label: m.name, value: m.id }))}
+                onChange={setSelectedModule}
+              />
+              <Dropdown
+                label="App"
+                value={selectedApp}
+                options={filteredApps.map((a) => ({
+                  label: a.name,
+                  value: a.id,
+                }))}
+                onChange={setSelectedApp}
+              />
+              <Dropdown
+                label="Menu"
+                value={selectedMenu}
+                options={filteredMenus.map((m) => ({
+                  label: m.title,
+                  value: m.id,
+                }))}
+                onChange={setSelectedMenu}
+              />
+              <Dropdown
+                label="Item"
+                value={selectedItem}
+                options={filteredItems.map((i) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+                onChange={setSelectedItem}
+              />
+              <Dropdown
+                label="Sub Item"
+                value={selectedSubItem}
+                options={filteredSubItems.map((s) => ({
+                  label: s.name,
+                  value: s.id,
+                }))}
+                onChange={setSelectedSubItem}
+              />
+              <Dropdown
+                label="SS Item"
+                value={selectedSubSubItem}
+                options={filteredSubSubItems.map((s) => ({
+                  label: s.name,
+                  value: s.id,
+                }))}
+                onChange={setSelectedSubSubItem}
+              />
+              <Dropdown
+                label="SSS Item"
+                value={selectedSubSubSubItem}
+                options={filteredSubSubSubItems.map((s) => ({
+                  label: s.name,
+                  value: s.id,
+                }))}
+                onChange={setSelectedSubSubSubItem}
+              />
+              <Dropdown
+                label="DP Group"
+                value={selectedDisplayType}
+                options={dpGroups.map((code) => ({ label: code, value: code }))}
+                onChange={setSelectedDisplayType}
+              />
+              <Dropdown
+  label="Tier"
+  value={selectedTier}
+  options={tiers.map((t) => ({ label: t.label, value: t.value }))}
+  onChange={setSelectedTier}
+/>
+
+
+              <Dropdown
+                label="Datapoint"
+                value={selectedField}
+                options={dataPoints.map((dp) => ({
+                  label: dp.dbGroupCode,
+                  value: dp.dbGroupCode,
+                }))}
+                onChange={setSelectedField}
+              />
+            </div>
+            <div className="flex flex-wrap gap-4 items-center mb-4">
+              {columnKeys.map((key) =>
+                key !== "DataPoint" ? (
+                  <label key={key} className="flex items-center gap-1 text-sm">
+                    <input
+                      type="radio"
+                      name="columnSelector"
+                      checked={selectedRadioKey === key}
+                      onChange={() => setSelectedRadioKey(key)}
+                    />
+                    {columnLabels[key] || key}
+                  </label>
+                ) : null
               )}
 
               {/* Separate checkbox for DataPoint */}
@@ -434,7 +484,8 @@ const ReportsPage: React.FC = () => {
                 <input
                   type="checkbox"
                   checked={showDataPoint}
-                  onChange={(e) => setShowDataPoint(e.target.checked)} />
+                  onChange={(e) => setShowDataPoint(e.target.checked)}
+                />
                 Datapoint
               </label>
 
@@ -446,7 +497,11 @@ Distinct:
                   id="distinct-select"
                   className="border rounded px-3 py-2 mb-4"
                   value={distinctColumn || ""}
-                  onChange={(e) => setDistinctColumn(e.target.value === "" ? null : e.target.value)}
+                  onChange={(e) =>
+                    setDistinctColumn(
+                      e.target.value === "" ? null : e.target.value
+                    )
+                  }
                 >
                   <option value="">Distinct column</option>
                   {mainColumns.map((col) => (
@@ -473,7 +528,8 @@ Distinct:
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        d="M19 9l-7 7-7-7" />
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
 
@@ -498,8 +554,9 @@ Distinct:
                                 } else {
                                   setHiddenGroups([...hiddenGroups, value]);
                                 }
-                              } }
-                              className="mr-2" />
+                              }}
+                              className="mr-2"
+                            />
                             {option.label}
                           </label>
                         ))}
@@ -508,8 +565,9 @@ Distinct:
                   )}
                 </div>
               </div>
-            </div></>
-)}
+            </div>
+          </>
+        )}
 
         <div className="bg-white p-4 rounded shadow">
           {filteredFields.length === 0 ? (
@@ -641,15 +699,25 @@ Distinct:
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             SS_Item
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Layout
-                          </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Button
-                          </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Navigate
-                          </th>
+                          {!isHidden("layout") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Layout
+                            </th>
+                          )}
+
+                          {!isHidden("button") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Button
+                            </th>
+                          )}
+
+
+                          {!isHidden("navigation") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Navigate
+                            </th>
+                          )}
+
                         </>
                       )}
 
@@ -664,9 +732,12 @@ Distinct:
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             SSS_Item
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Layout
-                          </th>
+
+                          {!isHidden("layout") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Layout
+                            </th>
+                          )}
                         </>
                       )}
 
@@ -701,7 +772,7 @@ Distinct:
 
                       {visibleColumns.includes("DataPoint") && (
                         <>
-                          {(
+                          {
                             <>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Sl
@@ -710,7 +781,7 @@ Distinct:
                                 Datapoint
                               </th>
                             </>
-                          )}
+                          }
 
                           {!isHidden("extraDp") && (
                             <>
@@ -732,7 +803,8 @@ Distinct:
 
                   <tbody>
                     {dataFields.map((f, i) => {
-                      const dpList = f?.dataPoints?.length > 0 ? f.dataPoints : [{}];
+                      const dpList =
+                        f?.dataPoints?.length > 0 ? f.dataPoints : [{}];
                       return dpList.map((dp, j) => (
                         <tr
                           key={`${f.id}-${j}`}
@@ -742,7 +814,8 @@ Distinct:
                             <>
                               {!isHidden("si") && (
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                  {f?.Item?.menu?.app?.Module?.serialNumber || ""}
+                                  {f?.Item?.menu?.app?.Module?.serialNumber ||
+                                    ""}
                                 </td>
                               )}
 
@@ -867,15 +940,28 @@ Distinct:
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f?.subSubItem?.name || ""}
                               </td>
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f?.subSubItem?.layout || ""}
-                              </td>
+                              {!isHidden("layout") && (
+                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                  {f?.subSubItem?.layout || ""}
+                                </td>
+                              )}
+
+                              {!isHidden("button") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f?.subSubItem?.buttonLabel || ""}
                               </td>
+                          )}
+
+
+
+                              {!isHidden("navigation") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f?.subSubItem?.navigationTo || ""}
                               </td>
+
+                          )}
+
+
                             </>
                           )}
 
@@ -890,9 +976,16 @@ Distinct:
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f?.subSubSubItem?.name || ""}
                               </td>
+
+                              {!isHidden("layout") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f?.subSubSubItem?.layout || ""}
                               </td>
+
+                          )}
+
+
+
                             </>
                           )}
 
@@ -935,7 +1028,6 @@ Distinct:
                               </td>
                               {!isHidden("extraDp") && (
                                 <>
-
                                   <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                     {dp?.isHide ? "Yes" : "No"}
                                   </td>
@@ -980,7 +1072,8 @@ Distinct:
         </div>
 
         <ToastContainer />
-      </div></>
+      </div>
+    </>
   );
 };
 

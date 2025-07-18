@@ -12,6 +12,7 @@ import {
   updateSubSubitem,
   // getAllTemplates,
   deleteSubSubItem,
+  getallsubsubitemBySP,
 } from "../../apiRequest/api";
 import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -94,7 +95,7 @@ const SubSubItemManager: React.FC = () => {
           getAllMenus(),
           getAllItems(),
           getAllSubitems(),
-          getAllSubSubitems(),
+          getallsubsubitemBySP(),
           // getAllTemplates(),
         ]);
 
@@ -154,7 +155,7 @@ const SubSubItemManager: React.FC = () => {
         toast.success("SS Item updated!");
 
         // Refresh list
-        const updated = await getAllSubSubitems();
+        const updated = await getallsubsubitemBySP();
         setSubSubItems(updated);
         setEditSubSubItemId(null);
       } else {
