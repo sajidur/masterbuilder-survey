@@ -8,6 +8,7 @@ import {
   getAllMenus,
   updateMenu,
   deleteMenu,
+  getAllMenusBySP,
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -50,7 +51,7 @@ const MenuManager: React.FC = () => {
         const [modulesData, appsData, menusData] = await Promise.all([
           getAllModules(),
           getAllApps(),
-          getAllMenus(),
+          getAllMenusBySP(),
         ]);
 
         setModules(modulesData);
@@ -111,7 +112,7 @@ const MenuManager: React.FC = () => {
       setSerialNumber("");
       setEditMenuId(null);
 
-      const updatedMenus = await getAllMenus();
+      const updatedMenus = await getAllMenusBySP();
       setMenus(updatedMenus);
     } catch (error) {
       console.error("Failed to save menu:", error);
@@ -129,6 +130,13 @@ const MenuManager: React.FC = () => {
     }
   };
 
+const data = selectedModule
+  ? menus.filter((app) => app.moduleName === selectedModule)
+  : menus;
+  
+const filteredmenu = selectedApp
+  ? data.filter((app) => app.appName === selectedApp)
+  : data;
   return (
     <div className="">
       {/* Add Menu Form */}
@@ -280,16 +288,16 @@ const MenuManager: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {menus.map((menu, index) => (
+                {filteredmenu.map((menu, index) => (
                   <tr
                     key={menu.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
                     <td className="px-4 py-3 text-gray-800">
-                      {menu.app.Module?.name || "—"}
+                      {menu.moduleName || "—"}
                     </td>
                     <td className="px-4 py-3 text-gray-800">
-                      {menu.app?.name || "—"}
+                      {menu.appName || "—"}
                     </td>
                     <td className="px-4 py-3 text-gray-800">
                       {menu.serialNumber}
@@ -304,11 +312,11 @@ const MenuManager: React.FC = () => {
                           setMenuName(menu.title);
                           setSelectedTier(menu.tier);
                           setSerialNumber(menu.serialNumber);
-                          setSelectedModule(menu.app.Module.name);
+                          setSelectedModule(menu.moduleName);
                           // setSelectedApp(menu.app.name);
 
                           setTimeout(() => {
-                            setSelectedApp(menu.app.name);
+                            setSelectedApp(menu.appName);
                           }, 50);
                         }}
                         className="text-blue-600 hover:text-blue-800"

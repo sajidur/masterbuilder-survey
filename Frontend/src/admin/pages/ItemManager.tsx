@@ -48,7 +48,6 @@ const ItemManager: React.FC = () => {
   const [apps, setApps] = useState<AppItem[]>([]);
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [items, setItems] = useState<Item[]>([]);
-
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [selectedMenu, setSelectedMenu] = useState<string>("");
@@ -132,7 +131,6 @@ const ItemManager: React.FC = () => {
       tier: selectedTier,
       serialNumber,
       buttonType,
-
       buttonLabel,
       navigationTo,
       description,
@@ -313,8 +311,8 @@ const ItemManager: React.FC = () => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Select Button Type</option>
-            <option value="Primary Button">Primary Button</option>
-            <option value="Second Button">Second Button</option>
+            <option value="P-Button">Primary Button</option>
+            <option value="S-Button">Second Button</option>
           </select>
         </div>
 
@@ -431,6 +429,7 @@ const ItemManager: React.FC = () => {
 
                         setSelectedTier(item.tier);
                         setSerialNumber(item.serialNumber);
+                        setButtonType(item.buttonType);
                         setButtonType(item.buttonType);
                         setNavigationTo(item.navigationTo);
                         setDescription(item.description);

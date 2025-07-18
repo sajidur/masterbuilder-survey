@@ -2620,6 +2620,19 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
 
   return count;
 }
+async GetallMenuBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL menuData()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+    return rows;
+}
 
 async GetallItemBySP(): Promise<DataPointDto[]> {
   // Call the stored procedure via raw SQL query
@@ -2693,7 +2706,7 @@ async GetallSSSBySP(): Promise<DataPointDto[]> {
   return rows;
 }
 
-async findAllDataBySP(): Promise<DataPointDto[]> {
+async findAllDataGroupBySP(): Promise<DataPointDto[]> {
   // Call the stored procedure via raw SQL query
   const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetDataGroup()');
 

@@ -116,6 +116,9 @@ const AppManager: React.FC = () => {
       toast.error("Failed to delete app.");
     }
   };
+const filteredApps = selectedModule
+  ? apps.filter((app) => app.Module?.name === selectedModule)
+  : apps;
 
   return (
     <div className="">
@@ -241,7 +244,7 @@ const AppManager: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {apps.map((app, index) => (
+                {filteredApps.map((app, index) => (
                   <tr
                     key={app.id}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}

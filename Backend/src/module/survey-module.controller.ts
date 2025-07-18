@@ -449,6 +449,13 @@ async reportdata(@Req() req: Request): Promise<DataPointDto[]> {
  console.log(user);
   return this.moduleService.ReportBySP(); // no id needed
 }
+@Get('getallMenuBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async GetallMenuBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.GetallMenuBySP(); // no id needed
+}
 @Get('getallitemBySP')
 @ApiResponse({ status: 200, type: [DataPointDto] })
 async GetallitemBySP(@Req() req: Request): Promise<DataPointDto[]> {
@@ -464,11 +471,19 @@ async GetallSubItemBySP(@Req() req: Request): Promise<DataPointDto[]> {
   return this.moduleService.GetallSubItemBySP(); // no id needed
 }
 
-@Get('allDataBySP')
+@Get('allDataGroupBySP')
 @ApiResponse({ status: 200, type: [DataPointDto] })
 async allDataBySP(@Req() req: Request): Promise<DataPointDto[]> {
  const user = req['user'];
  console.log(user);
-  return this.moduleService.findAllDataBySP(); // no id needed
+  return this.moduleService.findAllDataGroupBySP(); // no id needed
+}
+
+@Get('allDataPointBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async allDataPointBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.findAllDataPointBySP(); // no id needed
 }
 }

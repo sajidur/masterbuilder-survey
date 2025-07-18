@@ -427,6 +427,16 @@ export const deleteDataPoint = async (id: string) => {
 };
 
 // Optional: Get all DataPoints
+export const getAllDataPointsBySP = async () => {
+  try {
+    const response = await apiClient.get(`/survey-module/allDataPointBySP`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching DataPoints:", error);
+    throw error;
+  }
+};
+// Optional: Get all DataPoints
 export const getAllDataPoints = async () => {
   try {
     const response = await apiClient.get(`/survey-module/allDataPoints`);
@@ -515,6 +525,15 @@ export const getAllMenus = async () => {
     throw error;
   }
 };
+export const getAllMenusBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getallMenuBySP');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all menus:', error);
+    throw error;
+  }
+};
 
 // Get all items
 export const getAllItems = async () => {
@@ -571,11 +590,20 @@ export const getAllSubSubSubitems = async () => {
     throw error;
   }
 };
-
+// Get all fields
+export const getAllFieldsBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/allDataBySP');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
 // Get all fields
 export const getAllFields = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allDataBySP');
+    const response = await apiClient.get('/survey-module/allFields');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);
