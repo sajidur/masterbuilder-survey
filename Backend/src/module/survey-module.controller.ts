@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+ 
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-var */
  
@@ -38,7 +38,7 @@ import { CreateSubItemDto, SubItemDto } from './module.dto/subiItem.dto';
 import { CreateSubSubItemDto, SubSubItemDto } from './module.dto/subSubItem.dto';
 import { CreateModuleDto, UpdateModuleDto } from './module.dto/create-module.dto';
 import { SubSubSubItemDto, CreateSubSubSubItemDto } from './module.dto/subsubsubitem.dto';
-import { AllDataPointDto, CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
+import {  CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { TotalCount } from './module.dto/totalCount.dto';
 import { FieldDto, CreateFieldDto } from './module.dto/field.dto';
 @ApiTags('survey-module')
@@ -471,6 +471,21 @@ async GetallSubItemBySP(@Req() req: Request): Promise<DataPointDto[]> {
   return this.moduleService.GetallSubItemBySP(); // no id needed
 }
 
+@Get('getallsubsubitemBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async GetallSubSubItemBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.GetallSubSubItemBySP(); // no id needed
+}
+@Get('getallsubsubsubitemBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async GetallSubSubSubItemBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.GetallSubSubSubItemBySP(); // no id needed
+}
+
 @Get('allDataGroupBySP')
 @ApiResponse({ status: 200, type: [DataPointDto] })
 async allDataBySP(@Req() req: Request): Promise<DataPointDto[]> {
@@ -486,4 +501,7 @@ async allDataPointBySP(@Req() req: Request): Promise<DataPointDto[]> {
  console.log(user);
   return this.moduleService.findAllDataPointBySP(); // no id needed
 }
+
+
+
 }
