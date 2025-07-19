@@ -622,6 +622,16 @@ export const getAllSubSubSubitems = async () => {
     throw error;
   }
 };
+// Get all subSubSubitems
+export const getAllSubSubSubitemsBySP = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getallsubsubsubitemBySP');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all subitems:', error);
+    throw error;
+  }
+};
 // Get all fields
 export const getAllFieldsBySP = async () => {
   try {
