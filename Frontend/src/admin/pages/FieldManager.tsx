@@ -292,7 +292,7 @@ const payload: {
           label="Sub Item"
           value={selectedSubItem}
           options={subItems
-            .filter((s) => s.item?.id === selectedItem)
+            .filter((s) => s.itemId === selectedItem)
             .map((s) => ({ label: s.name, value: s.id }))}
           onChange={(val) => {
             setSelectedSubItem(val);
