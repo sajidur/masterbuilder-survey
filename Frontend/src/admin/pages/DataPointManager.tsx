@@ -191,6 +191,20 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
     }
   };
 
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  const itemname = items.find((item) => item.id === selectedItem)?.name;
+
+  const filteredItemsdata = dataPoints.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  const matchitem = selectedItem ? item.itemName === itemname : true;
+
+  return matchModule && matchApp && matchMenu && matchitem;
+});
+
   return (
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
@@ -440,7 +454,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
             </tr>
           </thead>
           <tbody>
-            {dataPoints.map((dp) => (
+            {filteredItemsdata.map((dp) => (
               <tr key={dp.id} className="border-t">
                 <td className="p-2">{dp.itemName}</td>
                 <td className="p-2">{dp.fieldGroupCode}</td>

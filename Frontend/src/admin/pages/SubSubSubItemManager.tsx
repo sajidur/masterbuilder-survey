@@ -13,6 +13,7 @@ import {
   // getAllTemplates,
   updateSubSubSubitem,
   deleteSubSubSubItem,
+  getAllSubSubSubitemsBySP,
   //   getAllSubSubSubitems,
   //   addSubSubSubitem,
 } from "../../apiRequest/api";
@@ -115,7 +116,7 @@ const SubSubSubItemManager: React.FC = () => {
           getAllItems(),
           getAllSubitems(),
           getAllSubSubitems(),
-          getAllSubSubSubitems(),
+          getAllSubSubSubitemsBySP(),
           // getAllTemplates(),
         ]);
         setModules(mod);
@@ -203,6 +204,22 @@ const SubSubSubItemManager: React.FC = () => {
     }
   };
 
+  
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  const itemname = items.find((item) => item.id === selectedItem)?.name;
+  const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+
+const filteredSubSUbItems = subSubSubItems.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  const matchitem = selectedItem ? item.itemName === itemname : true;
+  const matchsubitem = selectedSubItem ? item.subitem === subitemname : true;
+
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+  });
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
@@ -434,22 +451,22 @@ const SubSubSubItemManager: React.FC = () => {
           </thead>
 
           <tbody>
-            {subSubSubItems.map((s) => (
+            {filteredSubSUbItems.map((s) => (
               <tr key={s.id} className="border-t">
                 <td className="p-2">
-                  {s.subSubItem?.subItem?.item?.menu?.app?.Module?.name || "—"}
+                  {s.moduleName || "—"}
                 </td>
                 <td className="p-2">
-                  {s.subSubItem?.subItem?.item?.menu?.app?.name || "—"}
+                  {s.appName || "—"}
                 </td>
                 <td className="p-2">
-                  {s.subSubItem?.subItem?.item?.menu?.title || "—"}
+                  {s.menuTitle || "—"}
                 </td>
                 <td className="p-2">
-                  {s.subSubItem?.subItem?.item?.name || "—"}
+                  {s.itemName || "—"}
                 </td>
-                <td className="p-2">{s.subSubItem?.subItem?.name || "—"}</td>
-                <td className="p-2">{s.subSubItem?.name || "—"}</td>
+                <td className="p-2">{s.subitem || "—"}</td>
+                <td className="p-2">{s.subsubitem || "—"}</td>
                 <td className="p-2">{s.serialNumber || "—"}</td>
 
                 <td className="p-2">{s.name}</td>

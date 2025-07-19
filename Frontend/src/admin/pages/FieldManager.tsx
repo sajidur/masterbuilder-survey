@@ -198,6 +198,22 @@ const payload: {
     }
   };
 
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  const itemname = items.find((item) => item.id === selectedItem)?.name;
+  const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+
+  const filteredItemsdata = fields.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  const matchitem = selectedItem ? item.itemName === itemname : true;
+  const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+});
+
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
@@ -519,7 +535,7 @@ const payload: {
             </tr>
           </thead>
           <tbody>
-            {fields.map((f) => (
+            {filteredItemsdata.map((f) => (
               <tr key={f.id} className="border-t">
                 <td className="p-2">
                   {f.moduleName || "—"}

@@ -189,13 +189,21 @@ const SubSubItemManager: React.FC = () => {
     }
   };
 
-  const filteredSubSUbItems = subSubItems.filter((s) => {
-  const matchModule = selectedModule ? s.moduleName === selectedModule : true;
-  const matchApp = selectedApp ? s.appName === selectedApp : true;
-  const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
-  const matchItem = selectedItem ? s.itemName === selectedItem : true;
-  return matchModule && matchApp && matchMenu && matchItem;
-      });
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  const itemname = items.find((item) => item.id === selectedItem)?.name;
+  const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+
+const filteredSubSUbItems = subSubItems.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  const matchitem = selectedItem ? item.itemName === itemname : true;
+  const matchsubitem = selectedSubItem ? item.subitem === subitemname : true;
+
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+});
   return (
     <div className="">
       {/* Page Title */}
