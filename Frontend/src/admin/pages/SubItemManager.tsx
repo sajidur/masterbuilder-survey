@@ -198,10 +198,7 @@ const SubItemManager: React.FC = () => {
   const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
   const matchItem = selectedItem ? s.itemName === selectedItem : true;
   return matchModule && matchApp && matchMenu && matchItem;
-      });
-
-
-
+  });
 
   return (
     <div className="">
@@ -596,11 +593,11 @@ const SubItemManager: React.FC = () => {
 
                     setEditSubItemId(s.id);
                     setSubItemName(s.name);
-                    setSelectedModule(matchedModule?.name || "");
-                    setSelectedApp(matchedApp?.id || "");
-                    setSelectedMenu(matchedMenu?.id || "");
-                    setSelectedItem(matchedItem?.id || "");
-                    setSelectedTier(s.tier || "");
+                    setSelectedModule(s.moduleName || "");
+                    setSelectedApp(s.appName || "");
+                    setSelectedMenu(s.menuTitle || "");
+                    setSelectedItem(s.itemName|| "");
+                   // setSelectedTier(s.tier || "");
                     setSerialNumber(s.serialNumber || "");
                     setButtonType(s.buttonType || "");
                     setNavigationTo(s.navigationTo || "");

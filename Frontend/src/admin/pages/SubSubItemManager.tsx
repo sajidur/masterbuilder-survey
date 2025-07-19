@@ -316,7 +316,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           >
             <option value="">Select Sub Item</option>
             {subItems
-              .filter((s) => s.item?.id === selectedItem)
+              .filter((s) => s.itemId === selectedItem)
               .map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}

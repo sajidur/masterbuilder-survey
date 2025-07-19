@@ -285,7 +285,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
             value: selectedSubItem,
             setter: setSelectedSubItem,
             options: subItems
-              .filter((s) => s.item?.id === selectedItem)
+              .filter((s) => s.itemId === selectedItem)
               .map((s) => ({ id: s.id, label: s.name })),
             reset: () => {
               setSelectedSubSubItem("");
