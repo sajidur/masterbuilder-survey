@@ -133,7 +133,7 @@ const SubItemManager: React.FC = () => {
       return;
     }
 
-    const itemObj = items.find((i) => i.id === selectedItem);
+    const itemObj = items.find((i) => i.name === selectedItem);
     if (!itemObj) {
       toast.error("Invalid item selected.");
       return;
@@ -198,7 +198,7 @@ const SubItemManager: React.FC = () => {
   const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
   const matchItem = selectedItem ? s.itemName === selectedItem : true;
   return matchModule && matchApp && matchMenu && matchItem;
-});
+      });
 
 
 
@@ -318,23 +318,23 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select> */}
             {/* Menu */}
-<select
-  value={selectedMenu}
-  onChange={(e) => {
-    setSelectedMenu(e.target.value);
-    setSelectedItem("");
-  }}
-  className="w-full px-3 py-2 border rounded"
->
-  <option value="">Select Menu</option>
-  {menus
-    .filter((m) => m.app?.name === selectedApp)
-    .map((m) => (
-      <option key={m.id} value={m.title}>
-        {m.title}
-      </option>
-    ))}
-</select>
+          <select
+            value={selectedMenu}
+            onChange={(e) => {
+              setSelectedMenu(e.target.value);
+              setSelectedItem("");
+            }}
+            className="w-full px-3 py-2 border rounded"
+          >
+            <option value="">Select Menu</option>
+            {menus
+              .filter((m) => m.app?.name === selectedApp)
+              .map((m) => (
+                <option key={m.id} value={m.title}>
+                  {m.title}
+                </option>
+              ))}
+          </select>
           </div>
 
           {/* Item */}
@@ -589,25 +589,25 @@ const SubItemManager: React.FC = () => {
                   <td className="px-4 py-3 flex gap-3">
                     <button
                       onClick={() => {
-  const matchedItem = items.find((itm) => itm.name === s.itemName);
-  const matchedMenu = matchedItem?.menu;
-  const matchedApp = matchedMenu?.app;
-  const matchedModule = matchedApp?.Module;
+                    const matchedItem = items.find((itm) => itm.name === s.itemName);
+                    const matchedMenu = matchedItem?.menu;
+                    const matchedApp = matchedMenu?.app;
+                    const matchedModule = matchedApp?.Module;
 
-  setEditSubItemId(s.id);
-  setSubItemName(s.name);
-  setSelectedModule(matchedModule?.name || "");
-  setSelectedApp(matchedApp?.id || "");
-  setSelectedMenu(matchedMenu?.id || "");
-  setSelectedItem(matchedItem?.id || "");
-  setSelectedTier(s.tier || "");
-  setSerialNumber(s.serialNumber || "");
-  setButtonType(s.buttonType || "");
-  setNavigationTo(s.navigationTo || "");
-  setDescription(s.description || "");
-  setButtonLabel(s.buttonLabel || "");
-  setLayout(s.layout || "");
-}}
+                    setEditSubItemId(s.id);
+                    setSubItemName(s.name);
+                    setSelectedModule(matchedModule?.name || "");
+                    setSelectedApp(matchedApp?.id || "");
+                    setSelectedMenu(matchedMenu?.id || "");
+                    setSelectedItem(matchedItem?.id || "");
+                    setSelectedTier(s.tier || "");
+                    setSerialNumber(s.serialNumber || "");
+                    setButtonType(s.buttonType || "");
+                    setNavigationTo(s.navigationTo || "");
+                    setDescription(s.description || "");
+                    setButtonLabel(s.buttonLabel || "");
+                    setLayout(s.layout || "");
+                  }}
 
                       className="text-blue-600 hover:text-blue-800"
                     >

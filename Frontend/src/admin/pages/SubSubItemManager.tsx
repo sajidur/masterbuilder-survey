@@ -189,6 +189,13 @@ const SubSubItemManager: React.FC = () => {
     }
   };
 
+  const filteredSubSUbItems = subSubItems.filter((s) => {
+  const matchModule = selectedModule ? s.moduleName === selectedModule : true;
+  const matchApp = selectedApp ? s.appName === selectedApp : true;
+  const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
+  const matchItem = selectedItem ? s.itemName === selectedItem : true;
+  return matchModule && matchApp && matchMenu && matchItem;
+      });
   return (
     <div className="">
       {/* Page Title */}
@@ -485,18 +492,18 @@ const SubSubItemManager: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {subSubItems.map((s) => (
+            {filteredSubSUbItems.map((s) => (
               <tr key={s.id} className="border-t">
                 <td className="p-2">
-                  {s.subItem?.item?.menu?.app?.Module?.name || "—"}
+                  {s.moduleName || "—"}
                 </td>
                 <td className="p-2">
-                  {s.subItem?.item?.menu?.app?.name || "—"}
+                  {s.appName|| "—"}
                 </td>
-                <td className="p-2">{s.subItem?.item?.menu?.title || "—"}</td>
-                <td className="p-2">{s.subItem?.item?.name || "—"}</td>
-                <td className="p-2">{s.subItem?.name || "—"}</td>
-                <td className="p-2">{s.serialNumber}</td>
+                <td className="p-2">{s.menuTitle || "—"}</td>
+                <td className="p-2">{s.itemName || "—"}</td>
+                <td className="p-2">{s.itemName|| "—"}</td>
+                <td className="p-2">{s.subitem}</td>
 
                 <td className="p-2">{s.name}</td>
                 {/* <td className="p-2">
@@ -519,12 +526,12 @@ const SubSubItemManager: React.FC = () => {
                       setEditSubSubItemId(s.id);
                       setSubSubItemName(s.name);
                       setSelectedModule(
-                        s.subItem?.item?.menu?.app?.Module?.id || ""
+                        s.moduleid || ""
                       );
-                      setSelectedApp(s.subItem?.item?.menu?.app?.id || "");
-                      setSelectedMenu(s.subItem?.item?.menu?.id || "");
-                      setSelectedItem(s.subItem?.item?.id || "");
-                      setSelectedSubItem(s.subItem?.id || "");
+                      setSelectedApp(s.appid || "");
+                      setSelectedMenu(s.menuid || "");
+                      setSelectedItem(s.itemid || "");
+                      setSelectedSubItem(s.subitemid || "");
                       // setSelectedTemplateId(s.template?.id || "");
 
                       setSelectedTier(s.tier || "");

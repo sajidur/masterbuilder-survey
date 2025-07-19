@@ -158,7 +158,7 @@ const ItemManager: React.FC = () => {
       setDescription("");
       setEditItemId(null);
 
-      const updatedItems = await getAllItems();
+      const updatedItems = await getAllItemsBySP();
       setItems(updatedItems);
     } catch (error) {
       console.error("Failed to save item:", error);
@@ -440,9 +440,9 @@ const filteredItems = items.filter((item) => {
               onClick={() => {
                 setEditItemId(null);
                 setItemName("");
-                setSelectedModule("");
-                setSelectedApp("");
-                setSelectedMenu("");
+               // setSelectedModule("");
+               // setSelectedApp("");
+               // setSelectedMenu("");
                 setSelectedTier("");
                 setSerialNumber("");
                 setButtonType("");
@@ -491,7 +491,7 @@ const filteredItems = items.filter((item) => {
                   {/* <td className="p-2">{item.tier}</td> */}
                   <td className="p-2">{item.description}</td>
 
-                  <td className="p-2">{item.buttonType}</td>
+                  <td className="p-2">{item.buttonType}-[{item.buttonLabel}]</td>
                   <td className="p-2">{item.navigationTo}</td>
 
                   <td className="px-4 py-3 flex gap-3">
@@ -512,7 +512,7 @@ const filteredItems = items.filter((item) => {
                         setSelectedTier(item.tier);
                         setSerialNumber(item.serialNumber);
                         setButtonType(item.buttonType);
-                        setButtonType(item.buttonType);
+                        setButtonLabel(item.buttonLabel);
                         setNavigationTo(item.navigationTo);
                         setDescription(item.description);
                       }}

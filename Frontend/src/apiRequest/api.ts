@@ -625,7 +625,7 @@ export const getAllSubSubSubitems = async () => {
 // Get all fields
 export const getAllFieldsBySP = async () => {
   try {
-    const response = await apiClient.get('/survey-module/allDataBySP');
+    const response = await apiClient.get('/survey-module/allDataGroupBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);
@@ -636,6 +636,16 @@ export const getAllFieldsBySP = async () => {
 export const getAllFields = async () => {
   try {
     const response = await apiClient.get('/survey-module/allFields');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+// Get all fields
+export const ReportsData = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/reportdata');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);
