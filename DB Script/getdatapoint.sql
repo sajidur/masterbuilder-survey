@@ -3,12 +3,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetDataPoint`()
 BEGIN
     SELECT 
         md.serialNumber AS moduleSerial,
+        md.id as moduleid,
         md.name AS moduleName,
         app.serialNumber AS appSerial,
+	    app.id as appid,
         app.name AS appName,
+		menu.id as menuid,
         menu.serialNumber AS menuSerial,
         menu.title AS menuTitle,
         item.serialNumber AS itemSerial,
+        item.id as itemid,
         item.name AS itemName,
         si.serialNumber AS subItemSerial,
         si.name AS subItemName,
@@ -18,6 +22,7 @@ BEGIN
         fi.serialNumber as fieldGroupCodeSerialNumber,
         fi.DisplayType as DisplayType,
         fi.remarks as remarks,
+        fi.id as dpgroupcodeid,
         dp.*
     FROM modules md 
     left JOIN app ON md.id = app.moduleId

@@ -469,7 +469,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
                     onClick={() => {
   setEditId(dp.id);
   setDataPointName(dp.dataPoint);
-  setDpGroupCode(dp.DpGroup.id); // Use id here
+  setDpGroupCode(dp.dpgroupcodeid); // Use id here
   setSerialNumber(dp.serialNumber);
   setDataType(dp.dataType);
   setIsRequired(dp.isRequired);
@@ -481,13 +481,10 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
   const module = app?.Module;
 
   // ✅ Set them in proper order using IDs (not names)
-  setSelectedModule(module?.id || "");
-
-  setTimeout(() => {
-    setSelectedApp(app?.id || "");
-    setSelectedMenu(menu?.id || "");
-    setSelectedItem(item?.id || "");
-  }, 100);
+  setSelectedModule(dp.moduleid|| "");
+    setSelectedApp(dp.appid || "");
+    setSelectedMenu(dp.menuid || "");
+    setSelectedItem(dp.itemid || "");
 }}
 
                     className="text-blue-600 hover:text-blue-800"
