@@ -31,11 +31,11 @@ const navItems = [
     path: "/admin/datapoint",
     icon: <ListTree size={18} />,
   },
-
+  { label: 'Datapoint Map', path: '/admin/field', icon: <ListTree size={18} /> },
   { label: 'Sub Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
   { label: 'SS Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
-  { label: 'Map DP Group', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
+  { label: 'DP Group Map', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
   { label: 'Docu Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> },
   { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },

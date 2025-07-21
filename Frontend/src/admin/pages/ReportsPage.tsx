@@ -476,6 +476,12 @@ const filteredItemsdata = dataFields.filter((item) => {
                 }))}
                 onChange={setSelectedField}
               />
+              <Dropdown
+              label="Region"
+              value={selectedTier}
+              options={tiers.map((t) => ({ label: t.label, value: t.value }))}
+              onChange={setSelectedTier}
+            />
             </div>
             <div className="flex flex-wrap gap-4 items-center mb-4">
               {columnKeys.map((key) =>

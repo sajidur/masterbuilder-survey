@@ -394,7 +394,7 @@ const filteredItems = items.filter((item) => {
           >
             <option value="">Select Button Type</option>
             <option value="P-Button">Primary Button</option>
-            <option value="S-Button">Second Button</option>
+            <option value="S-Button">Secondary Button</option>
           </select>
         </div>
 

@@ -215,7 +215,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            Data Point
+            Datapoint
           </h2>
 
           {/* Module */}

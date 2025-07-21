@@ -98,7 +98,7 @@ const FieldManager: React.FC = () => {
   const [remarks, setRemarks] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
-  const displayTypes = ["tree", "graph", "table", "individual field"];
+  const displayTypes = ["Tree", "Graph", "Table", "List"];
 
   useEffect(() => {
     const fetchAll = async () => {
