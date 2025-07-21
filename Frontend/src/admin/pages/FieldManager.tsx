@@ -368,7 +368,7 @@ const payload: {
         </div> */}
 
         {/* Tier */}
-                                      {false && (
+                                      {(
 
         <div>
           <label className="block mb-1 font-medium">Tier</label>
@@ -529,7 +529,7 @@ const payload: {
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">DP Group</th>
-              {/* <th className="p-2 text-left">Tier</th> */}
+              <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">Remarks</th>
               {/* <th className="p-2 text-left">Required</th> */}
@@ -553,7 +553,7 @@ const payload: {
                 <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
-                {/* <td className="p-2">{f.tier || "—"}</td> */}
+                <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>
 

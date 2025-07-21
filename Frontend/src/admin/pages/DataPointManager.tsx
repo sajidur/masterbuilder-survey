@@ -369,13 +369,13 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
         {/* Tier */}
 
         <div>
-          <label className="block mb-1 font-medium">Tier</label>
+          <label className="block mb-1 font-medium">Region</label>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose Tier</option>
+            <option value="">Choose Region</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
@@ -448,7 +448,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
               <th className="p-2 text-left">DP Group</th>
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Datapoint</th>
-              <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">Region</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>
