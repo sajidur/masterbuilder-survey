@@ -459,7 +459,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
             {filteredItemsdata.map((dp) => (
               <tr key={dp.id} className="border-t">
                 <td className="p-2">{dp.itemName}</td>
-                <td className="p-2">{dp.fieldGroupCode}</td>
+                <td className="p-2">{dp.fieldgroupcode}</td>
                 <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.dataPoint}</td>
                 <td className="p-2 text-left">5</td>
