@@ -86,10 +86,10 @@ const FieldManager: React.FC = () => {
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
-  // const [fieldName, setFieldName] = useState("");
-  // const [selectedFieldType, setSelectedFieldType] = useState("");
-  // const [isRequired, setIsRequired] = useState(false);
-  // const [isHide, setIsHide] = useState(false);
+  const [fieldName, setFieldName] = useState("");
+  const [selectedFieldType, setSelectedFieldType] = useState("");
+  const [isRequired, setIsRequired] = useState(false);
+  const [isHide, setIsHide] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [fieldGroupCode, setFieldGroupCode] = useState("");
@@ -146,7 +146,7 @@ const payload: {
   displayType: string;
   serialNumber: string;
   fieldGroupCode: string;
-  tier: string;
+  tier?: string;
   remarks: string;
   subItemId?: string | null;
   subSubItemId?: string | null;
@@ -156,7 +156,7 @@ const payload: {
   displayType: selectedDisplayType,
   serialNumber,
   fieldGroupCode,
-  tier,
+  tier: "0",
   remarks,
   subItemId: selectedSubItem || null,
   subSubItemId: selectedSubSubItem || null,
@@ -183,6 +183,10 @@ const payload: {
       setSerialNumber("");
       setSelectedDisplayType("");
       setSelectedSubSubSubItem("");
+
+            // Refresh list
+      const updated = await getAllFieldsBySP();
+      setFields(updated);
     } catch (e) {
       toast.error("Failed to save field.");
     }
@@ -288,7 +292,7 @@ const payload: {
             }
           }}
         />
-        <Dropdown
+        {/* <Dropdown
           label="Sub Item"
           value={selectedSubItem}
           options={subItems
@@ -318,7 +322,7 @@ const payload: {
             .filter((s) => s.subSubItem?.id === selectedSubSubItem)
             .map((s) => ({ label: s.name, value: s.id }))}
           onChange={(val) => setSelectedSubSubSubItem(val)}
-        />
+        /> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
@@ -519,9 +523,9 @@ const payload: {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Sub Item</th>
+              {/* <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
-              <th className="p-2 text-left">SSS Item</th>
+              <th className="p-2 text-left">SSS Item</th> */}
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">DP Group</th>
@@ -543,15 +547,15 @@ const payload: {
                 <td className="p-2">{f.appName || "—"}</td>
                 <td className="p-2">{f.menuTitle || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
-                <td className="p-2">{f.subItemName || "—"}</td>
+                {/* <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>
-                <td className="p-2">{f.subsubsubItemName || "—"}</td>
-                <td className="p-2">{f.fieldGroupCodeSerialNumber || "—"}</td>
+                <td className="p-2">{f.subsubsubItemName || "—"}</td> */}
+                <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 {/* <td className="p-2">{f.tier || "—"}</td> */}
 
-                <td className="p-2">{f.DisplayType}</td>
+                <td className="p-2">{f.displayType}</td>
 
                 <td className="p-2">{f.remarks || "-"}</td>
                 {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
@@ -569,28 +573,12 @@ const payload: {
                       setSerialNumber(f.serialNumber || "");
 
                       // Pre-select the hierarchy for edit
-                      setSelectedModule(
-                        f.Item?.menu?.app
-                          ?.Module?.id || ""
+                     setSelectedModule(
+                        f.moduleid || ""
                       );
-                      setSelectedApp(
-                        f.Item?.menu?.app
-                          ?.id || ""
-                      );
-                      setSelectedMenu(
-                        f.Item?.menu?.id ||
-                          ""
-                      );
-                      setSelectedItem(
-                        f.Item?.id || ""
-                      );
-                      setSelectedSubItem(
-                        f.subItem?.id || ""
-                      );
-                      setSelectedSubSubItem(
-                        f.subSubItem?.id || ""
-                      );
-                      setSelectedSubSubSubItem(f.subSubSubItem?.id || "");
+                      setSelectedApp(f.appid || "");
+                      setSelectedMenu(f.menuid || "");
+                      setSelectedItem(f.itemid || "");
 
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");

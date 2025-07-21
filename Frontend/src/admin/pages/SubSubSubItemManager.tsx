@@ -179,7 +179,7 @@ const SubSubSubItemManager: React.FC = () => {
       }
 
       // Refresh list
-      const updated = await getAllSubSubSubitems();
+      const updated = await getAllSubSubSubitemsBySP();
       setSubSubSubItems(updated);
 
       // Reset fields
@@ -487,19 +487,22 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
                       setSelectedTier(s.tier || "");
                       // setSelectedTemplateId(s.templateId || "");
 
-                      setSelectedModule(
-                        s.subSubItem?.subItem?.item?.menu?.app?.Module?.id || ""
-                      );
-                      setSelectedApp(
-                        s.subSubItem?.subItem?.item?.menu?.app?.id || ""
-                      );
-                      setSelectedMenu(
-                        s.subSubItem?.subItem?.item?.menu?.id || ""
-                      );
-                      setSelectedItem(s.subSubItem?.subItem?.item?.id || "");
-                      setSelectedSubItem(s.subSubItem?.subItem?.id || "");
                       setSelectedSubSubItem(s.subSubItem?.id || "");
                       setLayout(s.layout || "");
+
+                      setSelectedModule(
+                        s.moduleid || ""
+                      );
+                      setSelectedApp(s.appid || "");
+                      setSelectedMenu(s.menuid || "");
+                      setSelectedItem(s.itemid || "");
+                      setSelectedSubItem(s.subitemid || "");
+                      // setSelectedTemplateId(s.template?.id || "");
+                      setSelectedSubSubItem(s.subsubitemid || "");
+
+                      // setButtonType(s.buttonType || "");
+                      // setButtonLabel(s.buttonLabel || "");
+                      // setNavigationTo(s.navigationTo || "");
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >

@@ -13,6 +13,7 @@ import {
   // getAllTemplates,
   deleteSubSubItem,
   getallsubsubitemBySP,
+  getAllSubSubSubitemsBySP,
 } from "../../apiRequest/api";
 import { layoutOptions, tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -155,8 +156,8 @@ const SubSubItemManager: React.FC = () => {
         toast.success("SS Item updated!");
 
         // Refresh list
-        const updated = await getallsubsubitemBySP();
-        setSubSubItems(updated);
+       // const updated = await getallsubsubitemBySP();
+       // setSubSubItems(updated);
         setEditSubSubItemId(null);
       } else {
         const newSubSubItem = await addSubSubitem(payload);
@@ -173,6 +174,8 @@ const SubSubItemManager: React.FC = () => {
       //setButtonType("");
       setButtonLabel("");
       setNavigationTo("");
+      const updated = await getallsubsubitemBySP();
+      setSubSubItems(updated);
     } catch (error) {
       toast.error("Failed to save SSItem.");
       console.error(error);
@@ -510,8 +513,8 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 </td>
                 <td className="p-2">{s.menuTitle || "—"}</td>
                 <td className="p-2">{s.itemName || "—"}</td>
-                <td className="p-2">{s.itemName|| "—"}</td>
-                <td className="p-2">{s.subitem}</td>
+                <td className="p-2">{s.subitem|| "—"}</td>
+                <td className="p-2">{s.serialNumber}</td>
 
                 <td className="p-2">{s.name}</td>
                 {/* <td className="p-2">

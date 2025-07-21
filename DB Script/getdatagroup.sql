@@ -10,30 +10,34 @@ BEGIN
         menu.title AS menuTitle,
         item.serialNumber AS itemSerial,
         item.name AS itemName,
-        si.serialNumber AS subItemSerial,
-        si.name AS subItemName,
-        ssi.name AS subSubItemName,
-        sssi.name as subsubsubItemName,
-        fi.fieldGroupCode as fieldGroupCode,
-        fi.serialNumber as fieldGroupCodeSerialNumber,
-        fi.DisplayType as DisplayType,
-        fi.remarks as remarks
+   --      si.serialNumber AS subItemSerial,
+--         si.name AS subItemName,
+--         ssi.name AS subSubItemName,
+--         sssi.name as subsubsubItemName,
+		md.id AS moduleid,
+		app.id AS appid,
+		menu.id AS menuid,
+		item.id as itemid,
+-- 		si.id as subitemid,
+-- 		ssi.id as subsubitemid,
+-- 		sssi.id as subsubsubitemid,
+        fi.*
     FROM field fi 
 	left JOIN item ON item.id = fi.itemId
 	left JOIN menu ON menu.id = item.menuid
 	left JOIN app ON app.id = menu.appid
     left join modules md on md.id=app.moduleid
-    left JOIN sub_item si ON item.id = si.itemId
-    left JOIN sub_sub_item ssi ON si.id = ssi.subItemId
-	left JOIN sub_sub_sub_item sssi ON ssi.id = sssi.subSubItemId
+--     left JOIN sub_item si ON item.id = si.itemId
+--     left JOIN sub_sub_item ssi ON si.id = ssi.subItemId
+-- 	left JOIN sub_sub_sub_item sssi ON ssi.id = sssi.subSubItemId
     ORDER BY 
         md.serialNumber,
         app.serialNumber,
         menu.serialNumber,
         item.serialNumber,
-        si.serialNumber,
-        ssi.serialNumber,
-        sssi.serialNumber,
+--         si.serialNumber,
+--         ssi.serialNumber,
+--         sssi.serialNumber,
         fi.serialNumber;
 END$$
 DELIMITER ;

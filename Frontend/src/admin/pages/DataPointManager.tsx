@@ -48,6 +48,7 @@ interface DataPoint {
   dpGroupCode: string;
   dataPoint: string;
   serialNumber: string;
+  tier: string;
   dataType: string;
   isHide: boolean;
   isRequired: boolean;
@@ -154,6 +155,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
       dataPoint: dataPointName,
       serialNumber,
       dataType,
+      tier,
       isHide,
       isRequired,
     };

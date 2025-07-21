@@ -10,12 +10,13 @@ BEGIN
         menu.title AS menuTitle,
         i.name as itemName,
         si.name as subitem,
-        ssi.name,
-		i.id as itemid,
+        ssi.name as subsubitem,
 		m.id AS moduleid,
 		app.id AS appid,
 		menu.id AS menuid,
+		i.id as itemid,
 		si.id as subitemid,
+		ssi.id as subsubitemid,
         sssi.*
     FROM sub_sub_sub_item sssi
 	left join sub_sub_item ssi on ssi.id=sssi.subSubItemId
