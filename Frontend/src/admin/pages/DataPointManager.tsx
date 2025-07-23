@@ -326,6 +326,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
           </div> */}
 
           {/* Group Code */}
+          {false &&
           <div>
             <label className="block mb-1 font-medium">DP Group</label>
             <select
@@ -341,6 +342,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
               ))}
             </select>
           </div>
+}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
