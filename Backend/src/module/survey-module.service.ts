@@ -69,6 +69,10 @@ import { DataPoint } from './module.entity/dataPoint.entity';
 import { AllDataPointDto, CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { plainToInstance } from 'class-transformer';
 import { TotalCount } from './module.dto/totalCount.dto';
+import { CreateDataPointMapDto, DataPointMapDto } from './module.dto/dataPointmap.dto';
+import { DataPointMap } from './module.entity/dataPointMap.entity';
+import { DPGroupMap } from './module.entity/dpgroupMap.entity';
+import { CreateDPGroupMapDto } from './module.dto/dpgroupmap';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -90,6 +94,10 @@ export class SurveyModuleService {
     private readonly TemplateRepo: Repository<Template>,
     @InjectRepository(DataPoint)
     private readonly dataPointRepo: Repository<DataPoint>,
+    @InjectRepository(DataPointMap)
+    private readonly dataPointMapRepo: Repository<DataPointMap>,
+    @InjectRepository(DPGroupMap)
+    private readonly dpGroupRepo: Repository<DPGroupMap>,
   ) {}
   //subsubitem
   async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
@@ -2510,7 +2518,39 @@ private async toDataPointDto(entity: DataPoint): Promise<DataPointDto> {
     Item: itemDto,
   } as DataPointDto;
 }
+private async toDataPointMapDto(entity: DataPointMap): Promise<DataPointMapDto> {
+  if (!entity.itemId) {
+    throw new BadRequestException('DataPoint must have a valid itemId');
+  }
 
+  const item = await this.itemRepository.findOne({
+    where: { id: entity.itemId },
+  });
+
+  if (!item) {
+    throw new NotFoundException(`Item with ID ${entity.itemId} not found`);
+  }
+
+  const itemDto: ItemDto = await this.toItemDto(item); // Assuming this method exists
+  var field=await this.fieldRepository.findOne({
+    where: { id: entity.dpGroupId },
+  });
+  return {
+    id: entity.id,
+    DpGroup: field,
+    dataPoint: entity.dataPointId,
+    serialNumber: entity.serialNumber,
+    dataType: entity.dataType,
+    isRequired: entity.isRequired,
+    isHide: entity.isHide,
+    createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
+    createdBy: entity.createdBy,
+    updatedBy: entity.updatedBy,
+    userId: entity.userId,
+    Item: itemDto,
+  } as DataPointDto;
+}
 async findAllDataPoint(): Promise<DataPointDto[]> {
   const dataPoints = await this.dataPointRepo.find({
     order: {
@@ -2592,6 +2632,87 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
       status: 'success',
       message: `DataPoint ${id} deleted successfully.`,
     };
+  }
+
+   async createDPGroupMap(
+    dto: CreateDPGroupMapDto,
+    user: any,
+  ): Promise<DataPointDto> {
+    const newEntity = this.dpGroupRepo.create({
+      displayType: dto.displayType,
+      dpGroupId: dto.dpGroupId,
+      itemId: dto.itemId,
+      subItemId: dto.subItemId,
+      subSubItemId: dto.subSubItemId,
+      subSubSubItemId: dto.subSubSubItemId,
+      serialNumber: dto.serialNumber,
+      userId: user?.id||null,
+      createdAt:Date(),
+      updatedAt:Date(),
+      createdBy: user?.username || null,
+      updatedBy: user?.username || null,
+    });
+
+    const saved = await this.dataPointRepo.save(newEntity);
+    return this.toDataPointDto(saved);
+  }
+
+  async updateDPGroupMap(
+    id: string,
+    dto: CreateDataPointDto,
+    user: any,
+  ): Promise<DataPointDto> {
+    const existing = await this.dataPointRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    Object.assign(existing, dto, {
+      userId: user?.id,
+      updatedAt:Date(),
+      updatedBy: user?.username
+    });
+
+    const updated = await this.dataPointRepo.save(existing);
+    return this.toDataPointDto(updated);
+  }
+   async createDataPointMap(
+    dto: CreateDataPointMapDto,
+    user: any,
+  ): Promise<DataPointMapDto> {
+    const newEntity = this.dataPointMapRepo.create({
+      dataPointId: dto.datapointid,
+      dpGroupId: dto.dpGroupId,
+      itemId: dto.itemId,
+      userId: user?.id||null,
+      createdAt:Date(),
+      updatedAt:Date(),
+      createdBy: user?.username || null,
+      updatedBy: user?.username || null
+    });
+
+    const saved = await this.dataPointMapRepo.save(newEntity);
+    return this.toDataPointMapDto(saved);
+  }
+
+  async updateDataPointMap(
+    id: string,
+    dto: CreateDataPointDto,
+    user: any,
+  ): Promise<DataPointDto> {
+    const existing = await this.dataPointRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    Object.assign(existing, dto, {
+      userId: user?.id,
+      updatedAt:Date(),
+      updatedBy: user?.username
+    });
+
+    const updated = await this.dataPointRepo.save(existing);
+    return this.toDataPointDto(updated);
   }
   async getDataCount(user: any): Promise<TotalCount> {
   const userId = user.id;
@@ -2779,6 +2900,24 @@ async findAllDataPointBySP(): Promise<DataPointDto[]> {
 
   return rows;
 }
+async getAllDataPointmapsBySP(): Promise<DataPointDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL getDataPointmapsBySP()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+
 
 async ReportBySP(): Promise<DataPointDto[]> {
   // Call the stored procedure via raw SQL query

@@ -17,6 +17,8 @@ import { AuthModule } from '../auth/auth.module';
 import { SubSubSubItem } from './module.entity/subSubSubItem.entity';
 import { Template } from 'src/Template/entity/template';
 import { DataPoint } from './module.entity/dataPoint.entity';
+import { DataPointMap } from './module.entity/dataPointMap.entity';
+import { DPGroupMap } from './module.entity/dpgroupMap.entity';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { DataPoint } from './module.entity/dataPoint.entity';
       SubSubSubItem,
       Field,
       DataPoint,
+      DataPointMap,
+      DPGroupMap
     ]),
     AuthModule,
   ],

@@ -41,6 +41,8 @@ import { SubSubSubItemDto, CreateSubSubSubItemDto } from './module.dto/subsubsub
 import {  CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { TotalCount } from './module.dto/totalCount.dto';
 import { FieldDto, CreateFieldDto } from './module.dto/field.dto';
+import { CreateDataPointMapDto, DataPointMapDto } from './module.dto/dataPointmap.dto';
+import { CreateDPGroupMapDto } from './module.dto/dpgroupmap';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -501,7 +503,59 @@ async allDataPointBySP(@Req() req: Request): Promise<DataPointDto[]> {
  console.log(user);
   return this.moduleService.findAllDataPointBySP(); // no id needed
 }
+@Get('getAllDataPointmapsBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async getAllDataPointmapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.getAllDataPointmapsBySP(); // no id needed
+}
 
+  @Post('createDataPointMap')
+  @ApiBody({ type: CreateDataPointMapDto })
+  @ApiResponse({ status: 201, type: DataPointMapDto })
+  createDataPointMap(
+    @Body() createDto: CreateDataPointMapDto,
+    @Req() req: Request,
+  ): Promise<DataPointMapDto | null> {
+   const user = req['user'];
+   console.log(user);
+    return this.moduleService.createDataPointMap(createDto, user);
+  }
 
+  @Put('updateDataPointMap/:id')
+  @ApiBody({ type: CreateDataPointDto })
+  @ApiResponse({ status: 200, type: DataPointDto })
+  updateDataPointMap(
+    @Param('id') id: string,
+    @Body() updateDto: CreateDataPointDto,
+    @Req() req: Request
+  ): Promise<DataPointDto | null> {
+    const user = req['user'];
+    return this.moduleService.updateDataPoint(id, updateDto, user);
+  }
 
+  @Post('createDPGroupMap')
+  @ApiBody({ type: CreateDPGroupMapDto })
+  @ApiResponse({ status: 201, type: DataPointDto })
+  createDPGroupMap(
+    @Body() createDto: CreateDPGroupMapDto,
+    @Req() req: Request,
+  ): Promise<DataPointDto | null> {
+   const user = req['user'];
+   console.log(user);
+    return this.moduleService.createDPGroupMap(createDto, user);
+  }
+
+  @Put('updateDPGroupMap/:id')
+  @ApiBody({ type: CreateDataPointDto })
+  @ApiResponse({ status: 200, type: DataPointDto })
+  updateDPGroupMap(
+    @Param('id') id: string,
+    @Body() updateDto: CreateDataPointDto,
+    @Req() req: Request
+  ): Promise<DataPointDto | null> {
+    const user = req['user'];
+    return this.moduleService.updateDataPoint(id, updateDto, user);
+  }
 }

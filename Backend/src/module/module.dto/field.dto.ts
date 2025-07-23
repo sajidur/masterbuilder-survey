@@ -43,7 +43,7 @@ export class CreateFieldDto {
   @IsString()
   @IsNotEmpty()
   tier: string;
- @ApiProperty({ description: 'Item ID' })
+  @ApiProperty({ description: 'Item ID' })
   @IsString()
   @IsNotEmpty()
   itemId: string;

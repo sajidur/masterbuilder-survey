@@ -27,6 +27,8 @@ import LoginPage from "./pages/Login";
 import DataPointManager from "./admin/pages/DataPointManager";
 import RegistrationForm from "./pages/RegistrationForm";
 import UserList from "./pages/UserList";
+import DPGroupMap from "./admin/pages/DPGroupMap";
+import DataPointMap from "./admin/pages/DataPointMap";
 
 function AppContent() {
   const location = useLocation();
@@ -72,8 +74,8 @@ function AppContent() {
             <Route path="sub-sub-sub-item" element={<SubSubSubItemManager />} />
             <Route path="field" element={<FieldManager />} />
             <Route path="datapoint" element={<DataPointManager />} />
-
-
+            <Route path="datapointmap" element={<DataPointMap />} />
+            <Route path="dpgroupmap" element={<DPGroupMap />} />
             <Route path="template-configuration" element={<TemplateConfiguration />} />
             <Route path="question" element={<SurveyBuilder />} />
             <Route path="document-upload" element={<DocumentUploader />} />
