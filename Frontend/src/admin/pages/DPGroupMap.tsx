@@ -346,7 +346,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               onChange={(e) => setFieldGroupCode(e.target.value)}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select Datapoint</option>
+              <option value="">Select DP Group</option>
               {filteredDpGroup.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.fieldGroupCode}
