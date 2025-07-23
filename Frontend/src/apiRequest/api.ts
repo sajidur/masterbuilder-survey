@@ -385,7 +385,7 @@ export const addDataPoint = async (data: {
   isHide: boolean;
 }) => {
   try {
-    const response = await apiClient.post('/survey-module/addDataPoint', data);
+    const response = await apiClient.post('/survey-module/createDataPointMap', data);
     return response.data;
   } catch (error) {
     console.error('Error adding DataPoint:', error);
@@ -646,6 +646,15 @@ export const getAllFieldsBySP = async () => {
 export const getAllFields = async () => {
   try {
     const response = await apiClient.get('/survey-module/allFields');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+export const getAllDataPointmapsBySP  = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/getAllDataPointmapsBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);
