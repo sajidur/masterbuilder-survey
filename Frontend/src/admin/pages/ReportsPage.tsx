@@ -95,7 +95,7 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
-  "Sub-Item": "subItem",
+  "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
   "DP Group": "DPGroupCode",
@@ -585,15 +585,19 @@ Distinct:
                   ))}
                 </select>
               </div>
+                <span className="flex gap-2"><strong>Module:</strong> {modules.length}</span>
+                <span className="flex gap-2"><strong>App:</strong> {apps.length}</span>
+                <span className="flex gap-2"><strong>Feature:</strong> {apps.length}</span>
+                <span className="flex gap-2"><strong>Sub-Feature:</strong> {apps.length}</span>
             </div>
           </>
         )}
 
-        <div className="bg-white p-4 rounded shadow">
+        <div className="bg-white p-4 rounded shadow relative">
           {filteredFields.length === 0 ? (
             <p className="text-gray-500">No fields found.</p>
           ) : (
-            <div className="overflow-x-auto max-w-full">
+            <div className="overflow-auto max-h-[70vh] max-w-full" style={{ scrollbarWidth: 'auto' }}>
               {/* If distinctColumn is NOT selected, render your full detailed existing table */}
               {!distinctColumn && (
                 <table className="min-w-[2000px] border border-gray-300 text-sm font-sans text-gray-700">
@@ -1008,31 +1012,27 @@ Distinct:
       )}
        {visibleColumns.includes("DataPoint") && (
                         <>
-                          {
-                            <>
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.serialNumber || ""}
-            </td>             
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.dataPoint || ""}
-            </td>
-                            </>
-                          }
+                                  {f.serialNumber || ""}
+                                </td>             
+                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                  {f.dataPoint || ""}
+                                </td>
 
                           {!isHidden("extraDp") && (
                             <>
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              {}
-                            </th> 
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              {f.tier}
+                            </td> 
+                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.isHide}
-                              </th>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              </td>
+                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.isRequired}
-                              </th>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              </td>
+                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.dataType}
-                              </th>
+                              </td>
                             </>
                           )}
                         </>
