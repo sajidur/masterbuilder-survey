@@ -1,8 +1,8 @@
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportData`()
 BEGIN
-    SELECT 
-        md.serialNumber,md.name,app.serialNumber as appserialNumber, app.name as appname,menu.serialNumber as menuserialNumber,
+     SELECT 
+        md.serialNumber as moduleserialNumber,md.name as modulename,app.serialNumber as appserialNumber, app.name as appname,menu.serialNumber as menuserialNumber,
         menu.title,item.serialNumber as itemserialNumber,item.name as itemName,item.buttonType,item.buttonLabel,item.navigationTo,item.description,
         si.serialNumber as subserialNumber,si.name as subitem,ssi.*,sssi.*,fi.*,dp.*
     FROM modules md 

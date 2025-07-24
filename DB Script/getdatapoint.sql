@@ -1,7 +1,7 @@
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetDataPoint`()
 BEGIN
-      SELECT 
+         SELECT 
         md.serialNumber AS moduleSerial,
         md.name AS moduleName,
         app.serialNumber AS appSerial,
@@ -21,11 +21,10 @@ BEGIN
 -- 		si.id as subitemid,
 -- 		ssi.id as subsubitemid,
 -- 		sssi.id as subsubsubitemid,
-		fi.fieldgroupcode,
         dp.*
     FROM datapoint dp
-    left join field fi on fi.id=dp.dpGroupCode
-	left JOIN item ON item.id = fi.itemId
+    -- left join field fi on fi.id=dp.dpGroupCode
+	left JOIN item ON item.id = dp.itemId
 	left JOIN menu ON menu.id = item.menuid
 	left JOIN app ON app.id = menu.appid
     left join modules md on md.id=app.moduleid
@@ -36,10 +35,10 @@ BEGIN
         md.serialNumber,
         app.serialNumber,
         menu.serialNumber,
-        item.serialNumber,
+        item.serialNumber;
 --         si.serialNumber,
 --         ssi.serialNumber,
 --         sssi.serialNumber,
-        fi.serialNumber;
+--        fi.serialNumber;
 END$$
 DELIMITER ;
