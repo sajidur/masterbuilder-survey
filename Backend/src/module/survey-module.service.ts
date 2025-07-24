@@ -1564,6 +1564,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     item.name = updatedItem.name;
     item.updatedAt = new Date();
     item.updatedBy = user.username;
+    item.buttonLabel=updatedItem.buttonLabel;
     item.serialNumber = updatedItem.serialNumber;
     item.buttonType = updatedItem.buttonType;
     item.navigationTo = updatedItem.navigationTo;

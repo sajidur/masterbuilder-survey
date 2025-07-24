@@ -1,4 +1,4 @@
-import { BarChart4 } from "lucide-react";
+import { BarChart4, Check } from "lucide-react";
 import {
   getAllModules,
   getAllApps,
@@ -81,11 +81,11 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
+  "DP Group",
+  // "Tier",
   "Sub Item",
   "SS Item",
   "SSS Item",
-  "DP Group",
-  "Tier",
   "Datapoint",
 ];
 
@@ -95,11 +95,11 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
+  "DP Group": "DPGroupCode",
+  // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
-  "DP Group": "DPGroupCode",
-  Tier: "tier",
   Datapoint: "DataPoint",
 };
 
@@ -157,8 +157,8 @@ const ReportsPage: React.FC = () => {
     { label: "Layout", value: "layout" },
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
+    { label: "S/SS/SSS Items", value: "S_SS_SSS" },
     { label: "DP Extra", value: "extraDp" },
-    { label: "S/SS/SSS Item", value: "S_SS_SSS" },
   ];
 
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
@@ -477,12 +477,17 @@ const filteredItemsdata = dataFields.filter((item) => {
                 }))}
                 onChange={setSelectedField}
               />
+{/*               
               <Dropdown
-              label="Region"
+              label="Regional"
               value={selectedTier}
               options={tiers.map((t) => ({ label: t.label, value: t.value }))}
               onChange={setSelectedTier}
-            />
+            /> */}
+             {/* <input
+                              type="checkbox"
+                                       /> */}
+
             </div>
             <div className="flex flex-wrap gap-4 items-center mb-4">
                               {/* <label className="mr-2 font-semibold">Hide:</label> */}
@@ -563,7 +568,7 @@ const filteredItemsdata = dataFields.filter((item) => {
               </label>
 
               <div className="flex gap-2">
-                                {/* <label htmlFor="distinct-select" className="mt-2 font-semibold">
+{/* <label htmlFor="distinct-select" className="mt-2 font-semibold">
 Distinct:
 </label> */}
                 <select

@@ -77,8 +77,8 @@ const AdminLayout: React.FC = () => {
           <div className="flex items-center gap-2">
             {sidebarOpen && (
               <>
-                <img src="/logo.jpeg" alt="Logo" className="h-6 w-6" />
-                <h1 className="text-lg font-bold">MUKUT ERP</h1>
+                {/* <img src="/logo.jpeg" alt="Logo" className="h-6 w-6" /> */}
+                <h1 className="text-lg font-bold">MUKUT</h1>
               </>
             )}
           </div>

@@ -372,7 +372,7 @@ const DataPointManager: React.FC = () => {
         {/* Tier */}
 
         <div>
-          <label className="block mb-1 font-medium">Region</label>
+          <label className="block mb-1 font-medium">Regional</label>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}

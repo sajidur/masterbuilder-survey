@@ -11,8 +11,8 @@ export const tiers = [
 export const layoutOptions = [
   { label: 'Tab', value: 'Tab' },
   { label: 'Mix-Tab', value: 'Mix-Tab' },
-  { label: 'Mix-Section', value: 'Mix-Section' },
+  { label: 'Mix-Sec', value: 'Mix-Sec' },
   { label: 'Section', value: 'Section' },
-  { label: 'Sub-section', value: 'Sub-section' },
-  { label: 'S-S-section', value: 'S-S-section' },
+  { label: 'Sub-Sec', value: 'Sub-Sec' },
+  { label: 'SS-Sec', value: 'SS-Sec' },
 ];

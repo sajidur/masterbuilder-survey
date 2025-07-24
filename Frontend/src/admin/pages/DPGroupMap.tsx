@@ -221,7 +221,7 @@ const DPGroupMap:  React.FC = () => {
 
 //   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
 // });
-//const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
+const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
@@ -351,7 +351,7 @@ const DPGroupMap:  React.FC = () => {
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">Select DP Group</option>
-              {fields.map((dp) => (
+              {filteredDpGroup.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.fieldGroupCode}
                 </option>
