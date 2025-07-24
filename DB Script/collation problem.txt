@@ -1,0 +1,14 @@
+SELECT 
+    CONCAT(
+        'ALTER TABLE `', TABLE_NAME, '` MODIFY `', COLUMN_NAME, '` ',
+        COLUMN_TYPE,
+        ' CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci',
+        IF(IS_NULLABLE = 'NO', ' NOT NULL', ''),
+        IF(COLUMN_DEFAULT IS NOT NULL, CONCAT(' DEFAULT ', QUOTE(COLUMN_DEFAULT)), ''),
+        ';'
+    ) AS alter_statement
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = DATABASE()
+  AND COLLATION_NAME IS NOT NULL
+  AND COLLATION_NAME != 'utf8mb4_general_ci'
+  AND DATA_TYPE IN ('varchar', 'text', 'mediumtext', 'longtext', 'tinytext');

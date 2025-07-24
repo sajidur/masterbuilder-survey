@@ -14,6 +14,7 @@ import {
   getAllMenus,
   getAllFields,
   getAllDataPointsBySP,
+  deleteDataPointMap,
 } from "../../apiRequest/api";
 import { ListTree } from "lucide-react";
 import { tiers } from "./data";
@@ -87,14 +88,14 @@ const DataPointManager: React.FC = () => {
           menuData,
           itemData,
           dataPointData,
-          dpGroups,
+       //   dpGroups,
         ] = await Promise.all([
           getAllModules(),
           getAllApps(),
           getAllMenus(),
           getAllItems(),
           getAllDataPointsBySP(),
-          getAllFields(),
+       //   getAllFields(),
         ]);
 
         console.log("✅ Modules:", moduleData);
@@ -106,7 +107,7 @@ const DataPointManager: React.FC = () => {
         setMenus(menuData);
         setItems(itemData);
         setDataPoints(dataPointData);
-        setDpGroups(dpGroups);
+      //  setDpGroups(dpGroups);
       } catch (error) {
         console.error("❌ Data fetch error:", error);
         toast.error("Failed to load data.");
@@ -126,8 +127,8 @@ const DataPointManager: React.FC = () => {
   // );
 
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
-const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
-const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
+  const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
+  const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
 
   const resetForm = () => {
     // setSelectedModule("");
@@ -144,20 +145,20 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
   };
 
   const handleAddOrUpdate = async () => {
-    if (!selectedItem || !dpGroupCode || !dataPointName || !dataType) {
+    if (!selectedItem|| !dataPointName || !dataType) {
       toast.warn("Please fill all required fields.");
       return;
     }
 
     const payload = {
       itemId: selectedItem,
-      dpGroupCode,
+      dpGroupCode:"0",
       dataPoint: dataPointName,
       serialNumber,
-      dataType,
-      tier,
-      isHide,
-      isRequired,
+      dataType: dataType,
+    //  region:"0",
+      isHide: isHide,
+      isRequired: isRequired,
     };
 
 
@@ -170,7 +171,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
         toast.success("DataPoint added successfully!");
       }
 
-      const updated = await getAllDataPoints();
+      const updated = await getAllDataPointsBySP();
       setDataPoints(updated);
       resetForm();
     } catch {
@@ -184,9 +185,9 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteDataPoint(id);
+      await deleteDataPointMap(id);
       toast.success("Deleted.");
-      const updated = await getAllDataPoints();
+      const updated = await getAllDataPointsBySP();
       setDataPoints(updated);
     } catch {
       toast.error("Failed to delete.");
@@ -447,7 +448,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">DP Group</th>
+              {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Datapoint</th>
               <th className="p-2 text-left">Region</th>
@@ -461,7 +462,7 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
             {filteredItemsdata.map((dp) => (
               <tr key={dp.id} className="border-t">
                 <td className="p-2">{dp.itemName}</td>
-                <td className="p-2">{dp.fieldgroupcode}</td>
+                {/* <td className="p-2">{dp.fieldgroupcode}</td> */}
                 <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.dataPoint}</td>
                 <td className="p-2 text-left">5</td>
@@ -471,25 +472,25 @@ const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
                 <td className="p-2 flex gap-2">
                   <button
                     onClick={() => {
-  setEditId(dp.id);
-  setDataPointName(dp.dataPoint);
-  setDpGroupCode(dp.dpgroupcodeid); // Use id here
-  setSerialNumber(dp.serialNumber);
-  setDataType(dp.dataType);
-  setIsRequired(dp.isRequired);
-  setIsHide(dp.isHide);
+                        setEditId(dp.id);
+                        setDataPointName(dp.dataPoint);
+                        setDpGroupCode(dp.dpgroupcodeid); // Use id here
+                        setSerialNumber(dp.serialNumber);
+                        setDataType(dp.dataType);
+                        setIsRequired(!!dp.isRequired);
+                        setIsHide(!!dp.isHide);
 
-  const item = dp.Item;
-  const menu = item?.menu;
-  const app = menu?.app;
-  const module = app?.Module;
+                        const item = dp.Item;
+                        const menu = item?.menu;
+                        const app = menu?.app;
+                        const module = app?.Module;
 
-  // ✅ Set them in proper order using IDs (not names)
-  setSelectedModule(dp.moduleid|| "");
-    setSelectedApp(dp.appid || "");
-    setSelectedMenu(dp.menuid || "");
-    setSelectedItem(dp.itemid || "");
-}}
+                        // ✅ Set them in proper order using IDs (not names)
+                        setSelectedModule(dp.moduleid|| "");
+                          setSelectedApp(dp.appid || "");
+                          setSelectedMenu(dp.menuid || "");
+                          setSelectedItem(dp.itemid || "");
+                      }}
 
                     className="text-blue-600 hover:text-blue-800"
                   >

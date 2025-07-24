@@ -15,6 +15,10 @@ import {
   getAllSubSubSubitems,
   updateField,
   getAllFieldsBySP,
+  updateDpGroupMap,
+  addDpGroupMap,
+  deleteDPGroupMap,
+  getAllDPGroupmapsBySP,
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { tiers } from "./data";
@@ -77,6 +81,7 @@ const DPGroupMap:  React.FC = () => {
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
+  const [dpgroupmaps,setDpGroupMaps] = useState<Field[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -86,15 +91,10 @@ const DPGroupMap:  React.FC = () => {
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
-  const [fieldName, setFieldName] = useState("");
-  const [selectedFieldType, setSelectedFieldType] = useState("");
-  const [isRequired, setIsRequired] = useState(false);
-  const [isHide, setIsHide] = useState(false);
   const [serialNumber, setSerialNumber] = useState("");
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
-  const [fieldGroupCode, setFieldGroupCode] = useState("");
+  const [dpgroup, setFieldGroupCode] = useState("");
   const [tier, setTier] = useState("");
-  const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
   const [remarks, setRemarks] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
@@ -103,7 +103,7 @@ const DPGroupMap:  React.FC = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub, field] =
+        const [mod, app, menu, item, subItem, subSub, subSubSub, field,dpgroupmaps] =
           await Promise.all([
             getAllModules(),
             getAllApps(),
@@ -113,6 +113,7 @@ const DPGroupMap:  React.FC = () => {
             getAllSubSubitems(),
             getAllSubSubSubitems(),
             getAllFieldsBySP(),
+            getAllDPGroupmapsBySP(),
           ]);
         setModules(mod);
         setApps(app);
@@ -122,6 +123,8 @@ const DPGroupMap:  React.FC = () => {
         setSubSubItems(subSub);
         setSubSubSubItems(subSubSub);
         setFields(field);
+        setDpGroupMaps(dpgroupmaps);
+
       } catch (error) {
         toast.error("Failed to fetch data.");
       }
@@ -135,29 +138,29 @@ const DPGroupMap:  React.FC = () => {
       !selectedModule ||
       !selectedApp ||
       !selectedMenu ||
-      !selectedItem ||
-      !selectedDisplayType
+      !selectedItem //||
+     // !selectedDisplayType
     ) {
       toast.warn("Please fill all required fields.");
       return;
     }
     const payload: {
       itemId: string;
-      displayType: string;
-      serialNumber: string;
-      fieldGroupCode: string;
+      // displayType: string;
+      // serialNumber: string;
+      dpGroupId: string;
       tier?: string;
-      remarks: string;
+      // remarks: string;
       subItemId?: string | null;
       subSubItemId?: string | null;
       subSubSubItemId?: string | null;
     } = {
       itemId: selectedItem,
-      displayType: selectedDisplayType,
-      serialNumber,
-      fieldGroupCode,
+      displayType: "", //selectedDisplayType,
+      // serialNumber,
+      dpGroupId:dpgroup,
       tier: "0",
-      remarks,
+      // remarks,
       subItemId: selectedSubItem || null,
       subSubItemId: selectedSubSubItem || null,
       subSubSubItemId: selectedSubSubSubItem || null,
@@ -167,16 +170,16 @@ const DPGroupMap:  React.FC = () => {
 
     try {
       if (editFieldId) {
-        await updateField(editFieldId, payload);
+        await updateDpGroupMap(editFieldId, payload);
         toast.success("DP updated successfully!");
-        const updatedFields = await getAllFields();
-        setFields(updatedFields);
+        const updatedFields = await getAllDPGroupmapsBySP();
+        setDpGroupMaps(updatedFields);
         setEditFieldId(null);
       } else {
-        await addField(payload);
+        await addDpGroupMap(payload);
         toast.success("DP added successfully!");
-        const updatedFields = await getAllFields();
-        setFields(updatedFields);
+        const updatedFields = await getAllDPGroupmapsBySP();
+        setDpGroupMaps(updatedFields);
       }
 
       // Reset form
@@ -188,36 +191,37 @@ const DPGroupMap:  React.FC = () => {
       const updated = await getAllFieldsBySP();
       setFields(updated);
     } catch (e) {
-      toast.error("Failed to save field.");
+      toast.error("Failed to save DP Group map.");
     }
   };
 
   const handleDeleteField = async (id: string) => {
     try {
-      await deleteField(id);
-      toast.success("Field deleted successfully!");
-      window.location.reload();
+      await deleteDPGroupMap(id);
+      toast.success("DP Group map deleted successfully!");
+      const updatedFields = await getAllDPGroupmapsBySP();
+      setDpGroupMaps(updatedFields);
     } catch (error) {
       toast.error("Failed to delete field.");
     }
   };
 
-  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
-  const appname = apps.find((app) => app.id === selectedApp)?.name;
-  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
-  const itemname = items.find((item) => item.id === selectedItem)?.name;
-  const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+  // const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  // const appname = apps.find((app) => app.id === selectedApp)?.name;
+  // const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  // const itemname = items.find((item) => item.id === selectedItem)?.name;
+  // const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
 
-  const filteredItemsdata = fields.filter((item) => {
-  const matchModule = selectedModule ? item.moduleName === modulename : true;
-  const matchApp = selectedApp ? item.appName === appname : true;
-  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
-  const matchitem = selectedItem ? item.itemName === itemname : true;
-  const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+//   const filteredItemsdata = fields.filter((item) => {
+//   const matchModule = selectedModule ? item.moduleName === modulename : true;
+//   const matchApp = selectedApp ? item.appName === appname : true;
+//   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+//   const matchitem = selectedItem ? item.itemName === itemname : true;
+//   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
 
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
-});
-const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
+//   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+// });
+//const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
@@ -340,14 +344,14 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
       }
         {/* Field Group Code */}
          <div>
-            <label className="block mb-1 font-medium">Datapoint</label>
+            <label className="block mb-1 font-medium">DPGroup</label>
             <select
-              value={fieldGroupCode}
+              value={dpgroup}
               onChange={(e) => setFieldGroupCode(e.target.value)}
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">Select DP Group</option>
-              {filteredDpGroup.map((dp) => (
+              {fields.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.fieldGroupCode}
                 </option>
@@ -387,6 +391,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
        }
 
         {/* Display Type */}
+        { false &&
         <div>
           <label className="block mb-1 font-medium">Display Type</label>
           <select
@@ -402,6 +407,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             ))}
           </select>
         </div>
+    }
 
         {/* Remarks */}
         { false &&
@@ -530,7 +536,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
 
               <th className="p-2 text-left">DP Group</th>
               {/* <th className="p-2 text-left">Tier</th> */}
-              <th className="p-2 text-left">Display</th>
+              {/* <th className="p-2 text-left">Display</th> */}
               {/* <th className="p-2 text-left">Remarks</th> */}
               {/* <th className="p-2 text-left">Required</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
@@ -539,7 +545,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             </tr>
           </thead>
           <tbody>
-            {filteredItemsdata.map((f) => (
+            {dpgroupmaps.map((f) => (
               <tr key={f.id} className="border-t">
                 {/* <td className="p-2">
                   {f.moduleName || "—"}
@@ -555,7 +561,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 {/* <td className="p-2">{f.tier || "—"}</td> */}
 
-                <td className="p-2">{f.displayType}</td>
+                {/* <td className="p-2">{f.displayType}</td> */}
 
                 {/* <td className="p-2">{f.remarks || "-"}</td> */}
                 {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
@@ -567,22 +573,21 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                     onClick={() => {
                       setEditFieldId(f.id || "");
                       // setFieldName(f.name);
-                      setSelectedDisplayType(f.displayType);
+                     // setSelectedDisplayType(f.displayType);
                       // setSelectedFieldType(f.dataType);
                       // setIsRequired(f.isRequired);
-                      setSerialNumber(f.serialNumber || "");
+                     // setSerialNumber(f.serialNumber || "");
 
                       // Pre-select the hierarchy for edit
-                     setSelectedModule(
-                        f.moduleid || ""
-                      );
+                      setSelectedModule(f.moduleid || "");
                       setSelectedApp(f.appid || "");
                       setSelectedMenu(f.menuid || "");
-                      setSelectedItem(f.itemid || "");
+                      setSelectedItem(f.itemId || "");
+                      setFieldGroupCode(f.dpGroupId || "");
+                      setSelectedSubItem(f.subitemid || "");
+                      setSelectedSubSubItem(f.subsubitemid || "");
+                      setSelectedSubSubSubItem(f.subsubsubitemid || "");
 
-                      setFieldGroupCode(f.fieldGroupCode || "");
-                      setTier(f.tier || "");
-                      setRemarks(f.remarks || "")
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >

@@ -12,10 +12,8 @@ import { SubSubItem } from '../module.entity/subsubitem.entity';
 
 export class DPGroupMapDto {
   id: string;
-  serialNumber: string;
-  displayType: string;
-  remarks: string;
-  tier:string;
+  // serialNumber: string;
+  displayType?: string;
   dpgroupid: string;
   Item: ItemDto;
   subItem?: SubItem | null;
@@ -36,7 +34,6 @@ export class AllDataPointDto {
 }
 export class CreateDPGroupMapDto {
 
-   serialNumber: string;
    @ApiProperty({ description: 'Serial Number of the field' })
    @IsString()
    @IsNotEmpty()
@@ -44,7 +41,6 @@ export class CreateDPGroupMapDto {
 
    @ApiProperty({ description: 'Field Group code Type of the field' })
    @IsString()
-   @IsNotEmpty()
    displayType: string;
 
   @ApiProperty({ description: 'Tier of the field' })

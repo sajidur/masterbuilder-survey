@@ -373,6 +373,68 @@ export const deleteField = async (id: string) => {
   }
 };
 
+//add dp group map
+
+
+
+export const addDpGroupMap = async (data: {
+  itemId: string;
+  displayType: string;
+  // serialNumber: string;
+  fieldGroupCode: string;
+  tier: string;
+ // remarks: string;
+  subItemId?: string | null;
+  subSubItemId?: string | null;
+  subSubSubItemId?: string | null;
+}) => {
+  try {
+    const response = await apiClient.post("/survey-module/createDPGroupMap", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding field:", error);
+    throw error;
+  }
+};
+
+export const updateDpGroupMap= async (
+  id: string,
+  data: {
+    itemId: string;
+    // displayType: string;
+    serialNumber: string;
+    fieldGroupCode: string;
+    tier: string;
+    remarks: string;
+    subItemId?: string | null;
+    subSubItemId?: string | null;
+    subSubSubItemId?: string | null;
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateDPGroupMap/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating field:", error);
+    throw error;
+  }
+};
+
+
+
+// delete field
+export const deleteDPGroupMap = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteDPGroupMap/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting field:", error);
+    throw error;
+  }
+};
+
+
+
 
 // Add DataPoint
 export const addDataPoint = async (data: {
@@ -385,7 +447,7 @@ export const addDataPoint = async (data: {
   isHide: boolean;
 }) => {
   try {
-    const response = await apiClient.post('/survey-module/createDataPointMap', data);
+    const response = await apiClient.post('/survey-module/addDataPoint', data);
     return response.data;
   } catch (error) {
     console.error('Error adding DataPoint:', error);
@@ -426,6 +488,57 @@ export const deleteDataPoint = async (id: string) => {
   }
 };
 
+// add DATA POINT MAP
+export const addDataPointMap = async (data: {
+  itemId: string;
+  dpGroupCode: string;
+  dataPoint: string;
+  serialNumber: string;
+  dataType: string;
+  isRequired: boolean;
+  isHide: boolean;
+}) => {
+  try {
+    const response = await apiClient.post('/survey-module/createDataPointMap', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding DataPoint:', error);
+    throw error;
+  }
+};
+
+// Update DataPoint
+export const updateDataPointMap = async (
+  id: string,
+  data: {
+    itemId: string;
+    dpGroupCode: string;
+    dataPoint: string;
+    serialNumber: string;
+    dataType: string;
+    isRequired: boolean;
+    isHide: boolean;
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateDataPointMap/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating DataPoint:', error);
+    throw error;
+  }
+};
+
+// Delete DataPoint
+export const deleteDataPointMap = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteDataPointMap/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting DataPoint:", error);
+    throw error;
+  }
+};
 // Optional: Get all DataPoints
 export const getAllDataPointsBySP = async () => {
   try {
@@ -655,6 +768,16 @@ export const getAllFields = async () => {
 export const getAllDataPointmapsBySP  = async () => {
   try {
     const response = await apiClient.get('/survey-module/getAllDataPointmapsBySP');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+
+export const getAllDPGroupmapsBySP  = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/GetDPGroupMapsBySP');
     return response.data;
   } catch (error) {
     console.error('Error fetching all fields:', error);

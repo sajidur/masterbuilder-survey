@@ -42,7 +42,7 @@ import {  CreateDataPointDto, DataPointDto } from './module.dto/dataPoint.dto';
 import { TotalCount } from './module.dto/totalCount.dto';
 import { FieldDto, CreateFieldDto } from './module.dto/field.dto';
 import { CreateDataPointMapDto, DataPointMapDto } from './module.dto/dataPointmap.dto';
-import { CreateDPGroupMapDto } from './module.dto/dpgroupmap';
+import { CreateDPGroupMapDto, DPGroupMapDto } from './module.dto/dpgroupmap';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -511,6 +511,14 @@ async getAllDataPointmapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
   return this.moduleService.getAllDataPointmapsBySP(); // no id needed
 }
 
+@Get('GetDPGroupMapsBySP')
+@ApiResponse({ status: 200, type: [DataPointDto] })
+async GetDPGroupMapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
+ const user = req['user'];
+ console.log(user);
+  return this.moduleService.GetDPGroupMapsBySP(); // no id needed
+}
+
   @Post('createDataPointMap')
   @ApiBody({ type: CreateDataPointMapDto })
   @ApiResponse({ status: 201, type: DataPointMapDto })
@@ -524,38 +532,49 @@ async getAllDataPointmapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
   }
 
   @Put('updateDataPointMap/:id')
-  @ApiBody({ type: CreateDataPointDto })
+  @ApiBody({ type: CreateDataPointMapDto })
   @ApiResponse({ status: 200, type: DataPointDto })
   updateDataPointMap(
     @Param('id') id: string,
-    @Body() updateDto: CreateDataPointDto,
+    @Body() updateDto: CreateDataPointMapDto,
     @Req() req: Request
   ): Promise<DataPointDto | null> {
     const user = req['user'];
-    return this.moduleService.updateDataPoint(id, updateDto, user);
+    return this.moduleService.updateDataPointMap(id, updateDto, user);
+  }
+  
+  @Delete('deleteDataPointMap/:id')
+  @ApiResponse({ status: 204, description: 'DataPointMap deleted' })
+  deleteDataPointMap(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deleteDataPointMap(id);
   }
 
   @Post('createDPGroupMap')
   @ApiBody({ type: CreateDPGroupMapDto })
-  @ApiResponse({ status: 201, type: DataPointDto })
+  @ApiResponse({ status: 201, type: DPGroupMapDto })
   createDPGroupMap(
     @Body() createDto: CreateDPGroupMapDto,
     @Req() req: Request,
-  ): Promise<DataPointDto | null> {
+  ): Promise<DPGroupMapDto | null> {
    const user = req['user'];
    console.log(user);
     return this.moduleService.createDPGroupMap(createDto, user);
   }
 
   @Put('updateDPGroupMap/:id')
-  @ApiBody({ type: CreateDataPointDto })
-  @ApiResponse({ status: 200, type: DataPointDto })
+  @ApiBody({ type: CreateDPGroupMapDto })
+  @ApiResponse({ status: 200, type: DPGroupMapDto })
   updateDPGroupMap(
     @Param('id') id: string,
-    @Body() updateDto: CreateDataPointDto,
+    @Body() updateDto: CreateDPGroupMapDto,
     @Req() req: Request
-  ): Promise<DataPointDto | null> {
+  ): Promise<DPGroupMapDto | null> {
     const user = req['user'];
-    return this.moduleService.updateDataPoint(id, updateDto, user);
+    return this.moduleService.updateDPGroupMap(id, updateDto, user);
+  }
+  @Delete('deleteDPGroupMap/:id')
+  @ApiResponse({ status: 204, description: 'DataPointMap deleted' })
+  deleteDPGroupMap(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deleteDPGroupMap(id);
   }
 }

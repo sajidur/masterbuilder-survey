@@ -26,7 +26,7 @@ export class DPGroupMap{
   @Column({ nullable: true })
   serialNumber: string;
   @Column({ nullable: true })
-  displayType: string;
+  displayType?: string;
   @Column()
   userId: string;
 
