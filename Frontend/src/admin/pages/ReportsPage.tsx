@@ -81,7 +81,7 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
-  "Sub-Item",
+  "Sub Item",
   "SS Item",
   "SSS Item",
   "DP Group",
@@ -158,6 +158,7 @@ const ReportsPage: React.FC = () => {
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
     { label: "DP Extra", value: "extraDp" },
+    { label: "S/SS/SSS Item", value: "S_SS_SSS" },
   ];
 
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
@@ -484,34 +485,7 @@ const filteredItemsdata = dataFields.filter((item) => {
             />
             </div>
             <div className="flex flex-wrap gap-4 items-center mb-4">
-              {columnKeys.map((key) =>
-                key !== "DataPoint" ? (
-                  <label key={key} className="flex items-center gap-1 text-sm">
-                    <input
-                      type="radio"
-                      name="columnSelector"
-                      checked={selectedRadioKey === key}
-                      onChange={() => setSelectedRadioKey(key)}
-                    />
-                    {columnLabels[key] || key}
-                  </label>
-                ) : null
-              )}
-
-              {/* Separate checkbox for DataPoint */}
-              <label className="flex items-center gap-1 text-sm ml-4">
-                <input
-                  type="checkbox"
-                  checked={showDataPoint}
-                  onChange={(e) => setShowDataPoint(e.target.checked)}
-                />
-                Datapoint
-              </label>
-
-              <div className="flex gap-2">
-
-
-                {/* <label className="mr-2 font-semibold">Hide:</label> */}
+                              {/* <label className="mr-2 font-semibold">Hide:</label> */}
                 <div className="relative ">
                   <button
                     onClick={() => setShowDropdown((prev) => !prev)}
@@ -564,6 +538,31 @@ const filteredItemsdata = dataFields.filter((item) => {
                     </div>
                   )}
                 </div>
+              {columnKeys.map((key) =>
+                key !== "DataPoint" ? (
+                  <label key={key} className="flex items-center gap-1 text-sm">
+                    <input
+                      type="radio"
+                      name="columnSelector"
+                      checked={selectedRadioKey === key}
+                      onChange={() => setSelectedRadioKey(key)}
+                    />
+                    {columnLabels[key] || key}
+                  </label>
+                ) : null
+              )}
+
+              {/* Separate checkbox for DataPoint */}
+              <label className="flex items-center gap-1 text-sm ml-4">
+                <input
+                  type="checkbox"
+                  checked={showDataPoint}
+                  onChange={(e) => setShowDataPoint(e.target.checked)}
+                />
+                Datapoint
+              </label>
+
+              <div className="flex gap-2">
                                 {/* <label htmlFor="distinct-select" className="mt-2 font-semibold">
 Distinct:
 </label> */}
@@ -587,8 +586,10 @@ Distinct:
               </div>
                 <span className="flex gap-2"><strong>Module:</strong> {modules.length}</span>
                 <span className="flex gap-2"><strong>App:</strong> {apps.length}</span>
-                <span className="flex gap-2"><strong>Feature:</strong> {apps.length}</span>
-                <span className="flex gap-2"><strong>Sub-Feature:</strong> {apps.length}</span>
+                <span className="flex gap-2"><strong>Menu:</strong> {menus.length}</span>
+                <span className="flex gap-2"><strong>Item:</strong> {items.length}</span>
+                <span className="flex gap-2"><strong>Sub Item:</strong> {subItems.length}</span>
+
             </div>
           </>
         )}
