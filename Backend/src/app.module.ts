@@ -70,7 +70,7 @@ import { JwtModule } from '@nestjs/jwt';
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: '',
+  password: 'Root@pass1',
   database: 'mukut_feature_db',
   synchronize: false,
   //dropSchema:false,

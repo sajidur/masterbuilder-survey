@@ -18,6 +18,7 @@ export class DataPointDto {
   dataType: string;
   isRequired: boolean;
   isHide: boolean;
+  regional?:string
   userId:string;
   createdAt: Date;
   updatedAt: Date;
@@ -30,6 +31,7 @@ export class AllDataPointDto {
   serialNumber: string;
   displayType: string;
   remarks: string;
+  regional?:string
   tier: string;
   fieldGroupCode: string;
   Item?: ItemDto | null;
@@ -72,5 +74,7 @@ export class CreateDataPointDto {
   @IsBoolean()
   isRequired: boolean;
 
-
+  @ApiProperty({ description: 'Regional' })
+  @IsString()
+  regional:string
 }

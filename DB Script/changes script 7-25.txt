@@ -1,0 +1,27 @@
+ALTER TABLE item RENAME COLUMN tier TO itemType;
+ALTER TABLE datapoint Add COLUMN regional varchar(50);
+
+
+
+CREATE TABLE `datapoint` (
+  `id` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `itemId` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `dpGroupCode` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `dataPoint` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `serialNumber` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `dataType` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `userId` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `isHide` tinyint NOT NULL DEFAULT '0',
+  `isRequired` tinyint NOT NULL DEFAULT '0',
+  `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `createdBy` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `updatedBy` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `regional` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+ALTER TABLE `mukut_feature_db`.`field` 
+CHANGE COLUMN `description` `description` VARCHAR(255) NULL ;
+

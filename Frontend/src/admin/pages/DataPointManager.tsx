@@ -17,7 +17,7 @@ import {
   deleteDataPointMap,
 } from "../../apiRequest/api";
 import { ListTree } from "lucide-react";
-import { tiers } from "./data";
+import { regionals, tiers } from "./data";
 
 interface Module {
   id: string;
@@ -70,7 +70,7 @@ const DataPointManager: React.FC = () => {
   const [dataPointName, setDataPointName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [dataType, setDataType] = useState("");
-  const [tier, setTier] = useState("");
+  const [regional, setRegional] = useState("");
 
   const [isHide, setIsHide] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
@@ -156,7 +156,7 @@ const DataPointManager: React.FC = () => {
       dataPoint: dataPointName,
       serialNumber,
       dataType: dataType,
-    //  region:"0",
+      regional:regional,
       isHide: isHide,
       isRequired: isRequired,
     };
@@ -369,19 +369,19 @@ const DataPointManager: React.FC = () => {
             />
           </div>
 
-        {/* Tier */}
+        {/* regional */}
 
         <div>
           <label className="block mb-1 font-medium">Regional</label>
           <select
-            value={tier}
-            onChange={(e) => setTier(e.target.value)}
+            value={regional}
+            onChange={(e) => setRegional(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">Choose Region</option>
-            {tiers.map((tierOption) => (
-              <option key={tierOption.value} value={tierOption.value}>
-                {tierOption.label}
+            {regionals.map((regionalOption) => (
+              <option key={regionalOption.value} value={regionalOption.value}>
+                {regionalOption.label}
               </option>
             ))}
           </select>
@@ -465,7 +465,7 @@ const DataPointManager: React.FC = () => {
                 {/* <td className="p-2">{dp.fieldgroupcode}</td> */}
                 <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.dataPoint}</td>
-                <td className="p-2 text-left">5</td>
+                <td className="p-2 text-left">{dp.regional}</td>
                 <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.dataType}</td>

@@ -46,4 +46,7 @@ export class DataPoint {
 
   @Column({ nullable: true })
   updatedBy?: string;
+
+  @Column({ nullable: true })
+  regional?:string
 }

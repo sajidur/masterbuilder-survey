@@ -371,7 +371,7 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     itemDtoMap.set(item.id, {
       id: item.id,
       name: item.name,
-      tier: item.tier,
+      itemType: item.itemType,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
       buttonLabel: item.buttonLabel,
@@ -933,7 +933,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
-        tier: item.tier,
+        itemType: item.itemType,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
         buttonLabel: item.buttonLabel,
@@ -1014,7 +1014,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
-        tier: item.tier,
+        itemType: item.itemType,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
         buttonLabel: item.buttonLabel,
@@ -1109,7 +1109,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
-        tier: item.tier,
+        itemType: item.itemType,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
         buttonLabel: item.buttonLabel,
@@ -1201,7 +1201,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
       itemDtoMap.set(item.id, {
         id: item.id,
         name: item.name,
-        tier: item.tier,
+        itemType: item.itemType,
         serialNumber: item.serialNumber,
         buttonType: item.buttonType,
         buttonLabel: item.buttonLabel,
@@ -1329,7 +1329,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     return {
       id: item.id,
       name: item.name,
-      tier: item.tier,
+      itemType: item.itemType,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
       buttonLabel: item.buttonLabel,
@@ -1356,7 +1356,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     return {
       id: item.id,
       name: item.name,
-      tier: item.tier,
+      itemType: item.itemType,
       serialNumber: item.serialNumber,
       buttonType: item.buttonType,
       buttonLabel: item.buttonLabel,
@@ -1489,7 +1489,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     var newItem = new Item();
     newItem.name = item.name;
     newItem.menuId = item.menuId;
-    newItem.tier = item.tier;
+    newItem.itemType = item.itemType;
     newItem.createdAt = new Date();
     newItem.createdBy = user.username;
     newItem.updatedAt = new Date();
@@ -1569,7 +1569,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     item.buttonType = updatedItem.buttonType;
     item.navigationTo = updatedItem.navigationTo;
     item.description = updatedItem.description;
-    item.tier = updatedItem.tier;
+    item.itemType = updatedItem.itemType;
     const saved = await this.itemRepository.save(item);
     const appsMap = new Map(apps.map((app) => [app.id, app]));
     const modulesMap = new Map(modules.map((mod) => [mod.id, mod]));
@@ -2614,6 +2614,7 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
     const newEntity = this.dataPointRepo.create({
       dataPoint: dto.dataPoint,
       dataType: dto.dataType,
+      regional:dto.regional,
       dpGroupCode: dto.dpGroupCode,
       isHide: dto.isHide,
       isRequired: dto.isRequired,

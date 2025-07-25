@@ -524,9 +524,9 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 <td className="p-2">{s.layout || "—"}</td>
                 <td className="p-2">
                   {s.buttonType === "Edit Button"
-                    ? `Edit Button[${s.buttonLabel || ""}]`
+                    ? `Edit-[${s.buttonLabel || ""}]`
                     : s.buttonType === "Second Button"
-                    ? `S-Button[${s.buttonLabel || ""}]`
+                    ? `S-[${s.buttonLabel || ""}]`
                     : ""}
                 </td>
                 <td className="p-2">{s.navigationTo || "—"}</td>

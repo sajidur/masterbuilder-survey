@@ -113,6 +113,7 @@ const ReportsPage: React.FC = () => {
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
   const [dataPoints, setDataPoints] = useState<DataPoint[]>([]);
+  const [isHide, setIsHide] = useState(false);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -484,9 +485,14 @@ const filteredItemsdata = dataFields.filter((item) => {
               options={tiers.map((t) => ({ label: t.label, value: t.value }))}
               onChange={setSelectedTier}
             /> */}
-             {/* <input
-                              type="checkbox"
-                                       /> */}
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isHide}
+                onChange={(e) => setIsHide(e.target.checked)}
+              />
+              Hide
+            </label>
 
             </div>
             <div className="flex flex-wrap gap-4 items-center mb-4">

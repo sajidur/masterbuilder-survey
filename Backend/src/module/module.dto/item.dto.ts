@@ -7,7 +7,7 @@ export class ItemDto {
  
   id: string;
   name: string;
-  tier?:string|null;
+  itemType?:string|null;
   serialNumber:string;
   buttonType:ButtonGroup;
   buttonLabel:string;
@@ -21,14 +21,15 @@ export class CreateItemDto {
   @IsString()
   @IsNotEmpty()
   name: string;
- @ApiProperty({ description: 'Tier of the Item' })
+  @ApiProperty({ description: 'itemType of the Item' })
   @IsString()
   @IsOptional()
-  tier: string;
+  itemType: string;
+
   @ApiProperty({ description: 'serialNumber of the SubItem' })
   @IsString()
   serialNumber: string;
- @ApiProperty({ description: 'P for Primary, S for Secondary of the Item' })
+  @ApiProperty({ description: 'P for Primary, S for Secondary of the Item' })
   @IsString()
   buttonType: ButtonGroup;
   @ApiProperty({ description: 'Button label such as Export, Print, etc.' })

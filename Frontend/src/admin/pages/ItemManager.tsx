@@ -52,7 +52,7 @@ const ItemManager: React.FC = () => {
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
-  const [selectedTier, setSelectedTier] = useState("");
+  const [selectedItemType, setSelectedItemType] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [buttonType, setButtonType] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
@@ -130,7 +130,7 @@ const ItemManager: React.FC = () => {
     const payload = {
       name: trimmedItemName,
       menuId: selectedMenuObj.id,
-      tier: selectedTier,
+      itemType: selectedItemType,
       serialNumber,
       buttonType,
       buttonLabel,
@@ -347,27 +347,21 @@ const filteredItems = items.filter((item) => {
           />
         </div>
 
-        {/* Tier */}
-                  {false && (
-
+        {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Tier
+            Item Type
           </label>
           <select
-            value={selectedTier}
-            onChange={(e) => setSelectedTier(e.target.value)}
+            value={selectedItemType}
+            onChange={(e) => setSelectedItemType(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">Choose Tier</option>
-            {tiers.map((tier) => (
-              <option key={tier.value} value={tier.value}>
-                {tier.label}
-              </option>
-            ))}
+            <option value="">Select Type</option>
+            <option value="GP">GP</option>
+            <option value="IS">IS</option>
           </select>
         </div>
-                  )}
         {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -392,7 +386,7 @@ const filteredItems = items.filter((item) => {
             onChange={(e) => setButtonType(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">Select Button Type</option>
+            <option value="">Select Button</option>
             <option value="P-Button">Primary Button</option>
             <option value="S-Button">Secondary Button</option>
           </select>
@@ -443,7 +437,7 @@ const filteredItems = items.filter((item) => {
                // setSelectedModule("");
                // setSelectedApp("");
                // setSelectedMenu("");
-                setSelectedTier("");
+                setSelectedItemType("");
                 setSerialNumber("");
                 setButtonType("");
                 setNavigationTo("");
@@ -471,7 +465,7 @@ const filteredItems = items.filter((item) => {
                 <th className="p-2 border-b text-left">SI</th>
 
                 <th className="p-2 border-b text-left">Item</th>
-                {/* <th className="p-2 border-b text-left">Tier</th> */}
+                <th className="p-2 border-b text-left">Item Type</th>
                 <th className="p-2 border-b text-left">Intro</th>
 
                 <th className="p-2 border-b text-left">P/S Button</th>
@@ -488,10 +482,16 @@ const filteredItems = items.filter((item) => {
                   <td className="p-2">{item.serialNumber}</td>
 
                   <td className="p-2">{item.name}</td>
-                  {/* <td className="p-2">{item.tier}</td> */}
+                  <td className="p-2">{item.itemType}</td>
                   <td className="p-2">{item.description}</td>
 
-                  <td className="p-2">{item.buttonType}-[{item.buttonLabel}]</td>
+                  <td className="p-2">
+                    {item.buttonType === "P-Button"
+                      ? `P-[${item.buttonLabel || ""}]`
+                      : item.buttonType === "S-Button"
+                      ? `S-[${item.buttonLabel || ""}]`
+                      : ""}                    
+                    </td>
                   <td className="p-2">{item.navigationTo}</td>
 
                   <td className="px-4 py-3 flex gap-3">
@@ -509,7 +509,7 @@ const filteredItems = items.filter((item) => {
                           }, 50);
                         }, 50);
 
-                        setSelectedTier(item.tier);
+                        setSelectedItemType(item.itemType);
                         setSerialNumber(item.serialNumber);
                         setButtonType(item.buttonType);
                         setButtonLabel(item.buttonLabel);

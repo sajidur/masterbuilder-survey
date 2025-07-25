@@ -145,7 +145,7 @@ const payload: {
   itemId: string;
   displayType: string;
   serialNumber: string;
-  fieldGroupCode: string;
+  name: string;
   tier?: string;
   remarks: string;
   subItemId?: string | null;
@@ -156,7 +156,7 @@ const payload: {
   displayType: selectedDisplayType,
   serialNumber,
   fieldGroupCode,
-  tier: "0",
+  tier: tier,
   remarks,
   subItemId: selectedSubItem || null,
   subSubItemId: selectedSubSubItem || null,

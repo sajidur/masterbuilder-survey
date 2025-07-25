@@ -1,13 +1,16 @@
 export const tiers = [
   // { label: 'None', value: '0' },
-  { label: '3', value: '3' },
-  { label: '4', value: '4' },
-  { label: '5', value: '5' },
-  { label: '3, 4', value: '3,4' },
-  { label: '4, 5', value: '4,5' },
-  { label: '3, 4, 5', value: '3, 4, 5' },
+  { label: 'C', value: 'C' },
+  { label: 'D', value: 'D' },
+  { label: 'E', value: 'E' },
+  { label: 'F', value: 'F' },
 ];
 
+export const regionals = [
+  // { label: 'None', value: '0' },
+  { label: 'All', value: 'All' },
+  { label: 'Regional', value: 'Regional' },
+];
 export const layoutOptions = [
   { label: 'Tab', value: 'Tab' },
   { label: 'Mix-Tab', value: 'Mix-Tab' },

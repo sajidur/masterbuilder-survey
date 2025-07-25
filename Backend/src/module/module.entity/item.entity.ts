@@ -41,7 +41,7 @@ export class Item {
   @Column()
   userId: string;
   @Column({ nullable: true })
-  tier: string;
+  itemType: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
