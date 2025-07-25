@@ -24,4 +24,38 @@ CREATE TABLE `datapoint` (
 
 ALTER TABLE `mukut_feature_db`.`field` 
 CHANGE COLUMN `description` `description` VARCHAR(255) NULL ;
+ALTER TABLE `mukut_feature_db`.`field` 
+DROP COLUMN `name`;
+ALTER TABLE `mukut_feature_db`.`field` 
+DROP COLUMN `dataType`;
+ALTER TABLE `mukut_feature_db`.`field` 
+DROP COLUMN `isRequired`;
 
+
+....................................
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportData`()
+BEGIN
+     SELECT 
+        md.serialNumber as moduleserialNumber,md.name as modulename,app.serialNumber as appserialNumber, app.name as appname,menu.serialNumber as menuserialNumber,
+        menu.title,item.serialNumber as itemserialNumber,item.name as itemName,item.itemType as itemType,item.buttonType,item.buttonLabel,item.navigationTo,item.description,
+        si.serialNumber as subserialNumber,si.name as subitem,
+        ssi.name as subsubItem,sssi.name as subsubsubItem,fi.*,dp.*
+    FROM modules md 
+    left JOIN app ON md.id = app.moduleId
+    left JOIN menu ON app.id = menu.appId
+    left JOIN item ON menu.id = item.menuId
+    left JOIN sub_item si ON item.id = si.itemId
+    left JOIN sub_sub_item ssi ON si.id = ssi.subItemId
+	left JOIN sub_sub_sub_item sssi ON ssi.id = sssi.subSubItemId
+	left JOIN field fi ON fi.itemId = item.id
+	left JOIN datapoint dp ON fi.id = dp.dpGroupCode
+    ORDER BY 
+        md.serialNumber,
+        app.serialNumber,
+        menu.serialNumber,
+        item.serialNumber,
+        si.serialNumber,
+        ssi.serialNumber,
+        sssi.serialNumber,
+        fi.serialNumber;
+END

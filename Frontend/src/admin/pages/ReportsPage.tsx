@@ -81,11 +81,11 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
-  "DP Group",
   // "Tier",
   "Sub Item",
   "SS Item",
   "SSS Item",
+  "DP Group",
   "Datapoint",
 ];
 
@@ -95,11 +95,11 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
-  "DP Group": "DPGroupCode",
   // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
+  "DP Group": "DPGroupCode",
   Datapoint: "DataPoint",
 };
 
@@ -153,6 +153,7 @@ const ReportsPage: React.FC = () => {
   const hideOptions = [
     { label: "SI", value: "si" },
     { label: "Intro", value: "intro" },
+    { label: "itemType", value: "itemType" },
     { label: "Button", value: "button" },
     { label: "Navigation", value: "navigation" },
     { label: "Layout", value: "layout" },
@@ -278,10 +279,8 @@ const ReportsPage: React.FC = () => {
     const valuesSet = new Set();
 
     dataFields.forEach((f) => {
-      if (key === "DataPoint") {
-        (f.dataPoints || []).forEach((dp) => {
-          if (dp.dataPoint) valuesSet.add(dp.dataPoint);
-        });
+      if (key === "Datapoint") {
+        if (f.dataPoint) valuesSet.add(f.dataPoint);
       } else if (key === "tier") {
         if (f.tier) valuesSet.add(f.tier);
       } else if (key === "DPGroupCode") {
@@ -302,13 +301,13 @@ const ReportsPage: React.FC = () => {
             val = f.itemName;
             break;
           case "subItem":
-            val = f.siitem;
+            val = f.subitem;
             break;
           case "subSubItem":
-            val = f.ssiname;
+            val = f.subsubItem;
             break;
-          case "sssiname":
-            val = f.sssiname;
+          case "subSubSubItem":
+            val = f.subsubsubItem;
             break;
           default:
             val = null;
@@ -329,7 +328,7 @@ const ReportsPage: React.FC = () => {
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
     DPGroupCode: "DP Group",
-    // DataPoint: "Data Point",
+    DataPoint: "Data Point",
   };
   const isHidden = (group: string) => hiddenGroups.includes(group);
  
@@ -669,6 +668,11 @@ Distinct:
                             Item
                           </th>
 
+                          {!isHidden("itemType") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Item Type
+                            </th>
+                          )}
                           {!isHidden("intro") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Intro
@@ -788,9 +792,9 @@ Distinct:
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             DP_Group
                           </th>
-                          {/* <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Tier
-                          </th> */}
+                          </th>
 
                           {!isHidden("display") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -902,6 +906,11 @@ Distinct:
               {f.itemdescription || ""}
             </td>
           )}
+           {!isHidden("itemType") && (
+            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+              {f.itemType || ""}
+            </td>
+          )}
           {!isHidden("button") && (
             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
               {f.itembuttonLabel || ""}
@@ -1007,9 +1016,9 @@ Distinct:
           <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
             {f.fieldGroupCode || ""}
           </td>
-          {/* <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
             {f?.tier || ""}
-          </td> */}
+          </td>
           {!isHidden("display") && (
             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
               {f.displayType || ""}
