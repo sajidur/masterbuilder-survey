@@ -326,18 +326,19 @@ const ReportsPage: React.FC = () => {
   const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
-  const dpGroupCode = fields.find((s) => s.id === selectedField)?.name;
 
   const filteredItemsdata = dataFields.filter((item) => {
   const matchModule = selectedModule ? item.modulename === modulename : true;
   const matchApp = selectedApp ? item.appname === appname : true;
   const matchMenu = selectedMenu ? item.title === menuname : true;
   const matchitem = selectedItem ? item.itemName === itemname : true;
-  const matchdpGroup = selectedField ? item.fieldGroupCode === dpGroupCode : true;
+  const matchdpGroup = selectedDisplayType ? item.dpgroupid === selectedDisplayType : true;
   const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
-  const isHideFilter = isHide ? item.ishide === isHide : true;
-
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchdpGroup;
+  const isHideFilter = isHide === true
+  ? item.isHide === 1
+  : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
+  const tierFilter = selectedTier ? item.tier === selectedTier : true;
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchdpGroup && isHideFilter && tierFilter;
 });
 
 const appsCount = [...new Set(filteredItemsdata.filter(item => !selectedModule || item.modulename === modulename).map(item => item.appname))];
@@ -407,6 +408,10 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
         </span>
         <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
           <strong>DPGroup:</strong> {dpgroupCount.length}
+        </span>
+        
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>Total Row Count:</strong> {filteredItemsdata.length}
         </span>
         {/* <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
           <strong>Sub Item:</strong> {filteredSubItems.length}
@@ -1078,7 +1083,7 @@ Distinct:
                                             {f.tier}
                                           </td> 
                                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                              {f.isHide}
+                                                  {f.isHide === 1 ? "true" : "false"}
                                             </td>
                                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                               {f.isRequired}
