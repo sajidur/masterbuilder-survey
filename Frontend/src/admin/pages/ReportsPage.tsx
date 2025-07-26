@@ -12,7 +12,7 @@ import {
   ReportsData,
 } from "../../apiRequest/api";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState,useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { tiers } from "./data";
@@ -70,10 +70,10 @@ const columnKeys = [
   "app",
   "menu",
   "item",
+  "DPGroupCode",
   "subItem",
   "subSubItem",
   "subSubSubItem",
-  "DPGroupCode",
 ];
 
 const mainColumns = [
@@ -81,11 +81,11 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
+  "DP Group",
   // "Tier",
   "Sub Item",
   "SS Item",
   "SSS Item",
-  "DP Group",
   "Datapoint",
 ];
 
@@ -95,11 +95,11 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
+  "DP Group": "DPGroupCode",
   // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
-  "DP Group": "DPGroupCode",
   Datapoint: "DataPoint",
 };
 
@@ -126,11 +126,13 @@ const ReportsPage: React.FC = () => {
   const [selectedField, setSelectedField] = useState("");
   const [selectedRadioKey, setSelectedRadioKey] = useState<string>("module");
   const [showDataPoint, setShowDataPoint] = useState<boolean>(false);
+  const [showSSS, setShowSSS] = useState<boolean>(false);
   const [dpGroups, setDpGroups] = useState<string[]>([]);
   const [dataFields, setDataFields] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(true);
   const [selectedTier, setSelectedTier] = useState("");
 
+  const dropdownRef = useRef(null);
 
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
@@ -239,7 +241,6 @@ const ReportsPage: React.FC = () => {
       });
     }
   }, [modules, apps, menus, items, subItems, subSubItems, subSubSubItems]);
-  const filteredModule = modules.filter((module) => module?.id === selectedModule);
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
   const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
@@ -250,19 +251,6 @@ const ReportsPage: React.FC = () => {
   const filteredSubSubSubItems = subSubSubItems.filter(
     (s) => s.subSubItem?.id === selectedSubSubItem
   );
-
-  const filteredFields = fields.filter((f) => {
-    if (
-      selectedSubSubSubItem &&
-      f.subSubSubItem?.id !== selectedSubSubSubItem
-    ) {
-      return false;
-    }
-    if (selectedField && f.name !== selectedField) {
-      return false;
-    }
-    return true;
-  });
 
   const visibleColumns = React.useMemo(() => {
     const index = selectedRadioKey ? columnKeys.indexOf(selectedRadioKey) : 0;
@@ -338,7 +326,7 @@ const ReportsPage: React.FC = () => {
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
 
-const filteredItemsdata = dataFields.filter((item) => {
+  const filteredItemsdata = dataFields.filter((item) => {
   const matchModule = selectedModule ? item.modulename === modulename : true;
   const matchApp = selectedApp ? item.appname === appname : true;
   const matchMenu = selectedMenu ? item.title === menuname : true;
@@ -347,45 +335,81 @@ const filteredItemsdata = dataFields.filter((item) => {
 
   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
 });
+
+const appsCount = [...new Set(filteredItemsdata.filter(item => !selectedModule || item.modulename === modulename).map(item => item.appname))];
+const menuCount = [...new Set(filteredItemsdata.filter(item => !selectedApp || item.appname === appname).map(item => item.title))];
+const itemCount = [...new Set(filteredItemsdata.filter(item => !selectedMenu || item.title === menuname).map(item => item.itemName))];
+const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem || item.itemName === itemname).map(item => item.dpGroupCode))];
+
+//   const matchModule = selectedModule ? item.modulename === modulename : true;
+//   const matchApp = selectedApp ? item.appname === appname : true;
+//   const matchMenu = selectedMenu ? item.title === menuname : true;
+//   const matchitem = selectedItem ? item.itemName === itemname : true;
+//   const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
+
+//   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+// });
   return (
     <>
-      <div className="mb-2 px-4">
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2 text-blue-600 font-semibold"
-        >
-          {showFilters ? (
-            <svg
-              className="w-5 h-5 rotate-90"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          )}
-          {showFilters ? "Hide Filters" : "Show Filters"}
-        </button>
+<div className="mb-2 px-4 flex justify-between items-center">
+  <button
+    onClick={() => setShowFilters(!showFilters)}
+    className="flex items-center gap-2 text-blue-600 font-semibold"
+  >
+    {showFilters ? (
+      <svg
+        className="w-5 h-5 rotate-90"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    ) : (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    )}
+    {showFilters ? "Hide Filters" : "Show Filters"}
+  </button>
+
+    <div className="flex flex-wrap gap-2 text-sm">
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>Module:</strong> {modules.length}
+        </span>
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>App:</strong> {appsCount.length}
+        </span>
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>Menu:</strong> {menuCount.length}
+        </span>
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>Item:</strong> {itemCount.length}
+        </span>
+        <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>DPGroup:</strong> {dpgroupCount.length}
+        </span>
+        {/* <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+          <strong>Sub Item:</strong> {filteredSubItems.length}
+        </span> */}
       </div>
+    </div>
+
       <div>
         {showFilters && (
           <>
@@ -496,7 +520,7 @@ const filteredItemsdata = dataFields.filter((item) => {
             </div>
             <div className="flex flex-wrap gap-4 items-center mb-4">
                               {/* <label className="mr-2 font-semibold">Hide:</label> */}
-                <div className="relative ">
+                <div className="relative " ref={dropdownRef}>
                   <button
                     onClick={() => setShowDropdown((prev) => !prev)}
                     className="inline-flex justify-between w-40 border px-3 py-2 rounded bg-white shadow-sm"
@@ -518,8 +542,8 @@ const filteredItemsdata = dataFields.filter((item) => {
                   </button>
 
                   {showDropdown && (
-                    <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                      <div className="py-1 max-h-60 overflow-y-auto">
+                    <div className="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                      <div className="py-1 max-h-96 overflow-y-auto">
                         {hideOptions.map((option) => (
                           <label
                             key={option.value}
@@ -561,6 +585,15 @@ const filteredItemsdata = dataFields.filter((item) => {
                   </label>
                 ) : null
               )}
+              {/* Separate checkbox for DataPoint */}
+              <label className="flex items-center gap-1 text-sm ml-4">
+                <input
+                  type="checkbox"
+                  checked={showSSS}
+                  onChange={(e) => setShowSSS(e.target.checked)}
+                />
+                S/SS/SSS Items
+              </label>
 
               {/* Separate checkbox for DataPoint */}
               <label className="flex items-center gap-1 text-sm ml-4">
@@ -594,18 +627,12 @@ Distinct:
                   ))}
                 </select>
               </div>
-                <span className="flex gap-2"><strong>Module:</strong> {modules.length}</span>
-                <span className="flex gap-2"><strong>App:</strong> {apps.length}</span>
-                <span className="flex gap-2"><strong>Menu:</strong> {menus.length}</span>
-                <span className="flex gap-2"><strong>Item:</strong> {items.length}</span>
-                <span className="flex gap-2"><strong>Sub Item:</strong> {subItems.length}</span>
-
             </div>
           </>
         )}
 
         <div className="bg-white p-4 rounded shadow relative">
-          {filteredFields.length === 0 ? (
+          {filteredItemsdata.length === 0 ? (
             <p className="text-gray-500">No fields found.</p>
           ) : (
             <div className="overflow-auto max-h-[70vh] max-w-full" style={{ scrollbarWidth: 'auto' }}>
@@ -693,7 +720,36 @@ Distinct:
                         </>
                       )}
 
-                      {visibleColumns.includes("subItem") && (
+                      {visibleColumns.includes("DPGroupCode") && (
+                        <>
+                          {!isHidden("si") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Sl
+                            </th>
+                          )}
+
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            DP_Group
+                          </th>
+                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            Tier
+                          </th>
+
+                          {!isHidden("display") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Display
+                            </th>
+                          )}
+
+                          {!isHidden("remarks") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Remarks
+                            </th>
+                          )}
+                        </>
+                      )}
+
+                      {visibleColumns.includes("subItem") && !isHidden("S_SS_SSS") && showSSS && (
                         <>
                           {!isHidden("si") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -728,7 +784,7 @@ Distinct:
                         </>
                       )}
 
-                      {visibleColumns.includes("subSubItem") && (
+                      {visibleColumns.includes("subSubItem") && !isHidden("S_SS_SSS") && showSSS && (
                         <>
                           {!isHidden("si") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -761,7 +817,7 @@ Distinct:
                         </>
                       )}
 
-                      {visibleColumns.includes("subSubSubItem") && (
+                      {visibleColumns.includes("subSubSubItem") && !isHidden("S_SS_SSS") && showSSS && (
                         <>
                           {!isHidden("si") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -781,34 +837,6 @@ Distinct:
                         </>
                       )}
 
-                      {visibleColumns.includes("DPGroupCode") && (
-                        <>
-                          {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              Sl
-                            </th>
-                          )}
-
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            DP_Group
-                          </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Tier
-                          </th>
-
-                          {!isHidden("display") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              Display
-                            </th>
-                          )}
-
-                          {!isHidden("remarks") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              Remarks
-                            </th>
-                          )}
-                        </>
-                      )}
 
                       {visibleColumns.includes("DataPoint") && (
                         <>
@@ -843,228 +871,228 @@ Distinct:
                       )}
                     </tr>
                   </thead>
-<tbody>
-  {filteredItemsdata.map((f, i) => (
-    <tr
-      key={`${f.id}-${i}`}
-      className="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition-colors duration-200"
-    >
-      {visibleColumns.includes("module") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.moduleserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.modulename || ""}
-          </td>
-        </>
-      )}
+              <tbody>
+                {filteredItemsdata.map((f, i) => (
+                  <tr
+                    key={`${f.id}-${i}`}
+                    className="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition-colors duration-200"
+                  >
+                    {visibleColumns.includes("module") && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.moduleserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.modulename || ""}
+                        </td>
+                      </>
+                    )}
 
-      {visibleColumns.includes("app") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.appserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.appname || ""}
-          </td>
-        </>
-      )}
+                    {visibleColumns.includes("app") && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.appserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.appname || ""}
+                        </td>
+                      </>
+                    )}
 
-      {visibleColumns.includes("menu") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.menuserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.title || ""}
-          </td>
-        </>
-      )}
+                    {visibleColumns.includes("menu") && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.menuserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.title || ""}
+                        </td>
+                      </>
+                    )}
 
-      {visibleColumns.includes("item") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.itemserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.itemName || ""}
-          </td>
-          {!isHidden("intro") && (
-            <td
-              className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
-              title={f.itemdescription || ""}
-            >
-              {f.itemdescription || ""}
-            </td>
-          )}
-           {!isHidden("itemType") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.itemType || ""}
-            </td>
-          )}
-          {!isHidden("button") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.itembuttonLabel || ""}
-            </td>
-          )}
-          {!isHidden("navigation") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.itemnavigationTo || ""}
-            </td>
-          )}
-        </>
-      )}
+                    {visibleColumns.includes("item") && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.itemserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.itemName || ""}
+                        </td>
+                        {!isHidden("intro") && (
+                          <td
+                            className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
+                            title={f.itemdescription || ""}
+                          >
+                            {f.itemdescription || ""}
+                          </td>
+                        )}
+                        {!isHidden("itemType") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.itemType || ""}
+                          </td>
+                        )}
+                        {!isHidden("button") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.itembuttonLabel || ""}
+                          </td>
+                        )}
+                        {!isHidden("navigation") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.itemnavigationTo || ""}
+                          </td>
+                        )}
+                      </>
+                    )}
 
-      {visibleColumns.includes("subItem") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.siserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.siitem || ""}
-          </td>
-          {!isHidden("layout") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.silayout || ""}
-            </td>
-          )}
-          {!isHidden("intro") && (
-            <td
-              className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
-              title={f.sidescription || ""}
-            >
-              {f.sidescription || ""}
-            </td>
-          )}
-          {!isHidden("button") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.sibuttonLabel || ""}
-            </td>
-          )}
-          {!isHidden("navigation") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.sinavigationTo || ""}
-            </td>
-          )}
-        </>
-      )}
+                    {visibleColumns.includes("DPGroupCode") && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.groupserialNumber}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.fieldGroupCode || ""}
+                        </td>
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f?.tier || ""}
+                        </td>
+                        {!isHidden("display") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.displayType || ""}
+                          </td>
+                        )}
+                        {!isHidden("remarks") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.remarks || ""}
+                          </td>
+                        )}
+                      </>
+                    )}
+                    {visibleColumns.includes("subItem") && !isHidden("S_SS_SSS") && showSSS && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.siserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.siitem || ""}
+                        </td>
+                        {!isHidden("layout") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.silayout || ""}
+                          </td>
+                        )}
+                        {!isHidden("intro") && (
+                          <td
+                            className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
+                            title={f.sidescription || ""}
+                          >
+                            {f.sidescription || ""}
+                          </td>
+                        )}
+                        {!isHidden("button") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.sibuttonLabel || ""}
+                          </td>
+                        )}
+                        {!isHidden("navigation") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.sinavigationTo || ""}
+                          </td>
+                        )}
+                      </>
+                    )}
 
-      {visibleColumns.includes("subSubItem") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.ssiserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.ssiname || ""}
-          </td>
-          {!isHidden("layout") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.ssilayout || ""}
-            </td>
-          )}
-          {!isHidden("button") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.ssibuttonLabel || ""}
-            </td>
-          )}
-          {!isHidden("navigation") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.ssinavigationTo || ""}
-            </td>
-          )}
-        </>
-      )}
+                    {visibleColumns.includes("subSubItem") && !isHidden("S_SS_SSS") && showSSS && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.ssiserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.ssiname || ""}
+                        </td>
+                        {!isHidden("layout") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.ssilayout || ""}
+                          </td>
+                        )}
+                        {!isHidden("button") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.ssibuttonLabel || ""}
+                          </td>
+                        )}
+                        {!isHidden("navigation") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.ssinavigationTo || ""}
+                          </td>
+                        )}
+                      </>
+                    )}
 
-      {visibleColumns.includes("subSubSubItem") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.sssiserialNumber || ""}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.sssiname || ""}
-          </td>
-          {!isHidden("layout") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.sssilayout || ""}
-            </td>
-          )}
-        </>
-      )}
+                    {visibleColumns.includes("subSubSubItem") && !isHidden("S_SS_SSS") && showSSS && (
+                      <>
+                        {!isHidden("si") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.sssiserialNumber || ""}
+                          </td>
+                        )}
+                        <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                          {f.sssiname || ""}
+                        </td>
+                        {!isHidden("layout") && (
+                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            {f.sssilayout || ""}
+                          </td>
+                        )}
+                      </>
+                    )}
 
-      {visibleColumns.includes("DPGroupCode") && (
-        <>
-          {!isHidden("si") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.groupserialNumber}
-            </td>
-          )}
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f.fieldGroupCode || ""}
-          </td>
-          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-            {f?.tier || ""}
-          </td>
-          {!isHidden("display") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.displayType || ""}
-            </td>
-          )}
-          {!isHidden("remarks") && (
-            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-              {f.remarks || ""}
-            </td>
-          )}
-        </>
-      )}
-       {visibleColumns.includes("DataPoint") && (
-                        <>
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                  {f.serialNumber || ""}
-                                </td>             
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                  {f.dataPoint || ""}
-                                </td>
+                    {visibleColumns.includes("DataPoint") && (
+                                      <>
+                                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                                {f.serialNumber || ""}
+                                              </td>             
+                                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                                {f.dataPoint || ""}
+                                              </td>
 
-                          {!isHidden("extraDp") && (
-                            <>
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                              {f.tier}
-                            </td> 
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.isHide}
-                              </td>
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.isRequired}
-                              </td>
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.dataType}
-                              </td>
-                            </>
-                          )}
-                        </>
-                      )}
+                                        {!isHidden("extraDp") && (
+                                          <>
+                                          <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                            {f.tier}
+                                          </td> 
+                                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                              {f.isHide}
+                                            </td>
+                                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                              {f.isRequired}
+                                            </td>
+                                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                              {f.dataType}
+                                            </td>
+                                          </>
+                                        )}
+                                      </>
+                                    )}
 
-      {/* DataPoint-related columns removed since dp is undefined */}
-    </tr>
-  ))}
-</tbody>
-</table>
-)}
+                    {/* DataPoint-related columns removed since dp is undefined */}
+                  </tr>
+                ))}
+              </tbody>
+              </table>
+              )}
 
               {/* If distinctColumn is selected, show only the distinct values column */}
               {distinctColumn && (
