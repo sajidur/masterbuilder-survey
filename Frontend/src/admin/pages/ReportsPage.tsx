@@ -335,6 +335,7 @@ const ReportsPage: React.FC = () => {
   const matchitem = selectedItem ? item.itemName === itemname : true;
   const matchdpGroup = selectedField ? item.fieldGroupCode === dpGroupCode : true;
   const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
+  const isHideFilter = isHide ? item.ishide === isHide : true;
 
   return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchdpGroup;
 });
