@@ -245,6 +245,8 @@ const ReportsPage: React.FC = () => {
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
   const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
   const filteredSubItems = subItems.filter((s) => s.item?.id === selectedItem);
+  const filteredDpGroups = fields.filter((s) => s.Item?.id === selectedItem);
+
   const filteredSubSubItems = subSubItems.filter(
     (s) => s.subItem?.id === selectedSubItem
   );
@@ -319,21 +321,22 @@ const ReportsPage: React.FC = () => {
     DataPoint: "Data Point",
   };
   const isHidden = (group: string) => hiddenGroups.includes(group);
- 
   const modulename = modules.find((module) => module?.id === selectedModule)?.name;
   const appname = apps.find((app) => app.id === selectedApp)?.name;
   const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+  const dpGroupCode = fields.find((s) => s.id === selectedField)?.name;
 
   const filteredItemsdata = dataFields.filter((item) => {
   const matchModule = selectedModule ? item.modulename === modulename : true;
   const matchApp = selectedApp ? item.appname === appname : true;
   const matchMenu = selectedMenu ? item.title === menuname : true;
   const matchitem = selectedItem ? item.itemName === itemname : true;
+  const matchdpGroup = selectedField ? item.fieldGroupCode === dpGroupCode : true;
   const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
 
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchdpGroup;
 });
 
 const appsCount = [...new Set(filteredItemsdata.filter(item => !selectedModule || item.modulename === modulename).map(item => item.appname))];
@@ -482,7 +485,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
               <Dropdown
                 label="DP Group"
                 value={selectedDisplayType}
-                options={dpGroups.map((code) => ({ label: code, value: code }))}
+                options={filteredDpGroups.map((code) => ({ label: code.fieldGroupCode, value: code.id }))}
                 onChange={setSelectedDisplayType}
               />
               <Dropdown
