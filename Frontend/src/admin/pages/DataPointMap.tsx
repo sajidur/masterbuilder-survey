@@ -196,7 +196,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            Datapoint Map
+            DF Grp- DF Map
           </h2>
 
           {/* Module */}
@@ -307,7 +307,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
           <div>
-            <label className="block mb-1 font-medium">DP Group</label>
+            <label className="block mb-1 font-medium">DF Group</label>
             <select
               value={selectedDPGroup}
               onChange={(e) => setDpGroup(e.target.value)}
@@ -323,13 +323,13 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
           </div>
 
          <div>
-            <label className="block mb-1 font-medium">Datapoint</label>
+            <label className="block mb-1 font-medium">DataField</label>
             <select
               value={selectedDataPoint}
               onChange={(e) => setDataPoint(e.target.value)}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select Datapoint</option>
+              <option value="">Select DataField</option>
               {filteredDP.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.dataPoint}
@@ -401,9 +401,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">DP Group</th>
+              <th className="p-2 text-left">DF Group</th>
               {/* <th className="p-2 text-left">Serial</th> */}
-              <th className="p-2 text-left">Datapoint</th>
+              <th className="p-2 text-left">DataField</th>
               {/* <th className="p-2 text-left">Region</th> */}
               <th className="p-2 text-left">Hide</th>
               {/* <th className="p-2 text-left">Reqr</th> */}

@@ -226,7 +226,7 @@ const payload: {
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          DP Group
+          DF Group
         </h2>
 
         <Dropdown
@@ -339,7 +339,7 @@ const payload: {
 
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">DP Group</label>
+          <label className="block mb-1 font-medium">DF Group</label>
           <input
             type="text"
             value={fieldGroupCode}
@@ -528,7 +528,7 @@ const payload: {
               <th className="p-2 text-left">SSS Item</th> */}
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">DP Group</th>
+              <th className="p-2 text-left">DF Group</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">Remarks</th>

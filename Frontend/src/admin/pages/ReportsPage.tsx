@@ -81,12 +81,12 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
-  "DP Group",
+  "DF Group",
   // "Tier",
   "Sub Item",
   "SS Item",
   "SSS Item",
-  "Datapoint",
+  "DataField",
 ];
 
 // Map display names to your key names used in your data/visibleColumns
@@ -95,12 +95,12 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
-  "DP Group": "DPGroupCode",
+  "DF Group": "DPGroupCode",
   // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
-  Datapoint: "DataPoint",
+  DataField: "DataField",
 };
 
 const ReportsPage: React.FC = () => {
@@ -162,7 +162,7 @@ const ReportsPage: React.FC = () => {
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
     { label: "S/SS/SSS Items", value: "S_SS_SSS" },
-    { label: "DP Extra", value: "extraDp" },
+    { label: "DF Extra", value: "extraDp" },
   ];
 
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
@@ -258,7 +258,7 @@ const ReportsPage: React.FC = () => {
     const index = selectedRadioKey ? columnKeys.indexOf(selectedRadioKey) : 0;
 
     const baseColumns = columnKeys.slice(index);
-    return showDataPoint ? [...baseColumns, "DataPoint"] : baseColumns;
+    return showDataPoint ? [...baseColumns, "DataField"] : baseColumns;
   }, [selectedRadioKey, showDataPoint]);
 
   const distinctValues = useMemo(() => {
@@ -269,7 +269,7 @@ const ReportsPage: React.FC = () => {
     const valuesSet = new Set();
 
     dataFields.forEach((f) => {
-      if (key === "Datapoint") {
+      if (key === "DataField") {
         if (f.dataPoint) valuesSet.add(f.dataPoint);
       } else if (key === "tier") {
         if (f.tier) valuesSet.add(f.tier);
@@ -317,8 +317,8 @@ const ReportsPage: React.FC = () => {
     subItem: "Sub Item",
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
-    DPGroupCode: "DP Group",
-    DataPoint: "Data Point",
+    DPGroupCode: "DF Group",
+    DataField: "Data Field",
   };
   const isHidden = (group: string) => hiddenGroups.includes(group);
   const modulename = modules.find((module) => module?.id === selectedModule)?.name;
@@ -407,7 +407,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
           <strong>Item:</strong> {itemCount.length}
         </span>
         <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-          <strong>DPGroup:</strong> {dpgroupCount.length}
+          <strong>DFGroup:</strong> {dpgroupCount.length}
         </span>
         
         <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
@@ -489,7 +489,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
                 onChange={setSelectedSubSubSubItem}
               />
               <Dropdown
-                label="DP Group"
+                label="DF Group"
                 value={selectedDisplayType}
                 options={filteredDpGroups.map((code) => ({ label: code.fieldGroupCode, value: code.id }))}
                 onChange={setSelectedDisplayType}
@@ -502,7 +502,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
             />
 
               <Dropdown
-                label="Datapoint"
+                label="DataField"
                 value={selectedField}
                 options={dataPoints.map((dp) => ({
                   label: dp.dbGroupCode,
@@ -582,7 +582,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
                   )}
                 </div>
               {columnKeys.map((key) =>
-                key !== "DataPoint" ? (
+                key !== "DataField" ? (
                   <label key={key} className="flex items-center gap-1 text-sm">
                     <input
                       type="radio"
@@ -611,7 +611,7 @@ const dpgroupCount = [...new Set(filteredItemsdata.filter(item => !selectedItem 
                   checked={showDataPoint}
                   onChange={(e) => setShowDataPoint(e.target.checked)}
                 />
-                Datapoint
+                DataField
               </label>
 
               <div className="flex gap-2">
@@ -738,7 +738,7 @@ Distinct:
                           )}
 
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            DP_Group
+                            DF_Group
                           </th>
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Tier
@@ -847,7 +847,7 @@ Distinct:
                       )}
 
 
-                      {visibleColumns.includes("DataPoint") && (
+                      {visibleColumns.includes("DataField") && (
                         <>
                           {
                             <>
@@ -855,7 +855,7 @@ Distinct:
                                 Sl
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                                Datapoint
+                                DataField
                               </th>
                             </>
                           }

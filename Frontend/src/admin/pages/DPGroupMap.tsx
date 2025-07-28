@@ -230,7 +230,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          DP Group Map
+          Template - Feature Map
         </h2>
 
         <Dropdown
@@ -534,7 +534,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">SSS Item</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
-              <th className="p-2 text-left">DP Group</th>
+              <th className="p-2 text-left">DF Group</th>
               {/* <th className="p-2 text-left">Tier</th> */}
               {/* <th className="p-2 text-left">Display</th> */}
               {/* <th className="p-2 text-left">Remarks</th> */}

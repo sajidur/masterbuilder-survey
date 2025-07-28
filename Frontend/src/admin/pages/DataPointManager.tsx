@@ -216,7 +216,7 @@ const DataPointManager: React.FC = () => {
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            Datapoint
+            DataField
           </h2>
 
           {/* Module */}
@@ -329,7 +329,7 @@ const DataPointManager: React.FC = () => {
           {/* Group Code */}
           {false &&
           <div>
-            <label className="block mb-1 font-medium">DP Group</label>
+            <label className="block mb-1 font-medium">DF Group</label>
             <select
               value={dpGroupCode}
               onChange={(e) => setDpGroupCode(e.target.value)}
@@ -359,7 +359,7 @@ const DataPointManager: React.FC = () => {
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">Datapoint</label>
+            <label className="block mb-1 font-medium">DataField</label>
             <input
               type="text"
               value={dataPointName}
@@ -372,13 +372,13 @@ const DataPointManager: React.FC = () => {
         {/* regional */}
 
         <div>
-          <label className="block mb-1 font-medium">Regional</label>
+          <label className="block mb-1 font-medium">Reg DF</label>
           <select
             value={regional}
             onChange={(e) => setRegional(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose Region</option>
+            <option value="">Choose Reg DF</option>
             {regionals.map((regionalOption) => (
               <option key={regionalOption.value} value={regionalOption.value}>
                 {regionalOption.label}
@@ -450,8 +450,8 @@ const DataPointManager: React.FC = () => {
               <th className="p-2 text-left">Item</th>
               {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
-              <th className="p-2 text-left">Datapoint</th>
-              <th className="p-2 text-left">Region</th>
+              <th className="p-2 text-left">DataField</th>
+              <th className="p-2 text-left">Reg DF</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>
