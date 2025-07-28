@@ -972,16 +972,16 @@ Distinct:
                           {f.fieldGroupCode || ""}
                         </td>
                         <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                          {f?.tier || ""}
+                          {f?.dpgrouptier || ""}
                         </td>
                         {!isHidden("display") && (
                           <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                            {f.displayType || ""}
+                            {f.dpgroupdisplay || ""}
                           </td>
                         )}
                         {!isHidden("remarks") && (
                           <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                            {f.remarks || ""}
+                            {f.dpgroupremarks || ""}
                           </td>
                         )}
                       </>
