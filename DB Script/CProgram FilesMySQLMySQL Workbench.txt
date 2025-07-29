@@ -1,0 +1,6 @@
+"C:\Program Files\MySQL\MySQL Workbench 8.0 CE\mysqldump.exe" ^
+-u root ^
+--databases mukut_feature_db ^
+--routines --triggers --events ^
+--column-statistics=0 --single-transaction --quick --skip-lock-tables ^
+--result-file="C:\MySQLBackups\test_manual.sql"
