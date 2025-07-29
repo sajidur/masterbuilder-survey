@@ -87,8 +87,6 @@ const ItemManager: React.FC = () => {
     setSelectedMenu("");
   }, [selectedApp]);
 
- 
-
   // const filteredApps = apps.filter(
   //   (app) => app.Module?.name === selectedModule
   // );
@@ -176,51 +174,47 @@ const ItemManager: React.FC = () => {
     }
   };
 
+  //    const filteredApps = selectedModule
+  //   ? items.filter((app) => app.moduleName === selectedModule)
+  //   : items;
 
-//    const filteredApps = selectedModule
-//   ? items.filter((app) => app.moduleName === selectedModule)
-//   : items;
+  // const filteredMenus = selectedApp
+  //   ? filteredApps.filter((app) => app.appName === selectedApp)
+  //   : filteredApps;
 
+  // const filteredItems = selectedMenu
+  //   ? filteredMenus.filter((item) => item.menuTitle === selectedMenu)
+  //   : filteredMenus;
+  const availableApps = Array.from(
+    new Set(
+      items
+        .filter((item) =>
+          selectedModule ? item.moduleName === selectedModule : true
+        )
+        .map((item) => item.appName)
+    )
+  );
 
-// const filteredMenus = selectedApp
-//   ? filteredApps.filter((app) => app.appName === selectedApp)
-//   : filteredApps;
+  const availableMenus = Array.from(
+    new Set(
+      items
+        .filter(
+          (item) =>
+            (selectedModule ? item.moduleName === selectedModule : true) &&
+            (selectedApp ? item.appName === selectedApp : true)
+        )
+        .map((item) => item.menuTitle)
+    )
+  );
 
-// const filteredItems = selectedMenu
-//   ? filteredMenus.filter((item) => item.menuTitle === selectedMenu)
-//   : filteredMenus;
-const availableApps = Array.from(
-  new Set(
-    items
-      .filter((item) =>
-        selectedModule ? item.moduleName === selectedModule : true
-      )
-      .map((item) => item.appName)
-  )
-);
-
-const availableMenus = Array.from(
-  new Set(
-    items
-      .filter(
-        (item) =>
-          (selectedModule ? item.moduleName === selectedModule : true) &&
-          (selectedApp ? item.appName === selectedApp : true)
-      )
-      .map((item) => item.menuTitle)
-  )
-);
-
-const filteredItems = items.filter((item) => {
-  const matchModule = selectedModule ? item.moduleName === selectedModule : true;
-  const matchApp = selectedApp ? item.appName === selectedApp : true;
-  const matchMenu = selectedMenu ? item.menuTitle === selectedMenu : true;
-  return matchModule && matchApp && matchMenu;
-});
-
-
-
-  
+  const filteredItems = items.filter((item) => {
+    const matchModule = selectedModule
+      ? item.moduleName === selectedModule
+      : true;
+    const matchApp = selectedApp ? item.appName === selectedApp : true;
+    const matchMenu = selectedMenu ? item.menuTitle === selectedMenu : true;
+    return matchModule && matchApp && matchMenu;
+  });
 
   return (
     <div className="">
@@ -264,21 +258,21 @@ const filteredItems = items.filter((item) => {
               </option>
             ))}
           </select> */}
-{/* App Dropdown */}
-<select
-  value={selectedApp}
-  onChange={(e) => setSelectedApp(e.target.value)}
+          {/* App Dropdown */}
+          <select
+            value={selectedApp}
+            onChange={(e) => setSelectedApp(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
->
-  <option value="">Select App</option>
-{apps
-  .filter((a) => a.Module?.name === selectedModule)
-  .map((a) => (
-    <option key={a.id} value={a.name}>
-      {a.name}
-    </option>
-))}
-</select>
+          >
+            <option value="">Select App</option>
+            {apps
+              .filter((a) => a.Module?.name === selectedModule)
+              .map((a) => (
+                <option key={a.id} value={a.name}>
+                  {a.name}
+                </option>
+              ))}
+          </select>
         </div>
 
         {/* Menu */}
@@ -296,25 +290,25 @@ const filteredItems = items.filter((item) => {
               </option>
             ))}
           </select> */}
-{/* Menu Dropdown */}
-<select
-  value={selectedMenu}
-  onChange={(e) => setSelectedMenu(e.target.value)}
+          {/* Menu Dropdown */}
+          <select
+            value={selectedMenu}
+            onChange={(e) => setSelectedMenu(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
->
-  <option value="">Select Menu</option>
-{menus
-  .filter((m) => 
-    m.app?.name === selectedApp &&
-    m.app?.Module?.name === selectedModule
-  )
-  .map((m) => (
-    <option key={m.id} value={m.title}>
-      {m.title}
-    </option>
-))}
-
-</select>
+          >
+            <option value="">Select Menu</option>
+            {menus
+              .filter(
+                (m) =>
+                  m.app?.name === selectedApp &&
+                  m.app?.Module?.name === selectedModule
+              )
+              .map((m) => (
+                <option key={m.id} value={m.title}>
+                  {m.title}
+                </option>
+              ))}
+          </select>
         </div>
       </div>
 
@@ -375,8 +369,9 @@ const filteredItems = items.filter((item) => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
-        {/* Button Type */}
+{false && 
+<div>
+          {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             Button Type
@@ -419,7 +414,8 @@ const filteredItems = items.filter((item) => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
+</div>
+}
         {/* Add Button */}
         <div className="mt-4 flex gap-4">
           <button
@@ -434,9 +430,9 @@ const filteredItems = items.filter((item) => {
               onClick={() => {
                 setEditItemId(null);
                 setItemName("");
-               // setSelectedModule("");
-               // setSelectedApp("");
-               // setSelectedMenu("");
+                // setSelectedModule("");
+                // setSelectedApp("");
+                // setSelectedMenu("");
                 setSelectedItemType("");
                 setSerialNumber("");
                 setButtonType("");
@@ -490,8 +486,8 @@ const filteredItems = items.filter((item) => {
                       ? `P-[${item.buttonLabel || ""}]`
                       : item.buttonType === "S-Button"
                       ? `S-[${item.buttonLabel || ""}]`
-                      : ""}                    
-                    </td>
+                      : ""}
+                  </td>
                   <td className="p-2">{item.navigationTo}</td>
 
                   <td className="px-4 py-3 flex gap-3">

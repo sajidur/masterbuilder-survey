@@ -18,6 +18,7 @@ import {
   UserPlus,
   LogOut,
 } from "lucide-react";
+import { MdSmartButton } from "react-icons/md";
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
@@ -32,10 +33,12 @@ const navItems = [
     icon: <ListTree size={18} />,
   },
   { label: 'DF Grp - DF Map', path: '/admin/datapointmap', icon: <ListTree size={18} /> },
+  { label: 'Button', path: '/admin/button', icon: <MdSmartButton size={18} /> },
   { label: 'Sub Item', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
   { label: 'SS Item', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'SSS Item', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'Template - Feature Map', path: '/admin/dpgroupmap', icon: <ListPlus size={18} /> },
+  { label: 'Template - Button Map', path: '/admin/dpbuttonmap', icon: <ListPlus size={18} /> },
   { label: 'Reports', path: '/admin/reports', icon: <BarChart4 size={18} /> },
   { label: 'Docu Upload', path: '/admin/document-upload', icon: <ClipboardCheck size={18} /> },
   { label: 'Question', path: '/admin/question', icon: <MessageSquare size={18} /> },

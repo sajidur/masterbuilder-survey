@@ -451,9 +451,9 @@ const SubItemManager: React.FC = () => {
               className="w-full px-3 py-2 border rounded"
             />
           </div>
-          <div></div>
-          <div></div>
 
+{false && 
+<div>
           {/* Button Type */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -497,7 +497,8 @@ const SubItemManager: React.FC = () => {
               className="w-full px-3 py-2 border rounded"
             />
           </div>
-
+</div>
+}
           <div className="flex gap-4 items-center mb-2">
             <button
               onClick={handleAddSubItem}

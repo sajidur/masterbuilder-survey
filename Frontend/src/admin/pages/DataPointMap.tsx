@@ -322,6 +322,25 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             </select>
           </div>
 
+
+                  {/* Tier */}
+        <div>
+          <label className="block mb-1 font-medium">Tier</label>
+          <select
+            value={tier}
+            onChange={(e) => setTier(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Choose Region</option>
+            {tiers.map((tierOption) => (
+              <option key={tierOption.value} value={tierOption.value}>
+                {tierOption.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+
          <div>
             <label className="block mb-1 font-medium">DataField</label>
             <select
@@ -338,24 +357,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             </select>
           </div>
 
-        {/* Tier */}
-{ false &&
-        <div>
-          <label className="block mb-1 font-medium">Tier</label>
-          <select
-            value={tier}
-            onChange={(e) => setTier(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">Choose Region</option>
-            {tiers.map((tierOption) => (
-              <option key={tierOption.value} value={tierOption.value}>
-                {tierOption.label}
-              </option>
-            ))}
-          </select>
-        </div>
-}
+
           <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
               <input

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -72,7 +71,7 @@ interface Field {
   tier?: string;
 }
 
-const DPGroupMap:  React.FC = () => {
+const TemplateButtonMap: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<App[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
@@ -81,7 +80,7 @@ const DPGroupMap:  React.FC = () => {
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
-  const [dpgroupmaps,setDpGroupMaps] = useState<Field[]>([]);
+  const [dpgroupmaps, setDpGroupMaps] = useState<Field[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -91,11 +90,16 @@ const DPGroupMap:  React.FC = () => {
   const [selectedSubSubItem, setSelectedSubSubItem] = useState("");
   const [selectedSubSubSubItem, setSelectedSubSubSubItem] = useState("");
   const [selectedDisplayType, setSelectedDisplayType] = useState("");
-  const [serialNumber, setSerialNumber] = useState("");
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [dpgroup, setFieldGroupCode] = useState("");
   const [tier, setTier] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
+  const [buttonType, setButtonType] = useState("");
+  const [navigationTo, setNavigationTo] = useState("");
+
+  const [buttonLabel, setButtonLabel] = useState("");
+  const [buttonAction, setButtonAction] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["Tree", "Graph", "Table", "List"];
@@ -103,18 +107,27 @@ const DPGroupMap:  React.FC = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [mod, app, menu, item, subItem, subSub, subSubSub, field,dpgroupmaps] =
-          await Promise.all([
-            getAllModules(),
-            getAllApps(),
-            getAllMenus(),
-            getAllItems(),
-            getAllSubitems(),
-            getAllSubSubitems(),
-            getAllSubSubSubitems(),
-            getAllFieldsBySP(),
-            getAllDPGroupmapsBySP(),
-          ]);
+        const [
+          mod,
+          app,
+          menu,
+          item,
+          subItem,
+          subSub,
+          subSubSub,
+          field,
+          dpgroupmaps,
+        ] = await Promise.all([
+          getAllModules(),
+          getAllApps(),
+          getAllMenus(),
+          getAllItems(),
+          getAllSubitems(),
+          getAllSubSubitems(),
+          getAllSubSubSubitems(),
+          getAllFieldsBySP(),
+          getAllDPGroupmapsBySP(),
+        ]);
         setModules(mod);
         setApps(app);
         setMenus(menu);
@@ -124,7 +137,6 @@ const DPGroupMap:  React.FC = () => {
         setSubSubSubItems(subSubSub);
         setFields(field);
         setDpGroupMaps(dpgroupmaps);
-
       } catch (error) {
         toast.error("Failed to fetch data.");
       }
@@ -139,7 +151,7 @@ const DPGroupMap:  React.FC = () => {
       !selectedApp ||
       !selectedMenu ||
       !selectedItem //||
-     // !selectedDisplayType
+      // !selectedDisplayType
     ) {
       toast.warn("Please fill all required fields.");
       return;
@@ -147,7 +159,7 @@ const DPGroupMap:  React.FC = () => {
     const payload: {
       itemId: string;
       // displayType: string;
-      // serialNumber: string;
+      serialNumber: string;
       dpGroupId: string;
       tier?: string;
       // remarks: string;
@@ -157,16 +169,14 @@ const DPGroupMap:  React.FC = () => {
     } = {
       itemId: selectedItem,
       displayType: "", //selectedDisplayType,
-      // serialNumber,
-      dpGroupId:dpgroup,
+      serialNumber,
+      dpGroupId: dpgroup,
       tier: "0",
       // remarks,
       subItemId: selectedSubItem || null,
       subSubItemId: selectedSubSubItem || null,
       subSubSubItemId: selectedSubSubSubItem || null,
     };
-
-
 
     try {
       if (editFieldId) {
@@ -187,7 +197,7 @@ const DPGroupMap:  React.FC = () => {
       setSelectedDisplayType("");
       setSelectedSubSubSubItem("");
 
-            // Refresh list
+      // Refresh list
       const updated = await getAllFieldsBySP();
       setFields(updated);
     } catch (e) {
@@ -212,16 +222,16 @@ const DPGroupMap:  React.FC = () => {
   // const itemname = items.find((item) => item.id === selectedItem)?.name;
   // const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
 
-//   const filteredItemsdata = fields.filter((item) => {
-//   const matchModule = selectedModule ? item.moduleName === modulename : true;
-//   const matchApp = selectedApp ? item.appName === appname : true;
-//   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
-//   const matchitem = selectedItem ? item.itemName === itemname : true;
-//   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+  //   const filteredItemsdata = fields.filter((item) => {
+  //   const matchModule = selectedModule ? item.moduleName === modulename : true;
+  //   const matchApp = selectedApp ? item.appName === appname : true;
+  //   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  //   const matchitem = selectedItem ? item.itemName === itemname : true;
+  //   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
 
-//   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
-// });
-const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
+  //   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+  // });
+  const filteredDpGroup = fields.filter((dp) => dp.itemid === selectedItem);
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
@@ -230,7 +240,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          Template - Feature Map
+          Template - Button Map
         </h2>
 
         <Dropdown
@@ -330,34 +340,22 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
-        { false &&
-        <div>
-          <label className="block mb-1 font-medium">Serial Number</label>
-          <input
-            type="text"
-            value={serialNumber}
-            onChange={(e) => setSerialNumber(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Enter serial number"
-          />
-        </div>
-      }
         {/* Field Group Code */}
-         <div>
-            <label className="block mb-1 font-medium">DPGroup</label>
-            <select
-              value={dpgroup}
-              onChange={(e) => setFieldGroupCode(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-            >
-              <option value="">Select DP Group</option>
-              {filteredDpGroup.map((dp) => (
-                <option key={dp.id} value={dp.id}>
-                  {dp.fieldGroupCode}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div>
+          <label className="block mb-1 font-medium">DPGroup</label>
+          <select
+            value={dpgroup}
+            onChange={(e) => setFieldGroupCode(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Select DP Group</option>
+            {filteredDpGroup.map((dp) => (
+              <option key={dp.id} value={dp.id}>
+                {dp.fieldGroupCode}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* <div>
           <label className="block mb-1 font-medium">Field Group Code</label>
@@ -371,7 +369,6 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         </div> */}
 
         {/* Tier */}
-        
 
         <div>
           <label className="block mb-1 font-medium">Tier</label>
@@ -388,10 +385,8 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             ))}
           </select>
         </div>
-      
 
         {/* Display Type */}
-      
         <div>
           <label className="block mb-1 font-medium">Display Type</label>
           <select
@@ -408,20 +403,95 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           </select>
         </div>
 
-
         {/* Remarks */}
-        { false &&
+        {false && (
+          <div>
+            <label className="block mb-1 font-medium">Remarks</label>
+            <input
+              type="text"
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter field name"
+            />
+          </div>
+        )}
+
+<div></div>
+<div></div>
+<div></div>
         <div>
-          <label className="block mb-1 font-medium">Remarks</label>
+          <label className="block mb-1 font-medium">Serial Number</label>
           <input
             type="text"
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
+            value={serialNumber}
+            onChange={(e) => setSerialNumber(e.target.value)}
             className="w-full border px-3 py-2 rounded"
-            placeholder="Enter field name"
+            placeholder="Enter serial number"
           />
         </div>
-      }       
+
+        
+        {/* Button Name */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Name
+          </label>
+          <input
+            type="text"
+            value={buttonLabel}
+            onChange={(e) => setButtonLabel(e.target.value)}
+            placeholder="Enter button name"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        
+        {/* Button Action */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Action
+          </label>
+          <input
+            type="text"
+            value={buttonAction}
+            onChange={(e) => setButtonAction(e.target.value)}
+            placeholder="Enter button name"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        {/* Button Type */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Button Type
+          </label>
+          <select
+            value={buttonType}
+            onChange={(e) => setButtonType(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select Button</option>
+            <option value="P-Button">Primary Button</option>
+            <option value="S-Button">Secondary Button</option>
+          </select>
+        </div>
+
+
+        {/* Navigate To */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Navigate To
+          </label>
+          <input
+            type="text"
+            value={navigationTo}
+            onChange={(e) => setNavigationTo(e.target.value)}
+            placeholder="Enter path or URL"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
         {/* Field Type */}
         {/* <div>
           <label className="block mb-1 font-medium">Data Type</label>
@@ -573,10 +643,10 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                     onClick={() => {
                       setEditFieldId(f.id || "");
                       // setFieldName(f.name);
-                     // setSelectedDisplayType(f.displayType);
+                      // setSelectedDisplayType(f.displayType);
                       // setSelectedFieldType(f.dataType);
                       // setIsRequired(f.isRequired);
-                     // setSerialNumber(f.serialNumber || "");
+                      // setSerialNumber(f.serialNumber || "");
 
                       // Pre-select the hierarchy for edit
                       setSelectedModule(f.moduleid || "");
@@ -587,7 +657,6 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                       setSelectedSubItem(f.subitemid || "");
                       setSelectedSubSubItem(f.subsubitemid || "");
                       setSelectedSubSubSubItem(f.subsubsubitemid || "");
-
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >
@@ -639,4 +708,5 @@ const Dropdown = ({
     </select>
   </div>
 );
-export default DPGroupMap;
+
+export default TemplateButtonMap;
