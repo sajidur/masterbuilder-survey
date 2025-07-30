@@ -131,7 +131,7 @@ const ReportsPage: React.FC = () => {
   const [dataFields, setDataFields] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(true);
   const [selectedTier, setSelectedTier] = useState("");
-
+  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay"]);
   const dropdownRef = useRef(null);
 
   const [lookups, setLookups] = useState<{
@@ -244,7 +244,7 @@ const ReportsPage: React.FC = () => {
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
   const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
-  const filteredSubItems = subItems.filter((s) => s.item?.id === selectedItem);
+  const filteredSubItems = subItems.filter((s) => s.itemId === selectedItem);
   const filteredDpGroups = fields.filter((s) => s.Item?.id === selectedItem);
 
   const filteredSubSubItems = subSubItems.filter(
@@ -330,7 +330,7 @@ const ReportsPage: React.FC = () => {
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
   const subsubitemname = subSubItems.find((s) => s.id === selectedSubSubItem)?.name;
 
-  const filteredItemsdata = dataFields.filter((item) => {
+  let filteredItemsdata = dataFields.filter((item) => {
     const matchModule = selectedModule ? item.modulename === modulename : true;
     const matchApp = selectedApp ? item.appname === appname : true;
     const matchMenu = selectedMenu ? item.title === menuname : true;
@@ -418,6 +418,33 @@ const moduleCount = [
 
   //   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
   // });
+const groupedResult = groupByAndProject(filteredItemsdata, groupFields);
+filteredItemsdata = groupedResult;
+
+  function groupByAndProject(data, groupFields) {
+  const seen = new Set();
+
+  return data.reduce((result, item) => {
+    const groupKey = groupFields.map(f => item[f] ?? 'NULL').join("__");
+    if (!seen.has(groupKey)) {
+      const groupObject = {};
+      groupFields.forEach(f => {
+        groupObject[f] = item[f] ?? null;
+      });
+      result.push(groupObject);
+      seen.add(groupKey);
+    }
+    return result;
+  }, []);
+}
+const toggleGroupField = (field: string) => {
+  setGroupFields(prev =>
+    prev.includes(field)
+      ? prev.filter(f => f !== field) // remove if exists
+      : [...prev, field] // add if not exists
+  );
+};
+
   return (
     <>
       <div className="mb-2 px-4 flex justify-between items-center">
@@ -584,8 +611,8 @@ const moduleCount = [
                 label="DataField"
                 value={selectedField}
                 options={dataPoints.map((dp) => ({
-                  label: dp.dbGroupCode,
-                  value: dp.dbGroupCode,
+                  label: dp.dataPoint,
+                  value: dp.id,
                 }))}
                 onChange={setSelectedField}
               />
@@ -677,7 +704,33 @@ const moduleCount = [
                 <input
                   type="checkbox"
                   checked={showSSS}
-                  onChange={(e) => setShowSSS(e.target.checked)}
+                  onChange={(e) => {
+                     const checked = e.target.checked;
+                    setShowSSS(checked);
+                    if (checked) {
+                      setGroupFields(prev => {
+                        const next = new Set(prev);
+                        next.add("siserialNumber");
+                        next.add("sssiname");
+                        next.add("silayout");
+                        next.add("sidescription");
+
+                        next.add("ssiname");
+                        next.add("sssiname");
+                        return Array.from(next);
+                      });
+                    } else {
+                      setGroupFields(prev => prev.filter(
+                        f=>f!=="siserialNumber"
+                        && f!== "siitem" 
+                        && f!== "silayout" 
+                       && f!== "sidescription" 
+                        && f !== "ssiname" 
+                        && f!=="sssiname"
+                      ));
+                    }
+                  
+                  }}
                 />
                 S/SS/SSS Items
               </label>
@@ -687,7 +740,21 @@ const moduleCount = [
                 <input
                   type="checkbox"
                   checked={showDataPoint}
-                  onChange={(e) => setShowDataPoint(e.target.checked)}
+                  onChange={(e) =>{ 
+                    const checked = e.target.checked;
+                    setShowDataPoint(checked);
+                    if (checked) {
+                      setGroupFields(prev => {
+                        const next = new Set(prev);
+                        next.add("dataPoint");
+                        next.add("serialNumber");
+                        return Array.from(next);
+                      });
+                    } else {
+                      setGroupFields(prev => prev.filter(f => f !== "dataPoint" && f !== "serialNumber"));
+                    }
+
+                  }}
                 />
                 DataField
               </label>
