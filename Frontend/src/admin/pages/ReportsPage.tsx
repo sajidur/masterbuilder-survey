@@ -155,9 +155,9 @@ const ReportsPage: React.FC = () => {
   const hideOptions = [
     { label: "SI", value: "si" },
     { label: "Intro", value: "intro" },
-    { label: "itemType", value: "itemType" },
-    { label: "Button", value: "button" },
-    { label: "Navigation", value: "navigation" },
+    { label: "ItemType", value: "itemType" },
+    { label: "RegName", value: "regName" },
+    { label: "ItemViewEntry", value: "itemViewEntry" },
     { label: "Layout", value: "layout" },
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
@@ -328,6 +328,7 @@ const ReportsPage: React.FC = () => {
   const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+  const subsubitemname = subSubItems.find((s) => s.id === selectedSubSubItem)?.name;
 
   const filteredItemsdata = dataFields.filter((item) => {
     const matchModule = selectedModule ? item.modulename === modulename : true;
@@ -353,6 +354,12 @@ const ReportsPage: React.FC = () => {
     );
   });
 
+const moduleCount = [
+    ...new Set(
+      filteredItemsdata
+        .map((item) => item.modulename)
+    ),
+  ];
   const appsCount = [
     ...new Set(
       filteredItemsdata
@@ -372,6 +379,27 @@ const ReportsPage: React.FC = () => {
       filteredItemsdata
         .filter((item) => !selectedMenu || item.title === menuname)
         .map((item) => item.itemName)
+    ),
+  ];
+   const subitemCount = [
+    ...new Set(
+      filteredItemsdata
+        .filter((item) => !selectedItem || item.itemName === itemname)
+        .map((item) => item.siitem)
+    ),
+  ];
+   const ssitemCount = [
+    ...new Set(
+      filteredItemsdata
+        .filter((item) => !selectedSubItem || item.siitem === subitemname)
+        .map((item) => item.ssiname)
+    ),
+  ];
+   const sssitemCount = [
+    ...new Set(
+      filteredItemsdata
+        .filter((item) => !selectedSubSubItem || item.ssiname === subsubitemname)
+        .map((item) => item.sssiname)
     ),
   ];
   const dpgroupCount = [
@@ -431,7 +459,7 @@ const ReportsPage: React.FC = () => {
 
         <div className="flex flex-wrap gap-2 text-sm">
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Module:</strong> {modules.length}
+            <strong>Module:</strong> {moduleCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>App:</strong> {appsCount.length}
@@ -441,6 +469,18 @@ const ReportsPage: React.FC = () => {
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>Item:</strong> {itemCount.length}
+          </span>
+          
+          <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+            <strong>Sub Item:</strong> {subitemCount.length}
+          </span>
+          
+          <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+            <strong>SS Item:</strong> {ssitemCount.length}
+          </span>
+          
+          <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+            <strong>SSS Item:</strong> {sssitemCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>DFGroup:</strong> {dpgroupCount.length}
@@ -753,21 +793,22 @@ Distinct:
                               Item Type
                             </th>
                           )}
+
+                          {!isHidden("regName") && (
+                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
+                              Reg Name
+                            </th>
+                          )}
+
+                          {!isHidden("itemViewEntry") && (
+                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
+                              View/Entry
+                            </th>
+                          )}
+                          
                           {!isHidden("intro") && (
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
                               Intro
-                            </th>
-                          )}
-
-                          {!isHidden("button") && (
-                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
-                              Button
-                            </th>
-                          )}
-
-                          {!isHidden("navigation") && (
-                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
-                              Navigate
                             </th>
                           )}
                         </>
@@ -826,7 +867,7 @@ Distinct:
                                 Intro
                               </th>
                             )}
-                            {!isHidden("button") && (
+                            {/* {!isHidden("button") && (
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Button
                               </th>
@@ -835,7 +876,7 @@ Distinct:
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Navigate
                               </th>
-                            )}
+                            )} */}
                           </>
                         )}
 
@@ -857,7 +898,7 @@ Distinct:
                                 Layout
                               </th>
                             )}
-
+{/* 
                             {!isHidden("button") && (
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Button
@@ -868,7 +909,7 @@ Distinct:
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Navigate
                               </th>
-                            )}
+                            )} */}
                           </>
                         )}
 
@@ -910,7 +951,7 @@ Distinct:
                           {!isHidden("extraDp") && (
                             <>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                                Tier
+                                Reg DF
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Hide
@@ -982,27 +1023,26 @@ Distinct:
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {f.itemName || ""}
                             </td>
-                            {!isHidden("intro") && (
-                              <td
-                                className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
-                                title={f.itemdescription || ""}
-                              >
-                                {f.itemdescription || ""}
-                              </td>
-                            )}
                             {!isHidden("itemType") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.itemType || ""}
                               </td>
                             )}
-                            {!isHidden("button") && (
+                            {!isHidden("regName") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.itembuttonLabel || ""}
+                                {f.regName || ""}
                               </td>
                             )}
-                            {!isHidden("navigation") && (
+                            {!isHidden("itemViewEntry") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.itemnavigationTo || ""}
+                                {f.itemViewEntry || ""}
+                              </td>
+                            )}
+                            
+                            {!isHidden("intro") && (
+                              <td
+                                className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                {f.itemdescription || ""}                              
                               </td>
                             )}
                           </>
@@ -1058,7 +1098,7 @@ Distinct:
                                   {f.sidescription || ""}
                                 </td>
                               )}
-                              {!isHidden("button") && (
+                              {/* {!isHidden("button") && (
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {f.sibuttonLabel || ""}
                                 </td>
@@ -1067,7 +1107,7 @@ Distinct:
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {f.sinavigationTo || ""}
                                 </td>
-                              )}
+                              )} */}
                             </>
                           )}
 
@@ -1088,7 +1128,7 @@ Distinct:
                                   {f.ssilayout || ""}
                                 </td>
                               )}
-                              {!isHidden("button") && (
+                              {/* {!isHidden("button") && (
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {f.ssibuttonLabel || ""}
                                 </td>
@@ -1097,7 +1137,7 @@ Distinct:
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {f.ssinavigationTo || ""}
                                 </td>
-                              )}
+                              )} */}
                             </>
                           )}
 
@@ -1121,7 +1161,7 @@ Distinct:
                             </>
                           )}
 
-                        {visibleColumns.includes("DataPoint") && (
+                        {visibleColumns.includes("DataField") && (
                           <>
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {f.serialNumber || ""}
@@ -1133,7 +1173,7 @@ Distinct:
                             {!isHidden("extraDp") && (
                               <>
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                  {f.tier}
+                                  {f.regional}
                                 </td>
                                 <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                   {f.isHide === 1 ? "true" : "false"}
