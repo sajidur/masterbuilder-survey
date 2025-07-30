@@ -147,6 +147,9 @@ const ItemManager: React.FC = () => {
   };
 
   const handleDeleteItem = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteItem(id);
       toast.success("Item deleted successfully!");

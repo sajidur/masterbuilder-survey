@@ -175,6 +175,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
   };
 
   const handleDelete = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteDataPointMap(id);
       toast.success("Deleted.");

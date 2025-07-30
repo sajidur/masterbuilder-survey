@@ -121,6 +121,9 @@ const MenuManager: React.FC = () => {
   };
 
   const handleDeleteMenu = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteMenu(id);
       toast.success("Menu deleted successfully!");

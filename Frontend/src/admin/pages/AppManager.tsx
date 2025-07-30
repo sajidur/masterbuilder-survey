@@ -108,6 +108,9 @@ const AppManager: React.FC = () => {
   };
 
   const handleDeleteApp = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteApp(id);
       toast.success("App deleted successfully!");

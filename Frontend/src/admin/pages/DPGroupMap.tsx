@@ -196,6 +196,9 @@ const DPGroupMap:  React.FC = () => {
   };
 
   const handleDeleteField = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteDPGroupMap(id);
       toast.success("DP Group map deleted successfully!");
@@ -347,7 +350,12 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             <label className="block mb-1 font-medium">DFGroup</label>
             <select
               value={dpgroup}
-              onChange={(e) => setFieldGroupCode(e.target.value)}
+              onChange={(e) => {
+                setFieldGroupCode(e.target.value);               
+                const selectedDpGroupObj = fields.find((dpgroup) => dpgroup.id === e.target.value);
+                setTier(selectedDpGroupObj?.tier || "");
+                setSelectedDisplayType(selectedDpGroupObj?.displayType);
+              }}
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">Select DP Group</option>
@@ -377,6 +385,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <label className="block mb-1 font-medium">Tier</label>
           <select
             value={tier}
+            disabled
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
@@ -396,6 +405,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <label className="block mb-1 font-medium">Display Type</label>
           <select
             value={selectedDisplayType}
+            disabled
             onChange={(e) => setSelectedDisplayType(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >

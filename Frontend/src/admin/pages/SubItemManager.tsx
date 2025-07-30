@@ -183,6 +183,9 @@ const SubItemManager: React.FC = () => {
   };
 
   const handleDeleteSubItem = async (id: string) => {
+      const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
+
     try {
       await deleteSubItem(id);
       toast.success("SubItem deleted successfully!");

@@ -913,7 +913,7 @@ export const updateTempleteButtonMap= async (
   }
 ) => {
   try {
-    const response = await apiClient.put(`/survey-module/updateDPGroupMap/${id}`, data);
+    const response = await apiClient.put(`/survey-module/updateTemplateButtonMap/${id}`, data);
     return response.data;
   } catch (error) {
     console.error("Error updating field:", error);

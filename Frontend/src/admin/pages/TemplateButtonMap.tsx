@@ -488,6 +488,7 @@ const TemplateButtonMap: React.FC = () => {
           </label>
           <input
             type="text"
+            disabled
             value={buttonAction}
             onChange={(e) => setButtonAction(e.target.value)}
             placeholder="Enter button name"
@@ -669,7 +670,7 @@ const TemplateButtonMap: React.FC = () => {
 
                 <td className="p-2">{f.displayType}</td>
                 <td className="p-2">{f.serialNumber || "-"}</td>
-                <td className="p-2">{f.buttonName || "-"}</td>
+                <td className="p-2">{f.buttonNameDisplay || "-"}</td>
                 <td className="p-2">{f.buttonAction}</td>
                 <td className="p-2">{f.buttonType }</td>
                 <td className="p-2">{f.navigationTo}</td>

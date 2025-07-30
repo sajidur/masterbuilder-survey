@@ -182,17 +182,21 @@ const DataPointManager: React.FC = () => {
   const handleCancelEdit = () => {
     resetForm();
   };
+  
+const handleDelete = async (id: string) => {
+  const confirm = window.confirm("Are you sure you want to delete this item?");
+  if (!confirm) return;
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteDataPointMap(id);
-      toast.success("Deleted.");
-      const updated = await getAllDataPointsBySP();
-      setDataPoints(updated);
-    } catch {
-      toast.error("Failed to delete.");
-    }
-  };
+  try {
+    await deleteDataPoint(id);
+    toast.success("Deleted.");
+    const updated = await getAllDataPointsBySP();
+    setDataPoints(updated);
+  } catch {
+    toast.error("Failed to delete.");
+  }
+};
+
 
   const modulename = modules.find((module) => module?.id === selectedModule)?.name;
   const appname = apps.find((app) => app.id === selectedApp)?.name;
