@@ -11,7 +11,6 @@ import {
   deleteItem,
   getAllItemsBySP,
 } from "../../apiRequest/api";
-import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Layers } from "lucide-react";
 
@@ -54,11 +53,13 @@ const ItemManager: React.FC = () => {
   const [itemName, setItemName] = useState<string>("");
   const [selectedItemType, setSelectedItemType] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
-  const [buttonType, setButtonType] = useState("");
+  // const [buttonType, setButtonType] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
   const [description, setDescription] = useState("");
   const [editItemId, setEditItemId] = useState<string | null>(null);
-  const [buttonLabel, setButtonLabel] = useState("");
+  // const [buttonLabel, setButtonLabel] = useState("");
+  const [regName, setRegName] = useState("");
+  const [viewEntry, setViewEntry] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,25 +88,6 @@ const ItemManager: React.FC = () => {
     setSelectedMenu("");
   }, [selectedApp]);
 
-  // const filteredApps = apps.filter(
-  //   (app) => app.Module?.name === selectedModule
-  // );
-  // const filteredMenus = menus.filter(
-  //   (menu) =>
-  //     menu.app?.Module?.name === selectedModule &&
-  //     menu.app?.name === selectedApp
-  // );
-
-  // const filteredItems =
-  //   selectedModule || selectedApp || selectedMenu
-  //     ? items.filter(
-  //         (item) =>
-  //           (!selectedModule ||
-  //             item.menu?.app?.Module?.name === selectedModule) &&
-  //           (!selectedApp || item.menu?.app?.name === selectedApp) &&
-  //           (!selectedMenu || item.menu?.title === selectedMenu)
-  //       )
-  //     : items;
 
   const handleAddItem = async () => {
     if (!selectedModule || !selectedApp || !selectedMenu) {
@@ -130,8 +112,8 @@ const ItemManager: React.FC = () => {
       menuId: selectedMenuObj.id,
       itemType: selectedItemType,
       serialNumber,
-      buttonType,
-      buttonLabel,
+      buttonType:regName,
+      buttonLabel:viewEntry,
       navigationTo,
       description,
     };
@@ -356,18 +338,18 @@ const ItemManager: React.FC = () => {
             <option value="IS">IS</option>
           </select>
         </div>
-                <div>
+        <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             Reg Name
           </label>
           <select
-            value={selectedItemType}
-            onChange={(e) => setSelectedItemType(e.target.value)}
+            value={regName}
+            onChange={(e) => setRegName(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Select Reg</option>
-            <option value="GP">Y</option>
-            <option value="IS">N</option>
+            <option value="Y">Y</option>
+            <option value="N">N</option>
           </select>
         </div>
                 <div>
@@ -375,13 +357,13 @@ const ItemManager: React.FC = () => {
             View/Entry
           </label>
           <select
-            value={selectedItemType}
-            onChange={(e) => setSelectedItemType(e.target.value)}
+            value={viewEntry}
+            onChange={(e) => setViewEntry(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Select</option>
-            <option value="GP">View</option>
-            <option value="IS">Entry</option>
+            <option value="View">View</option>
+            <option value="Entry">Entry</option>
           </select>
         </div>
         {/* Description */}
@@ -511,7 +493,7 @@ const ItemManager: React.FC = () => {
                   <td className="p-2">
                       {item.buttonType}
                   </td>
-                  <td className="p-2">{item.navigationTo}</td>
+                  <td className="p-2">{item.buttonLabel}</td>
                   <td className="p-2">{item.description}</td>
 
                   <td className="px-4 py-3 flex gap-3">
@@ -531,8 +513,8 @@ const ItemManager: React.FC = () => {
 
                         setSelectedItemType(item.itemType);
                         setSerialNumber(item.serialNumber);
-                        setButtonType(item.buttonType);
-                        setButtonLabel(item.buttonLabel);
+                        setRegName(item.buttonType);
+                        setViewEntry(item.buttonLabel);
                         setNavigationTo(item.navigationTo);
                         setDescription(item.description);
                       }}
