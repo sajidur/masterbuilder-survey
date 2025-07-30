@@ -356,6 +356,34 @@ const ItemManager: React.FC = () => {
             <option value="IS">IS</option>
           </select>
         </div>
+                <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Reg Name
+          </label>
+          <select
+            value={selectedItemType}
+            onChange={(e) => setSelectedItemType(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select Reg</option>
+            <option value="GP">Y</option>
+            <option value="IS">N</option>
+          </select>
+        </div>
+                <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            View/Entry
+          </label>
+          <select
+            value={selectedItemType}
+            onChange={(e) => setSelectedItemType(e.target.value)}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select</option>
+            <option value="GP">View</option>
+            <option value="IS">Entry</option>
+          </select>
+        </div>
         {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -462,10 +490,10 @@ const ItemManager: React.FC = () => {
 
                 <th className="p-2 border-b text-left">Item</th>
                 <th className="p-2 border-b text-left">Item Type</th>
+              
+                <th className="p-2 border-b text-left">Reg Name</th>
+                <th className="p-2 border-b text-left">View/Entry</th>
                 <th className="p-2 border-b text-left">Intro</th>
-
-                <th className="p-2 border-b text-left">P/S Button</th>
-                <th className="p-2 border-b text-left">Navigate To</th>
                 <th className="p-2 border-b text-left">Actions</th>
               </tr>
             </thead>
@@ -479,16 +507,12 @@ const ItemManager: React.FC = () => {
 
                   <td className="p-2">{item.name}</td>
                   <td className="p-2">{item.itemType}</td>
-                  <td className="p-2">{item.description}</td>
-
+                  
                   <td className="p-2">
-                    {item.buttonType === "P-Button"
-                      ? `P-[${item.buttonLabel || ""}]`
-                      : item.buttonType === "S-Button"
-                      ? `S-[${item.buttonLabel || ""}]`
-                      : ""}
+                      {item.buttonType}
                   </td>
                   <td className="p-2">{item.navigationTo}</td>
+                  <td className="p-2">{item.description}</td>
 
                   <td className="px-4 py-3 flex gap-3">
                     <button

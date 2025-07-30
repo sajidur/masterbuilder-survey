@@ -1,0 +1,9 @@
+ALTER TABLE `mukut_feature_db`.`field` 
+CHANGE COLUMN `description` `description` VARCHAR(255) NULL ;
+ALTER TABLE `mukut_feature_db`.`field` 
+CHANGE COLUMN `name` `name` VARCHAR(255) NULL ;
+
+ALTER TABLE `mukut_feature_db`.`field` 
+CHANGE COLUMN `dataType` `dataType` VARCHAR(255) NULL ,
+CHANGE COLUMN `isRequired` `isRequired` TINYINT NULL ;
+

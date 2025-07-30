@@ -9,7 +9,7 @@ export const tiers = [
 export const regionals = [
   // { label: 'None', value: '0' },
   { label: 'All', value: 'All' },
-  { label: 'Reg', value: 'Regional' },
+  { label: 'Reg', value: 'Reg' },
 ];
 export const layoutOptions = [
   { label: 'Tab', value: 'Tab' },

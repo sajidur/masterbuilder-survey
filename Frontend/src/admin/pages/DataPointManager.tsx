@@ -479,7 +479,7 @@ const DataPointManager: React.FC = () => {
                         setDataType(dp.dataType);
                         setIsRequired(!!dp.isRequired);
                         setIsHide(!!dp.isHide);
-
+                        setRegional(dp.regional);
                         const item = dp.Item;
                         const menu = item?.menu;
                         const app = menu?.app;

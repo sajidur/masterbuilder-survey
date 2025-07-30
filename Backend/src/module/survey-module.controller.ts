@@ -43,6 +43,9 @@ import { TotalCount } from './module.dto/totalCount.dto';
 import { FieldDto, CreateFieldDto } from './module.dto/field.dto';
 import { CreateDataPointMapDto, DataPointMapDto } from './module.dto/dataPointmap.dto';
 import { CreateDPGroupMapDto, DPGroupMapDto } from './module.dto/dpgroupmap';
+import { ButtonDto, CreateButtonDto } from './module.dto/button.dto';
+import { CreateTemplateButtonMapDto, TemplateButtonMapDto } from './module.dto/templatebuttonmap.dto';
+import { CreateTemplateDto } from 'src/Template/dtos/template.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -576,5 +579,82 @@ async GetDPGroupMapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
   @ApiResponse({ status: 204, description: 'DataPointMap deleted' })
   deleteDPGroupMap(@Param('id') id: string): Promise<{ status: string; message: string }> {
     return this.moduleService.deleteDPGroupMap(id);
+  }
+
+  
+  @Post('createButton')
+  @ApiBody({ type: CreateButtonDto })
+  @ApiResponse({ status: 201, type: CreateButtonDto })
+  createButton(
+    @Body() createDto: CreateButtonDto,
+    @Req() req: Request,
+  ): Promise<CreateButtonDto | null> {
+   const user = req['user'];
+   console.log(user);
+    return this.moduleService.createButton(createDto, user);
+  }
+
+  @Put('updateButton/:id')
+  @ApiBody({ type: CreateButtonDto })
+  @ApiResponse({ status: 200, type: CreateButtonDto })
+  updateButton(
+    @Param('id') id: string,
+    @Body() updateDto: CreateButtonDto,
+    @Req() req: Request
+  ): Promise<CreateButtonDto | null> {
+    const user = req['user'];
+    return this.moduleService.updateButton(id, updateDto, user);
+  }
+  @Delete('deleteButton/:id')
+  @ApiResponse({ status: 204, description: 'DataPointMap deleted' })
+  deleteButton(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deleteButton(id);
+  }
+
+  @Get('allButtons')
+  @ApiResponse({ status: 200, type: [ButtonDto] })
+  async allButtons(@Req() req: Request): Promise<ButtonDto[]> {
+  const user = req['user'];
+  console.log(user);
+    return this.moduleService.findAllButton(); // no id needed
+  }
+
+
+  
+  @Post('createTemplateButtonMap')
+  @ApiBody({ type: CreateTemplateButtonMapDto })
+  @ApiResponse({ status: 201, type: CreateTemplateButtonMapDto })
+  createTemplateButtonMap(
+    @Body() createDto: CreateTemplateButtonMapDto,
+    @Req() req: Request,
+  ): Promise<CreateTemplateButtonMapDto | null> {
+   const user = req['user'];
+   console.log(user);
+    return this.moduleService.createTemplateButtonMap(createDto, user);
+  }
+
+  @Put('updateTemplateButtonMap/:id')
+  @ApiBody({ type: CreateTemplateButtonMapDto })
+  @ApiResponse({ status: 200, type: CreateTemplateButtonMapDto })
+  updateTemplateButtonMap(
+    @Param('id') id: string,
+    @Body() updateDto: CreateTemplateButtonMapDto,
+    @Req() req: Request
+  ): Promise<CreateTemplateButtonMapDto | null> {
+    const user = req['user'];
+    return this.moduleService.updateTemplateButtonMap(id, updateDto, user);
+  }
+  @Delete('deleteTemplateButtonMap/:id')
+  @ApiResponse({ status: 204, description: 'DataPointMap deleted' })
+  deleteTemplateButtonMap(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deleteTemplateButton(id);
+  }
+
+  @Get('allTemplateButtonMap')
+  @ApiResponse({ status: 200, type: [ButtonDto] })
+  async allTemplateButtonMap(@Req() req: Request): Promise<TemplateButtonMapDto[]> {
+  const user = req['user'];
+  console.log(user);
+    return this.moduleService.findAllTemplateButton(); // no id needed
   }
 }

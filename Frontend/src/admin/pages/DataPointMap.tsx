@@ -120,6 +120,8 @@ const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
 const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
 const filteredDpGroup = dpGroups.filter((dpgroup) => dpgroup.Item?.id === selectedItem);
 const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
+//const filteredTier = tiers.filter((t) => t.value === selectedDpGroupObj.tier);
+//setTier(selectedDpGroupObj?.tier? selectedDpGroupObj.tier : "");
 
   const resetForm = () => {
     // setSelectedModule("");
@@ -310,7 +312,12 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">DF Group</label>
             <select
               value={selectedDPGroup}
-              onChange={(e) => setDpGroup(e.target.value)}
+              onChange={(e) => {
+                setDpGroup(e.target.value);
+                const selectedDpGroupObj = dpGroups.find((dpgroup) => dpgroup.id === e.target.value);
+                setTier(selectedDpGroupObj?.tier || "");
+              }
+              }
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">Select Group</option>
@@ -330,6 +337,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             value={tier}
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
+            disabled
           >
             <option value="">Choose Region</option>
             {tiers.map((tierOption) => (
@@ -402,6 +410,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
+                 <th className="p-2 border-b text-left">Mod</th>
+                <th className="p-2 border-b text-left">App</th>
+                <th className="p-2 border-b text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">DF Group</th>
               {/* <th className="p-2 text-left">Serial</th> */}
@@ -416,6 +427,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
           <tbody>
             {filteredItemsdata.map((dp) => (
               <tr key={dp.id} className="border-t">
+                 <td className="p-2">{dp.moduleName}</td>
+                  <td className="p-2">{dp.appName}</td>
+                  <td className="p-2">{dp.menuTitle}</td>
                 <td className="p-2">{dp.itemName}</td>
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}

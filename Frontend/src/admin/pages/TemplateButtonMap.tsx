@@ -18,6 +18,11 @@ import {
   addDpGroupMap,
   deleteDPGroupMap,
   getAllDPGroupmapsBySP,
+  getAllButtons,
+  addTempleteButtonMap,
+  updateTempleteButtonMap,
+  getAllTemplateButtonMapBySP,
+  deleteTemplateButtonMap,
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { tiers } from "./data";
@@ -80,7 +85,8 @@ const TemplateButtonMap: React.FC = () => {
   const [subSubItems, setSubSubItems] = useState<SubSubItem[]>([]);
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
-  const [dpgroupmaps, setDpGroupMaps] = useState<Field[]>([]);
+  const [templateButtonMaps, setTemplateButtonMaps] = useState<Field[]>([]);
+  const [buttons, setButtons] = useState<ButtonEntry[]>([]);
 
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
@@ -116,7 +122,8 @@ const TemplateButtonMap: React.FC = () => {
           subSub,
           subSubSub,
           field,
-          dpgroupmaps,
+          buttons,
+          templateButtonMaps,
         ] = await Promise.all([
           getAllModules(),
           getAllApps(),
@@ -126,7 +133,8 @@ const TemplateButtonMap: React.FC = () => {
           getAllSubSubitems(),
           getAllSubSubSubitems(),
           getAllFieldsBySP(),
-          getAllDPGroupmapsBySP(),
+          getAllButtons(),
+          getAllTemplateButtonMapBySP(),
         ]);
         setModules(mod);
         setApps(app);
@@ -136,7 +144,8 @@ const TemplateButtonMap: React.FC = () => {
         setSubSubItems(subSub);
         setSubSubSubItems(subSubSub);
         setFields(field);
-        setDpGroupMaps(dpgroupmaps);
+        setButtons(buttons);
+        setTemplateButtonMaps(templateButtonMaps);
       } catch (error) {
         toast.error("Failed to fetch data.");
       }
@@ -157,39 +166,50 @@ const TemplateButtonMap: React.FC = () => {
       return;
     }
     const payload: {
-      itemId: string;
-      // displayType: string;
-      serialNumber: string;
-      dpGroupId: string;
-      tier?: string;
-      // remarks: string;
-      subItemId?: string | null;
-      subSubItemId?: string | null;
-      subSubSubItemId?: string | null;
+     itemId: string;
+    subitemId: string;
+    subsubitemId: string;
+    subsubsubitemId: string;
+    dfGroupId: string;
+    serialNumber: string;
+    buttonName: string;
+    buttonAction: string;
+    buttonType: string;
+    navigationTo: string;
+    userId:string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
+    subItemId: any;
+    subSubItemId: any;
+    subSubSubItemId: any;
     } = {
       itemId: selectedItem,
-      displayType: "", //selectedDisplayType,
-      serialNumber,
-      dpGroupId: dpgroup,
-      tier: "0",
-      // remarks,
-      subItemId: selectedSubItem || null,
-      subSubItemId: selectedSubSubItem || null,
-      subSubSubItemId: selectedSubSubSubItem || null,
+      subitemId: selectedSubItem,
+      subsubitemId: selectedSubSubItem,
+      subsubsubitemId: selectedSubSubSubItem,
+      dfGroupId: dpgroup,
+      serialNumber: serialNumber,
+      buttonName: buttonLabel,
+      buttonAction: buttonAction,
+      buttonType: buttonType,
+      navigationTo: navigationTo,
+      
     };
 
     try {
       if (editFieldId) {
-        await updateDpGroupMap(editFieldId, payload);
+        await updateTempleteButtonMap(editFieldId, payload);
         toast.success("DP updated successfully!");
-        const updatedFields = await getAllDPGroupmapsBySP();
-        setDpGroupMaps(updatedFields);
+        const updatedFields = await getAllTemplateButtonMapBySP();
+        setTemplateButtonMaps(updatedFields);
         setEditFieldId(null);
       } else {
-        await addDpGroupMap(payload);
+        await addTempleteButtonMap(payload);
         toast.success("DP added successfully!");
-        const updatedFields = await getAllDPGroupmapsBySP();
-        setDpGroupMaps(updatedFields);
+        const updatedFields = await getAllTemplateButtonMapBySP();
+        setTemplateButtonMaps(updatedFields);
       }
 
       // Reset form
@@ -198,7 +218,7 @@ const TemplateButtonMap: React.FC = () => {
       setSelectedSubSubSubItem("");
 
       // Refresh list
-      const updated = await getAllFieldsBySP();
+      const updated = await getAllTemplateButtonMapBySP();
       setFields(updated);
     } catch (e) {
       toast.error("Failed to save DP Group map.");
@@ -207,10 +227,10 @@ const TemplateButtonMap: React.FC = () => {
 
   const handleDeleteField = async (id: string) => {
     try {
-      await deleteDPGroupMap(id);
+      await deleteTemplateButtonMap(id);
       toast.success("DP Group map deleted successfully!");
-      const updatedFields = await getAllDPGroupmapsBySP();
-      setDpGroupMaps(updatedFields);
+      const updatedFields = await getAllTemplateButtonMapBySP();
+      setTemplateButtonMaps(updatedFields);
     } catch (error) {
       toast.error("Failed to delete field.");
     }
@@ -301,7 +321,6 @@ const TemplateButtonMap: React.FC = () => {
             const selectedItemObj = items.find((i) => i.id === val);
             if (selectedItemObj) {
               const prefix = `${selectedItemObj.name}/`;
-              setFieldGroupPrefix(prefix);
               setFieldGroupCode(prefix); // sets full fieldGroupCode
             }
           }}
@@ -345,7 +364,12 @@ const TemplateButtonMap: React.FC = () => {
           <label className="block mb-1 font-medium">DPGroup</label>
           <select
             value={dpgroup}
-            onChange={(e) => setFieldGroupCode(e.target.value)}
+            onChange={(e) => {
+              setFieldGroupCode(e.target.value);
+              const selectedDpGroupObj = fields.find((dpgroup) => dpgroup.id === e.target.value);
+              setTier(selectedDpGroupObj?.tier || "");
+              setSelectedDisplayType(selectedDpGroupObj?.displayType || "");
+            }}
             className="w-full border px-3 py-2 rounded"
           >
             <option value="">Select DP Group</option>
@@ -374,6 +398,7 @@ const TemplateButtonMap: React.FC = () => {
           <label className="block mb-1 font-medium">Tier</label>
           <select
             value={tier}
+            disabled
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
@@ -391,6 +416,7 @@ const TemplateButtonMap: React.FC = () => {
           <label className="block mb-1 font-medium">Display Type</label>
           <select
             value={selectedDisplayType}
+            disabled
             onChange={(e) => setSelectedDisplayType(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
@@ -417,9 +443,9 @@ const TemplateButtonMap: React.FC = () => {
           </div>
         )}
 
-<div></div>
-<div></div>
-<div></div>
+      <div></div>
+      <div></div>
+      <div></div>
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -434,16 +460,24 @@ const TemplateButtonMap: React.FC = () => {
         
         {/* Button Name */}
         <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Button Name
-          </label>
-          <input
-            type="text"
+          <label className="block mb-1 font-medium"> Button Name</label>
+          <select
             value={buttonLabel}
-            onChange={(e) => setButtonLabel(e.target.value)}
-            placeholder="Enter button name"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
-          />
+            
+            onChange={(e) =>{
+               setButtonLabel(e.target.value);
+               const btnObj = buttons.find((btn) => btn.id ===e.target.value);
+               setButtonAction(btnObj.buttonAction);
+            }}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Select Button</option>
+            {buttons.map((dp) => (
+              <option key={dp.id} value={dp.id}>
+                {dp.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         
@@ -595,9 +629,10 @@ const TemplateButtonMap: React.FC = () => {
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              {/* <th className="p-2 text-left">Mod</th>
+              <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
-              <th className="p-2 text-left">Menu</th> */}
+              <th className="p-2 text-left">Menu</th>
+
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
@@ -607,21 +642,22 @@ const TemplateButtonMap: React.FC = () => {
               <th className="p-2 text-left">DF Group</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
-              {/* <th className="p-2 text-left">Remarks</th> */}
-              {/* <th className="p-2 text-left">Required</th> */}
-              {/* <th className="p-2 text-left">Hide</th> */}
-              {/* <th className="p-2 text-left">Data Type</th> */}
+              <th className="p-2 text-left">SI</th>
+              <th className="p-2 text-left">Button Name</th>
+              <th className="p-2 text-left">Button Action</th>
+              <th className="p-2 text-left">Button Type</th>
+              <th className="p-2 text-left">Navigation To</th>
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
-            {dpgroupmaps.map((f) => (
+            {templateButtonMaps.map((f) => (
               <tr key={f.id} className="border-t">
-                {/* <td className="p-2">
+                <td className="p-2">
                   {f.moduleName || "—"}
                 </td>
                 <td className="p-2">{f.appName || "—"}</td>
-                <td className="p-2">{f.menuTitle || "—"}</td> */}
+                <td className="p-2">{f.menuTitle || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
                 <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>
@@ -632,17 +668,16 @@ const TemplateButtonMap: React.FC = () => {
                 <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>
-
-                {/* <td className="p-2">{f.remarks || "-"}</td> */}
-                {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
-                {/* <td className="p-2">{f.isHide ? "Yes" : "No"}</td> */}
-                {/* <td className="p-2">{f.dataType}</td> */}
+                <td className="p-2">{f.serialNumber || "-"}</td>
+                <td className="p-2">{f.buttonName || "-"}</td>
+                <td className="p-2">{f.buttonAction}</td>
+                <td className="p-2">{f.buttonType }</td>
+                <td className="p-2">{f.navigationTo}</td>
 
                 <td className="px-4 py-3 flex gap-3">
                   <button
                     onClick={() => {
                       setEditFieldId(f.id || "");
-                      // setFieldName(f.name);
                       // setSelectedDisplayType(f.displayType);
                       // setSelectedFieldType(f.dataType);
                       // setIsRequired(f.isRequired);
@@ -653,10 +688,18 @@ const TemplateButtonMap: React.FC = () => {
                       setSelectedApp(f.appid || "");
                       setSelectedMenu(f.menuid || "");
                       setSelectedItem(f.itemId || "");
-                      setFieldGroupCode(f.dpGroupId || "");
+                      setFieldGroupCode(f.dfGroupId);
+                      const selectedDpGroupObj = fields.find((dpgroup) => dpgroup.id ===f.dfGroupId);
+                      setTier(selectedDpGroupObj?.tier || "");
+                      setSelectedDisplayType(selectedDpGroupObj?.displayType || "");
                       setSelectedSubItem(f.subitemid || "");
                       setSelectedSubSubItem(f.subsubitemid || "");
                       setSelectedSubSubSubItem(f.subsubsubitemid || "");
+                      setSerialNumber(f.serialNumber || "");
+                      setButtonLabel(f.buttonName || "");
+                      setButtonAction(f.buttonAction || "");
+                      setButtonType(f.buttonType || "");
+                      setNavigationTo(f.navigationTo || "");
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >
@@ -710,3 +753,4 @@ const Dropdown = ({
 );
 
 export default TemplateButtonMap;
+

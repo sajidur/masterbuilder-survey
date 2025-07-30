@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { addbutton, getAllButtons, updateButton } from "../../apiRequest/api";
 
 interface ButtonEntry {
   id: number;
@@ -16,6 +17,23 @@ const Button: React.FC = () => {
   const [buttonAction, setButtonAction] = useState("");
   const [editId, setEditId] = useState<number | null>(null);
 
+  
+    useEffect(() => {
+      const fetchInitialData = async () => {
+        try {
+          const [
+            allButtons
+          ] = await Promise.all([
+            getAllButtons()
+          ]);
+          setButtons(allButtons);
+        } catch (error) {
+          toast.error("Failed to load data.");
+        }
+      };
+  
+      fetchInitialData();
+    }, []);
   const resetForm = () => {
     setSerialNumber("");
     setButtonName("");
@@ -23,10 +41,24 @@ const Button: React.FC = () => {
     setEditId(null);
   };
 
-  const handleAddButton = () => {
+  const handleAddButton = async () => {
     const trimmedName = buttonName.trim();
     const trimmedAction = buttonAction.trim();
     const trimmedSerial = serialNumber.trim();
+
+   const payload: {
+       serialNumber: string;
+        name: string;
+        description: string;
+        buttonAction: string;
+    } = {
+      serialNumber: serialNumber,
+      name: buttonName, //selectedDisplayType,
+      // serialNumber,
+      buttonAction:buttonAction,
+      description: "", // Assuming description is not used in this context
+
+    };
 
     if (!trimmedSerial || !trimmedName || !trimmedAction) {
       toast.warn("Please fill all fields.");
@@ -46,18 +78,16 @@ const Button: React.FC = () => {
             : btn
         )
       );
+       await updateButton(editId, payload);
       toast.success("Button updated!");
     } else {
-      const newEntry: ButtonEntry = {
-        id: Date.now(),
-        serialNumber: trimmedSerial,
-        name: trimmedName,
-        action: trimmedAction,
-      };
-      setButtons((prev) => [...prev, newEntry]);
+      await addbutton(payload);
+    
       toast.success("Button added!");
     }
-
+    await getAllButtons().then((data) => {
+      setButtons(data);
+    });
     resetForm();
   };
 
@@ -160,14 +190,14 @@ const Button: React.FC = () => {
                       {btn.serialNumber}
                     </td>
                     <td className="px-4 py-3 text-gray-800">{btn.name}</td>
-                    <td className="px-4 py-3 text-gray-800">{btn.action}</td>
+                    <td className="px-4 py-3 text-gray-800">{btn.buttonAction}</td>
                     <td className="px-4 py-3 flex gap-3">
                       <button
                         onClick={() => {
                           setEditId(btn.id);
                           setSerialNumber(btn.serialNumber);
                           setButtonName(btn.name);
-                          setButtonAction(btn.action);
+                          setButtonAction(btn.buttonAction);
                         }}
                         className="text-blue-600 hover:text-blue-800"
                       >

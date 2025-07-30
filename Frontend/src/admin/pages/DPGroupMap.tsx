@@ -291,7 +291,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             const selectedItemObj = items.find((i) => i.id === val);
             if (selectedItemObj) {
               const prefix = `${selectedItemObj.name}/`;
-              setFieldGroupPrefix(prefix);
+             // setFieldGroupPrefix(prefix);
               setFieldGroupCode(prefix); // sets full fieldGroupCode
             }
           }}
@@ -525,9 +525,9 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              {/* <th className="p-2 text-left">Mod</th>
+              <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
-              <th className="p-2 text-left">Menu</th> */}
+              <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
@@ -547,11 +547,11 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <tbody>
             {dpgroupmaps.map((f) => (
               <tr key={f.id} className="border-t">
-                {/* <td className="p-2">
+                <td className="p-2">
                   {f.moduleName || "—"}
                 </td>
                 <td className="p-2">{f.appName || "—"}</td>
-                <td className="p-2">{f.menuTitle || "—"}</td> */}
+                <td className="p-2">{f.menuTitle || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
                 <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>

@@ -73,6 +73,11 @@ import { CreateDataPointMapDto, DataPointMapDto } from './module.dto/dataPointma
 import { DataPointMap } from './module.entity/dataPointMap.entity';
 import { DPGroupMap } from './module.entity/dpgroupMap.entity';
 import { CreateDPGroupMapDto, DPGroupMapDto } from './module.dto/dpgroupmap';
+import { ButtonDto, CreateButtonDto } from './module.dto/button.dto';
+import { Button } from './module.entity/button.entity';
+import { CreateTemplateDto } from 'src/Template/dtos/template.dto';
+import { TemplateButtonMap } from './module.entity/TemplateButtonMap.entity';
+import { CreateTemplateButtonMapDto, TemplateButtonMapDto } from './module.dto/templatebuttonmap.dto';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -98,6 +103,10 @@ export class SurveyModuleService {
     private readonly dataPointMapRepo: Repository<DataPointMap>,
     @InjectRepository(DPGroupMap)
     private readonly dpGroupMapRepo: Repository<DPGroupMap>,
+    @InjectRepository(Button)
+    private readonly buttonRepo: Repository<Button>,
+    @InjectRepository(TemplateButtonMap)
+    private readonly templateButtonMapRepo: Repository<TemplateButtonMap>,
   ) {}
   //subsubitem
   async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
@@ -175,117 +184,6 @@ export class SurveyModuleService {
     };
   }
 
-  // async findAllSubSubItem(): Promise<SubSubItemDto[]> {
-  //   const [subSubItems, subItems, items, menus, apps, modules] =
-  //     await Promise.all([
-  //       this.subSubItemRepository.find({
-  //         order: {
-  //           serialNumber: 'ASC',
-  //         },
-  //       }),
-  //       this.subItemRepository.find(),
-  //       this.itemRepository.find(),
-  //       this.menuRepository.find(),
-  //       this.appRepository.find(),
-  //       this.modulesRepository.find(),
-  //     ]);
-
-  //   if (!subSubItems.length) {
-  //     console.log('No sub-sub-items found.');
-  //     return [];
-  //   }
-
-  //   // Build maps for quick lookup
-  //   const appMap = new Map(apps.map((app) => [app.id, app]));
-  //   const moduleMap = new Map(modules.map((mod) => [mod.id, mod]));
-
-  //   const menuDtoMap = new Map<string, MenuDto>();
-  //   for (const menu of menus) {
-  //     const app = appMap.get(menu.appId);
-  //     const module = app?.moduleId ? moduleMap.get(app.moduleId) : null;
-
-  //     const moduleDto: ModuleDto | null = module
-  //       ? {
-  //           id: module.id,
-  //           name: module.name,
-  //           tier: module.tier,
-  //           serialNumber: module.serialNumber,
-  //         }
-  //       : null;
-
-  //     const appDto: AppDto | null = app
-  //       ? {
-  //           id: app.id,
-  //           name: app.name,
-  //           tier: app.tier,
-  //           serialNumber: app.serialNumber,
-  //           Module: moduleDto,
-  //         }
-  //       : null;
-
-  //     menuDtoMap.set(menu.id, {
-  //       id: menu.id,
-  //       title: menu.title,
-  //       tier: menu.tier,
-  //       serialNumber: menu.serialNumber,
-  //       app: appDto,
-  //     });
-  //   }
-
-  //   const itemDtoMap = new Map<string, ItemDto>();
-  //   for (const item of items) {
-  //     const menuDto = menuDtoMap.get(item.menuId);
-  //     if (!menuDto) continue;
-
-  //     itemDtoMap.set(item.id, {
-  //       id: item.id,
-  //       name: item.name,
-  //       tier: item.tier,
-  //       serialNumber: item.serialNumber,
-  //       buttonType: item.buttonType,
-  //       buttonLabel: item.buttonLabel,
-  //       navigationTo: item.navigationTo,
-  //       description: item.description,
-  //       menu: menuDto,
-  //     });
-  //   }
-
-  //   const subItemDtoMap = new Map<string, SubItemDto>();
-  //   for (const subItem of subItems) {
-  //     if (!subItem.itemId) {
-  //       console.warn(`SubItem ${subItem.id} has no itemId.`);
-  //       continue;
-  //     }
-
-  //     const itemDto = itemDtoMap.get(subItem.itemId);
-  //     if (!itemDto) {
-  //       console.warn(
-  //         `Item with ID ${subItem.itemId} not found for SubItem ${subItem.id}`,
-  //       );
-  //       continue;
-  //     }
-
-  //     subItemDtoMap.set(subItem.id, {
-  //       id: subItem.id,
-  //       name: subItem.name,
-  //       tier: subItem.tier,
-  //       serialNumber: subItem.serialNumber,
-  //       buttonType: subItem.buttonType,
-  //       layout: subItem.layout,
-  //       buttonLabel: subItem.buttonLabel,
-  //       navigationTo: subItem.navigationTo,
-  //       description: subItem.description,
-  //       itemId: subItem.itemId,
-  //       item: itemDto,
-  //     });
-  //   }
-
-  //   return Promise.all(
-  //     subSubItems.map((subSubItem) =>
-  //       this.toSubSubItemDto1(subSubItem, subItemDtoMap),
-  //     ),
-  //   );
-  // }
 async findAllSubSubItem(): Promise<SubSubItemDto[]> {
   const [subSubItems, subItems, items, menus, apps, modules] =
     await Promise.all([
@@ -527,23 +425,6 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     }
   }
 
-  //field
-  // async toFieldDto(field: Field): Promise<FieldDto> {
-  //   const subSubItem1 = await this.subSubItemRepository.findOneBy({
-  //     id: field.subSubSubItemId,
-  //   });
-  //   if (!subSubItem1) {
-  //     throw new NotFoundException(
-  //       `SubSubItem with ID ${field.subSubSubItemId} not found`,
-  //     );
-  //   }
-  //   return {
-  //     id: field.id,
-  //     name: field.name,
-  //     subSubSubItemId: field.subSubSubItemId,
-  //     subSubSubItem: await this.toSubSubItemDto(subSubItem1),
-  //   };
-  // }
 async toFieldDto1(
   field: Field
 ): Promise<FieldDto> {
@@ -649,53 +530,9 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
   return result;
 }
 
-
-
-  //   async findAllFields(): Promise<FieldDto[]> {
-  //   const fields = await this.fieldRepository.find();
-  //   return Promise.all(fields.map((field) => this.toFieldDto(field)));
-  // }
-
-  // async findOneField(id: string): Promise<FieldDto | null> {
-  //   const field = await this.fieldRepository.findOne({
-  //     where: { id }
-  //   });
-
-  //   return field ? this.toFieldDto(field) : null;
-  // }
-
-  // async createField(field: CreateFieldDto): Promise<FieldDto> {
-  //   var newField=new Field();
-  //   newField.name=field.name;
-  //   newField.subSubItemId=field.subSubItemId;
-  //   const data = await this.fieldRepository.save(newField);
-  //   return await this.toFieldDto(data);
-  // }
-
-  // async updateField(id: string, updated: CreateFieldDto): Promise<FieldDto> {
-  //   const existing = await this.fieldRepository.findOneBy({ id });
-  //   if (!existing) {
-  //     throw new NotFoundException(`Field with ID ${id} not found`);
-  //   }
-
-  //  existing.name=updated.name;
-  //  existing.subSubItemId=updated.subSubItemId;
-  //   const saved = await this.fieldRepository.save(existing);
-  //   return await this.toFieldDto(saved);
-  // }
-
   async findOneField(id: string): Promise<FieldDto | null> {
     const field = await this.fieldRepository.findOne({ where: { id } });
     if (!field) return null;
-
-    // const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
-    //   id: field.subSubSubItemId,
-    // });
-    // if (!subSubSubItem) {
-    //   throw new NotFoundException(
-    //     `SubSubItem with ID ${field.subSubSubItemId} not found`,
-    //   );
-    // }
 
     return await this.toFieldDto1(field);
   }
@@ -754,25 +591,6 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
 
     const saved = await this.fieldRepository.save(existing);
 
-    // const subSubSubItem = await this.subSubSubItemRepo.findOneBy({
-    //   id: saved.subSubSubItemId,
-    // });
-    // if (!subSubSubItem) {
-    //   throw new NotFoundException(
-    //     `SubSubSubItem with ID ${saved.subSubSubItemId} not found`,
-    //   );
-    // }
-
-    // return {
-    //   id: saved.id,
-    //   remarks: saved.remarks,
-    //   fieldGroupCode: saved.fieldGroupCode,
-    //   tier: saved.tier,
-    //   displayType: saved.displayType,
-    //   serialNumber: saved.serialNumber,
-    //   subSubSubItemId: saved.subSubSubItemId,
-    //   subSubSubItem: await this.toSubSubSubItemDto(subSubSubItem),
-    // };
     return await this.toFieldDto1(saved);
   }
 
@@ -807,10 +625,6 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     }
   }
 
-  //subitem
-  //    async findAllSubItems(): Promise<SubItem[]> {
-  //   return this.subItemRepository.find();
-  // }
   private async toSubItemDto1(
     subItem: SubItem,
     itemDtoMap: Map<string, ItemDto>,
@@ -3015,4 +2829,203 @@ async ReportBySP(): Promise<DataPointDto[]> {
   return rows;
 }
 
+////////-------------button
+  async createButton(dto: CreateButtonDto, user: User): Promise<Button> {
+    const userId = user.id;
+    const module = this.buttonRepo.create({
+      name: dto.name,
+      userId: userId,
+      description: "",
+      buttonAction: dto.buttonAction,
+      createdAt: new Date(),
+      createdBy: user.username,
+      serialNumber: dto.serialNumber,
+      updatedAt: new Date(),
+      updatedBy: user.username,
+    });
+
+    return this.buttonRepo.save(module);
+  }
+
+    async updateButton(
+    id: string,
+    dto: CreateButtonDto,
+    user: any,
+  ): Promise<CreateButtonDto> {
+    const existing = await this.buttonRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    Object.assign(existing, dto, {
+      userId: user?.id,
+      name: dto.name,
+      buttonAction: dto.buttonAction,
+      serialnumber: dto.serialNumber,
+      updatedAt:Date(),
+      updatedBy: user?.username
+    });
+
+    const updated = await this.buttonRepo.save(existing);
+    return this.toButtonDto(updated);
+  }
+
+  private async toButtonDto(entity: Button): Promise<ButtonDto> {
+  return {
+    id: entity.id,
+    name: entity.name,
+    buttonAction: entity.buttonAction,
+    description: entity.description,
+    serialNumber: entity.serialNumber,
+    createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
+    createdBy: entity.createdBy,
+    updatedBy: entity.updatedBy,
+    userId: entity.userId,
+  } as ButtonDto;
+}
+async findAllButton(): Promise<ButtonDto[]> {
+  const dataPoints = await this.buttonRepo.find({
+    order: {
+      serialNumber: 'ASC',
+    },
+  });
+
+  if (!dataPoints.length) {
+    console.log('No data points found.');
+    return [];
+  }
+
+  const dtoList = await Promise.all(
+    dataPoints.map((dp) => this.toButtonDto(dp)),
+  );
+  return dtoList;
+}
+  async deleteButton(
+    id: string,
+  ): Promise<{ status: string; message: string }> {
+    const existing = await this.buttonRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    await this.buttonRepo.delete(id);
+    return {
+      status: 'success',
+      message: `DataPoint ${id} deleted successfully.`,
+    };
+  }
+///////////////------button end
+///////-------------template button
+async createTemplateButtonMap(dto: CreateTemplateButtonMapDto, user: User): Promise<TemplateButtonMap> {
+  const userId = user.id;
+
+  const module = this.templateButtonMapRepo.create({
+    itemId: dto.itemId,
+    dfGroupId: dto.dfGroupId,
+    subitemId: dto.subitemId,
+    subsubitemId: dto.subsubitemId,
+    subsubsubitemId: dto.subsubsubitemId,
+    serialNumber: dto.serialNumber,
+    buttonName: dto.buttonName,
+    buttonAction: dto.buttonAction,
+    buttonType: dto.buttonType,
+    navigationTo: dto.navigationTo,
+    userId: userId,
+    createdBy: user.username,
+    updatedBy: user.username,
+    // createdAt/updatedAt auto-handled by decorators
+  });
+
+  return this.templateButtonMapRepo.save(module);
+}
+
+
+async updateTemplateButtonMap(
+  id: string,
+  dto: CreateTemplateButtonMapDto,
+  user: any,
+): Promise<TemplateButtonMap> {
+  const existing = await this.templateButtonMapRepo.findOne({ where: { id } });
+
+  if (!existing) {
+    throw new NotFoundException(`TemplateButtonMap with ID ${id} not found`);
+  }
+
+  // Manually assign only updatable fields
+  existing.itemId = dto.itemId ?? existing.itemId;
+  existing.dfGroupId = dto.dfGroupId ?? existing.dfGroupId;
+  existing.subitemId = dto.subitemId ?? existing.subitemId;
+  existing.subsubitemId = dto.subsubitemId ?? existing.subsubitemId;
+  existing.subsubsubitemId = dto.subsubsubitemId ?? existing.subsubsubitemId;
+  existing.serialNumber = dto.serialNumber;
+  existing.buttonName = dto.buttonName ?? existing.buttonName;
+  existing.buttonAction = dto.buttonAction ?? existing.buttonAction;
+  existing.buttonType = dto.buttonType ?? existing.buttonType;
+  existing.navigationTo = dto.navigationTo ?? existing.navigationTo;
+  existing.userId = user?.id ?? existing.userId;
+  existing.updatedBy = user?.username ?? existing.updatedBy;
+  existing.updatedAt = new Date();
+
+  return await this.templateButtonMapRepo.save(existing);
+}
+
+
+private async toTemplateButtonDto(entity: TemplateButtonMap): Promise<TemplateButtonMapDto> {
+  return {
+    id: entity.id,
+    itemId: entity.itemId,
+    dfGroupId: entity.dfGroupId,
+    subitemId: entity.subitemId,
+    subsubitemId: entity.subsubitemId,
+    subsubsubitemId: entity.subsubsubitemId,
+    serialNumber: entity.serialNumber?.toString(), // dto expects string
+    buttonName: entity.buttonName,
+    buttonAction: entity.buttonAction,
+    buttonType: entity.buttonType,
+    navigationTo: entity.navigationTo,
+    userId: entity.userId,
+    createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
+    createdBy: entity.createdBy,
+    updatedBy: entity.updatedBy,
+    // These are in the DTO but not mapped from entity directly
+    subItemId: entity.subitemId,
+    subSubItemId: entity.subsubitemId,
+    subSubSubItemId: entity.subsubsubitemId,
+  } as TemplateButtonMapDto;
+}
+
+async findAllTemplateButton(): Promise<TemplateButtonMapDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetTemplateButtonMap()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+  async deleteTemplateButton(
+    id: string,
+  ): Promise<{ status: string; message: string }> {
+    const existing = await this.templateButtonMapRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    await this.templateButtonMapRepo.delete(id);
+    return {
+      status: 'success',
+      message: `DataPoint ${id} deleted successfully.`,
+    };
+  }
+///////////////------template button end
 }

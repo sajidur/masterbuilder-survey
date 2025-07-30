@@ -19,6 +19,8 @@ import { Template } from 'src/Template/entity/template';
 import { DataPoint } from './module.entity/dataPoint.entity';
 import { DataPointMap } from './module.entity/dataPointMap.entity';
 import { DPGroupMap } from './module.entity/dpgroupMap.entity';
+import { Button } from './module.entity/button.entity';
+import { TemplateButtonMap } from './module.entity/TemplateButtonMap.entity';
 
 @Module({
   imports: [
@@ -34,7 +36,9 @@ import { DPGroupMap } from './module.entity/dpgroupMap.entity';
       Field,
       DataPoint,
       DataPointMap,
-      DPGroupMap
+      DPGroupMap,
+      Button,
+      TemplateButtonMap
     ]),
     AuthModule,
   ],

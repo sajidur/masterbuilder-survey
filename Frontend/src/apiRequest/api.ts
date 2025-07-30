@@ -813,3 +813,132 @@ export const getUploadedDocuments = async () => {
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 };
+
+///buttons
+export const addbutton = async (data: {
+  serialNumber: string;
+  name: string;
+  description: boolean;
+  buttonAction: boolean;
+}) => {
+  try {
+    const response = await apiClient.post('/survey-module/createButton', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding DataPoint:', error);
+    throw error;
+  }
+};
+
+export const updateButton = async (
+  id: string,
+  data: {
+    serialNumber: string;
+    name: string;
+    description: string;
+    buttonAction: string;
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateButton/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating DataPoint:', error);
+    throw error;
+  }
+};
+export const getAllButtons  = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/allButtons');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+
+/// buttons
+
+// Templete button map
+export const addTempleteButtonMap = async (data: {
+  itemId: string;
+  subitemId: string;
+  subsubitemId: string;
+  subsubsubitemId: string;
+  dfGroupId: string;
+  serialNumber: string;
+  buttonName: string;
+  buttonAction: string;
+  buttonType: string;
+  navigationTo: string;
+  userId:string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy?: string;
+  updatedBy?: string;
+  subItemId: any;
+  subSubItemId: any;
+  subSubSubItemId: any;
+}) => {
+  try {
+    const response = await apiClient.post("/survey-module/createTemplateButtonMap", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding field:", error);
+    throw error;
+  }
+};
+
+export const updateTempleteButtonMap= async (
+  id: string,
+  data: {
+    itemId: string;
+    subitemId: string;
+    subsubitemId: string;
+    subsubsubitemId: string;
+    dfGroupId: string;
+    serialNumber: string;
+    buttonName: string;
+    buttonAction: string;
+    buttonType: string;
+    navigationTo: string;
+    userId:string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy?: string;
+    updatedBy?: string;
+    subItemId: any;
+    subSubItemId: any;
+    subSubSubItemId: any;
+  }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updateDPGroupMap/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating field:", error);
+    throw error;
+  }
+};
+
+export const getAllTemplateButtonMapBySP  = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/allTemplateButtonMap');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+
+// Delete DataPoint
+export const deleteTemplateButtonMap = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deleteTemplateButtonMap/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting DataPoint:", error);
+    throw error;
+  }
+};
+// Templete Button Map end
