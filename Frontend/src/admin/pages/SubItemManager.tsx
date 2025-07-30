@@ -546,10 +546,10 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">Layout</th>
                 <th className="p-2 text-left">Intro</th>
                 {/* <th className="p-2 text-left">Tier</th> */}
-                <th className="p-2 text-left">P/S Button</th>
+                {/* <th className="p-2 text-left">P/S Button</th> */}
 
                 {/* <th className="p-2 text-left">Button Type</th> */}
-                <th className="p-2 text-left">Navigate To</th>
+                {/* <th className="p-2 text-left">Navigate To</th> */}
 
                 <th className="p-2 text-left">Actions</th>
               </tr>
@@ -571,18 +571,18 @@ const SubItemManager: React.FC = () => {
 
                   {/* <td className="p-2">{s.tier}</td> */}
 
-                  <td className="p-2">
+                  {/* <td className="p-2">
                     {s.buttonType === "P-Button"
                       ? `P-[${s.buttonLabel || ""}]`
                       : s.buttonType === "S-Button"
                       ? `S-[${s.buttonLabel || ""}]`
                       : ""}
-                  </td>
+                  </td> */}
 
                   {/* <td className="p-2">{s.buttonLabel || "—"}</td>
 
                   <td className="p-2">{s.buttonType}</td> */}
-                  <td className="p-2">{s.navigationTo}</td>
+                  {/* <td className="p-2">{s.navigationTo}</td> */}
 
                   <td className="px-4 py-3 flex gap-3">
                     <button

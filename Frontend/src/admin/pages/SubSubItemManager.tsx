@@ -501,8 +501,8 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               {/* <th className="p-2 text-left">Template</th> */}
               {/* <th className="p-2 text-left">Tier</th> */}
               <th className="p-2 text-left">Layout</th>
-              <th className="p-2 text-left">P/S Button</th>
-              <th className="p-2 text-left">Navigate To</th>
+              {/* <th className="p-2 text-left">P/S Button</th>
+              <th className="p-2 text-left">Navigate To</th> */}
               <th className="p-2 text-left">Actions</th>
             </tr>
           </thead>
@@ -526,14 +526,14 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 </td> */}
                 {/* <td className="p-2">{s.tier}</td> */}
                 <td className="p-2">{s.layout || "—"}</td>
-                <td className="p-2">
+                {/* <td className="p-2">
                   {s.buttonType === "Edit Button"
                     ? `Edit-[${s.buttonLabel || ""}]`
                     : s.buttonType === "Second Button"
                     ? `S-[${s.buttonLabel || ""}]`
                     : ""}
                 </td>
-                <td className="p-2">{s.navigationTo || "—"}</td>
+                <td className="p-2">{s.navigationTo || "—"}</td> */}
 
                 <td className="px-4 py-3 flex gap-3">
                   <button
