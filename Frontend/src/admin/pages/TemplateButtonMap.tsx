@@ -361,7 +361,7 @@ const TemplateButtonMap: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">DPGroup</label>
+          <label className="block mb-1 font-medium">DFGroup</label>
           <select
             value={dpgroup}
             onChange={(e) => {
@@ -372,7 +372,7 @@ const TemplateButtonMap: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Select DP Group</option>
+            <option value="">Select DF Group</option>
             {filteredDpGroup.map((dp) => (
               <option key={dp.id} value={dp.id}>
                 {dp.fieldGroupCode}

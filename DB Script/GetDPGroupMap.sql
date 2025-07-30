@@ -7,7 +7,11 @@ SELECT item.name as itemName,si.name as subItemName,ssi.name as subSubItemName,s
     menu.id as menuid,
 	si.id as subitemid,
     ssi.id as subsubitemid,
-    sssi.id as subsubsubitemid
+    sssi.id as subsubsubitemid,
+	md.name AS moduleName,
+	app.name AS appName,
+	menu.title AS menuTitle
+
 FROM dpgroupmap dgm
 inner join item on item.id=dgm.itemId
 inner join field on field.id=dgm.dpGroupId

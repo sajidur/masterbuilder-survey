@@ -344,7 +344,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
       }
         {/* Field Group Code */}
          <div>
-            <label className="block mb-1 font-medium">DPGroup</label>
+            <label className="block mb-1 font-medium">DFGroup</label>
             <select
               value={dpgroup}
               onChange={(e) => setFieldGroupCode(e.target.value)}

@@ -9,7 +9,10 @@ SELECT
     dtm.*,
     md.id as moduleid,
     app.id as appid,
-    menu.id as menuid
+    menu.id as menuid,
+	md.name AS moduleName,
+	app.name AS appName,
+	menu.title AS menuTitle
 FROM datapointmap dtm
 INNER JOIN field fi ON dtm.dpgroupid = fi.id
 INNER JOIN datapoint dp ON dtm.datapointid  = dp.id
