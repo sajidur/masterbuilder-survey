@@ -5,6 +5,11 @@ export const tiers = [
   { label: 'E', value: 'E' },
   { label: 'F', value: 'F' },
 ];
+export const Hides = [
+  // { label: 'None', value: '0' },
+  { label: 'Hide Checked', value: '0' },
+  { label: 'Hide UnChecked', value: '1' },
+];
 
 export const regionals = [
   // { label: 'None', value: '0' },
