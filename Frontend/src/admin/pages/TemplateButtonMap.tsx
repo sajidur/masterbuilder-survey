@@ -260,7 +260,7 @@ const TemplateButtonMap: React.FC = () => {
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          Template - Button Map
+          Page - Button Map
         </h2>
 
         <Dropdown
@@ -361,7 +361,7 @@ const TemplateButtonMap: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">DFGroup</label>
+          <label className="block mb-1 font-medium">Fd Grp</label>
           <select
             value={dpgroup}
             onChange={(e) => {
@@ -372,7 +372,7 @@ const TemplateButtonMap: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Select DF Group</option>
+            <option value="">Select Fd Grp</option>
             {filteredDpGroup.map((dp) => (
               <option key={dp.id} value={dp.id}>
                 {dp.fieldGroupCode}
@@ -640,7 +640,7 @@ const TemplateButtonMap: React.FC = () => {
               <th className="p-2 text-left">SSS Item</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
-              <th className="p-2 text-left">DF Group</th>
+              <th className="p-2 text-left">Fd Grp</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">SI</th>

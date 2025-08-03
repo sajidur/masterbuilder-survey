@@ -2884,23 +2884,21 @@ async ReportBySP(): Promise<DataPointDto[]> {
     userId: entity.userId,
   } as ButtonDto;
 }
+
 async findAllButton(): Promise<ButtonDto[]> {
-  const dataPoints = await this.buttonRepo.find({
-    order: {
-      serialNumber: 'ASC',
-    },
-  });
+  const dataPoints = await this.buttonRepo
+    .createQueryBuilder('btn')
+    .orderBy('CAST(btn.serialNumber AS UNSIGNED)', 'ASC')
+    .getMany();
 
   if (!dataPoints.length) {
     console.log('No data points found.');
     return [];
   }
 
-  const dtoList = await Promise.all(
-    dataPoints.map((dp) => this.toButtonDto(dp)),
-  );
-  return dtoList;
+  return Promise.all(dataPoints.map((dp) => this.toButtonDto(dp)));
 }
+
   async deleteButton(
     id: string,
   ): Promise<{ status: string; message: string }> {

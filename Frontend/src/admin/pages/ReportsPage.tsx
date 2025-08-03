@@ -81,12 +81,12 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
-  "DF Group",
+  "Fd Grp",
   // "Tier",
   "Sub Item",
   "SS Item",
   "SSS Item",
-  "DataField",
+  "Field",
 ];
 
 // Map display names to your key names used in your data/visibleColumns
@@ -95,12 +95,12 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
-  "DF Group": "DPGroupCode",
+  "Fd Grp": "DPGroupCode",
   // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
   "SSS Item": "subSubSubItem",
-  DataField: "DataField",
+  Field: "Field",
 };
 
 const ReportsPage: React.FC = () => {
@@ -131,8 +131,9 @@ const ReportsPage: React.FC = () => {
   const [dataFields, setDataFields] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(true);
   const [selectedTier, setSelectedTier] = useState("");
-  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay"]);
+  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks"]);
   const dropdownRef = useRef(null);
+  const [disabledSubRadios, setDisabledSubRadios] = useState(true);
 
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
@@ -258,7 +259,7 @@ const ReportsPage: React.FC = () => {
     const index = selectedRadioKey ? columnKeys.indexOf(selectedRadioKey) : 0;
 
     const baseColumns = columnKeys.slice(index);
-    return showDataPoint ? [...baseColumns, "DataField"] : baseColumns;
+    return showDataPoint ? [...baseColumns, "Field"] : baseColumns;
   }, [selectedRadioKey, showDataPoint]);
 
   const distinctValues = useMemo(() => {
@@ -269,7 +270,7 @@ const ReportsPage: React.FC = () => {
     const valuesSet = new Set();
 
     dataFields.forEach((f) => {
-      if (key === "DataField") {
+      if (key === "Field") {
         if (f.dataPoint) valuesSet.add(f.dataPoint);
       } else if (key === "tier") {
         if (f.tier) valuesSet.add(f.tier);
@@ -317,8 +318,8 @@ const ReportsPage: React.FC = () => {
     subItem: "Sub Item",
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
-    DPGroupCode: "DF Group",
-    DataField: "Data Field",
+    DPGroupCode: "Fd Grp",
+    Field: "Field",
   };
   const isHidden = (group: string) => hiddenGroups.includes(group);
   const modulename = modules.find(
@@ -420,7 +421,7 @@ const moduleCount = [
   // });
 const groupedResult = groupByAndProject(filteredItemsdata, groupFields);
 filteredItemsdata = groupedResult;
-
+console.log("Filtered Items Data:", filteredItemsdata);
   function groupByAndProject(data, groupFields) {
   const seen = new Set();
 
@@ -510,7 +511,7 @@ const toggleGroupField = (field: string) => {
             <strong>SSS Item:</strong> {sssitemCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>DFGroup:</strong> {dpgroupCount.length}
+            <strong>Fd Grp:</strong> {dpgroupCount.length}
           </span>
 
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
@@ -592,7 +593,7 @@ const toggleGroupField = (field: string) => {
                 onChange={setSelectedSubSubSubItem}
               />
               <Dropdown
-                label="DF Group"
+                label="Fd Grp"
                 value={selectedDisplayType}
                 options={filteredDpGroups.map((code) => ({
                   label: code.fieldGroupCode,
@@ -608,7 +609,7 @@ const toggleGroupField = (field: string) => {
               />
 
               <Dropdown
-                label="DataField"
+                label="Field"
                 value={selectedField}
                 options={dataPoints.map((dp) => ({
                   label: dp.dataPoint,
@@ -687,13 +688,14 @@ const toggleGroupField = (field: string) => {
                 )}
               </div>
               {columnKeys.map((key) =>
-                key !== "DataField" ? (
+                key !== "Field" ? (
                   <label key={key} className="flex items-center gap-1 text-sm">
                     <input
                       type="radio"
                       name="columnSelector"
                       checked={selectedRadioKey === key}
                       onChange={() => setSelectedRadioKey(key)}
+                      disabled={ disabledSubRadios && ["subItem", "subSubItem", "subSubSubItem"].includes(key)} // 👈 disable these
                     />
                     {columnLabels[key] || key}
                   </label>
@@ -707,16 +709,21 @@ const toggleGroupField = (field: string) => {
                   onChange={(e) => {
                      const checked = e.target.checked;
                     setShowSSS(checked);
+                    setDisabledSubRadios(e.target.checked==false);
                     if (checked) {
                       setGroupFields(prev => {
                         const next = new Set(prev);
                         next.add("siserialNumber");
+                        next.add("siitem");
                         next.add("sssiname");
                         next.add("silayout");
                         next.add("sidescription");
-
+                        next.add("ssiserialNumber");
                         next.add("ssiname");
+                        next.add("ssilayout");
+                        next.add("sssiserialNumber");
                         next.add("sssiname");
+                        next.add("sssilayout");
                         return Array.from(next);
                       });
                     } else {
@@ -725,8 +732,12 @@ const toggleGroupField = (field: string) => {
                         && f!== "siitem" 
                         && f!== "silayout" 
                        && f!== "sidescription" 
+                        && f !== "ssiserialNumber" 
                         && f !== "ssiname" 
+                        && f !== "ssilayout"
+                        && f !== "sssiserialNumber"
                         && f!=="sssiname"
+                        && f!=="sssilayout"
                       ));
                     }
                   
@@ -756,7 +767,7 @@ const toggleGroupField = (field: string) => {
 
                   }}
                 />
-                DataField
+                Field
               </label>
 
               {false && (
@@ -890,7 +901,7 @@ Distinct:
                           )}
 
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            DF_Group
+                            Fd Grp
                           </th>
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Tier
@@ -1002,7 +1013,7 @@ Distinct:
                           </>
                         )}
 
-                      {visibleColumns.includes("DataField") && (
+                      {visibleColumns.includes("Field") && (
                         <>
                           {
                             <>
@@ -1010,7 +1021,7 @@ Distinct:
                                 Sl
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                                DataField
+                                Field
                               </th>
                             </>
                           }
@@ -1228,7 +1239,7 @@ Distinct:
                             </>
                           )}
 
-                        {visibleColumns.includes("DataField") && (
+                        {visibleColumns.includes("Field") && (
                           <>
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {f.serialNumber || ""}

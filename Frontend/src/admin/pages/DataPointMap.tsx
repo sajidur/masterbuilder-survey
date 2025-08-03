@@ -201,7 +201,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            DF Grp- DF Map
+            Fd Grp- Field Map
           </h2>
 
           {/* Module */}
@@ -312,7 +312,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
           <div>
-            <label className="block mb-1 font-medium">DF Group</label>
+            <label className="block mb-1 font-medium">Fd Grp</label>
             <select
               value={selectedDPGroup}
               onChange={(e) => {
@@ -323,7 +323,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               }
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select Group</option>
+              <option value="">Select Fd Grp</option>
               {filteredDpGroup.map((group) => (
                 <option key={group.id} value={group.id}>
                   {group.fieldGroupCode}
@@ -353,13 +353,13 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
 
          <div>
-            <label className="block mb-1 font-medium">DataField</label>
+            <label className="block mb-1 font-medium">Field</label>
             <select
               value={selectedDataPoint}
               onChange={(e) => setDataPoint(e.target.value)}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select DataField</option>
+              <option value="">Select Field</option>
               {filteredDP.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.dataPoint}
@@ -417,9 +417,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <th className="p-2 border-b text-left">App</th>
                 <th className="p-2 border-b text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">DF Group</th>
+              <th className="p-2 text-left">Fd Grp</th>
               {/* <th className="p-2 text-left">Serial</th> */}
-              <th className="p-2 text-left">DataField</th>
+              <th className="p-2 text-left">Field</th>
               {/* <th className="p-2 text-left">Region</th> */}
               <th className="p-2 text-left">Hide</th>
               {/* <th className="p-2 text-left">Reqr</th> */}

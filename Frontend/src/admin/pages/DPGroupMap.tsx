@@ -233,7 +233,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          Template - Feature Map
+          Page - Fd Grp Map
         </h2>
 
         <Dropdown
@@ -347,7 +347,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
       }
         {/* Field Group Code */}
          <div>
-            <label className="block mb-1 font-medium">DFGroup</label>
+            <label className="block mb-1 font-medium">Fd Grp</label>
             <select
               value={dpgroup}
               onChange={(e) => {
@@ -358,7 +358,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               }}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select DP Group</option>
+              <option value="">Select Fd Grd</option>
               {filteredDpGroup.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.fieldGroupCode}
@@ -544,7 +544,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">SSS Item</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
-              <th className="p-2 text-left">DF Group</th>
+              <th className="p-2 text-left">Fd Grp</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               {/* <th className="p-2 text-left">Remarks</th> */}

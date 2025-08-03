@@ -220,7 +220,7 @@ const handleDelete = async (id: string) => {
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            DataField
+            Field
           </h2>
 
           {/* Module */}
@@ -333,13 +333,13 @@ const handleDelete = async (id: string) => {
           {/* Group Code */}
           {false &&
           <div>
-            <label className="block mb-1 font-medium">DF Group</label>
+            <label className="block mb-1 font-medium">Fd Grp</label>
             <select
               value={dpGroupCode}
               onChange={(e) => setDpGroupCode(e.target.value)}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select Group</option>
+              <option value="">Select Fd Group</option>
               {dpGroups.map((group) => (
                 <option key={group.id} value={group.id}>
                   {group.fieldGroupCode}
@@ -363,7 +363,7 @@ const handleDelete = async (id: string) => {
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">DataField</label>
+            <label className="block mb-1 font-medium">Field</label>
             <input
               type="text"
               value={dataPointName}
@@ -376,13 +376,13 @@ const handleDelete = async (id: string) => {
         {/* regional */}
 
         <div>
-          <label className="block mb-1 font-medium">Reg DF</label>
+          <label className="block mb-1 font-medium">Reg Fd</label>
           <select
             value={regional}
             onChange={(e) => setRegional(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose Reg DF</option>
+            <option value="">Choose Reg Fd</option>
             {regionals.map((regionalOption) => (
               <option key={regionalOption.value} value={regionalOption.value}>
                 {regionalOption.label}
@@ -391,6 +391,7 @@ const handleDelete = async (id: string) => {
           </select>
         </div>
           <div className="flex justify-between items-center space-x-2 mt-7">
+            {false &&
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -399,7 +400,7 @@ const handleDelete = async (id: string) => {
               />
               Hide
             </label>
-
+        }
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -454,8 +455,8 @@ const handleDelete = async (id: string) => {
               <th className="p-2 text-left">Item</th>
               {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
-              <th className="p-2 text-left">DataField</th>
-              <th className="p-2 text-left">Reg DF</th>
+              <th className="p-2 text-left">Field</th>
+              <th className="p-2 text-left">Reg Fd</th>
               <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Reqr</th>
               <th className="p-2 text-left">Data Type</th>
