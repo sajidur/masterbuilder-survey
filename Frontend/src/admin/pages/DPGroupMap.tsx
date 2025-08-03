@@ -571,7 +571,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
                 <td className="p-2">{f.tier || "—"}</td>
 
-                <td className="p-2">{f.displayType}</td>
+                <td className="p-2">{f.dpgroupDisplayType}</td>
 
                 {/* <td className="p-2">{f.remarks || "-"}</td> */}
                 {/* <td className="p-2">{f.isRequired ? "Yes" : "No"}</td> */}
