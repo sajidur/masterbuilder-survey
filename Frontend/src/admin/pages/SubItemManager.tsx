@@ -183,8 +183,10 @@ const SubItemManager: React.FC = () => {
   };
 
   const handleDeleteSubItem = async (id: string) => {
-      const confirm = window.confirm("Are you sure you want to delete this item?");
-  if (!confirm) return;
+    const confirm = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (!confirm) return;
 
     try {
       await deleteSubItem(id);
@@ -196,11 +198,11 @@ const SubItemManager: React.FC = () => {
   };
 
   const filteredSubItems = subItems.filter((s) => {
-  const matchModule = selectedModule ? s.moduleName === selectedModule : true;
-  const matchApp = selectedApp ? s.appName === selectedApp : true;
-  const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
-  const matchItem = selectedItem ? s.itemName === selectedItem : true;
-  return matchModule && matchApp && matchMenu && matchItem;
+    const matchModule = selectedModule ? s.moduleName === selectedModule : true;
+    const matchApp = selectedApp ? s.appName === selectedApp : true;
+    const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
+    const matchItem = selectedItem ? s.itemName === selectedItem : true;
+    return matchModule && matchApp && matchMenu && matchItem;
   });
 
   return (
@@ -236,23 +238,22 @@ const SubItemManager: React.FC = () => {
               ))}
             </select> */}
             <select
-  value={selectedModule}
-  onChange={(e) => {
-    setSelectedModule(e.target.value);
-    setSelectedApp("");
-    setSelectedMenu("");
-    setSelectedItem("");
-  }}
-                className="w-full px-3 py-2 border rounded"
-
->
-  <option value="">Select Module</option>
-  {modules.map((m) => (
-    <option key={m.id} value={m.name}>
-      {m.name}
-    </option>
-  ))}
-</select>
+              value={selectedModule}
+              onChange={(e) => {
+                setSelectedModule(e.target.value);
+                setSelectedApp("");
+                setSelectedMenu("");
+                setSelectedItem("");
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Module</option>
+              {modules.map((m) => (
+                <option key={m.id} value={m.name}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* App */}
@@ -277,24 +278,24 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select> */}
             {/* App */}
-<select
-  value={selectedApp}
-  onChange={(e) => {
-    setSelectedApp(e.target.value);
-    setSelectedMenu("");
-    setSelectedItem("");
-  }}
-  className="w-full px-3 py-2 border rounded"
->
-  <option value="">Select App</option>
-  {apps
-    .filter((a) => a.Module?.name === selectedModule)
-    .map((a) => (
-      <option key={a.id} value={a.name}>
-        {a.name}
-      </option>
-    ))}
-</select>
+            <select
+              value={selectedApp}
+              onChange={(e) => {
+                setSelectedApp(e.target.value);
+                setSelectedMenu("");
+                setSelectedItem("");
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select App</option>
+              {apps
+                .filter((a) => a.Module?.name === selectedModule)
+                .map((a) => (
+                  <option key={a.id} value={a.name}>
+                    {a.name}
+                  </option>
+                ))}
+            </select>
           </div>
 
           {/* Menu */}
@@ -318,23 +319,23 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select> */}
             {/* Menu */}
-          <select
-            value={selectedMenu}
-            onChange={(e) => {
-              setSelectedMenu(e.target.value);
-              setSelectedItem("");
-            }}
-            className="w-full px-3 py-2 border rounded"
-          >
-            <option value="">Select Menu</option>
-            {menus
-              .filter((m) => m.app?.name === selectedApp)
-              .map((m) => (
-                <option key={m.id} value={m.title}>
-                  {m.title}
-                </option>
-              ))}
-          </select>
+            <select
+              value={selectedMenu}
+              onChange={(e) => {
+                setSelectedMenu(e.target.value);
+                setSelectedItem("");
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Menu</option>
+              {menus
+                .filter((m) => m.app?.name === selectedApp)
+                .map((m) => (
+                  <option key={m.id} value={m.title}>
+                    {m.title}
+                  </option>
+                ))}
+            </select>
           </div>
 
           {/* Item */}
@@ -355,20 +356,20 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select> */}
             {/* Item */}
-<select
-  value={selectedItem}
-  onChange={(e) => setSelectedItem(e.target.value)}
-  className="w-full px-3 py-2 border rounded"
->
-  <option value="">Select Item</option>
-  {items
-    .filter((i) => i.menu?.title === selectedMenu)
-    .map((i) => (
-      <option key={i.id} value={i.name}>
-        {i.name}
-      </option>
-    ))}
-</select>
+            <select
+              value={selectedItem}
+              onChange={(e) => setSelectedItem(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Item</option>
+              {items
+                .filter((i) => i.menu?.title === selectedMenu)
+                .map((i) => (
+                  <option key={i.id} value={i.name}>
+                    {i.name}
+                  </option>
+                ))}
+            </select>
           </div>
         </div>
 
@@ -402,24 +403,23 @@ const SubItemManager: React.FC = () => {
           </div>
 
           {/* Tier */}
-                              {false && (
-
-          <div>
-            <label className="block mb-1 font-medium">Tier</label>
-            <select
-              value={selectedTier}
-              onChange={(e) => setSelectedTier(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
-            >
-              <option value="">Choose Tier</option>
-              {tiers.map((tier) => (
-                <option key={tier.value} value={tier.value}>
-                  {tier.label}
-                </option>
-              ))}
-            </select>
-          </div>
-                              )}
+          {false && (
+            <div>
+              <label className="block mb-1 font-medium">Tier</label>
+              <select
+                value={selectedTier}
+                onChange={(e) => setSelectedTier(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+              >
+                <option value="">Choose Tier</option>
+                {tiers.map((tier) => (
+                  <option key={tier.value} value={tier.value}>
+                    {tier.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           {/* Layout */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -428,7 +428,7 @@ const SubItemManager: React.FC = () => {
             <select
               value={layout}
               onChange={(e) => setLayout(e.target.value)}
-              className="w-full px-3 py-2 border rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${layout ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="" disabled>
                 Select layout
@@ -455,53 +455,53 @@ const SubItemManager: React.FC = () => {
             />
           </div>
 
-{false && 
-<div>
-          {/* Button Type */}
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Button Type
-            </label>
-            <select
-              value={buttonType}
-              onChange={(e) => setButtonType(e.target.value)}
-              className="w-full px-3 py-2 border rounded"
-            >
-              <option value="">Select Button Type</option>
-              <option value="P-Button">Primary Button</option>
-              <option value="S-Button">Secondary Button</option>
-            </select>
-          </div>
+          {false && (
+            <div>
+              {/* Button Type */}
+              <div>
+                <label className="block mb-1 text-sm font-semibold text-gray-700">
+                  Button Type
+                </label>
+                <select
+                  value={buttonType}
+                  onChange={(e) => setButtonType(e.target.value)}
+                  className="w-full px-3 py-2 border rounded"
+                >
+                  <option value="">Select Button Type</option>
+                  <option value="P-Button">Primary Button</option>
+                  <option value="S-Button">Secondary Button</option>
+                </select>
+              </div>
 
-          {/* Button Label */}
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Button Name
-            </label>
-            <input
-              type="text"
-              value={buttonLabel}
-              onChange={(e) => setButtonLabel(e.target.value)}
-              placeholder="Enter button label"
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
+              {/* Button Label */}
+              <div>
+                <label className="block mb-1 text-sm font-semibold text-gray-700">
+                  Button Name
+                </label>
+                <input
+                  type="text"
+                  value={buttonLabel}
+                  onChange={(e) => setButtonLabel(e.target.value)}
+                  placeholder="Enter button label"
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
 
-          {/* Navigate To */}
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Navigate To
-            </label>
-            <input
-              type="text"
-              value={navigationTo}
-              onChange={(e) => setNavigationTo(e.target.value)}
-              placeholder="Enter route or URL"
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-</div>
-}
+              {/* Navigate To */}
+              <div>
+                <label className="block mb-1 text-sm font-semibold text-gray-700">
+                  Navigate To
+                </label>
+                <input
+                  type="text"
+                  value={navigationTo}
+                  onChange={(e) => setNavigationTo(e.target.value)}
+                  placeholder="Enter route or URL"
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+            </div>
+          )}
           <div className="flex gap-4 items-center mb-2">
             <button
               onClick={handleAddSubItem}
@@ -560,9 +560,7 @@ const SubItemManager: React.FC = () => {
             <tbody>
               {filteredSubItems.map((s) => (
                 <tr key={s.id} className="border-t">
-                  <td className="p-2">
-                    {s.moduleName || "—"}
-                  </td>
+                  <td className="p-2">{s.moduleName || "—"}</td>
                   <td className="p-2">{s.appName || "—"}</td>
                   <td className="p-2">{s.menuTitle || "—"}</td>
                   <td className="p-2">{s.itemName || "—"}</td>
@@ -590,26 +588,27 @@ const SubItemManager: React.FC = () => {
                   <td className="px-4 py-3 flex gap-3">
                     <button
                       onClick={() => {
-                    const matchedItem = items.find((itm) => itm.name === s.itemName);
-                    const matchedMenu = matchedItem?.menu;
-                    const matchedApp = matchedMenu?.app;
-                    const matchedModule = matchedApp?.Module;
+                        const matchedItem = items.find(
+                          (itm) => itm.name === s.itemName
+                        );
+                        const matchedMenu = matchedItem?.menu;
+                        const matchedApp = matchedMenu?.app;
+                        const matchedModule = matchedApp?.Module;
 
-                    setEditSubItemId(s.id);
-                    setSubItemName(s.name);
-                    setSelectedModule(s.moduleName || "");
-                    setSelectedApp(s.appName || "");
-                    setSelectedMenu(s.menuTitle || "");
-                    setSelectedItem(s.itemName|| "");
-                   // setSelectedTier(s.tier || "");
-                    setSerialNumber(s.serialNumber || "");
-                    setButtonType(s.buttonType || "");
-                    setNavigationTo(s.navigationTo || "");
-                    setDescription(s.description || "");
-                    setButtonLabel(s.buttonLabel || "");
-                    setLayout(s.layout || "");
-                  }}
-
+                        setEditSubItemId(s.id);
+                        setSubItemName(s.name);
+                        setSelectedModule(s.moduleName || "");
+                        setSelectedApp(s.appName || "");
+                        setSelectedMenu(s.menuTitle || "");
+                        setSelectedItem(s.itemName || "");
+                        // setSelectedTier(s.tier || "");
+                        setSerialNumber(s.serialNumber || "");
+                        setButtonType(s.buttonType || "");
+                        setNavigationTo(s.navigationTo || "");
+                        setDescription(s.description || "");
+                        setButtonLabel(s.buttonLabel || "");
+                        setLayout(s.layout || "");
+                      }}
                       className="text-blue-600 hover:text-blue-800"
                     >
                       <FaEdit />

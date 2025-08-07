@@ -638,7 +638,7 @@ const Dropdown = ({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${value ? 'border-blue-600 border-2' : 'border-gray-300'}`}
     >
       <option value="">Select {label}</option>
       {options.map((opt) => (
