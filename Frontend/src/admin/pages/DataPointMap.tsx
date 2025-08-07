@@ -215,7 +215,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 setSelectedMenu("");
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Module</option>
               {modules.map((m) => (
@@ -236,7 +236,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 setSelectedMenu("");
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select App</option>
               {filteredApps.map((a) => (
@@ -256,7 +256,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 setSelectedMenu(e.target.value);
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Menu</option>
               {filteredMenus.map((m) => (
@@ -277,7 +277,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 const selectedId = e.target.value;
                 setSelectedItem(selectedId);
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Item</option>
               {filteredItems.map((item) => (
@@ -321,7 +321,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 setTier(selectedDpGroupObj?.tier || "");
               }
               }
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDPGroup ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Fd Grp</option>
               {filteredDpGroup.map((group) => (
@@ -339,7 +339,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             disabled
           >
             <option value="">Choose Region</option>
@@ -357,7 +357,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <select
               value={selectedDataPoint}
               onChange={(e) => setDataPoint(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDataPoint ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Field</option>
               {filteredDP.map((dp) => (

@@ -234,7 +234,7 @@ const handleDelete = async (id: string) => {
                 setSelectedMenu("");
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Module</option>
               {modules.map((m) => (
@@ -255,7 +255,7 @@ const handleDelete = async (id: string) => {
                 setSelectedMenu("");
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select App</option>
               {filteredApps.map((a) => (
@@ -275,7 +275,7 @@ const handleDelete = async (id: string) => {
                 setSelectedMenu(e.target.value);
                 setSelectedItem("");
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Menu</option>
               {filteredMenus.map((m) => (
@@ -301,7 +301,7 @@ const handleDelete = async (id: string) => {
 
                 setDpGroupCode(prefix);
               }}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Item</option>
               {filteredItems.map((item) => (
@@ -337,7 +337,7 @@ const handleDelete = async (id: string) => {
             <select
               value={dpGroupCode}
               onChange={(e) => setDpGroupCode(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${dpGroupCode ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Fd Group</option>
               {dpGroups.map((group) => (
@@ -380,7 +380,7 @@ const handleDelete = async (id: string) => {
           <select
             value={regional}
             onChange={(e) => setRegional(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${regional ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Choose Reg Fd</option>
             {regionals.map((regionalOption) => (
@@ -416,7 +416,7 @@ const handleDelete = async (id: string) => {
             <select
               value={dataType}
               onChange={(e) => setDataType(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${dataType ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Type</option>
               {fieldTypes.map((type) => (

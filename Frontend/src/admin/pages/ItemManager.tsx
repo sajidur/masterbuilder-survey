@@ -217,7 +217,7 @@ const ItemManager: React.FC = () => {
           <select
             value={selectedModule}
             onChange={(e) => setSelectedModule(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Module</option>
             {modules.map((mod) => (
@@ -247,7 +247,7 @@ const ItemManager: React.FC = () => {
           <select
             value={selectedApp}
             onChange={(e) => setSelectedApp(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select App</option>
             {apps
@@ -279,7 +279,7 @@ const ItemManager: React.FC = () => {
           <select
             value={selectedMenu}
             onChange={(e) => setSelectedMenu(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Menu</option>
             {menus
@@ -334,7 +334,7 @@ const ItemManager: React.FC = () => {
           <select
             value={selectedItemType}
             onChange={(e) => setSelectedItemType(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItemType ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Type</option>
             <option value="GP">GP</option>
@@ -348,7 +348,7 @@ const ItemManager: React.FC = () => {
           <select
             value={regName}
             onChange={(e) => setRegName(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${regName ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Reg</option>
             <option value="Y">Y</option>
@@ -362,7 +362,7 @@ const ItemManager: React.FC = () => {
           <select
             value={viewEntry}
             onChange={(e) => setViewEntry(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select</option>
             <option value="View">View</option>

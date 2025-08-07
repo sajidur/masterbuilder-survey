@@ -232,7 +232,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               setSelectedItem("");
               setSelectedSubItem("");
             }}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Module</option>
             {modules.map((m) => (
@@ -254,7 +254,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               setSelectedItem("");
               setSelectedSubItem("");
             }}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select App</option>
             {apps
@@ -277,7 +277,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               setSelectedItem("");
               setSelectedSubItem("");
             }}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Menu</option>
             {menus
@@ -299,7 +299,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               setSelectedItem(e.target.value);
               setSelectedSubItem("");
             }}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Item</option>
             {items
@@ -318,7 +318,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <select
             value={selectedSubItem}
             onChange={(e) => setSelectedSubItem(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedSubItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="">Select Sub Item</option>
             {subItems
@@ -403,7 +403,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <select
             value={layout}
             onChange={(e) => setLayout(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${layout ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
             <option value="" disabled>Select layout</option>
             {layoutOptions.map((option) => (
