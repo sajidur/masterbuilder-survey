@@ -342,7 +342,7 @@ const ReportsPage: React.FC = () => {
       : true;
     const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
     const isHideFilter =
-      isHide === true ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
+      isHide === "-1" ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
     const tierFilter = selectedTier ? item.tier === selectedTier : true;
     return (
       matchModule &&

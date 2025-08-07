@@ -7,8 +7,8 @@ export const tiers = [
 ];
 export const Hides = [
   // { label: 'None', value: '0' },
-  { label: 'Hide Checked', value: '0' },
-  { label: 'Hide UnChecked', value: '1' },
+  { label: 'Checked', value: '0' },
+  { label: 'UnChecked', value: '1' },
 ];
 
 export const regionals = [
