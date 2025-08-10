@@ -132,7 +132,7 @@ const ReportsPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(true);
   const [selectedTier, setSelectedTier] = useState("");
   
-  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks"]);
+  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks","datapointMappingStatus","dpGroupMapStatus"]);
   const dropdownRef = useRef(null);
   const [disabledSubRadios, setDisabledSubRadios] = useState(true);
 
@@ -1165,27 +1165,62 @@ Distinct:
 
                         {visibleColumns.includes("DPGroupCode") && (
                           <>
-                            {!isHidden("si") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.groupserialNumber}
-                              </td>
-                            )}
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                              {f.fieldGroupCode || ""}
-                            </td>
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                              {f?.dpgrouptier || ""}
-                            </td>
-                            {!isHidden("display") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.dpgroupdisplay || ""}
-                              </td>
-                            )}
-                            {!isHidden("remarks") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                {f.dpgroupremarks || ""}
-                              </td>
-                            )}
+                      {!isHidden("si") && (
+                          <td
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                              f.dpGroupMapStatus== "1"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {f.groupserialNumber}
+                          </td>
+                        )}
+
+                        <td
+                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                            f.dpGroupMapStatus == "1"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {f.fieldGroupCode || ""}
+                        </td>
+
+                        <td
+                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                            f.dpGroupMapStatus == "1"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {f?.dpgrouptier || ""}
+                        </td>
+
+                        {!isHidden("display") && (
+                          <td
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                              f.dpGroupMapStatus == "1"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {f.dpgroupdisplay || ""}
+                          </td>
+                        )}
+
+                        {!isHidden("remarks") && (
+                          <td
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                              f.dpGroupMapStatus == "1"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {f.dpgroupremarks || ""}
+                          </td>
+                        )}
+
                           </>
                         )}
                         {visibleColumns.includes("subItem") &&
@@ -1278,29 +1313,67 @@ Distinct:
 
                         {visibleColumns.includes("Field") && (
                           <>
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            <td
+                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                f.datapointMappingStatus == "1"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
                               {f.serialNumber || ""}
                             </td>
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+
+                            <td
+                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                f.datapointMappingStatus == "1"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
                               {f.dataPoint || ""}
                             </td>
 
                             {!isHidden("extraDp") && (
                               <>
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                    f.datapointMappingStatus == "1"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
                                   {f.regional}
                                 </td>
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                    f.datapointMappingStatus == "1"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
                                   {f.isHide === 1 ? "true" : "false"}
                                 </td>
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                    f.datapointMappingStatus == "1"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
                                   {f.isRequired}
                                 </td>
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                    f.datapointMappingStatus == "1"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
                                   {f.dataType}
                                 </td>
                               </>
                             )}
+
                           </>
                         )}
 
