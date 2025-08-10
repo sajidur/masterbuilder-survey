@@ -188,10 +188,24 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
     }
   };
 
-  const filteredItemsdata = datapointMaps.filter((dpm) => {
-  const matchitem = selectedItem ? dpm.itemId === selectedItem : true;
-  return matchitem;
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
+  const itemname = items.find((item) => item.id === selectedItem)?.name;
+
+  const filteredItemsdata = datapointMaps.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
+  const matchitem = selectedItem ? item.itemName === itemname : true;
+
+  return matchModule && matchApp && matchMenu && matchitem;
 });
+
+//   const filteredItemsdata = datapointMaps.filter((dpm) => {
+//   const matchitem = selectedItem ? dpm.itemId === selectedItem : true;
+//   return matchitem;
+// });
 
   return (
     <div>
@@ -201,7 +215,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
-            Fd Grp- Field Map
+            FG- Field Map
           </h2>
 
           {/* Module */}
@@ -312,7 +326,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
           <div>
-            <label className="block mb-1 font-medium">Fd Grp</label>
+            <label className="block mb-1 font-medium">FG</label>
             <select
               value={selectedDPGroup}
               onChange={(e) => {
@@ -417,7 +431,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <th className="p-2 border-b text-left">App</th>
                 <th className="p-2 border-b text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Fd Grp</th>
+              <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
               {/* <th className="p-2 text-left">Region</th> */}

@@ -361,7 +361,7 @@ const TemplateButtonMap: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">Fd Grp</label>
+          <label className="block mb-1 font-medium">FG</label>
           <select
             value={dpgroup}
             onChange={(e) => {
@@ -640,7 +640,7 @@ const TemplateButtonMap: React.FC = () => {
               <th className="p-2 text-left">SSS Item</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
-              <th className="p-2 text-left">Fd Grp</th>
+              <th className="p-2 text-left">FG</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">SI</th>

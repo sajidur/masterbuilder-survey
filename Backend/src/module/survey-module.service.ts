@@ -2886,17 +2886,21 @@ async ReportBySP(): Promise<DataPointDto[]> {
 }
 
 async findAllButton(): Promise<ButtonDto[]> {
-  const dataPoints = await this.buttonRepo
-    .createQueryBuilder('btn')
-    .orderBy('CAST(btn.serialNumber AS UNSIGNED)', 'ASC')
-    .getMany();
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.dataPointRepo.manager.query('CALL GetAllButton()');
 
-  if (!dataPoints.length) {
-    console.log('No data points found.');
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
     return [];
   }
 
-  return Promise.all(dataPoints.map((dp) => this.toButtonDto(dp)));
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
 }
 
   async deleteButton(

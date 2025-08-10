@@ -331,18 +331,22 @@ const ReportsPage: React.FC = () => {
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
   const subsubitemname = subSubItems.find((s) => s.id === selectedSubSubItem)?.name;
+  const subsubSubitemname = subSubSubItems.find((s) => s.id === selectedSubSubSubItem)?.name;
 
   let filteredItemsdata = dataFields.filter((item) => {
     const matchModule = selectedModule ? item.modulename === modulename : true;
     const matchApp = selectedApp ? item.appname === appname : true;
     const matchMenu = selectedMenu ? item.title === menuname : true;
     const matchitem = selectedItem ? item.itemName === itemname : true;
+    
     const matchdpGroup = selectedDisplayType
       ? item.dpgroupid === selectedDisplayType
       : true;
     const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
-    const isHideFilter =
-      isHide === "-1" ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
+    const matchsubSubItem = selectedSubSubItem ? item.ssiname === subsubitemname : true;
+    const matchsubSubSubItem = selectedSubSubSubItem ? item.sssiname === subsubSubitemname : true;
+    // const isHideFilter =
+    //   isHide === "-1" ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
     const tierFilter = selectedTier ? item.tier === selectedTier : true;
     return (
       matchModule &&
@@ -351,7 +355,9 @@ const ReportsPage: React.FC = () => {
       matchitem &&
       matchsubitem &&
       matchdpGroup &&
-      isHideFilter &&
+      matchsubSubItem &&
+      matchsubSubSubItem &&
+     // isHideFilter &&
       tierFilter
     );
   });
@@ -408,7 +414,7 @@ const moduleCount = [
     ...new Set(
       filteredItemsdata
         .filter((item) => !selectedItem || item.itemName === itemname)
-        .map((item) => item.dpGroupCode)
+        .map((item) => item.fieldGroupCode)
     ),
   ];
 
@@ -512,7 +518,7 @@ const toggleGroupField = (field: string) => {
             <strong>SSS Item:</strong> {sssitemCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Fd Grp:</strong> {dpgroupCount.length}
+            <strong>FG:</strong> {dpgroupCount.length}
           </span>
 
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
@@ -537,7 +543,16 @@ const toggleGroupField = (field: string) => {
                 label="Module"
                 value={selectedModule}
                 options={modules.map((m) => ({ label: m.name, value: m.id }))}
-                onChange={setSelectedModule}
+                // onChange={setSelectedModule}
+                onChange={(val) => {
+                        setSelectedModule(val);
+                        setSelectedApp("");
+                        setSelectedMenu("");
+                        setSelectedItem("");
+                        setSelectedSubItem("");
+                        setSelectedSubSubItem("");
+                        setSelectedSubSubSubItem("");
+                      }}
               />
               <Dropdown
                 label="App"
@@ -546,8 +561,14 @@ const toggleGroupField = (field: string) => {
                   label: a.name,
                   value: a.id,
                 }))}
-                onChange={setSelectedApp}
-              />
+              onChange={(val) => {
+                          setSelectedApp(val);
+                          setSelectedMenu("");
+                          setSelectedItem("");
+                          setSelectedSubItem("");
+                          setSelectedSubSubItem("");
+                          setSelectedSubSubSubItem("");
+                        }}              />
               <Dropdown
                 label="Menu"
                 value={selectedMenu}
@@ -555,8 +576,13 @@ const toggleGroupField = (field: string) => {
                   label: m.title,
                   value: m.id,
                 }))}
-                onChange={setSelectedMenu}
-              />
+            onChange={(val) => {
+            setSelectedMenu(val);
+            setSelectedItem("");
+            setSelectedSubItem("");
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}              />
               <Dropdown
                 label="Item"
                 value={selectedItem}
@@ -564,8 +590,12 @@ const toggleGroupField = (field: string) => {
                   label: i.name,
                   value: i.id,
                 }))}
-                onChange={setSelectedItem}
-              />
+              onChange={(val) => {
+                setSelectedItem(val);
+                setSelectedSubItem("");
+                setSelectedSubSubItem("");
+                setSelectedSubSubSubItem("");
+              }}              />
               <Dropdown
                 label="Sub Item"
                 value={selectedSubItem}
@@ -573,7 +603,11 @@ const toggleGroupField = (field: string) => {
                   label: s.name,
                   value: s.id,
                 }))}
-                onChange={setSelectedSubItem}
+                onChange={(val) => {
+                    setSelectedSubItem(val);
+                    setSelectedSubSubItem("");
+                    setSelectedSubSubSubItem("");
+                }}
               />
               <Dropdown
                 label="SS Item"
@@ -582,8 +616,10 @@ const toggleGroupField = (field: string) => {
                   label: s.name,
                   value: s.id,
                 }))}
-                onChange={setSelectedSubSubItem}
-              />
+                onChange={(val) => {
+                    setSelectedSubSubItem(val);
+                    setSelectedSubSubSubItem("");
+                }}              />
               <Dropdown
                 label="SSS Item"
                 value={selectedSubSubSubItem}

@@ -209,21 +209,20 @@ const DPGroupMap:  React.FC = () => {
     }
   };
 
-  // const modulename = modules.find((module) => module?.id === selectedModule)?.name;
-  // const appname = apps.find((app) => app.id === selectedApp)?.name;
-  // const menuname = menus.find((menu) => menu.id === selectedMenu)?.title;
-  // const itemname = items.find((item) => item.id === selectedItem)?.name;
-  // const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
+  const modulename = modules.find((module) => module?.id === selectedModule)?.name;
+  const appname = apps.find((app) => app.id === selectedApp)?.name;
+  const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
 
-//   const filteredItemsdata = fields.filter((item) => {
-//   const matchModule = selectedModule ? item.moduleName === modulename : true;
-//   const matchApp = selectedApp ? item.appName === appname : true;
-//   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
-//   const matchitem = selectedItem ? item.itemName === itemname : true;
-//   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+  const filteredItemsdata = dpgroupmaps.filter((item) => {
+  const matchModule = selectedModule ? item.moduleName === modulename : true;
+  const matchApp = selectedApp ? item.appName === appname : true;
+  const matchMenu = selectedMenu ? item.menuid === selectedMenu : true;
+  const matchitem = selectedItem ? item.itemId === selectedItem : true;
+  const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+  const matchsubsubitem = selectedSubSubItem ? item.subsubitemid === selectedSubSubItem : true;
 
-//   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
-// });
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchsubsubitem;
+});
 const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
   return (
     <div className="">
@@ -233,7 +232,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          Page - Fd Grp Map
+          Page - FG Map
         </h2>
 
         <Dropdown
@@ -347,7 +346,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
       }
         {/* Field Group Code */}
          <div>
-            <label className="block mb-1 font-medium">Fd Grp</label>
+            <label className="block mb-1 font-medium">FG</label>
             <select
               value={dpgroup}
               onChange={(e) => {
@@ -544,7 +543,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">SSS Item</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
-              <th className="p-2 text-left">Fd Grp</th>
+              <th className="p-2 text-left">FG</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               {/* <th className="p-2 text-left">Remarks</th> */}
@@ -555,7 +554,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             </tr>
           </thead>
           <tbody>
-            {dpgroupmaps.map((f) => (
+            {filteredItemsdata.map((f) => (
               <tr key={f.id} className="border-t">
                 <td className="p-2">
                   {f.moduleName || "—"}

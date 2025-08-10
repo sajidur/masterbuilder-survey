@@ -229,7 +229,7 @@ const payload: {
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
-          Fd Grp
+          FG
         </h2>
 
         <Dropdown
@@ -342,7 +342,7 @@ const payload: {
 
         {/* Field Group Code */}
         <div>
-          <label className="block mb-1 font-medium">Fd Grp</label>
+          <label className="block mb-1 font-medium">FG</label>
           <input
             type="text"
             value={fieldGroupCode}
@@ -531,7 +531,7 @@ const payload: {
               <th className="p-2 text-left">SSS Item</th> */}
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">Fd Grp</th>
+              <th className="p-2 text-left">FG</th>
               <th className="p-2 text-left">Tier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">Remarks</th>

@@ -97,7 +97,7 @@ function AppContent() {
       {/* ✅ Hide footer if login or admin route */}
       {!isAdminRoute && !isAuthPage && (
         <footer className="mt-12 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} WorkspaceIQ • All Rights Reserved
+          © {new Date().getFullYear()} MukutERP • All Rights Reserved
         </footer>
       )}
     </div>
