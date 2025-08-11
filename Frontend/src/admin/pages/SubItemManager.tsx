@@ -81,6 +81,7 @@ const SubItemManager: React.FC = () => {
   const [editSubItemId, setEditSubItemId] = useState<string | null>(null);
   const [buttonLabel, setButtonLabel] = useState("");
   const [layout, setLayout] = useState("");
+  const [tier, setTier] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -337,7 +338,23 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select>
           </div>
-
+                  <div>
+                    <label className="block mb-1 text-sm font-semibold text-gray-700">
+                      I Tier
+                    </label>
+                    <select
+                      value={tier}
+                      onChange={(e) => setTier(e.target.value)}
+                        className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                    >
+                      <option value="">Choose I Tier</option>
+                      {tiers.map((tierOption) => (
+                        <option key={tierOption.value} value={tierOption.value}>
+                          {tierOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
           {/* Item */}
           <div className="">
             <label className="block font-medium text-gray-700">Item</label>

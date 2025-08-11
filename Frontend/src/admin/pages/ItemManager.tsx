@@ -13,6 +13,7 @@ import {
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Layers } from "lucide-react";
+import { tiers } from "./data";
 
 interface Module {
   id: string;
@@ -53,6 +54,8 @@ const ItemManager: React.FC = () => {
   const [itemName, setItemName] = useState<string>("");
   const [selectedItemType, setSelectedItemType] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [tier, setTier] = useState("");
+
   // const [buttonType, setButtonType] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
   const [description, setDescription] = useState("");
@@ -341,20 +344,25 @@ const ItemManager: React.FC = () => {
             <option value="IS">IS</option>
           </select>
         </div>
+        {false &&
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Reg Name
+            I Tier
           </label>
           <select
-            value={regName}
-            onChange={(e) => setRegName(e.target.value)}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${regName ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            value={tier}
+            onChange={(e) => setTier(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select Reg</option>
-            <option value="Y">Y</option>
-            <option value="N">N</option>
+            <option value="">Choose I Tier</option>
+            {tiers.map((tierOption) => (
+              <option key={tierOption.value} value={tierOption.value}>
+                {tierOption.label}
+              </option>
+            ))}
           </select>
         </div>
+        }
                 <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             View/Entry
@@ -476,7 +484,7 @@ const ItemManager: React.FC = () => {
                 <th className="p-2 border-b text-left">Item</th>
                 <th className="p-2 border-b text-left">Item Type</th>
               
-                <th className="p-2 border-b text-left">Reg Name</th>
+                {/* <th className="p-2 border-b text-left">I Tier</th> */}
                 <th className="p-2 border-b text-left">View/Entry</th>
                 <th className="p-2 border-b text-left">Intro</th>
                 <th className="p-2 border-b text-left">Actions</th>
@@ -492,10 +500,10 @@ const ItemManager: React.FC = () => {
 
                   <td className="p-2">{item.name}</td>
                   <td className="p-2">{item.itemType}</td>
-                  
+{/*                   
                   <td className="p-2">
                       {item.buttonType}
-                  </td>
+                  </td> */}
                   <td className="p-2">{item.buttonLabel}</td>
                   <td className="p-2">{item.description}</td>
 

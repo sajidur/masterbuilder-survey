@@ -372,7 +372,7 @@ const TemplateButtonMap: React.FC = () => {
             }}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Select Fd Grp</option>
+            <option value="">Select FG</option>
             {filteredDpGroup.map((dp) => (
               <option key={dp.id} value={dp.id}>
                 {dp.fieldGroupCode}

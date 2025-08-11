@@ -81,7 +81,7 @@ const mainColumns = [
   "Apps",
   "Menu",
   "Item",
-  "Fd Grp",
+  "FG",
   // "Tier",
   "Sub Item",
   "SS Item",
@@ -95,7 +95,7 @@ const columnKeyMap = {
   Apps: "app",
   Menu: "menu",
   Item: "item",
-  "Fd Grp": "DPGroupCode",
+  "FG": "DPGroupCode",
   // Tier: "tier",
   "Sub Item": "subItem",
   "SS Item": "subSubItem",
@@ -319,7 +319,7 @@ const ReportsPage: React.FC = () => {
     subItem: "Sub Item",
     subSubItem: "SS Item",
     subSubSubItem: "SSS Item",
-    DPGroupCode: "Fd Grp",
+    DPGroupCode: "FG",
     Field: "Field",
   };
   const isHidden = (group: string) => hiddenGroups.includes(group);
@@ -630,7 +630,7 @@ const toggleGroupField = (field: string) => {
                 onChange={setSelectedSubSubSubItem}
               />
               <Dropdown
-                label="Fd Grp"
+                label="FG"
                 value={selectedDisplayType}
                 options={filteredDpGroups.map((code) => ({
                   label: code.fieldGroupCode,
@@ -938,7 +938,7 @@ Distinct:
                           )}
 
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Fd Grp
+                            FG
                           </th>
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Tier

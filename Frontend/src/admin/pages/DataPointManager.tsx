@@ -333,13 +333,13 @@ const handleDelete = async (id: string) => {
           {/* Group Code */}
           {false &&
           <div>
-            <label className="block mb-1 font-medium">Fd Grp</label>
+            <label className="block mb-1 font-medium">FG</label>
             <select
               value={dpGroupCode}
               onChange={(e) => setDpGroupCode(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${dpGroupCode ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Fd Group</option>
+              <option value="">Select FG</option>
               {dpGroups.map((group) => (
                 <option key={group.id} value={group.id}>
                   {group.fieldGroupCode}
@@ -369,12 +369,12 @@ const handleDelete = async (id: string) => {
               value={dataPointName}
               onChange={(e) => setDataPointName(e.target.value)}
               className="w-full border px-3 py-2 rounded"
-              placeholder="Enter data point"
+              placeholder="Enter Field"
             />
           </div>
 
         {/* regional */}
-
+        {false &&
         <div>
           <label className="block mb-1 font-medium">Reg Fd</label>
           <select
@@ -390,8 +390,10 @@ const handleDelete = async (id: string) => {
             ))}
           </select>
         </div>
+        }
+                    {false &&
+
           <div className="flex justify-between items-center space-x-2 mt-7">
-            {false &&
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -400,7 +402,6 @@ const handleDelete = async (id: string) => {
               />
               Hide
             </label>
-        }
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -410,6 +411,7 @@ const handleDelete = async (id: string) => {
               Required
             </label>
           </div>
+        }
 
           <div>
             <label className="block mb-1 font-medium">Data Type</label>
@@ -456,9 +458,9 @@ const handleDelete = async (id: string) => {
               {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Field</th>
-              <th className="p-2 text-left">Reg Fd</th>
-              <th className="p-2 text-left">Hide</th>
-              <th className="p-2 text-left">Reqr</th>
+              {/* <th className="p-2 text-left">Reg Fd</th> */}
+              {/* <th className="p-2 text-left">Hide</th> */}
+              {/* <th className="p-2 text-left">Reqr</th> */}
               <th className="p-2 text-left">Data Type</th>
               <th className="p-2 text-left">Action</th>
             </tr>
@@ -470,9 +472,9 @@ const handleDelete = async (id: string) => {
                 {/* <td className="p-2">{dp.fieldgroupcode}</td> */}
                 <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.dataPoint}</td>
-                <td className="p-2 text-left">{dp.regional}</td>
-                <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
-                <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
+                {/* <td className="p-2 text-left">{dp.regional}</td> */}
+                {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
+                {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}
                 <td className="p-2">{dp.dataType}</td>
                 <td className="p-2 flex gap-2">
                   <button
@@ -482,9 +484,9 @@ const handleDelete = async (id: string) => {
                         setDpGroupCode(dp.dpgroupcodeid); // Use id here
                         setSerialNumber(dp.serialNumber);
                         setDataType(dp.dataType);
-                        setIsRequired(!!dp.isRequired);
+                        // setIsRequired(!!dp.isRequired);
                         setIsHide(!!dp.isHide);
-                        setRegional(dp.regional);
+                        // setRegional(dp.regional);
                         const item = dp.Item;
                         const menu = item?.menu;
                         const app = menu?.app;

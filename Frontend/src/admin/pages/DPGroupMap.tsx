@@ -201,7 +201,7 @@ const DPGroupMap:  React.FC = () => {
 
     try {
       await deleteDPGroupMap(id);
-      toast.success("DP Group map deleted successfully!");
+      toast.success("FG map deleted successfully!");
       const updatedFields = await getAllDPGroupmapsBySP();
       setDpGroupMaps(updatedFields);
     } catch (error) {
@@ -357,7 +357,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               }}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Select Fd Grd</option>
+              <option value="">Select FG</option>
               {filteredDpGroup.map((dp) => (
                 <option key={dp.id} value={dp.id}>
                   {dp.fieldGroupCode}

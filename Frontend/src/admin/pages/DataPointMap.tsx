@@ -337,7 +337,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               }
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDPGroup ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Fd Grp</option>
+              <option value="">Select FG</option>
               {filteredDpGroup.map((group) => (
                 <option key={group.id} value={group.id}>
                   {group.fieldGroupCode}
@@ -382,7 +382,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             </select>
           </div>
 
-
+              {false && 
           <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
               <input
@@ -402,6 +402,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               Required
             </label> */}
           </div>
+          }
           <div className="">
             <button
               onClick={handleAddOrUpdate}
@@ -435,7 +436,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
               {/* <th className="p-2 text-left">Region</th> */}
-              <th className="p-2 text-left">Hide</th>
+              {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
               {/* <th className="p-2 text-left">Data Type</th> */}
               <th className="p-2 text-left">Action</th>
@@ -452,7 +453,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
                 <td className="p-2">{dp.datapoint}</td>
                 {/* <td className="p-2 text-left">5</td> */}
-                <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
+                {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.dataType}</td> */}
                 <td className="p-2 flex gap-2">
@@ -461,7 +462,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                                 setEditId(dp.id);
                                 setDataPoint(dp.dataPointId);
                                 setDpGroup(dp.dpGroupId); // Use id here
-                                setIsHide(!!dp.isHide);
+                                // setIsHide(!!dp.isHide);
                                 // const item = dp.Item;
                                 // const menu = item?.menu;
                                 // const app = menu?.app;
