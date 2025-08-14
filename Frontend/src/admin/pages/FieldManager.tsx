@@ -234,7 +234,7 @@ const payload: {
           FG
         </h2>
           <p className="text-gray-700 font-medium mt-1">
-          Total FG: {fields.length}
+          Total FG: {filteredItemsdata.length}
         </p>
       </div>
         <Dropdown

@@ -219,7 +219,7 @@ const SubItemManager: React.FC = () => {
             Sub Item
           </h2>
           <p>
-            Total Sub Item: {subItems.length} 
+            Total Sub Item: {filteredSubItems.length} 
           </p>
         </div>
           {/* Module */}

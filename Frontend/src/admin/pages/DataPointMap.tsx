@@ -221,7 +221,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             FG- Field Map
           </h2>
                 <p className="text-gray-700 font-medium mt-1">
-          Total FG- Field Map: {datapointMaps.length}
+          Total FG- Field Map: {filteredItemsdata.length}
         </p>
         </div>
           {/* Module */}

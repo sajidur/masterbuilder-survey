@@ -221,7 +221,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <span className="text-blue-600 "><ListPlus size={18} /></span> SS Item
         </h2>
         <p>
-          Total SS Item: {subSubItems.length}
+          Total SS Item: {filteredSubSUbItems.length}
         </p>
       </div>
         {/* Module */}

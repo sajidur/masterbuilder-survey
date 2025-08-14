@@ -420,6 +420,13 @@ const moduleCount = [
         .map((item) => item.fieldGroupCode)
     ),
   ];
+  const datapointCount = [
+    ...new Set(
+      filteredItemsdata
+        .filter((item) => !selectedItem || item.itemName === itemname)
+        .map((item) => item.dataPoint)
+    ),
+  ];
 
   //   const matchModule = selectedModule ? item.modulename === modulename : true;
   //   const matchApp = selectedApp ? item.appname === appname : true;
@@ -524,7 +531,7 @@ const toggleGroupField = (field: string) => {
             <strong>FG:</strong> {dpgroupCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Field:</strong> {dpgroupCount.length}
+            <strong>Field:</strong> {datapointCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>Total Row:</strong> {filteredItemsdata.length}
@@ -1227,10 +1234,11 @@ Distinct:
                           <>
                       {!isHidden("si") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
-                              f.dpGroupMapStatus== "1"
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                              f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
+                                :""
                             }`}
                           >
                             {f.groupserialNumber}
@@ -1238,31 +1246,34 @@ Distinct:
                         )}
 
                         <td
-                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
-                            f.dpGroupMapStatus == "1"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
+                           className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                              f.dpGroupMapStatus == "1"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                                :""
+                            }`}
                         >
                           {f.fieldGroupCode || ""}
                         </td>
 
                         <td
-                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
-                            f.dpGroupMapStatus == "1"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
+                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                              f.dpGroupMapStatus == "1"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                                :""
+                            }`}
                         >
                           {f?.dpgrouptier || ""}
                         </td>
 
                         {!isHidden("display") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
+                                :""
                             }`}
                           >
                             {f.dpgroupdisplay || ""}
@@ -1271,10 +1282,11 @@ Distinct:
 
                         {!isHidden("remarks") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
+                                :""
                             }`}
                           >
                             {f.dpgroupremarks || ""}

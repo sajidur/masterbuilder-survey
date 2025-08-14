@@ -240,7 +240,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           Page - FG Map
         </h2>
         <p> 
-          Total: {dpgroupmaps.length}
+          Total: {filteredItemsdata.length}
         </p>
       </div>
         <Dropdown

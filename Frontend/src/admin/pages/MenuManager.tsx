@@ -150,8 +150,8 @@ const filteredmenu = selectedApp
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-green-600 "><List size={18} /></span> Menu            
           </h2>
-                  <p className="text-gray-700 font-medium mt-1">
-          Total Menu: {menus.length}
+          <p className="text-gray-700 font-medium mt-1">
+          Total Menu: {filteredmenu.length}
         </p>
           </div>
           {/* Module Dropdown */}

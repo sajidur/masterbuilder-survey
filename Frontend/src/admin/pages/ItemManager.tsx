@@ -216,7 +216,7 @@ const ItemManager: React.FC = () => {
           Item
         </h2>
               <p className="text-gray-700 font-medium mt-1">
-          Total Item: {items.length}
+          Total Item: {filteredItems.length}
         </p>
         </div>
         {/* Module */}

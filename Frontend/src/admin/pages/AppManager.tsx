@@ -135,7 +135,7 @@ const filteredApps = selectedModule
             <span className="text-blue-600 "><Puzzle size={18} /></span> App
           </h2>
             <p>
-          Total Apps: {apps.length}
+          Total Apps: {filteredApps.length}
         </p>
           </div>
 

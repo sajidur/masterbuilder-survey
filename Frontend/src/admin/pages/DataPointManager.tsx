@@ -224,7 +224,7 @@ const handleDelete = async (id: string) => {
             Field
           </h2>
            <p className="text-gray-700 font-medium mt-1">
-          Total Field: {dataPoints.length}
+          Total Field: {filteredItemsdata.length}
         </p>
         </div>
           {/* Module */}
