@@ -23,6 +23,8 @@ export class DPGroupMap{
   @Column()
   dpGroupId: string;
 
+  @Column()
+  itier: string;
   @Column({ nullable: true })
   serialNumber: string;
   @Column({ nullable: true })

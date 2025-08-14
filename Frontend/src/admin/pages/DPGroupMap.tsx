@@ -95,6 +95,7 @@ const DPGroupMap:  React.FC = () => {
   const [editFieldId, setEditFieldId] = useState<string | null>(null);
   const [dpgroup, setFieldGroupCode] = useState("");
   const [tier, setTier] = useState("");
+  const [itier, setITier] = useState("");
   const [remarks, setRemarks] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
@@ -150,6 +151,7 @@ const DPGroupMap:  React.FC = () => {
       // serialNumber: string;
       dpGroupId: string;
       tier?: string;
+      itier?: string;
       // remarks: string;
       subItemId?: string | null;
       subSubItemId?: string | null;
@@ -160,6 +162,7 @@ const DPGroupMap:  React.FC = () => {
       // serialNumber,
       dpGroupId:dpgroup,
       tier: "0",
+      itier: itier||"",
       // remarks,
       subItemId: selectedSubItem || null,
       subSubItemId: selectedSubSubItem || null,
@@ -217,11 +220,12 @@ const DPGroupMap:  React.FC = () => {
   const matchModule = selectedModule ? item.moduleName === modulename : true;
   const matchApp = selectedApp ? item.appName === appname : true;
   const matchMenu = selectedMenu ? item.menuid === selectedMenu : true;
+  const matchItier = itier ? item.itier === itier : true;
   const matchitem = selectedItem ? item.itemId === selectedItem : true;
   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
   const matchsubsubitem = selectedSubSubItem ? item.subsubitemid === selectedSubSubItem : true;
 
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchsubsubitem;
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchsubsubitem && matchItier;
 });
 const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
   return (
@@ -283,10 +287,10 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
           <Dropdown
-            label="fTier"
-            value={tier}
+            label="iTier"
+            value={itier}
             options={tiers.map((t) => ({ label: t.label, value: t.value }))}
-            onChange={setTier}
+            onChange={setITier}
           />
         <Dropdown
           label="Item"
@@ -547,6 +551,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
+              <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
@@ -571,6 +576,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 </td>
                 <td className="p-2">{f.appName || "—"}</td>
                 <td className="p-2">{f.menuTitle || "—"}</td>
+                <td className="p-2">{f.itier || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
                 <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>

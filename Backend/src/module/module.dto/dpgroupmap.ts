@@ -13,6 +13,7 @@ import { SubSubItem } from '../module.entity/subsubitem.entity';
 export class DPGroupMapDto {
   id: string;
   // serialNumber: string;
+  itier?: string;
   displayType?: string;
   dpgroupid: string;
   Item: ItemDto;
@@ -39,6 +40,10 @@ export class CreateDPGroupMapDto {
    @IsNotEmpty()
    dpGroupId: string;
 
+   @ApiProperty({ description: 'iTier' })
+   @IsString()
+   itier: string;
+   
    @ApiProperty({ description: 'Field Group code Type of the field' })
    @IsString()
    displayType: string;

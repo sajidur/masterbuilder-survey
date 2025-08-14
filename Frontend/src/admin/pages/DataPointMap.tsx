@@ -144,6 +144,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
     const payload = {
       itemId: selectedItem,
+      
       dpGroupId:selectedDPGroup,
       datapointid: selectedDataPoint,
       dataType:"",
@@ -198,8 +199,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
   const matchApp = selectedApp ? item.appName === appname : true;
   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
   const matchitem = selectedItem ? item.itemName === itemname : true;
+  const matchFG = selectedDPGroup ? item.dpGroupId === selectedDPGroup : true;
 
-  return matchModule && matchApp && matchMenu && matchitem;
+  return matchModule && matchApp && matchMenu && matchitem && matchFG;
 });
 
 //   const filteredItemsdata = datapointMaps.filter((dpm) => {

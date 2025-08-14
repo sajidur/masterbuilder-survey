@@ -220,8 +220,9 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
   const matchitem = selectedItem ? item.itemName === itemname : true;
   const matchsubitem = selectedSubItem ? item.subitem === subitemname : true;
+  const matchTier = selectedTier ? item.tier === selectedTier : true;
 
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchTier;
   });
   return (
     <div className="">

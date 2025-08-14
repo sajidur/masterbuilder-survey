@@ -202,7 +202,8 @@ const SubItemManager: React.FC = () => {
     const matchApp = selectedApp ? s.appName === selectedApp : true;
     const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
     const matchItem = selectedItem ? s.itemName === selectedItem : true;
-    return matchModule && matchApp && matchMenu && matchItem;
+    const matchTier = selectedTier ? s.tier === selectedTier : true;
+    return matchModule && matchApp && matchMenu && matchItem && matchTier;
   });
 
   return (

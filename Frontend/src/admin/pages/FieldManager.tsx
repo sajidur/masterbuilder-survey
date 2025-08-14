@@ -217,8 +217,9 @@ const payload: {
   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
   const matchitem = selectedItem ? item.itemName === itemname : true;
   const matchsubitem = selectedSubItem ? item.subItemName === subitemname : true;
+  const matchtier = tier ? item.tier === tier : true;
 
-  return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
+  return matchModule && matchApp && matchMenu && matchitem && matchsubitem && matchtier;
 });
 
   return (

@@ -2516,6 +2516,7 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
       displayType: dto.displayType,
       dpGroupId: dto.dpGroupId,
       itemId: dto.itemId,
+      itier: dto.itier,
       subItemId: dto.subItemId,
       subSubItemId: dto.subSubItemId,
       subSubSubItemId: dto.subSubSubItemId,
