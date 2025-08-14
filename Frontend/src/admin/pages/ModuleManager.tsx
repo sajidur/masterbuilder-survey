@@ -103,6 +103,9 @@ const ModuleManager: React.FC = () => {
       <div className="bg-white shadow-md rounded-xl p-4 mb-3">
         <h2 className=" font-light mb-6 text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 "><Puzzle size={18} /></span> Module
+                  <p className="text-gray-700 font-medium mt-1">
+          Total Modules: {modules.length}
+        </p>
         </h2>
 
         {/* Add Module Form Card */}

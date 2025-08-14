@@ -216,13 +216,17 @@ const handleDelete = async (id: string) => {
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+          <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
             Field
           </h2>
-
+           <p className="text-gray-700 font-medium mt-1">
+          Total Field: {dataPoints.length}
+        </p>
+        </div>
           {/* Module */}
           <div>
             <label className="block mb-1 font-medium">Module</label>

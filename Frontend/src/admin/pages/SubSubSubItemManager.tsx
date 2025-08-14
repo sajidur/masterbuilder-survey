@@ -160,7 +160,7 @@ const SubSubSubItemManager: React.FC = () => {
     const payload = {
       name: subSubSubItemName.trim(),
       subSubItemId: subSubItemObj.id,
-      tier: selectedTier,
+      tier: selectedTier? selectedTier.trim() : "",
       // templateId: null,
       serialNumber,
       layout,
@@ -226,10 +226,15 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Module → SubSubItem */}
-      <div className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 mb-4 bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-8 gap-4 p-4 mb-4 bg-white">
+        <div>
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 "><ListPlus size={18} /></span> SSS Item
         </h2>
+        <p> 
+          Total SSS Item: {subSubSubItems.length}
+        </p>
+        </div>
         {[
           {
             label: "Module",
@@ -258,6 +263,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
               setSelectedSubSubItem("");
             },
           },
+          
           {
             label: "Menu",
             value: selectedMenu,
@@ -269,6 +275,16 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
               setSelectedItem("");
               setSelectedSubItem("");
               setSelectedSubSubItem("");
+            },
+          },
+          
+          {
+            label: "iTier",
+            value: selectedTier,
+            setter: setSelectedTier,
+            options: tiers
+            .map((m) => ({ id: m.value, label: m.value })),
+            reset: () => {
             },
           },
           {
@@ -365,26 +381,6 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
             ))}
           </select>
         </div> */}
-
-        {/* Tier */}
-                                    {false && (
-
-        <div>
-          <label className="block mb-1 font-medium">Tier</label>
-          <select
-            value={selectedTier}
-            onChange={(e) => setSelectedTier(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">Choose Tier</option>
-            {tiers.map((tier) => (
-              <option key={tier.value} value={tier.value}>
-                {tier.label}
-              </option>
-            ))}
-          </select>
-        </div>
-                                    )}
         {/* Layout */}
         <div>
           <label className="block mb-1 font-medium">Layout Type</label>
@@ -439,13 +435,13 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
               <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
+              <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SSS Item</th>
-              {/* <th className="p-2 text-left">Tier</th> */}
               <th className="p-2 text-left">Layout</th>
 
               {/* <th className="p-2 text-left">Template</th> */}
@@ -465,6 +461,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
                 <td className="p-2">
                   {s.menuTitle || "—"}
                 </td>
+                <td className="p-2">{s.tier || "—"}</td>
                 <td className="p-2">
                   {s.itemName || "—"}
                 </td>
@@ -473,7 +470,6 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
                 <td className="p-2">{s.serialNumber || "—"}</td>
 
                 <td className="p-2">{s.name}</td>
-                {/* <td className="p-2">{s.tier || "—"}</td> */}
                 <td className="p-2">{s.layout || "—"}</td>
 
                 {/* <td className="p-2">

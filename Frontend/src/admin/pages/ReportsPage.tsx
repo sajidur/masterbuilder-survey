@@ -135,6 +135,9 @@ const ReportsPage: React.FC = () => {
   const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks","datapointMappingStatus","dpGroupMapStatus"]);
   const dropdownRef = useRef(null);
   const [disabledSubRadios, setDisabledSubRadios] = useState(true);
+  const [viewEntry, setViewEntry] = useState("");
+  const [mapping, setMapping] = useState("");
+  const displayTypes = ["Tree", "Graph", "Table", "List"];
 
   const [lookups, setLookups] = useState<{
     subSubSubItemMap: Record<string, SubSubSubItem>;
@@ -520,9 +523,11 @@ const toggleGroupField = (field: string) => {
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>FG:</strong> {dpgroupCount.length}
           </span>
-
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Total Row Count:</strong> {filteredItemsdata.length}
+            <strong>Field:</strong> {dpgroupCount.length}
+          </span>
+          <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
+            <strong>Total Row:</strong> {filteredItemsdata.length}
           </span>
           {/* <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
           <strong>Sub Item:</strong> {filteredSubItems.length}
@@ -533,8 +538,8 @@ const toggleGroupField = (field: string) => {
       <div>
         {showFilters && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-4 p-4 bg-white rounded shadow transition-all duration-300">
-              <h2 className="font-light text-gray-800 flex items-center gap-2 col-span-6">
+            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 mb-4 p-4 bg-white rounded shadow transition-all duration-300">
+              <h2 className="font-light text-gray-800 flex items-center gap-2 col-span-7">
                 <BarChart4 size={18} />
                 Report
               </h2>
@@ -583,6 +588,13 @@ const toggleGroupField = (field: string) => {
             setSelectedSubSubItem("");
             setSelectedSubSubSubItem("");
           }}              />
+          
+              <Dropdown
+                label="iTier"
+                value={selectedTier}
+                options={tiers.map((t) => ({ label: t.label, value: t.value }))}
+                onChange={setSelectedTier}
+              />
               <Dropdown
                 label="Item"
                 value={selectedItem}
@@ -596,6 +608,21 @@ const toggleGroupField = (field: string) => {
                 setSelectedSubSubItem("");
                 setSelectedSubSubSubItem("");
               }}              />
+
+            <div>
+              <label className="block mb-1 text-sm font-semibold text-gray-700">
+                View/Entry
+              </label>
+              <select
+                value={viewEntry}
+                onChange={(e) => setViewEntry(e.target.value)}
+                  className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+              >
+                <option value="">Select</option>
+                <option value="View">View</option>
+                <option value="Entry">Entry</option>
+              </select>
+          </div>
               <Dropdown
                 label="Sub Item"
                 value={selectedSubItem}
@@ -639,12 +666,26 @@ const toggleGroupField = (field: string) => {
                 onChange={setSelectedDisplayType}
               />
               <Dropdown
-                label="Tier"
+                label="fTier"
                 value={selectedTier}
                 options={tiers.map((t) => ({ label: t.label, value: t.value }))}
                 onChange={setSelectedTier}
               />
-
+        <div>
+          <label>Display</label>
+          <select
+            value={selectedDisplayType}
+            onChange={(e) => setSelectedDisplayType(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDisplayType ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Select Display Type</option>
+            {displayTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
               <Dropdown
                 label="Field"
                 value={selectedField}
@@ -654,13 +695,32 @@ const toggleGroupField = (field: string) => {
                 }))}
                 onChange={setSelectedField}
               />
-                            
-              <Dropdown
+              
+              
+            <div>
+              <label className="block mb-1 text-sm font-semibold text-gray-700">
+                Mapping
+              </label>
+              <select
+                value={viewEntry}
+                onChange={(e) => setMapping(e.target.value)}
+                  className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${mapping ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+              >
+                <option value="">Select</option>
+                <option value="FG W/O Field">FG W/O Field</option>
+                <option value="Field W/O FG">Field W/O FG</option>
+                <option value="FG W/O Page">FG W/O Page</option>
+                <option value="Page W/O FG">Page W/O FG</option>
+                <option value="All">All</option>
+                <option value="Mapping OK">Mapping OK</option>
+              </select>
+          </div>              
+              {/* <Dropdown
               label="Hide"
               value={isHide}
               options={Hides.map((t) => ({ label: t.label, value: t.value }))}
               onChange={setIsHide}
-            />
+            /> */}
               {/* <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -780,7 +840,7 @@ const toggleGroupField = (field: string) => {
                   
                   }}
                 />
-                S/SS/SSS Items
+                Page
               </label>
 
               {/* Separate checkbox for DataPoint */}
@@ -917,7 +977,7 @@ Distinct:
 
                           {!isHidden("itemViewEntry") && (
                             <th className="px-4 py-2 text-left font-semibold  tracking-wide">
-                              View/Entry
+                              View/ Entry
                             </th>
                           )}
                           

@@ -126,7 +126,7 @@ const SubSubItemManager: React.FC = () => {
       !selectedSubItem ||
       !subSubItemName.trim() //||
       // !selectedTemplateId ||
-      //!selectedTier
+     // !selectedTier
     ) {
       toast.warn("Please fill all fields.");
       return;
@@ -167,7 +167,7 @@ const SubSubItemManager: React.FC = () => {
 
       // Reset form
       setSubSubItemName("");
-      //setSelectedTier("");
+      setSelectedTier("");
       // setSelectedTemplateId("");
       setSerialNumber("");
       //setLayout("");
@@ -215,11 +215,15 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
       {/* Page Title */}
 
       {/* 🔹 Top Filter Layout: Module → App → Menu → Item → SubItem */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 rounded-lg bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 rounded-lg bg-white">
+        <div>
         <h2 className="font-light text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 "><ListPlus size={18} /></span> SS Item
         </h2>
-
+        <p>
+          Total SS Item: {subSubItems.length}
+        </p>
+      </div>
         {/* Module */}
         <div className="">
           <label className="block font-medium text-gray-700">Module</label>
@@ -290,6 +294,23 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           </select>
         </div>
 
+                  <div>
+                    <label className="block mb-1 text-sm font-semibold text-gray-700">
+                      iTier
+                    </label>
+                    <select
+                      value={selectedTier}
+                      onChange={(e) => setSelectedTier(e.target.value)}
+                        className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                    >
+                      <option value="">iTier</option>
+                      {tiers.map((tierOption) => (
+                        <option key={tierOption.value} value={tierOption.value}>
+                          {tierOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
         {/* Item */}
         <div className="">
           <label className="block font-medium text-gray-700">Item</label>
@@ -386,7 +407,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
             onChange={(e) => setSelectedTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose Tier</option>
+            <option value="">Choose iTier</option>
             {tiers.map((tier) => (
               <option key={tier.value} value={tier.value}>
                 {tier.label}
@@ -496,13 +517,13 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
+              <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SS Item</th>
               {/* <th className="p-2 text-left">Template</th> */}
-              {/* <th className="p-2 text-left">Tier</th> */}
               <th className="p-2 text-left">Layout</th>
               {/* <th className="p-2 text-left">P/S Button</th>
               <th className="p-2 text-left">Navigate To</th> */}
@@ -519,6 +540,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                   {s.appName|| "—"}
                 </td>
                 <td className="p-2">{s.menuTitle || "—"}</td>
+                <td className="p-2">{s.tier}</td>
                 <td className="p-2">{s.itemName || "—"}</td>
                 <td className="p-2">{s.subitem|| "—"}</td>
                 <td className="p-2">{s.serialNumber}</td>
@@ -527,7 +549,6 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 {/* <td className="p-2">
                   {s.template?.name}
                 </td> */}
-                {/* <td className="p-2">{s.tier}</td> */}
                 <td className="p-2">{s.layout || "—"}</td>
                 {/* <td className="p-2">
                   {s.buttonType === "Edit Button"

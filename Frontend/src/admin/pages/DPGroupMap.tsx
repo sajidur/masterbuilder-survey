@@ -227,14 +227,18 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
   return (
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-8 gap-4 p-4 bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-9 gap-4 p-4 bg-white">
+        <div>
         <h2 className="font-light text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
           Page - FG Map
         </h2>
-
+        <p> 
+          Total: {dpgroupmaps.length}
+        </p>
+      </div>
         <Dropdown
           label="Module"
           value={selectedModule}
@@ -278,6 +282,12 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             setSelectedSubSubSubItem("");
           }}
         />
+          <Dropdown
+            label="fTier"
+            value={tier}
+            options={tiers.map((t) => ({ label: t.label, value: t.value }))}
+            onChange={setTier}
+          />
         <Dropdown
           label="Item"
           value={selectedItem}
@@ -381,14 +391,14 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         
 
         <div>
-          <label className="block mb-1 font-medium">Tier</label>
+          <label className="block mb-1 font-medium">fTier</label>
           <select
             value={tier}
             disabled
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose Tier</option>
+            <option value="">Choose fTier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}

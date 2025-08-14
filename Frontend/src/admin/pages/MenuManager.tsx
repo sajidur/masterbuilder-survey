@@ -146,9 +146,14 @@ const filteredmenu = selectedApp
       <div className="rounded-xl bg-white px-4 mb-4">
         {/* Top Row: Module and App Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 ">
+          <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-green-600 "><List size={18} /></span> Menu
+            <span className="text-green-600 "><List size={18} /></span> Menu            
           </h2>
+                  <p className="text-gray-700 font-medium mt-1">
+          Total Menu: {menus.length}
+        </p>
+          </div>
           {/* Module Dropdown */}
           <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">

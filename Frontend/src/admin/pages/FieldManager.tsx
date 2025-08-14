@@ -225,13 +225,17 @@ const payload: {
     <div className="">
       {/* 🔹 Top Filter Section: Hierarchy Dropdowns */}
       <div className="grid grid-cols-1 md:grid-cols-8 gap-4 p-4 bg-white">
+        <div>
         <h2 className="font-light text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">
             <ListTree size={18} />
           </span>
           FG
         </h2>
-
+          <p className="text-gray-700 font-medium mt-1">
+          Total FG: {fields.length}
+        </p>
+      </div>
         <Dropdown
           label="Module"
           value={selectedModule}
@@ -275,6 +279,7 @@ const payload: {
             setSelectedSubSubSubItem("");
           }}
         />
+
         <Dropdown
           label="Item"
           value={selectedItem}
@@ -374,13 +379,13 @@ const payload: {
                                       {(
 
         <div>
-          <label className="block mb-1 font-medium">F Tier</label>
+          <label className="block mb-1 font-medium">fTier</label>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Choose F Tier</option>
+            <option value="">Choose fTier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
@@ -532,7 +537,7 @@ const payload: {
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">FG</th>
-              <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">fTier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">Remarks</th>
               {/* <th className="p-2 text-left">Required</th> */}

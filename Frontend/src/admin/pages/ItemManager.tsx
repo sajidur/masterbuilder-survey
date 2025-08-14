@@ -208,12 +208,17 @@ const ItemManager: React.FC = () => {
     <div className="">
       {/* Top Row: Module, App, Menu */}
       <div className=" bg-white grid grid-cols-1 sm:grid-cols-6 gap-4 rounded-lg p-4">
+        <div>
         <h2 className="font-light text-gray-800 flex items-center gap-2">
           <span className="text-blue-600 ">
             <Layers size={18} />
           </span>{" "}
           Item
         </h2>
+              <p className="text-gray-700 font-medium mt-1">
+          Total Item: {items.length}
+        </p>
+        </div>
         {/* Module */}
         <div className="">
           <label className="block font-medium text-gray-700">Module</label>
@@ -363,7 +368,7 @@ const ItemManager: React.FC = () => {
           </select>
         </div>
         }
-                <div>
+        <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             View/Entry
           </label>

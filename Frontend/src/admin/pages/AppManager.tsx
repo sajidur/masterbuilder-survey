@@ -10,7 +10,7 @@ import {
 } from "../../apiRequest/api";
 import { tiers } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { AppWindow } from "lucide-react";
+import { AppWindow, Puzzle } from "lucide-react";
 
 interface Module {
   id: string;
@@ -130,9 +130,14 @@ const filteredApps = selectedModule
         {/* Top Layout: Module Dropdown */}
         <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 mb-4">
           {/* Header */}
+          <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 "><AppWindow size={18} /></span> App
+            <span className="text-blue-600 "><Puzzle size={18} /></span> App
           </h2>
+            <p>
+          Total Apps: {apps.length}
+        </p>
+          </div>
 
           <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">

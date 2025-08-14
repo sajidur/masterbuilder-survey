@@ -100,10 +100,15 @@ const Button: React.FC = () => {
     <div className="">
       {/* Form */}
       <div className="bg-white shadow-md rounded-xl p-4 mb-3">
+        <div>
         <h2 className="font-light mb-6 text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600">🎛</span> Button Manager
+          <span className="text-blue-600">🎛</span> Button
         </h2>
-
+          <p>
+            Total Button: {buttons.length}
+          </p>
+          
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pb-4">
           {/* Serial Number */}
           <div>

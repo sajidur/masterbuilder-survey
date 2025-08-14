@@ -211,13 +211,17 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+          <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
               <ListTree size={18} />
             </span>
             FG- Field Map
           </h2>
-
+                <p className="text-gray-700 font-medium mt-1">
+          Total FG- Field Map: {datapointMaps.length}
+        </p>
+        </div>
           {/* Module */}
           <div>
             <label className="block mb-1 font-medium">Module</label>
@@ -349,14 +353,14 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
                   {/* Tier */}
         <div>
-          <label className="block mb-1 font-medium">Tier</label>
+          <label className="block mb-1 font-medium">fTier</label>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             disabled
           >
-            <option value="">Choose Region</option>
+            <option value="">Choose fTier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
