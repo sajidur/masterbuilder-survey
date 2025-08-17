@@ -436,25 +436,54 @@ const moduleCount = [
 
   //   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
   // });
-const groupedResult = groupByAndProject(filteredItemsdata, groupFields);
-filteredItemsdata = groupedResult;
-console.log("Filtered Items Data:", filteredItemsdata);
-  function groupByAndProject(data, groupFields) {
-  const seen = new Set();
+function groupByAndProject(data, groupFields) {
+  const map = new Map();
 
-  return data.reduce((result, item) => {
-    const groupKey = groupFields.map(f => item[f] ?? 'NULL').join("__");
-    if (!seen.has(groupKey)) {
+  // For grouping, ignore fields that can have multiple values (we'll aggregate them)
+  // Here we assume all groupFields are possible in output, but grouping should only happen on unique identifier fields
+  const baseFields = groupFields;
+
+  for (const item of data) {
+    // Generate group key using all groupFields (or you can choose a subset if needed)
+    const groupKey = baseFields.map((f) => item[f] ?? "NULL").join("__");
+
+    if (!map.has(groupKey)) {
+      // Initialize new object
       const groupObject = {};
-      groupFields.forEach(f => {
+      groupFields.forEach((f) => {
         groupObject[f] = item[f] ?? null;
       });
-      result.push(groupObject);
-      seen.add(groupKey);
+      map.set(groupKey, groupObject);
+    } else {
+      const existing = map.get(groupKey);
+
+      // Merge values dynamically: if different value, convert to array and add
+      groupFields.forEach((f) => {
+        const currentVal = existing[f];
+        const newVal = item[f];
+
+        if (currentVal == null) {
+          existing[f] = newVal ?? null;
+        } else if (currentVal !== newVal) {
+          // If already array, push unique values
+          if (Array.isArray(currentVal)) {
+            if (newVal && !currentVal.includes(newVal)) {
+              currentVal.push(newVal);
+            }
+          } else {
+            // Convert to array with both values
+            if (newVal && currentVal !== newVal) {
+              existing[f] = [currentVal, newVal];
+            }
+          }
+        }
+      });
     }
-    return result;
-  }, []);
+  }
+
+  return Array.from(map.values());
 }
+
 const toggleGroupField = (field: string) => {
   setGroupFields(prev =>
     prev.includes(field)
@@ -598,6 +627,7 @@ const toggleGroupField = (field: string) => {
           
               <Dropdown
                 label="iTier"
+               disabled={!showSSS}
                 value={selectedTier}
                 options={tiers.map((t) => ({ label: t.label, value: t.value }))}
                 onChange={setSelectedTier}
@@ -706,7 +736,7 @@ const toggleGroupField = (field: string) => {
               
             <div>
               <label className="block mb-1 text-sm font-semibold text-gray-700">
-                Mapping
+                Page Mapping
               </label>
               <select
                 value={viewEntry}
@@ -714,11 +744,11 @@ const toggleGroupField = (field: string) => {
                   className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${mapping ? 'border-blue-600 border-2' : 'border-gray-300'}`}
               >
                 <option value="">Select</option>
-                <option value="FG W/O Field">FG W/O Field</option>
-                <option value="Field W/O FG">Field W/O FG</option>
-                <option value="FG W/O Page">FG W/O Page</option>
-                <option value="Page W/O FG">Page W/O FG</option>
                 <option value="All">All</option>
+                {/* <option value="FG w/o Field">FG w/o Field</option> */}
+                {/* <option value="Field w/o FG">Field w/o FG</option> */}
+                <option value="FG w/o Page">FG w/o Page</option>
+                <option value="Page w/o FG">Page w/o FG</option>
                 <option value="Mapping OK">Mapping OK</option>
               </select>
           </div>              
@@ -835,7 +865,7 @@ const toggleGroupField = (field: string) => {
                         f=>f!=="siserialNumber"
                         && f!== "siitem" 
                         && f!== "silayout" 
-                       && f!== "sidescription" 
+                        && f!== "sidescription" 
                         && f !== "ssiserialNumber" 
                         && f !== "ssiname" 
                         && f !== "ssilayout"
@@ -862,11 +892,11 @@ const toggleGroupField = (field: string) => {
                       setGroupFields(prev => {
                         const next = new Set(prev);
                         next.add("dataPoint");
-                        next.add("serialNumber");
+                        next.add("datapointSerialNumber");
                         return Array.from(next);
                       });
                     } else {
-                      setGroupFields(prev => prev.filter(f => f !== "dataPoint" && f !== "serialNumber"));
+                      setGroupFields(prev => prev.filter(f => f !== "dataPoint" && f !== "datapointSerialNumber"));
                     }
 
                   }}
@@ -1386,20 +1416,22 @@ Distinct:
                         {visibleColumns.includes("Field") && (
                           <>
                             <td
-                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                 f.datapointMappingStatus == "1"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-red-100 text-red-800"
+                                  :""
                               }`}
                             >
-                              {f.serialNumber || ""}
+                              {f.datapointSerialNumber || ""}
                             </td>
 
                             <td
-                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                 f.datapointMappingStatus == "1"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-red-100 text-red-800"
+                                  :""
                               }`}
                             >
                               {f.dataPoint || ""}
@@ -1408,37 +1440,41 @@ Distinct:
                             {!isHidden("extraDp") && (
                               <>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
+                                      :""
                                   }`}
                                 >
                                   {f.regional}
                                 </td>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
+                                      :""
                                   }`}
                                 >
-                                  {f.isHide === 1 ? "true" : "false"}
+                                  {f.isHide === 1 ? "true" : ""}
                                 </td>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
+                                      :""
                                   }`}
                                 >
                                   {f.isRequired}
                                 </td>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${
+                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
+                                      :""
                                   }`}
                                 >
                                   {f.dataType}

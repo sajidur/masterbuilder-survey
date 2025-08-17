@@ -301,7 +301,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
             },
           },
           {
-            label: "SubItem",
+            label: "Sub Item",
             value: selectedSubItem,
             setter: setSelectedSubItem,
             options: subItems
@@ -312,7 +312,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
             },
           },
           {
-            label: "SSItem",
+            label: "SS Item",
             value: selectedSubSubItem,
             setter: setSelectedSubSubItem,
             options: subSubItems
