@@ -66,6 +66,8 @@ const DataPointManager: React.FC = () => {
   const [selectedApp, setSelectedApp] = useState("");
   const [selectedMenu, setSelectedMenu] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
+  const [selectedCopyToItem, setSelectedCopyToItem] = useState("");
+  const [selectedCopyField, setSelectedCopyField] = useState("");
   const [dpGroupCode, setDpGroupCode] = useState("");
   const [dataPointName, setDataPointName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
@@ -75,7 +77,7 @@ const DataPointManager: React.FC = () => {
   const [isHide, setIsHide] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [dpGroups, setDpGroups] = useState<any[]>([]);
+  //const [dpGroups, setDpGroups] = useState<any[]>([]);
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
 
@@ -129,7 +131,7 @@ const DataPointManager: React.FC = () => {
   const filteredApps = apps.filter((app) => app.Module?.id === selectedModule);
   const filteredMenus = menus.filter((menu) => menu.app?.id === selectedApp);
   const filteredItems = items.filter((item) => item.menu?.id === selectedMenu);
-
+  const filteredDatapoints = dataPoints.filter((dp) => dp.itemId === selectedCopyToItem);
   const resetForm = () => {
     // setSelectedModule("");
     // setSelectedApp("");
@@ -178,7 +180,37 @@ const DataPointManager: React.FC = () => {
       toast.error("Failed to save DataPoint.");
     }
   };
+const handleCopy = async () => {
 
+  const selectedDataPoint = filteredDatapoints.find(dp => dp.id === selectedCopyField);
+    const payload = {
+      itemId: selectedItem,
+      dpGroupCode:"0",
+      dataPoint: selectedDataPoint?.dataPoint,
+      serialNumber: selectedDataPoint?.serialNumber,
+      dataType: selectedDataPoint?.dataType,
+      regional:"",
+      isHide: false,
+      isRequired: false,
+    };
+
+
+    try {
+      if (editId) {
+        await updateDataPoint(editId, payload);
+        toast.success("DataPoint updated successfully!");
+      } else {
+        await addDataPoint(payload);
+        toast.success("DataPoint added successfully!");
+      }
+
+      const updated = await getAllDataPointsBySP();
+      setDataPoints(updated);
+      resetForm();
+    } catch {
+      toast.error("Failed to save DataPoint.");
+    }
+  };
   const handleCancelEdit = () => {
     resetForm();
   };
@@ -215,7 +247,7 @@ const handleDelete = async (id: string) => {
   return (
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
@@ -354,7 +386,7 @@ const handleDelete = async (id: string) => {
 }
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4">
           <div>
             <label className="block mb-1 font-medium">Serial No</label>
             <input
@@ -395,7 +427,7 @@ const handleDelete = async (id: string) => {
           </select>
         </div>
         }
-                    {false &&
+         {false &&
 
           <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
@@ -433,7 +465,7 @@ const handleDelete = async (id: string) => {
             </select>
           </div>
 
-          <div className="">
+          <div>
             <button
               onClick={handleAddOrUpdate}
               className="px-6 py-2 mt-7 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
@@ -449,6 +481,57 @@ const handleDelete = async (id: string) => {
                 Cancel
               </button>
             )}
+          </div>
+          <div>
+            <h1>Do you need to copy</h1>
+            <h1>Copy from.....</h1>
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Item</label>
+
+            <select
+              value={selectedItem}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                setSelectedCopyToItem(selectedId);
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Item</option>
+              {filteredItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+            <div>
+            <label className="block mb-1 font-medium">Field</label>
+
+            <select
+              value={selectedCopyField}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                setSelectedCopyField(selectedId);
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedCopyField ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Item</option>
+              {filteredDatapoints.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.dataPoint}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <button
+              onClick={handleCopy}
+              className="px-6 py-2 mt-8 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+            >
+             + Copy
+            </button>
           </div>
         </div>
       </div>
