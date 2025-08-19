@@ -131,7 +131,8 @@ const ReportsPage: React.FC = () => {
   const [dataFields, setDataFields] = useState<any[]>([]);
   const [showFilters, setShowFilters] = useState(true);
   const [selectedTier, setSelectedTier] = useState("");
-  
+  const [selectediTier, setSelectediTier] = useState("");
+
   const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks","datapointMappingStatus","dpGroupMapStatus"]);
   const dropdownRef = useRef(null);
   const [disabledSubRadios, setDisabledSubRadios] = useState(true);
@@ -161,7 +162,7 @@ const ReportsPage: React.FC = () => {
     { label: "SI", value: "si" },
     { label: "Intro", value: "intro" },
     { label: "ItemType", value: "itemType" },
-    { label: "RegName", value: "regName" },
+    // { label: "RegName", value: "regName" },
     { label: "ItemViewEntry", value: "itemViewEntry" },
     { label: "Layout", value: "layout" },
     { label: "Display", value: "display" },
@@ -436,6 +437,11 @@ const moduleCount = [
 
   //   return matchModule && matchApp && matchMenu && matchitem && matchsubitem;
   // });
+  
+const groupedResult = groupByAndProject(filteredItemsdata, groupFields);
+filteredItemsdata = groupedResult;
+console.log("Filtered Items Data:", filteredItemsdata);
+
 function groupByAndProject(data, groupFields) {
   const map = new Map();
 
@@ -484,13 +490,13 @@ function groupByAndProject(data, groupFields) {
   return Array.from(map.values());
 }
 
-const toggleGroupField = (field: string) => {
-  setGroupFields(prev =>
-    prev.includes(field)
-      ? prev.filter(f => f !== field) // remove if exists
-      : [...prev, field] // add if not exists
-  );
-};
+// const toggleGroupField = (field: string) => {
+//   setGroupFields(prev =>
+//     prev.includes(field)
+//       ? prev.filter(f => f !== field) // remove if exists
+//       : [...prev, field] // add if not exists
+//   );
+// };
 
   return (
     <>
@@ -623,14 +629,14 @@ const toggleGroupField = (field: string) => {
             setSelectedSubItem("");
             setSelectedSubSubItem("");
             setSelectedSubSubSubItem("");
-          }}              />
+          }} />
           
               <Dropdown
                 label="iTier"
-               disabled={!showSSS}
-                value={selectedTier}
+                disabled={!showSSS} // false allows interaction
+                value={selectediTier}
                 options={tiers.map((t) => ({ label: t.label, value: t.value }))}
-                onChange={setSelectedTier}
+                onChange={setSelectediTier}
               />
               <Dropdown
                 label="Item"
@@ -744,7 +750,6 @@ const toggleGroupField = (field: string) => {
                   className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${mapping ? 'border-blue-600 border-2' : 'border-gray-300'}`}
               >
                 <option value="">Select</option>
-                <option value="All">All</option>
                 {/* <option value="FG w/o Field">FG w/o Field</option> */}
                 {/* <option value="Field w/o FG">Field w/o FG</option> */}
                 <option value="FG w/o Page">FG w/o Page</option>
@@ -851,6 +856,7 @@ const toggleGroupField = (field: string) => {
                         next.add("siitem");
                         next.add("sssiname");
                         next.add("silayout");
+                        next.add("sitier");
                         next.add("sidescription");
                         next.add("ssiserialNumber");
                         next.add("ssiname");
@@ -865,6 +871,7 @@ const toggleGroupField = (field: string) => {
                         f=>f!=="siserialNumber"
                         && f!== "siitem" 
                         && f!== "silayout" 
+                        && f !== "sitier"
                         && f!== "sidescription" 
                         && f !== "ssiserialNumber" 
                         && f !== "ssiname" 
@@ -1005,13 +1012,24 @@ Distinct:
                               Item Type
                             </th>
                           )}
-
+{/* 
                           {!isHidden("regName") && (
                             <th className="px-4 py-2 text-left font-semibold  tracking-wide">
                               Reg Name
                             </th>
-                          )}
+                          )} */}
 
+                      {visibleColumns.includes("subItem") &&
+                        !isHidden("S_SS_SSS") &&
+                        showSSS && (
+                          <>
+                            {!isHidden("sitier") && (
+                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                iTier
+                              </th>
+                            )}
+                        </>
+                      )}
                           {!isHidden("itemViewEntry") && (
                             <th className="px-4 py-2 text-left font-semibold  tracking-wide">
                               View/ Entry
@@ -1038,7 +1056,7 @@ Distinct:
                             FG
                           </th>
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                            Tier
+                            fTier
                           </th>
 
                           {!isHidden("display") && (
@@ -1162,7 +1180,7 @@ Distinct:
 
                           {!isHidden("extraDp") && (
                             <>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              {/* <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Reg DF
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -1170,7 +1188,7 @@ Distinct:
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Reqd
-                              </th>
+                              </th> */}
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Data_Type
                               </th>
@@ -1232,6 +1250,16 @@ Distinct:
                                 {f.itemserialNumber || ""}
                               </td>
                             )}
+
+                      {visibleColumns.includes("subItem") &&
+                          !isHidden("S_SS_SSS") &&
+                          showSSS && (
+                            <>
+                              {!isHidden("si") && (
+                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                  {f.siserialNumber || ""}
+                                </td>
+                              )}
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {f.itemName || ""}
                             </td>
@@ -1240,11 +1268,11 @@ Distinct:
                                 {f.itemType || ""}
                               </td>
                             )}
-                            {!isHidden("regName") && (
+                            {/* {!isHidden("regName") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.regName || ""}
                               </td>
-                            )}
+                            )} */}
                             {!isHidden("itemViewEntry") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.itemViewEntry || ""}
@@ -1439,7 +1467,7 @@ Distinct:
 
                             {!isHidden("extraDp") && (
                               <>
-                                <td
+                                {/* <td
                                   className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
@@ -1468,7 +1496,7 @@ Distinct:
                                   }`}
                                 >
                                   {f.isRequired}
-                                </td>
+                                </td> */}
                                 <td
                                   className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
@@ -1525,6 +1553,7 @@ Distinct:
 interface DropdownProps {
   label: string;
   value: string;
+  disabled?: boolean;   // fully disabled
   options: { label: string; value: string }[];
   onChange: (val: string) => void;
 }
@@ -1533,12 +1562,14 @@ const Dropdown: React.FC<DropdownProps> = ({
   label,
   value,
   options,
+  disabled = false,
   onChange,
 }) => (
   <div className="w-full">
     <label className="block text-sm font-medium mb-1">{label}</label>
     <select
       value={value}
+      disabled={disabled} // true disables interaction completely
       onChange={(e) => onChange(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${value ? 'border-blue-600 border-2' : 'border-gray-300'}`}
     >

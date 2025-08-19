@@ -482,7 +482,7 @@ const handleDelete = async (id: string) => {
               </button>
             )}
           </div>
-          <div>
+          {/* <div>
             <h1>Do you need to copy</h1>
             <h1>Copy from.....</h1>
           </div>
@@ -532,7 +532,7 @@ const handleDelete = async (id: string) => {
             >
              + Copy
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
