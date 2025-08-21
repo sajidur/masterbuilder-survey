@@ -113,9 +113,9 @@ const ReportsPage: React.FC = () => {
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
   const [dataPoints, setDataPoints] = useState<DataPoint[]>([]);
-  const [selectedDataPoint, setSelectedDataPoint] = useState<DataPoint[]>([]);
   const [isHide, setIsHide] = useState("-1");
 
+  const [selectedDataPoint, setSelectedDataPoint] = useState();
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedApp, setSelectedApp] = useState("");
   const [selectedMenu, setSelectedMenu] = useState("");
