@@ -113,6 +113,7 @@ const ReportsPage: React.FC = () => {
   const [subSubSubItems, setSubSubSubItems] = useState<SubSubSubItem[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
   const [dataPoints, setDataPoints] = useState<DataPoint[]>([]);
+  const [selectedDataPoint, setSelectedDataPoint] = useState<DataPoint[]>([]);
   const [isHide, setIsHide] = useState("-1");
 
   const [selectedModule, setSelectedModule] = useState("");
@@ -343,15 +344,18 @@ const ReportsPage: React.FC = () => {
     const matchMenu = selectedMenu ? item.title === menuname : true;
     const matchitem = selectedItem ? item.itemName === itemname : true;
     
-    const matchdpGroup = selectedDisplayType
-      ? item.dpgroupid === selectedDisplayType
-      : true;
+    const matchdpGroup = selectedField? item.dpgroupid === selectedField: true;
+    const matchDataPoint = selectedDataPoint? item.datapointId === selectedDataPoint: true;
     const matchsubitem = selectedSubItem ? item.siitem === subitemname : true;
     const matchsubSubItem = selectedSubSubItem ? item.ssiname === subsubitemname : true;
     const matchsubSubSubItem = selectedSubSubSubItem ? item.sssiname === subsubSubitemname : true;
+    const matchDisplayType = selectedDisplayType ? item.dpgroupdisplay === selectedDisplayType : true;
+    const matchViewEntry = viewEntry ? item.itemViewEntry === viewEntry : true;
+
     // const isHideFilter =
     //   isHide === "-1" ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
-    const tierFilter = selectedTier ? item.tier === selectedTier : true;
+    const tierFilter = selectedTier ? item.dpgrouptier === selectedTier : true;
+    const itierFilter = selectediTier ? item.itier === selectediTier : true;
     return (
       matchModule &&
       matchApp &&
@@ -362,7 +366,11 @@ const ReportsPage: React.FC = () => {
       matchsubSubItem &&
       matchsubSubSubItem &&
      // isHideFilter &&
-      tierFilter
+      tierFilter &&
+      matchDisplayType &&
+      matchViewEntry &&
+      itierFilter &&
+      matchDataPoint
     );
   });
 
@@ -701,12 +709,12 @@ function groupByAndProject(data, groupFields) {
               />
               <Dropdown
                 label="FG"
-                value={selectedDisplayType}
+                value={selectedField}
                 options={filteredDpGroups.map((code) => ({
                   label: code.fieldGroupCode,
                   value: code.id,
                 }))}
-                onChange={setSelectedDisplayType}
+                onChange={setSelectedField}
               />
               <Dropdown
                 label="fTier"
@@ -731,12 +739,12 @@ function groupByAndProject(data, groupFields) {
         </div>
               <Dropdown
                 label="Field"
-                value={selectedField}
+                value={selectedDataPoint}
                 options={dataPoints.map((dp) => ({
                   label: dp.dataPoint,
                   value: dp.id,
                 }))}
-                onChange={setSelectedField}
+                onChange={setSelectedDataPoint}
               />
               
               
