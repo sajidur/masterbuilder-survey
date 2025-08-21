@@ -133,7 +133,7 @@ const ReportsPage: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState("");
   const [selectediTier, setSelectediTier] = useState("");
 
-  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","regName","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks","datapointMappingStatus","dpGroupMapStatus"]);
+  const [groupFields,setGroupFields] = useState<string[]>(["moduleserialNumber","modulename", "appname","appserialNumber","menuserialNumber","title","itemserialNumber","itemName","itemType","itemViewEntry","itemdescription","groupserialNumber","fieldGroupCode","dpgrouptier","dpgroupdisplay","dpgroupremarks","datapointMappingStatus","dpGroupMapStatus"]);
   const dropdownRef = useRef(null);
   const [disabledSubRadios, setDisabledSubRadios] = useState(true);
   const [viewEntry, setViewEntry] = useState("");
@@ -163,15 +163,15 @@ const ReportsPage: React.FC = () => {
     { label: "Intro", value: "intro" },
     { label: "ItemType", value: "itemType" },
     // { label: "RegName", value: "regName" },
-    { label: "ItemViewEntry", value: "itemViewEntry" },
+    { label: "View/Entry", value: "itemViewEntry" },
     { label: "Layout", value: "layout" },
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
     { label: "S/SS/SSS Items", value: "S_SS_SSS" },
-    { label: "DF Extra", value: "extraDp" },
+    { label: "Data Type", value: "extraDp" },
   ];
-
-  const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
+  const values = ["si", "intro","remarks"]; // This is your default checked list
+  const [hiddenGroups, setHiddenGroups] = useState<string[]>(values);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
@@ -900,10 +900,14 @@ function groupByAndProject(data, groupFields) {
                         const next = new Set(prev);
                         next.add("dataPoint");
                         next.add("datapointSerialNumber");
+                        next.add("dataType")
                         return Array.from(next);
                       });
                     } else {
-                      setGroupFields(prev => prev.filter(f => f !== "dataPoint" && f !== "datapointSerialNumber"));
+                      setGroupFields(prev => prev.filter(f => 
+                        f !== "dataPoint" 
+                        && f !== "datapointSerialNumber"
+                        && f !=="dataType"));
                     }
 
                   }}
@@ -1003,33 +1007,33 @@ Distinct:
                             </th>
                           )}
 
+                          {visibleColumns.includes("subItem") &&
+                            !isHidden("S_SS_SSS") &&
+                            showSSS && (
+                              <>
+                                {!isHidden("sitier") && (
+                                  <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                    iTier
+                                  </th>
+                                )}
+                            </>
+                          )}
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             Item
                           </th>
 
-                          {!isHidden("itemType") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              Item Type
-                            </th>
-                          )}
-{/* 
+                        {/* 
                           {!isHidden("regName") && (
                             <th className="px-4 py-2 text-left font-semibold  tracking-wide">
                               Reg Name
                             </th>
                           )} */}
 
-                      {visibleColumns.includes("subItem") &&
-                        !isHidden("S_SS_SSS") &&
-                        showSSS && (
-                          <>
-                            {!isHidden("sitier") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                                iTier
-                              </th>
-                            )}
-                        </>
-                      )}
+                          {!isHidden("itemType") && (
+                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              Item Type
+                            </th>
+                          )}
                           {!isHidden("itemViewEntry") && (
                             <th className="px-4 py-2 text-left font-semibold  tracking-wide">
                               View/ Entry
@@ -1128,7 +1132,7 @@ Distinct:
                                 Layout
                               </th>
                             )}
-{/* 
+                          {/* 
                             {!isHidden("button") && (
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
                                 Button
@@ -1250,19 +1254,21 @@ Distinct:
                                 {f.itemserialNumber || ""}
                               </td>
                             )}
-
-                      {visibleColumns.includes("subItem") &&
-                          !isHidden("S_SS_SSS") &&
-                          showSSS && (
-                            <>
-                              {!isHidden("si") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
-                                  {f.siserialNumber || ""}
-                                </td>
-                              )}
+                            {visibleColumns.includes("subItem") &&
+                              !isHidden("S_SS_SSS") &&
+                              showSSS && (
+                                <>
+                                  {!isHidden("sitier") && (
+                                  <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                    {f.itier || ""}
+                                  </td>
+                                  )}
+                              </>
+                            )}
                             <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                               {f.itemName || ""}
                             </td>
+
                             {!isHidden("itemType") && (
                               <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
                                 {f.itemType || ""}

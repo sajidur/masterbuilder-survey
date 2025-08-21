@@ -1,6 +1,7 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ReportData`()
 BEGIN
-
+WITH BaseItems AS (
+    -- Base hierarchy: Modules → Apps → Menus → Items → Fields
     SELECT 
         md.serialNumber AS moduleserialNumber,
         md.name AS modulename,
@@ -8,39 +9,55 @@ BEGIN
         app.name AS appname,
         menu.serialNumber AS menuserialNumber,
         menu.title,
-
         item.serialNumber AS itemserialNumber,
+        item.id as itemid,
         item.name AS itemName,
         item.itemType AS itemType,
         item.buttonType AS regName,
         item.buttonLabel AS itemViewEntry,
         item.description AS itemdescription,
-
-        -- Show subitem info only if dpgroupmap exists; else NULL
-        CASE WHEN dpgm.id IS NOT NULL THEN si.serialNumber ELSE NULL END AS siserialNumber,
-        CASE WHEN dpgm.id IS NOT NULL THEN si.name ELSE NULL END AS siitem,
-        CASE WHEN dpgm.id IS NOT NULL THEN si.layout ELSE NULL END AS silayout,
-        CASE WHEN dpgm.id IS NOT NULL THEN si.description ELSE NULL END AS sidescription,
-        CASE WHEN dpgm.id IS NOT NULL THEN si.buttonLabel ELSE NULL END AS sibuttonLabel,
-        CASE WHEN dpgm.id IS NOT NULL THEN si.navigationTo ELSE NULL END AS sisinavigationTo,
-
-        CASE WHEN dpgm.id IS NOT NULL THEN ssi.serialNumber ELSE NULL END AS ssiserialNumber,
-        CASE WHEN dpgm.id IS NOT NULL THEN ssi.name ELSE NULL END AS ssiname,
-        CASE WHEN dpgm.id IS NOT NULL THEN ssi.layout ELSE NULL END AS ssilayout,
-        CASE WHEN dpgm.id IS NOT NULL THEN ssi.buttonLabel ELSE NULL END AS ssibuttonLabel,
-        CASE WHEN dpgm.id IS NOT NULL THEN ssi.navigationTo ELSE NULL END AS ssinavigationTo,
-
-        CASE WHEN dpgm.id IS NOT NULL THEN sssi.serialNumber ELSE NULL END AS sssiserialNumber,
-        CASE WHEN dpgm.id IS NOT NULL THEN sssi.name ELSE NULL END AS sssiname,
-        CASE WHEN dpgm.id IS NOT NULL THEN sssi.layout ELSE NULL END AS sssilayout,
-
-        fi.serialNumber AS groupserialNumber,
+        fi.serialNumber AS fieldSerialNumber,
         fi.fieldGroupCode,
-        fi.id AS dpgroupid,
+        fi.id AS fieldId,
         fi.tier AS dpgrouptier,
         fi.displayType AS dpgroupdisplay,
-        fi.description AS dpgroupremarks,
+        fi.description AS dpgroupremarks
+    FROM modules md
+    INNER JOIN app ON md.id = app.moduleId
+    INNER JOIN menu ON app.id = menu.appId
+    INNER JOIN item ON menu.id = item.menuId
+    INNER JOIN field fi ON fi.itemId = item.id
+),
 
+dpgroupmap AS (
+    -- Optional sub-items and sub-sub-items through dpgroupmap
+    SELECT 
+        dpgm.itemId,
+        dpgm.dpGroupId,
+        dpgm.id AS dpGroupMapId,
+        si.serialNumber AS siserialNumber,
+        si.name AS siitem,
+        si.layout AS silayout,
+        si.description AS sidescription,
+        si.buttonLabel AS sibuttonLabel,
+        si.navigationTo AS sisinavigationTo,
+        si.tier AS itier,
+        ssi.serialNumber AS ssiserialNumber,
+        ssi.name AS ssiname,
+        ssi.layout AS ssilayout,
+        sssi.serialNumber AS sssiserialNumber,
+        sssi.name AS sssiname,
+        sssi.layout AS sssilayout
+    FROM dpgroupmap dpgm
+    LEFT JOIN sub_item si ON si.id = dpgm.subItemId
+    LEFT JOIN sub_sub_item ssi ON ssi.id = dpgm.subSubItemId
+    LEFT JOIN sub_sub_sub_item sssi ON sssi.id = dpgm.subSubSubItemId
+),
+
+DataPoints AS (
+    -- Optional datapoints through datapointmap
+    SELECT 
+        dpm.itemId,
         dp.id AS datapointId,
         dp.serialNumber AS datapointSerialNumber,
         dp.dataPoint,
@@ -49,57 +66,51 @@ BEGIN
         dp.isHide,
         dp.isRequired,
         dp.regional,
+        dpm.dpGroupId
+    FROM datapointmap dpm
+    inner JOIN datapoint dp ON dp.id = dpm.dataPointId
+)
 
-        -- Mapping status flags with human readable labels
-        CASE WHEN fi.id IS NOT NULL THEN '1' ELSE '0' END AS fieldMappingStatus,
-        CASE WHEN dpm.dataPointId IS NOT NULL THEN '1' ELSE '0' END AS datapointMappingStatus,
-        CASE WHEN dpgm.id IS NOT NULL THEN '1' ELSE '0' END AS dpGroupMapStatus
+-- Combine everything
+SELECT
+    b.*,
+    si.dpGroupMapId AS dpGroupMapStatus,
+    si.siserialNumber,
+    si.siitem,
+    si.silayout,
+    si.sidescription,
+    si.sibuttonLabel,
+    si.sisinavigationTo,
+    si.itier,
+    si.ssiserialNumber,
+    si.ssiname,
+    si.ssilayout,
+    si.sssiserialNumber,
+    si.sssiname,
+    si.sssilayout,
+    dp.datapointId,
+    dp.datapointSerialNumber,
+    dp.dataPoint,
+    dp.dpGroupCode,
+    dp.dataType,
+    dp.isHide,
+    dp.isRequired,
+    dp.regional,
+    CASE WHEN b.fieldId IS NOT NULL THEN '1' ELSE '0' END AS fieldMappingStatus,
+    CASE WHEN dp.datapointId IS NOT NULL THEN '1' ELSE '0' END AS datapointMappingStatus,
+    CASE WHEN si.dpGroupMapId IS NOT NULL THEN '1' ELSE '0' END AS dpGroupMapStatus
+FROM BaseItems b
+left JOIN dpgroupmap si ON si.dpGroupId = b.fieldId  -- or use item.id if available
+LEFT JOIN DataPoints dp ON dp.dpGroupId = b.fieldId
+ORDER BY 
+    CAST(b.moduleserialNumber AS UNSIGNED),
+    CAST(b.appserialNumber AS UNSIGNED),
+    CAST(b.menuserialNumber AS UNSIGNED),
+    CAST(b.itemserialNumber AS UNSIGNED),
+    CAST(si.siserialNumber AS UNSIGNED),
+    CAST(si.ssiserialNumber AS UNSIGNED),
+    CAST(si.sssiserialNumber AS UNSIGNED),
+    CAST(b.fieldSerialNumber AS UNSIGNED),
+    CAST(dp.datapointSerialNumber AS UNSIGNED);
 
-    FROM modules md
-    INNER JOIN app       ON md.id = app.moduleId
-    INNER JOIN menu      ON app.id = menu.appId
-    INNER JOIN item      ON menu.id = item.menuId
-
-    -- Subitems left join (we conditionally show later)
-    LEFT JOIN sub_item           si  ON item.id = si.itemId
-    LEFT JOIN sub_sub_item       ssi ON si.id = ssi.subItemId
-    LEFT JOIN sub_sub_sub_item   sssi ON ssi.id = sssi.subSubItemId
-
-    -- Fields may have subitem/subsubitem/subsubsubitem or nulls (item-level field)
-    LEFT JOIN field fi
-      ON fi.itemId = item.id
-     AND (fi.subItemId IS NULL OR fi.subItemId = si.id)
-     AND (fi.subSubItemId IS NULL OR fi.subSubItemId = ssi.id)
-     AND (fi.subSubSubItemId IS NULL OR fi.subSubSubItemId = sssi.id)
-
-    -- Datapoints linked to item
-    LEFT JOIN datapoint dp
-      ON dp.itemId = item.id
-
-    -- Datapoint to Field mapping (must exist to be "mapped")
-    LEFT JOIN datapointmap dpm
-      ON dpm.itemId = item.id
-     AND dpm.dataPointId = dp.id
-     AND dpm.dpGroupId   = fi.id
-
-    -- dpGroupMap links dpGroup to subitems, optional subitem IDs can be NULL
-    LEFT JOIN dpgroupmap dpgm
-      ON dpgm.itemId   = item.id
-     AND dpgm.dpGroupId = fi.id
-     AND (dpgm.subItemId       IS NULL OR dpgm.subItemId       = si.id)
-     AND (dpgm.subSubItemId    IS NULL OR dpgm.subSubItemId    = ssi.id)
-     AND (dpgm.subSubSubItemId IS NULL OR dpgm.subSubSubItemId = sssi.id)
-
-    -- No filter here to keep all records, mapped or not
-
-    ORDER BY 
-        CAST(md.serialNumber AS UNSIGNED),
-        CAST(app.serialNumber AS UNSIGNED),
-        CAST(menu.serialNumber AS UNSIGNED),
-        CAST(item.serialNumber AS UNSIGNED),
-        CAST(si.serialNumber AS UNSIGNED),
-        CAST(ssi.serialNumber AS UNSIGNED),
-        CAST(sssi.serialNumber AS UNSIGNED),
-        CAST(fi.serialNumber AS UNSIGNED),
-        CAST(dp.serialNumber AS UNSIGNED);
 END
