@@ -78,6 +78,7 @@ const DataPointMap: React.FC = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [dpGroups, setDpGroups] = useState<any[]>([]);
   const [datapointMaps, setDataPointMap] = useState<any[]>([]);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -134,6 +135,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
     setIsHide(false);
     setIsRequired(false);
     setEditId(null);
+    setDisabled(false);
   };
 
   const handleAddOrUpdate = async () => {
@@ -141,7 +143,6 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
       toast.warn("Please fill all required fields.");
       return;
     }
-
     const payload = {
       itemId: selectedItem,
       
@@ -158,6 +159,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
       if (editId) {
         await updateDataPointMap(editId, payload);
         toast.success("DataPoint updated successfully!");
+        setDisabled(false);
       } else {
         await addDataPointMap(payload);
         toast.success("DataPoint added successfully!");
@@ -229,6 +231,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">Module</label>
             <select
               value={selectedModule}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedModule(e.target.value);
                 setSelectedApp("");
@@ -251,6 +254,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">App</label>
             <select
               value={selectedApp}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedApp(e.target.value);
                 setSelectedMenu("");
@@ -272,6 +276,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">Menu</label>
             <select
               value={selectedMenu}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedMenu(e.target.value);
                 setSelectedItem("");
@@ -293,6 +298,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
             <select
               value={selectedItem}
+              disabled={disabled}
               onChange={(e) => {
                 const selectedId = e.target.value;
                 setSelectedItem(selectedId);
@@ -335,6 +341,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">FG</label>
             <select
               value={selectedDPGroup}
+              disabled={disabled}
               onChange={(e) => {
                 setDpGroup(e.target.value);
                 const selectedDpGroupObj = dpGroups.find((dpgroup) => dpgroup.id === e.target.value);
@@ -376,7 +383,12 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             <label className="block mb-1 font-medium">Field</label>
             <select
               value={selectedDataPoint}
-              onChange={(e) => setDataPoint(e.target.value)}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                console.log(newValue);
+                setDataPoint(newValue);
+                console.log(selectedDataPoint);
+              }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDataPoint ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
               <option value="">Select Field</option>
@@ -479,6 +491,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                                 setSelectedApp(dp.appid || "");
                                 setSelectedMenu(dp.menuid || "");
                                 setSelectedItem(dp.itemId || "");
+                                setDisabled(true);
                               }}
 
                     className="text-blue-600 hover:text-blue-800"

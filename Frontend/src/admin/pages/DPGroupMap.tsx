@@ -97,6 +97,7 @@ const DPGroupMap:  React.FC = () => {
   const [tier, setTier] = useState("");
   const [itier, setITier] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["Tree", "Graph", "Table", "List"];
@@ -145,6 +146,11 @@ const DPGroupMap:  React.FC = () => {
       toast.warn("Please fill all required fields.");
       return;
     }
+
+    if(itier!=tier){  
+      toast.warn("ftier and itier should match.");
+      return;
+    }
     const payload: {
       itemId: string;
       // displayType: string;
@@ -178,6 +184,7 @@ const DPGroupMap:  React.FC = () => {
         const updatedFields = await getAllDPGroupmapsBySP();
         setDpGroupMaps(updatedFields);
         setEditFieldId(null);
+        setDisabled(false);
       } else {
         await addDpGroupMap(payload);
         toast.success("DP added successfully!");
@@ -246,6 +253,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         <Dropdown
           label="Module"
           value={selectedModule}
+          disabled={disabled}
           options={modules.map((m) => ({ label: m.name, value: m.id }))}
           onChange={(val) => {
             setSelectedModule(val);
@@ -260,6 +268,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         <Dropdown
           label="App"
           value={selectedApp}
+          disabled={disabled}
           options={apps
             .filter((a) => a.Module?.id === selectedModule)
             .map((a) => ({ label: a.name, value: a.id }))}
@@ -275,6 +284,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         <Dropdown
           label="Menu"
           value={selectedMenu}
+          disabled={disabled}
           options={menus
             .filter((m) => m.app?.id === selectedApp)
             .map((m) => ({ label: m.title, value: m.id }))}
@@ -288,6 +298,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         />
           <Dropdown
             label="iTier"
+            disabled={disabled}
             value={itier}
             options={tiers.map((t) => ({ label: t.label, value: t.value }))}
             onChange={setITier}
@@ -295,6 +306,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         <Dropdown
           label="Item"
           value={selectedItem}
+          disabled={disabled}
           options={items
             .filter((i) => i.menu?.id === selectedMenu)
             .map((i) => ({ label: i.name, value: i.id }))}
@@ -363,6 +375,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             <label className="block mb-1 font-medium">FG</label>
             <select
               value={dpgroup}
+              disabled={disabled}
               onChange={(e) => {
                 setFieldGroupCode(e.target.value);               
                 const selectedDpGroupObj = fields.find((dpgroup) => dpgroup.id === e.target.value);
@@ -532,6 +545,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 // setFieldName("");
                 setSerialNumber("");
                 setSelectedDisplayType("");
+                setDisabled(false);
                 // setSelectedFieldType("");
                 // setIsRequired(false);
               }}
@@ -612,6 +626,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                       setSelectedSubItem(f.subitemid || "");
                       setSelectedSubSubItem(f.subsubitemid || "");
                       setSelectedSubSubSubItem(f.subsubsubitemid || "");
+                      setDisabled(true);
 
                     }}
                     className="text-blue-600 hover:text-blue-800"
@@ -640,11 +655,13 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
 const Dropdown = ({
   label,
   value,
+  disabled,
   options,
   onChange,
 }: {
   label: string;
   value: string;
+  disabled?: boolean;
   options: { label: string; value: string }[];
   onChange: (value: string) => void;
 }) => (
@@ -652,6 +669,7 @@ const Dropdown = ({
     <label className="block font-medium text-gray-700">{label}</label>
     <select
       value={value}
+      disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${value ? 'border-blue-600 border-2' : 'border-gray-300'}`}
     >

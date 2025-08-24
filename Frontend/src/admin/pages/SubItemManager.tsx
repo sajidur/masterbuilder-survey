@@ -81,6 +81,7 @@ const SubItemManager: React.FC = () => {
   const [editSubItemId, setEditSubItemId] = useState<string | null>(null);
   const [buttonLabel, setButtonLabel] = useState("");
   const [layout, setLayout] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,6 +157,7 @@ const SubItemManager: React.FC = () => {
       if (editSubItemId) {
         await updateSubitem(editSubItemId, payload);
         toast.success("SubItem updated successfully!");
+        setDisabled(false);
       } else {
         const newSubItem = await addSubitem(payload);
         setSubItems((prev) => [...prev, newSubItem]);
@@ -244,6 +246,7 @@ const SubItemManager: React.FC = () => {
             </select> */}
             <select
               value={selectedModule}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedModule(e.target.value);
                 setSelectedApp("");
@@ -285,6 +288,7 @@ const SubItemManager: React.FC = () => {
             {/* App */}
             <select
               value={selectedApp}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedApp(e.target.value);
                 setSelectedMenu("");
@@ -326,6 +330,7 @@ const SubItemManager: React.FC = () => {
             {/* Menu */}
             <select
               value={selectedMenu}
+              disabled={disabled}
               onChange={(e) => {
                 setSelectedMenu(e.target.value);
                 setSelectedItem("");
@@ -348,6 +353,7 @@ const SubItemManager: React.FC = () => {
                     </label>
                     <select
                       value={selectedTier}
+                      disabled={disabled}
                       onChange={(e) => setSelectedTier(e.target.value)}
                         className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
                     >
@@ -379,6 +385,7 @@ const SubItemManager: React.FC = () => {
             {/* Item */}
             <select
               value={selectedItem}
+              disabled={disabled}
               onChange={(e) => setSelectedItem(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
@@ -542,6 +549,7 @@ const SubItemManager: React.FC = () => {
                   setButtonType("");
                   setNavigationTo("");
                   setDescription("");
+                  setDisabled(false);
                 }}
                 className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded hover:bg-gray-600"
               >
@@ -629,6 +637,7 @@ const SubItemManager: React.FC = () => {
                         setDescription(s.description || "");
                         setButtonLabel(s.buttonLabel || "");
                         setLayout(s.layout || "");
+                        setDisabled(true);
                       }}
                       className="text-blue-600 hover:text-blue-800"
                     >

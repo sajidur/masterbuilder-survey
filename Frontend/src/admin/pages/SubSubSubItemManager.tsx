@@ -96,6 +96,7 @@ const SubSubSubItemManager: React.FC = () => {
     null
   );
   const [layout, setLayout] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -172,6 +173,7 @@ const SubSubSubItemManager: React.FC = () => {
         await updateSubSubSubitem(editSubSubSubItemId, payload);
         toast.success("SSSItem updated!");
         setEditSubSubSubItemId(null);
+        setDisabled(false);
       } else {
         const newSubSubSubItem = await addSubSubSubitem(payload);
         toast.success("SSSItem added!");
@@ -214,7 +216,7 @@ const SubSubSubItemManager: React.FC = () => {
   const itemname = items.find((item) => item.id === selectedItem)?.name;
   const subitemname = subItems.find((s) => s.id === selectedSubItem)?.name;
 
-const filteredSubSUbItems = subSubSubItems.filter((item) => {
+  const filteredSubSUbItems = subSubSubItems.filter((item) => {
   const matchModule = selectedModule ? item.moduleName === modulename : true;
   const matchApp = selectedApp ? item.appName === appname : true;
   const matchMenu = selectedMenu ? item.menuTitle === menuname : true;
@@ -240,6 +242,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "Module",
             value: selectedModule,
+            disabled: disabled,
             setter: setSelectedModule,
             options: modules.map((m) => ({ id: m.id, label: m.name })),
             reset: () => {
@@ -248,11 +251,13 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
               setSelectedItem("");
               setSelectedSubItem("");
               setSelectedSubSubItem("");
+              setDisabled(false);
             },
           },
           {
             label: "App",
             value: selectedApp,
+            disabled: {disabled},
             setter: setSelectedApp,
             options: apps
               .filter((a) => a.Module?.id === selectedModule)
@@ -268,6 +273,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "Menu",
             value: selectedMenu,
+            disabled: {disabled},
             setter: setSelectedMenu,
             options: menus
               .filter((m) => m.app?.id === selectedApp)
@@ -282,6 +288,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "iTier",
             value: selectedTier,
+            disabled: {disabled},
             setter: setSelectedTier,
             options: tiers
             .map((m) => ({ id: m.value, label: m.value })),
@@ -291,6 +298,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "Item",
             value: selectedItem,
+            disabled: {disabled},
             setter: setSelectedItem,
             options: items
               .filter((i) => i.menu?.id === selectedMenu)
@@ -303,6 +311,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "Sub Item",
             value: selectedSubItem,
+            disabled: {disabled},
             setter: setSelectedSubItem,
             options: subItems
               .filter((s) => s.itemId === selectedItem)
@@ -314,6 +323,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
           {
             label: "SS Item",
             value: selectedSubSubItem,
+            disabled: {disabled},
             setter: setSelectedSubSubItem,
             options: subSubItems
               .filter((s) => s.subItem?.id === selectedSubItem)
@@ -324,6 +334,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
             <label className="block font-medium text-gray-700">{label}</label>
             <select
               value={value}
+              disabled={disabled}
               onChange={(e) => {
                 setter(e.target.value);
                 reset?.();
@@ -419,6 +430,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
                 setSelectedTier("");
                 // setSelectedTemplateId("");
                 setLayout("");
+                setDisabled(false);
               }}
               className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
             >
@@ -499,7 +511,7 @@ const filteredSubSUbItems = subSubSubItems.filter((item) => {
                       setSelectedSubItem(s.subitemid || "");
                       // setSelectedTemplateId(s.template?.id || "");
                       setSelectedSubSubItem(s.subsubitemid || "");
-
+                      setDisabled(true);
                       // setButtonType(s.buttonType || "");
                       // setButtonLabel(s.buttonLabel || "");
                       // setNavigationTo(s.navigationTo || "");

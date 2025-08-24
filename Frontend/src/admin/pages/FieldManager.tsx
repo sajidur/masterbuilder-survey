@@ -96,6 +96,7 @@ const FieldManager: React.FC = () => {
   const [tier, setTier] = useState("");
   const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["Tree", "Graph", "Table", "List"];
@@ -172,6 +173,7 @@ const payload: {
         const updatedFields = await getAllFields();
         setFields(updatedFields);
         setEditFieldId(null);
+        setDisabled(false);
       } else {
         await addField(payload);
         toast.success("DP added successfully!");
@@ -239,6 +241,7 @@ const payload: {
       </div>
         <Dropdown
           label="Module"
+          disabled={disabled} // true disables interaction completely
           value={selectedModule}
           options={modules.map((m) => ({ label: m.name, value: m.id }))}
           onChange={(val) => {
@@ -253,6 +256,7 @@ const payload: {
         />
         <Dropdown
           label="App"
+          disabled={disabled} // true disables interaction completely
           value={selectedApp}
           options={apps
             .filter((a) => a.Module?.id === selectedModule)
@@ -269,6 +273,7 @@ const payload: {
         <Dropdown
           label="Menu"
           value={selectedMenu}
+          disabled={disabled} // true disables interaction completely
           options={menus
             .filter((m) => m.app?.id === selectedApp)
             .map((m) => ({ label: m.title, value: m.id }))}
@@ -283,6 +288,7 @@ const payload: {
 
         <Dropdown
           label="Item"
+          disabled={disabled} // true disables interaction completely
           value={selectedItem}
           options={items
             .filter((i) => i.menu?.id === selectedMenu)
@@ -512,6 +518,7 @@ const payload: {
                 // setFieldName("");
                 setSerialNumber("");
                 setSelectedDisplayType("");
+                setDisabled(false);
                 // setSelectedFieldType("");
                 // setIsRequired(false);
               }}
@@ -592,6 +599,7 @@ const payload: {
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");
                       setRemarks(f.remarks || "")
+                      setDisabled(true); // disable hierarchy selection 
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >
@@ -619,11 +627,13 @@ const payload: {
 const Dropdown = ({
   label,
   value,
+  disabled,
   options,
   onChange,
 }: {
   label: string;
   value: string;
+  disabled?: boolean;
   options: { label: string; value: string }[];
   onChange: (value: string) => void;
 }) => (
@@ -631,6 +641,7 @@ const Dropdown = ({
     <label className="block font-medium text-gray-700">{label}</label>
     <select
       value={value}
+      disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${value ? 'border-blue-600 border-2' : 'border-gray-300'}`}
     >

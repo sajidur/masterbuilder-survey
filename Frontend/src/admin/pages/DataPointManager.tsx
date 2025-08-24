@@ -78,6 +78,7 @@ const DataPointManager: React.FC = () => {
   const [isRequired, setIsRequired] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   //const [dpGroups, setDpGroups] = useState<any[]>([]);
+  const [disabled, setDisabled] = useState(false);
 
   const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
 
@@ -144,6 +145,7 @@ const DataPointManager: React.FC = () => {
     setIsHide(false);
     setIsRequired(false);
     setEditId(null);
+        setDisabled(false);
   };
 
   const handleAddOrUpdate = async () => {
@@ -168,6 +170,7 @@ const DataPointManager: React.FC = () => {
       if (editId) {
         await updateDataPoint(editId, payload);
         toast.success("DataPoint updated successfully!");
+            setDisabled(false);
       } else {
         await addDataPoint(payload);
         toast.success("DataPoint added successfully!");
@@ -199,6 +202,7 @@ const handleCopy = async () => {
       if (editId) {
         await updateDataPoint(editId, payload);
         toast.success("DataPoint updated successfully!");
+        setDisabled(false);
       } else {
         await addDataPoint(payload);
         toast.success("DataPoint added successfully!");
@@ -264,6 +268,7 @@ const handleDelete = async (id: string) => {
             <label className="block mb-1 font-medium">Module</label>
             <select
               value={selectedModule}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => {
                 setSelectedModule(e.target.value);
                 setSelectedApp("");
@@ -286,6 +291,7 @@ const handleDelete = async (id: string) => {
             <label className="block mb-1 font-medium">App</label>
             <select
               value={selectedApp}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => {
                 setSelectedApp(e.target.value);
                 setSelectedMenu("");
@@ -307,6 +313,7 @@ const handleDelete = async (id: string) => {
             <label className="block mb-1 font-medium">Menu</label>
             <select
               value={selectedMenu}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => {
                 setSelectedMenu(e.target.value);
                 setSelectedItem("");
@@ -328,6 +335,7 @@ const handleDelete = async (id: string) => {
 
             <select
               value={selectedItem}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => {
                 const selectedId = e.target.value;
                 setSelectedItem(selectedId);
@@ -578,7 +586,7 @@ const handleDelete = async (id: string) => {
                         const menu = item?.menu;
                         const app = menu?.app;
                         const module = app?.Module;
-
+                        setDisabled(true);
                         // ✅ Set them in proper order using IDs (not names)
                         setSelectedModule(dp.moduleid|| "");
                           setSelectedApp(dp.appid || "");

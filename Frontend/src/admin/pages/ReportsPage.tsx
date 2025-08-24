@@ -356,6 +356,17 @@ const ReportsPage: React.FC = () => {
     //   isHide === "-1" ? item.isHide === 1 : item.isHide !== 1; // when false or null, show items where isHide is 0 or null
     const tierFilter = selectedTier ? item.dpgrouptier === selectedTier : true;
     const itierFilter = selectediTier ? item.itier === selectediTier : true;
+      // Handle mapping condition
+    let matchFilter = true;
+    if (mapping) {
+      if (mapping === "datapointMappingStatus") {
+        matchFilter = item.datapointMappingStatus === "0";
+      } else if (mapping === "dpGroupMapStatus") {
+        matchFilter = item.dpGroupMapStatus === "0";
+      } else if (mapping === "ok") {
+        matchFilter = item.datapointMappingStatus === "1" && item.dpGroupMapStatus === "1";
+      }
+    }
     return (
       matchModule &&
       matchApp &&
@@ -370,7 +381,8 @@ const ReportsPage: React.FC = () => {
       matchDisplayType &&
       matchViewEntry &&
       itierFilter &&
-      matchDataPoint
+      matchDataPoint &&
+      matchFilter
     );
   });
 
@@ -753,16 +765,16 @@ function groupByAndProject(data, groupFields) {
                 Page Mapping
               </label>
               <select
-                value={viewEntry}
+                value={mapping}
                 onChange={(e) => setMapping(e.target.value)}
                   className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${mapping ? 'border-blue-600 border-2' : 'border-gray-300'}`}
               >
                 <option value="">Select</option>
                 {/* <option value="FG w/o Field">FG w/o Field</option> */}
                 {/* <option value="Field w/o FG">Field w/o FG</option> */}
-                <option value="FG w/o Page">FG w/o Page</option>
-                <option value="Page w/o FG">Page w/o FG</option>
-                <option value="Mapping OK">Mapping OK</option>
+                <option value="dpGroupMapStatus">FG w/o Page</option>
+                <option value="datapointMappingStatus">FG w/o Field</option>
+                <option value="ok">Mapping OK</option>
               </select>
           </div>              
               {/* <Dropdown

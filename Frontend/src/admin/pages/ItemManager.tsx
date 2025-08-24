@@ -63,6 +63,7 @@ const ItemManager: React.FC = () => {
   // const [buttonLabel, setButtonLabel] = useState("");
   const [regName, setRegName] = useState("");
   const [viewEntry, setViewEntry] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,6 +127,7 @@ const ItemManager: React.FC = () => {
       if (editItemId) {
         await updateItem(editItemId, payload);
         toast.success("Item updated successfully!");
+        setDisabled(false);
       } else {
         const newItem = await addItem(payload);
         setItems((prev) => [...prev, newItem]);
@@ -223,6 +225,7 @@ const ItemManager: React.FC = () => {
         <div className="">
           <label className="block font-medium text-gray-700">Module</label>
           <select
+            disabled={disabled} // true disables interaction completely
             value={selectedModule}
             onChange={(e) => setSelectedModule(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
@@ -253,6 +256,7 @@ const ItemManager: React.FC = () => {
           </select> */}
           {/* App Dropdown */}
           <select
+            disabled={disabled} // true disables interaction completely
             value={selectedApp}
             onChange={(e) => setSelectedApp(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
@@ -285,6 +289,7 @@ const ItemManager: React.FC = () => {
           </select> */}
           {/* Menu Dropdown */}
           <select
+            disabled={disabled} // true disables interaction completely
             value={selectedMenu}
             onChange={(e) => setSelectedMenu(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
@@ -461,9 +466,9 @@ const ItemManager: React.FC = () => {
                 // setSelectedMenu("");
                 setSelectedItemType("");
                 setSerialNumber("");
-                setButtonType("");
                 setNavigationTo("");
                 setDescription("");
+                setDisabled(false);
               }}
               className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
             >
@@ -533,6 +538,7 @@ const ItemManager: React.FC = () => {
                         setViewEntry(item.buttonLabel);
                         setNavigationTo(item.navigationTo);
                         setDescription(item.description);
+                        setDisabled(true);
                       }}
                       className="text-blue-600 hover:text-blue-800"
                     >

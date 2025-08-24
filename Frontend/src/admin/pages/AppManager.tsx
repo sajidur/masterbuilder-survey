@@ -33,7 +33,7 @@ const AppManager: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [editAppId, setEditAppId] = useState<string | null>(null);
-
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,6 +79,7 @@ const AppManager: React.FC = () => {
       if (editAppId) {
         await updateApps(editAppId, payload);
         toast.success("App updated successfully!");
+        setDisabled(false);
       } else {
         const createdApp = await addApp(payload);
         setApps((prev) => [...prev, createdApp]);
@@ -144,6 +145,7 @@ const filteredApps = selectedModule
               Module
             </label>
             <select
+              disabled={disabled} // true disables interaction completely
               value={selectedModule}
               onChange={(e) => setSelectedModule(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
@@ -222,6 +224,7 @@ const filteredApps = selectedModule
                 setSelectedModule("");
                 setSelectedTier("");
                 setSerialNumber("");
+                setDisabled(false);
               }}
               className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
             >
@@ -272,13 +275,16 @@ const filteredApps = selectedModule
                       <button
                         onClick={() => {
                           handleEditApp(app);
+                          setDisabled(true);
                         }}
                         className="text-blue-600 hover:text-blue-800"
                       >
                         <FaEdit />
                       </button>
                       <button
-                        onClick={() => handleDeleteApp(app?.id)}
+                        onClick={() => {
+                          handleDeleteApp(app?.id);
+                        }}
                         className="text-red-600 hover:text-red-800"
                       >
                         <FaTrash />

@@ -44,6 +44,7 @@ const MenuManager: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [editMenuId, setEditMenuId] = useState<string | null>(null);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +99,7 @@ const MenuManager: React.FC = () => {
       if (editMenuId) {
         await updateMenu(editMenuId, payload);
         toast.success("Menu updated successfully!");
+        setDisabled(false);
       } else {
         const newMenu = await addMenu(payload);
         setMenus((prev) => [...prev, newMenu]);
@@ -161,6 +163,7 @@ const filteredmenu = selectedApp
             </label>
             <select
               value={selectedModule}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => setSelectedModule(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedModule ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
@@ -180,6 +183,7 @@ const filteredmenu = selectedApp
             </label>
             <select
               value={selectedApp}
+              disabled={disabled} // true disables interaction completely
               onChange={(e) => setSelectedApp(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
@@ -262,6 +266,7 @@ const filteredmenu = selectedApp
                 setSelectedApp("");
                 setSelectedTier("");
                 setSerialNumber("");
+                setDisabled(false);
               }}
               className="px-6 py-2 mt-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
             >
@@ -322,6 +327,7 @@ const filteredmenu = selectedApp
                           setSerialNumber(menu.serialNumber);
                           setSelectedModule(menu.moduleName);
                           // setSelectedApp(menu.app.name);
+                          setDisabled(true);
 
                           setTimeout(() => {
                             setSelectedApp(menu.appName);

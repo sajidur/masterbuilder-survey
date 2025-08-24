@@ -86,6 +86,7 @@ const SubSubItemManager: React.FC = () => {
   const [buttonType, setButtonType] = useState("");
   const [buttonLabel, setButtonLabel] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -159,6 +160,7 @@ const SubSubItemManager: React.FC = () => {
        // const updated = await getallsubsubitemBySP();
        // setSubSubItems(updated);
         setEditSubSubItemId(null);
+        setDisabled(false);
       } else {
         const newSubSubItem = await addSubSubitem(payload);
         setSubSubItems((prev) => [...prev, newSubSubItem]);
@@ -229,6 +231,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <label className="block font-medium text-gray-700">Module</label>
           <select
             value={selectedModule}
+            disabled={disabled}
             onChange={(e) => {
               setSelectedModule(e.target.value);
               setSelectedApp("");
@@ -252,6 +255,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <label className="block font-medium text-gray-700">App</label>
           <select
             value={selectedApp}
+            disabled={disabled}
             onChange={(e) => {
               setSelectedApp(e.target.value);
               setSelectedMenu("");
@@ -276,6 +280,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <label className="block font-medium text-gray-700">Menu</label>
           <select
             value={selectedMenu}
+            disabled={disabled}
             onChange={(e) => {
               setSelectedMenu(e.target.value);
               setSelectedItem("");
@@ -300,6 +305,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                     </label>
                     <select
                       value={selectedTier}
+                      disabled={disabled}
                       onChange={(e) => setSelectedTier(e.target.value)}
                         className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
                     >
@@ -316,6 +322,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <label className="block font-medium text-gray-700">Item</label>
           <select
             value={selectedItem}
+            disabled={disabled}
             onChange={(e) => {
               setSelectedItem(e.target.value);
               setSelectedSubItem("");
@@ -338,6 +345,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
           <label className="block font-medium text-gray-700">Sub Item</label>
           <select
             value={selectedSubItem}
+            disabled={disabled}
             onChange={(e) => setSelectedSubItem(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedSubItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
@@ -500,6 +508,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 setSelectedTier("");
                 // setSelectedTemplateId("");
                 setSerialNumber("");
+                setDisabled(false);
               }}
               className="px-6 py-2 mt-6 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition"
             >
@@ -579,6 +588,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                       setButtonType(s.buttonType || "");
                       setButtonLabel(s.buttonLabel || "");
                       setNavigationTo(s.navigationTo || "");
+                      setDisabled(true);
                     }}
                     className="text-blue-600 hover:text-blue-800"
                   >
