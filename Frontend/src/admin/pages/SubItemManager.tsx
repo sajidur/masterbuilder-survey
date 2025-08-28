@@ -218,10 +218,10 @@ const SubItemManager: React.FC = () => {
             <span className="text-blue-600 ">
               <ListChecks size={18} />
             </span>{" "}
-            Sub Item
+            Sub Page
           </h2>
           <p>
-            Total Sub Item: {filteredSubItems.length} 
+            Total Sub Page: {filteredSubItems.length} 
           </p>
         </div>
           {/* Module */}
@@ -419,7 +419,7 @@ const SubItemManager: React.FC = () => {
           {/* SubItem Name */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Sub Item Name
+              Sub Page Name
             </label>
             <input
               className="w-full px-3 py-2 border rounded"

@@ -232,10 +232,10 @@ const SubSubSubItemManager: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-8 gap-4 p-4 mb-4 bg-white">
         <div>
         <h2 className="font-liight text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 "><ListPlus size={18} /></span> SSS Item
+          <span className="text-blue-600 "><ListPlus size={18} /></span> SSS page
         </h2>
         <p> 
-          Total SSS Item: {filteredSubSUbItems.length}
+          Total SSS Page: {filteredSubSUbItems.length}
         </p>
         </div>
         {[

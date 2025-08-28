@@ -80,7 +80,7 @@ const DataPointManager: React.FC = () => {
   //const [dpGroups, setDpGroups] = useState<any[]>([]);
   const [disabled, setDisabled] = useState(false);
 
-  const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
+  const fieldTypes = ["text", "number", "date", "boolean", "dropdown","attachment","download"];
 
   useEffect(() => {
     const fetchInitialData = async () => {

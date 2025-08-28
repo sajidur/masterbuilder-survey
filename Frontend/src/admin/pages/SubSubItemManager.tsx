@@ -220,10 +220,10 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
       <div className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 rounded-lg bg-white">
         <div>
         <h2 className="font-light text-gray-800 flex items-center gap-2">
-          <span className="text-blue-600 "><ListPlus size={18} /></span> SS Item
+          <span className="text-blue-600 "><ListPlus size={18} /></span> SS Page
         </h2>
         <p>
-          Total SS Item: {filteredSubSUbItems.length}
+          Total SS Page: {filteredSubSUbItems.length}
         </p>
       </div>
         {/* Module */}
