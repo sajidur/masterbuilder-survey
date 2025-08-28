@@ -980,12 +980,12 @@ Distinct:
                       {visibleColumns.includes("module") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
                               Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-2 py-2 text-left font-semibold tracking-wide">
                             Mod
                           </th>
                         </>
@@ -994,7 +994,7 @@ Distinct:
                       {visibleColumns.includes("app") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
                               Sl
                             </th>
                           )}
@@ -1008,7 +1008,7 @@ Distinct:
                       {visibleColumns.includes("menu") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
                               Sl
                             </th>
                           )}
@@ -1022,7 +1022,7 @@ Distinct:
                       {visibleColumns.includes("item") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
                               Sl
                             </th>
                           )}
@@ -1032,7 +1032,7 @@ Distinct:
                             showSSS && (
                               <>
                                 {!isHidden("sitier") && (
-                                  <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                                  <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                     iTier
                                   </th>
                                 )}
@@ -1071,7 +1071,7 @@ Distinct:
                       {visibleColumns.includes("DPGroupCode") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
                               Sl
                             </th>
                           )}
@@ -1079,7 +1079,7 @@ Distinct:
                           <th className="px-4 py-2 text-left font-semibold tracking-wide">
                             FG
                           </th>
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide">
                             fTier
                           </th>
 
@@ -1102,7 +1102,7 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Sl
                               </th>
                             )}
@@ -1139,7 +1139,7 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Sl
                               </th>
                             )}
@@ -1172,7 +1172,7 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Sl
                               </th>
                             )}
@@ -1193,7 +1193,7 @@ Distinct:
                         <>
                           {
                             <>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Sl
                               </th>
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -1231,11 +1231,11 @@ Distinct:
                         {visibleColumns.includes("module") && (
                           <>
                             {!isHidden("si") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.moduleserialNumber || ""}
                               </td>
                             )}
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            <td className="border-t border-gray-200 px-2 py-2 whitespace-nowrap">
                               {f.modulename || ""}
                             </td>
                           </>
@@ -1257,7 +1257,7 @@ Distinct:
                         {visibleColumns.includes("menu") && (
                           <>
                             {!isHidden("si") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.menuserialNumber || ""}
                               </td>
                             )}
@@ -1270,7 +1270,7 @@ Distinct:
                         {visibleColumns.includes("item") && (
                           <>
                             {!isHidden("si") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.itemserialNumber || ""}
                               </td>
                             )}
@@ -1279,7 +1279,7 @@ Distinct:
                               showSSS && (
                                 <>
                                   {!isHidden("sitier") && (
-                                  <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                  <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                     {f.itier || ""}
                                   </td>
                                   )}
@@ -1318,7 +1318,7 @@ Distinct:
                           <>
                       {!isHidden("si") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                            className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -1341,7 +1341,7 @@ Distinct:
                         </td>
 
                         <td
-                          className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                          className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -1422,7 +1422,7 @@ Distinct:
                           showSSS && (
                             <>
                               {!isHidden("si") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.ssiserialNumber || ""}
                                 </td>
                               )}
@@ -1452,7 +1452,7 @@ Distinct:
                           showSSS && (
                             <>
                               {!isHidden("si") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.sssiserialNumber || ""}
                                 </td>
                               )}
