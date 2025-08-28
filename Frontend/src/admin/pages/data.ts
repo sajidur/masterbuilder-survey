@@ -18,10 +18,10 @@ export const regionals = [
 ];
 export const layoutOptions = [
   { label: 'Tab', value: 'Tab' },
+  { label: 'Sub-Tab', value: 'Sub-Tab' },
   // { label: 'Mix-Tab', value: 'Mix-Tab' },
   // { label: 'Mix-Sec', value: 'Mix-Sec' },
   { label: 'Section', value: 'Section' },
   { label: 'Sub-Sec', value: 'Sub-Sec' },
   // { label: 'SS-Sec', value: 'SS-Sec' },
-    { label: 'Sub-Tab', value: 'Sub-Tab' },
 ];
