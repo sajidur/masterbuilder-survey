@@ -1244,7 +1244,7 @@ Distinct:
                         {visibleColumns.includes("app") && (
                           <>
                             {!isHidden("si") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.appserialNumber || ""}
                               </td>
                             )}
