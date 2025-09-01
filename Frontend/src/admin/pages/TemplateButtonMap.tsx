@@ -635,9 +635,9 @@ const TemplateButtonMap: React.FC = () => {
               <th className="p-2 text-left">Menu</th>
 
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Sub Item</th>
-              <th className="p-2 text-left">SS Item</th>
-              <th className="p-2 text-left">SSS Item</th>
+              <th className="p-2 text-left">Sub Page</th>
+              <th className="p-2 text-left">SS Page</th>
+              <th className="p-2 text-left">SSS Page</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
               <th className="p-2 text-left">FG</th>
