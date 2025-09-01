@@ -83,9 +83,9 @@ const mainColumns = [
   "Item",
   "FG",
   // "Tier",
-  "Sub Item",
-  "SS Item",
-  "SSS Item",
+  "Sub Page",
+  "SS Page",
+  "SSS Page",
   "Field",
 ];
 
@@ -97,9 +97,9 @@ const columnKeyMap = {
   Item: "item",
   "FG": "DPGroupCode",
   // Tier: "tier",
-  "Sub Item": "subItem",
-  "SS Item": "subSubItem",
-  "SSS Item": "subSubSubItem",
+  "Sub Page": "subItem",
+  "SS Page": "subSubItem",
+  "SSS Page": "subSubSubItem",
   Field: "Field",
 };
 
@@ -168,7 +168,7 @@ const ReportsPage: React.FC = () => {
     { label: "Layout", value: "layout" },
     { label: "Display", value: "display" },
     { label: "Remarks", value: "remarks" },
-    { label: "S/SS/SSS Items", value: "S_SS_SSS" },
+    { label: "S/SS/SSS Page", value: "S_SS_SSS" },
     { label: "Data Type", value: "extraDp" },
   ];
   const values = ["si", "intro","remarks"]; // This is your default checked list
@@ -321,9 +321,9 @@ const ReportsPage: React.FC = () => {
     app: "App",
     menu: "Menu",
     item: "Item",
-    subItem: "Sub Item",
-    subSubItem: "SS Item",
-    subSubSubItem: "SSS Item",
+    subItem: "Sub Page",
+    subSubItem: "SS Page",
+    subSubSubItem: "SSS Page",
     DPGroupCode: "FG",
     Field: "Field",
   };
@@ -572,15 +572,15 @@ function groupByAndProject(data, groupFields) {
           </span>
           
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Sub Item:</strong> {subitemCount.length}
+            <strong>Sub Page:</strong> {subitemCount.length}
           </span>
           
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>SS Item:</strong> {ssitemCount.length}
+            <strong>SS Page:</strong> {ssitemCount.length}
           </span>
           
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>SSS Item:</strong> {sssitemCount.length}
+            <strong>SSS Page:</strong> {sssitemCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
             <strong>FG:</strong> {dpgroupCount.length}
@@ -687,7 +687,7 @@ function groupByAndProject(data, groupFields) {
               </select>
           </div>
               <Dropdown
-                label="Sub Item"
+                label="Sub Page"
                 value={selectedSubItem}
                 options={filteredSubItems.map((s) => ({
                   label: s.name,
@@ -700,7 +700,7 @@ function groupByAndProject(data, groupFields) {
                 }}
               />
               <Dropdown
-                label="SS Item"
+                label="SS Page"
                 value={selectedSubSubItem}
                 options={filteredSubSubItems.map((s) => ({
                   label: s.name,
@@ -711,7 +711,7 @@ function groupByAndProject(data, groupFields) {
                     setSelectedSubSubSubItem("");
                 }}              />
               <Dropdown
-                label="SSS Item"
+                label="SSS Page"
                 value={selectedSubSubSubItem}
                 options={filteredSubSubSubItems.map((s) => ({
                   label: s.name,
@@ -1108,7 +1108,7 @@ Distinct:
                             )}
 
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              Sub_Item
+                              Sub_Page
                             </th>
 
                             {!isHidden("layout") && (
@@ -1145,7 +1145,7 @@ Distinct:
                             )}
 
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              SS_Item
+                              SS_Page
                             </th>
                             {!isHidden("layout") && (
                               <th className="px-4 py-2 text-left font-semibold tracking-wide">
@@ -1178,7 +1178,7 @@ Distinct:
                             )}
 
                             <th className="px-4 py-2 text-left font-semibold tracking-wide">
-                              SSS_Item
+                              SSS_Page
                             </th>
 
                             {!isHidden("layout") && (

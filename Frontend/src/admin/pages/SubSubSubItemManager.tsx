@@ -309,7 +309,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "Sub Item",
+            label: "Sub Page",
             value: selectedSubItem,
             disabled: {disabled},
             setter: setSelectedSubItem,
@@ -321,7 +321,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "SS Item",
+            label: "SS Page",
             value: selectedSubSubItem,
             disabled: {disabled},
             setter: setSelectedSubSubItem,
@@ -367,7 +367,7 @@ const SubSubSubItemManager: React.FC = () => {
 
         {/* SubSubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SSS Item Name</label>
+          <label className="block mb-1 font-medium">SSS Page Name</label>
           <input
             type="text"
             value={subSubSubItemName}
@@ -450,11 +450,11 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Sub Item</th>
-              <th className="p-2 text-left">SS Item</th>
+              <th className="p-2 text-left">Sub Page</th>
+              <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">SSS Item</th>
+              <th className="p-2 text-left">SSS Page</th>
               <th className="p-2 text-left">Layout</th>
 
               {/* <th className="p-2 text-left">Template</th> */}

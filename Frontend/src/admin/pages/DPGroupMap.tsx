@@ -325,7 +325,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="Sub Item"
+          label="Sub Page"
           value={selectedSubItem}
           options={subItems
             .filter((s) => s.itemId === selectedItem)
@@ -337,7 +337,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="SS Item"
+          label="SS Page"
           value={selectedSubSubItem}
           options={subSubItems
             .filter((s) => s.subItem?.id === selectedSubItem)
@@ -348,7 +348,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="SSS Item"
+          label="SSS Page"
           value={selectedSubSubSubItem}
           options={subSubSubItems
             .filter((s) => s.subSubItem?.id === selectedSubSubItem)
@@ -567,9 +567,9 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Sub Item</th>
-              <th className="p-2 text-left">SS Item</th>
-              <th className="p-2 text-left">SSS Item</th>
+              <th className="p-2 text-left">Sub Page</th>
+              <th className="p-2 text-left">SS Page</th>
+              <th className="p-2 text-left">SSS Page</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
               <th className="p-2 text-left">FG</th>

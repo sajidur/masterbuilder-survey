@@ -342,14 +342,14 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
 
         {/* SubItem */}
         <div className="">
-          <label className="block font-medium text-gray-700">Sub Item</label>
+          <label className="block font-medium text-gray-700">Sub Page</label>
           <select
             value={selectedSubItem}
             disabled={disabled}
             onChange={(e) => setSelectedSubItem(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedSubItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select Sub Item</option>
+            <option value="">Select Sub Page</option>
             {subItems
               .filter((s) => s.itemId === selectedItem)
               .map((s) => (
@@ -378,7 +378,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
 
         {/* SubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SS Item Name</label>
+          <label className="block mb-1 font-medium">SS Page Name</label>
           <input
             type="text"
             value={subSubItemName}
@@ -528,10 +528,10 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Item</th>
-              <th className="p-2 text-left">Sub Item</th>
+              <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SI</th>
 
-              <th className="p-2 text-left">SS Item</th>
+              <th className="p-2 text-left">SS Page</th>
               {/* <th className="p-2 text-left">Template</th> */}
               <th className="p-2 text-left">Layout</th>
               {/* <th className="p-2 text-left">P/S Button</th>

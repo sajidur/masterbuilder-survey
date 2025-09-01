@@ -575,7 +575,7 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">Item</th>
                 <th className="p-2 text-left">SI</th>
 
-                <th className="p-2 text-left">Sub Item</th>
+                <th className="p-2 text-left">Sub Page</th>
                 <th className="p-2 text-left">Layout</th>
                 <th className="p-2 text-left">Intro</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
