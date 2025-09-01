@@ -326,7 +326,7 @@ const TemplateButtonMap: React.FC = () => {
           }}
         />
         <Dropdown
-          label="Sub Item"
+          label="Sub Page"
           value={selectedSubItem}
           options={subItems
             .filter((s) => s.itemId === selectedItem)
@@ -338,7 +338,7 @@ const TemplateButtonMap: React.FC = () => {
           }}
         />
         <Dropdown
-          label="SS Item"
+          label="SS Page"
           value={selectedSubSubItem}
           options={subSubItems
             .filter((s) => s.subItem?.id === selectedSubItem)
@@ -349,7 +349,7 @@ const TemplateButtonMap: React.FC = () => {
           }}
         />
         <Dropdown
-          label="SSS Item"
+          label="SSS Page"
           value={selectedSubSubSubItem}
           options={subSubSubItems
             .filter((s) => s.subSubItem?.id === selectedSubSubItem)
