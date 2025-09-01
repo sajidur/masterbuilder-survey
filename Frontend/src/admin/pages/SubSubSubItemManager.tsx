@@ -367,12 +367,12 @@ const SubSubSubItemManager: React.FC = () => {
 
         {/* SubSubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SSS Page Name</label>
+          <label className="block mb-1 font-medium">SSS Page</label>
           <input
             type="text"
             value={subSubSubItemName}
             onChange={(e) => setSubSubSubItemName(e.target.value)}
-            placeholder="Enter SSSItem"
+            placeholder="Enter SSS Page"
             className="w-full border px-3 py-2 rounded"
           />
         </div>

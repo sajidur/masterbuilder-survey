@@ -419,12 +419,12 @@ const SubItemManager: React.FC = () => {
           {/* SubItem Name */}
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Sub Page Name
+              Sub Page
             </label>
             <input
               className="w-full px-3 py-2 border rounded"
               type="text"
-              placeholder="Enter subitem name"
+              placeholder="Enter Sub Page"
               value={subItemName}
               onChange={(e) => setSubItemName(e.target.value)}
             />

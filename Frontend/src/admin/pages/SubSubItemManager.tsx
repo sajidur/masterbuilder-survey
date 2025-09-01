@@ -378,13 +378,13 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
 
         {/* SubSubItem Name */}
         <div>
-          <label className="block mb-1 font-medium">SS Page Name</label>
+          <label className="block mb-1 font-medium">SS Page</label>
           <input
             type="text"
             value={subSubItemName}
             onChange={(e) => setSubSubItemName(e.target.value)}
             className="w-full px-3 py-2 border rounded"
-            placeholder="Enter SS Item"
+            placeholder="Enter SS Page"
           />
         </div>
 
