@@ -171,7 +171,7 @@ const ReportsPage: React.FC = () => {
     { label: "S/SS/SSS Page", value: "S_SS_SSS" },
     { label: "Data Type", value: "extraDp" },
   ];
-  const values = ["si", "intro","remarks"]; // This is your default checked list
+  const values = ["si", "intro","itemType","remarks"]; // This is your default checked list
   const [hiddenGroups, setHiddenGroups] = useState<string[]>(values);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -650,7 +650,8 @@ function groupByAndProject(data, groupFields) {
             setSelectedSubSubItem("");
             setSelectedSubSubSubItem("");
           }} />
-          
+            { false &&
+
               <Dropdown
                 label="iTier"
                 disabled={!showSSS} // false allows interaction
@@ -658,6 +659,7 @@ function groupByAndProject(data, groupFields) {
                 options={tiers.map((t) => ({ label: t.label, value: t.value }))}
                 onChange={setSelectediTier}
               />
+              }
               <Dropdown
                 label="Item"
                 value={selectedItem}
@@ -1029,8 +1031,8 @@ Distinct:
 
                           {visibleColumns.includes("subItem") &&
                             !isHidden("S_SS_SSS") &&
-                            showSSS && (
-                              <>
+                            showSSS && false && (
+                              <>                           
                                 {!isHidden("sitier") && (
                                   <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                     iTier
@@ -1050,7 +1052,7 @@ Distinct:
                           )} */}
 
                           {!isHidden("itemType") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"100px"}}>
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"50px"}}>
                               Item Type
                             </th>
                           )}
@@ -1275,7 +1277,7 @@ Distinct:
                               </td>
                             )}
                             {visibleColumns.includes("subItem") &&
-                              !isHidden("S_SS_SSS") &&
+                              !isHidden("S_SS_SSS") && false &&
                               showSSS && (
                                 <>
                                   {!isHidden("sitier") && (

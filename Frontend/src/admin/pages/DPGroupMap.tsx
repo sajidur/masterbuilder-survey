@@ -573,7 +573,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               {/* <th className="p-2 text-left">SI</th> */}
 
               <th className="p-2 text-left">FG</th>
-              <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">fTier</th>
               <th className="p-2 text-left">Display</th>
               {/* <th className="p-2 text-left">Remarks</th> */}
               {/* <th className="p-2 text-left">Required</th> */}
