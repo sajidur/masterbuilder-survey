@@ -171,7 +171,7 @@ const ReportsPage: React.FC = () => {
     { label: "S/SS/SSS Page", value: "S_SS_SSS" },
     { label: "Data Type", value: "extraDp" },
   ];
-  const values = ["si", "intro","remarks"]; // This is your default checked list
+  const values = ["si", "intro","itemType","remarks"]; // This is your default checked list
   const [hiddenGroups, setHiddenGroups] = useState<string[]>(values);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -650,7 +650,8 @@ function groupByAndProject(data, groupFields) {
             setSelectedSubSubItem("");
             setSelectedSubSubSubItem("");
           }} />
-          
+            { false &&
+
               <Dropdown
                 label="iTier"
                 disabled={!showSSS} // false allows interaction
@@ -658,6 +659,7 @@ function groupByAndProject(data, groupFields) {
                 options={tiers.map((t) => ({ label: t.label, value: t.value }))}
                 onChange={setSelectediTier}
               />
+              }
               <Dropdown
                 label="Item"
                 value={selectedItem}
@@ -974,18 +976,18 @@ Distinct:
               {/* If distinctColumn is NOT selected, render your full detailed existing table */}
               {!distinctColumn && (
                 // <div className="overflow-x-auto max-h-[calc(100vh-45vh)]">
-                <table className="min-w-[2000px] border border-gray-300 text-sm font-sans text-gray-700">
+                <table className="min-w-[1000px] border border-gray-300 text-sm font-sans text-gray-700">
                   <thead className="bg-gray-50 sticky top-0 z-10 border-b border-gray-300">
                     <tr>
                       {visibleColumns.includes("module") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                               Sl
                             </th>
                           )}
 
-                          <th className="px-2 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-2 py-2 text-left font-semibold tracking-wide" style={{width:"50px"}}>
                             Mod
                           </th>
                         </>
@@ -994,12 +996,12 @@ Distinct:
                       {visibleColumns.includes("app") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                               Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"90px"}}>
                             App
                           </th>
                         </>
@@ -1008,12 +1010,12 @@ Distinct:
                       {visibleColumns.includes("menu") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                               Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                             Menu
                           </th>
                         </>
@@ -1022,15 +1024,15 @@ Distinct:
                       {visibleColumns.includes("item") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                               Sl
                             </th>
                           )}
 
                           {visibleColumns.includes("subItem") &&
                             !isHidden("S_SS_SSS") &&
-                            showSSS && (
-                              <>
+                            showSSS && false && (
+                              <>                           
                                 {!isHidden("sitier") && (
                                   <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                     iTier
@@ -1038,30 +1040,30 @@ Distinct:
                                 )}
                             </>
                           )}
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"200px"}}>
                             Item
                           </th>
 
                         {/* 
                           {!isHidden("regName") && (
-                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold  tracking-wide">
                               Reg Name
                             </th>
                           )} */}
 
                           {!isHidden("itemType") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"50px"}}>
                               Item Type
                             </th>
                           )}
                           {!isHidden("itemViewEntry") && (
-                            <th className="px-4 py-2 text-left font-semibold  tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold  tracking-wide" style={{width:"50px"}}>
                               View/ Entry
                             </th>
                           )}
                           
                           {!isHidden("intro") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                               Intro
                             </th>
                           )}
@@ -1071,26 +1073,26 @@ Distinct:
                       {visibleColumns.includes("DPGroupCode") && (
                         <>
                           {!isHidden("si") && (
-                            <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                               Sl
                             </th>
                           )}
 
-                          <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"200px"}}>
                             FG
                           </th>
-                          <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                          <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"39px"}}>
                             fTier
                           </th>
 
                           {!isHidden("display") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"81px"}}>
                               Display
                             </th>
                           )}
 
                           {!isHidden("remarks") && (
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"200px"}}>
                               Remarks
                             </th>
                           )}
@@ -1102,32 +1104,32 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                                 Sl
                               </th>
                             )}
 
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                               Sub_Page
                             </th>
 
                             {!isHidden("layout") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"78px"}}>
                                 Layout
                               </th>
                             )}
                             {!isHidden("intro") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                                 Intro
                               </th>
                             )}
                             {/* {!isHidden("button") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Button
                               </th>
                             )}
                             {!isHidden("navigation") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Navigate
                               </th>
                             )} */}
@@ -1139,28 +1141,28 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                                 Sl
                               </th>
                             )}
 
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                               SS_Page
                             </th>
                             {!isHidden("layout") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"82px"}}>
                                 Layout
                               </th>
                             )}
                           {/* 
                             {!isHidden("button") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Button
                               </th>
                             )}
 
                             {!isHidden("navigation") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Navigate
                               </th>
                             )} */}
@@ -1172,17 +1174,17 @@ Distinct:
                         showSSS && (
                           <>
                             {!isHidden("si") && (
-                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                                 Sl
                               </th>
                             )}
 
-                            <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                            <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"115px"}}>
                               SSS_Page
                             </th>
 
                             {!isHidden("layout") && (
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"82px"}}>
                                 Layout
                               </th>
                             )}
@@ -1193,10 +1195,10 @@ Distinct:
                         <>
                           {
                             <>
-                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"25px"}}>
                                 Sl
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
                                 Field
                               </th>
                             </>
@@ -1204,16 +1206,16 @@ Distinct:
 
                           {!isHidden("extraDp") && (
                             <>
-                              {/* <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              {/* <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Reg DF
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Hide
                               </th>
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide">
                                 Reqd
                               </th> */}
-                              <th className="px-4 py-2 text-left font-semibold tracking-wide">
+                              <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"100px"}}>
                                 Data_Type
                               </th>
                             </>
@@ -1248,7 +1250,7 @@ Distinct:
                                 {f.appserialNumber || ""}
                               </td>
                             )}
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                               {f.appname || ""}
                             </td>
                           </>
@@ -1261,7 +1263,7 @@ Distinct:
                                 {f.menuserialNumber || ""}
                               </td>
                             )}
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                               {f.title || ""}
                             </td>
                           </>
@@ -1275,7 +1277,7 @@ Distinct:
                               </td>
                             )}
                             {visibleColumns.includes("subItem") &&
-                              !isHidden("S_SS_SSS") &&
+                              !isHidden("S_SS_SSS") && false &&
                               showSSS && (
                                 <>
                                   {!isHidden("sitier") && (
@@ -1285,29 +1287,29 @@ Distinct:
                                   )}
                               </>
                             )}
-                            <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                            <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                               {f.itemName || ""}
                             </td>
 
                             {!isHidden("itemType") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.itemType || ""}
                               </td>
                             )}
                             {/* {!isHidden("regName") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.regName || ""}
                               </td>
                             )} */}
                             {!isHidden("itemViewEntry") && (
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.itemViewEntry || ""}
                               </td>
                             )}
                             
                             {!isHidden("intro") && (
                               <td
-                                className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.itemdescription || ""}                              
                               </td>
                             )}
@@ -1330,7 +1332,7 @@ Distinct:
                         )}
 
                         <td
-                           className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                           className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -1353,7 +1355,7 @@ Distinct:
 
                         {!isHidden("display") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                            className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -1366,7 +1368,7 @@ Distinct:
 
                         {!isHidden("remarks") && (
                           <td
-                            className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${ showSSS?
+                            className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${ showSSS?
                               f.dpGroupMapStatus == "1"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -1384,33 +1386,33 @@ Distinct:
                           showSSS && (
                             <>
                               {!isHidden("si") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.siserialNumber || ""}
                                 </td>
                               )}
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.siitem || ""}
                               </td>
                               {!isHidden("layout") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.silayout || ""}
                                 </td>
                               )}
                               {!isHidden("intro") && (
                                 <td
-                                  className="border-t border-gray-200 px-4 py-2 whitespace-nowrap max-w-xs truncate"
+                                  className="border-t border-gray-200 px-1 py-2 whitespace-nowrap max-w-xs truncate"
                                   title={f.sidescription || ""}
                                 >
                                   {f.sidescription || ""}
                                 </td>
                               )}
                               {/* {!isHidden("button") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.sibuttonLabel || ""}
                                 </td>
                               )}
                               {!isHidden("navigation") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.sinavigationTo || ""}
                                 </td>
                               )} */}
@@ -1426,21 +1428,21 @@ Distinct:
                                   {f.ssiserialNumber || ""}
                                 </td>
                               )}
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.ssiname || ""}
                               </td>
                               {!isHidden("layout") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.ssilayout || ""}
                                 </td>
                               )}
                               {/* {!isHidden("button") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.ssibuttonLabel || ""}
                                 </td>
                               )}
                               {!isHidden("navigation") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.ssinavigationTo || ""}
                                 </td>
                               )} */}
@@ -1456,11 +1458,11 @@ Distinct:
                                   {f.sssiserialNumber || ""}
                                 </td>
                               )}
-                              <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                              <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                 {f.sssiname || ""}
                               </td>
                               {!isHidden("layout") && (
-                                <td className="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+                                <td className="border-t border-gray-200 px-1 py-2 whitespace-nowrap">
                                   {f.sssilayout || ""}
                                 </td>
                               )}
@@ -1470,7 +1472,7 @@ Distinct:
                         {visibleColumns.includes("Field") && (
                           <>
                             <td
-                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                              className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                 f.datapointMappingStatus == "1"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-red-100 text-red-800"
@@ -1481,7 +1483,7 @@ Distinct:
                             </td>
 
                             <td
-                              className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                              className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                 f.datapointMappingStatus == "1"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-red-100 text-red-800"
@@ -1494,7 +1496,7 @@ Distinct:
                             {!isHidden("extraDp") && (
                               <>
                                 {/* <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                                  className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
@@ -1504,7 +1506,7 @@ Distinct:
                                   {f.regional}
                                 </td>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                                  className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
@@ -1514,7 +1516,7 @@ Distinct:
                                   {f.isHide === 1 ? "true" : ""}
                                 </td>
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                                  className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
@@ -1524,7 +1526,7 @@ Distinct:
                                   {f.isRequired}
                                 </td> */}
                                 <td
-                                  className={`border-t border-gray-200 px-4 py-2 whitespace-nowrap ${showSSS?
+                                  className={`border-t border-gray-200 px-1 py-2 whitespace-nowrap ${showSSS?
                                     f.datapointMappingStatus == "1"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-red-100 text-red-800"
@@ -1552,7 +1554,7 @@ Distinct:
                 <table className="min-w-[800px] border border-gray-300 text-sm font-sans text-gray-700">
                   <thead className="bg-gray-50 sticky top-0 z-10 border-b border-gray-300">
                     <tr>
-                      <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                      <th className="px-1 py-2 text-left font-semibold uppercase tracking-wide">
                         {distinctColumn}
                       </th>
                     </tr>
@@ -1560,7 +1562,7 @@ Distinct:
                   <tbody>
                     {distinctValues?.map((val, i) => (
                       <tr key={i} className="odd:bg-white even:bg-gray-50">
-                        <td className="px-4 py-2 whitespace-nowrap">{val}</td>
+                        <td className="px-1 py-2 whitespace-nowrap">{val}</td>
                       </tr>
                     ))}
                   </tbody>
