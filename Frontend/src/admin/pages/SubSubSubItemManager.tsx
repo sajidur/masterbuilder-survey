@@ -296,7 +296,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "Item",
+            label: "Page",
             value: selectedItem,
             disabled: {disabled},
             setter: setSelectedItem,
@@ -449,7 +449,7 @@ const SubSubSubItemManager: React.FC = () => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Page</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SI</th>

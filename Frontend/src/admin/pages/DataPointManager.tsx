@@ -355,7 +355,39 @@ const handleDelete = async (id: string) => {
               ))}
             </select>
           </div>
+          <div>
 
+              <label className="block mb-1 font-medium">Entry</label>
+                <input
+                  type="checkbox"
+                  name="entry"
+                  checked={isHide}
+                  onChange={(e) => setIsHide(e.target.checked)}
+                />
+                
+          </div>
+          <div>
+
+              <label className="block mb-1 font-medium">View</label>
+                <input
+                  type="checkbox"
+                  name="view"
+                  checked={isHide}
+                  onChange={(e) => setIsHide(e.target.checked)}
+                />
+                
+          </div>
+                    <div>
+
+              <label className="block mb-1 font-medium">List</label>
+                <input
+                  type="checkbox"
+                  name="list"
+                  checked={isHide}
+                  onChange={(e) => setIsHide(e.target.checked)}
+                />
+                
+          </div>
           {/* Group Code */}
           {/* <div>
             <label className="block mb-1 font-medium">DP Group</label>
@@ -391,7 +423,7 @@ const handleDelete = async (id: string) => {
               ))}
             </select>
           </div>
-}
+          }
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4">
@@ -556,6 +588,9 @@ const handleDelete = async (id: string) => {
               {/* <th className="p-2 text-left">Reg Fd</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
+              <th className="p-2 text-left">Entry</th>
+              <th className="p-2 text-left">View</th>
+              <th className="p-2 text-left">List</th>
               <th className="p-2 text-left">Data Type</th>
               <th className="p-2 text-left">Action</th>
             </tr>
@@ -570,6 +605,10 @@ const handleDelete = async (id: string) => {
                 {/* <td className="p-2 text-left">{dp.regional}</td> */}
                 {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}
+                <td className="p-2">true</td>
+                <td className="p-2">true</td>
+                <td className="p-2">true</td>
+
                 <td className="p-2">{dp.dataType}</td>
                 <td className="p-2 flex gap-2">
                   <button

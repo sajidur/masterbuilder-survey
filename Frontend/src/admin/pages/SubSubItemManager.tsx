@@ -319,7 +319,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                   </div>
         {/* Item */}
         <div className="">
-          <label className="block font-medium text-gray-700">Item</label>
+          <label className="block font-medium text-gray-700">Page</label>
           <select
             value={selectedItem}
             disabled={disabled}
@@ -329,7 +329,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
             }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select Item</option>
+            <option value="">Select Page</option>
             {items
               .filter((i) => i.menu?.id === selectedMenu)
               .map((i) => (
@@ -527,7 +527,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Page</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SI</th>
 

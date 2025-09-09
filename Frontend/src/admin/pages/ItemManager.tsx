@@ -338,7 +338,21 @@ const ItemManager: React.FC = () => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
+                {/* Description */}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            View/Entry
+          </label>
+          <select
+            value={viewEntry}
+            onChange={(e) => setViewEntry(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Select</option>
+            <option value="View">View</option>
+            <option value="Entry">Entry</option>
+          </select>
+        </div>
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -373,21 +387,7 @@ const ItemManager: React.FC = () => {
           </select>
         </div>
         }
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            View/Entry
-          </label>
-          <select
-            value={viewEntry}
-            onChange={(e) => setViewEntry(e.target.value)}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-          >
-            <option value="">Select</option>
-            <option value="View">View</option>
-            <option value="Entry">Entry</option>
-          </select>
-        </div>
-        {/* Description */}
+
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             Intro
@@ -492,10 +492,10 @@ const ItemManager: React.FC = () => {
                 <th className="p-2 border-b text-left">SI</th>
 
                 <th className="p-2 border-b text-left">Item</th>
+                <th className="p-2 border-b text-left">View/Entry</th>
                 <th className="p-2 border-b text-left">Item Type</th>
               
                 {/* <th className="p-2 border-b text-left">I Tier</th> */}
-                <th className="p-2 border-b text-left">View/Entry</th>
                 <th className="p-2 border-b text-left">Intro</th>
                 <th className="p-2 border-b text-left">Actions</th>
               </tr>
@@ -509,12 +509,12 @@ const ItemManager: React.FC = () => {
                   <td className="p-2">{item.serialNumber}</td>
 
                   <td className="p-2">{item.name}</td>
+                  <td className="p-2">{item.buttonLabel}</td>
                   <td className="p-2">{item.itemType}</td>
 {/*                   
                   <td className="p-2">
                       {item.buttonType}
                   </td> */}
-                  <td className="p-2">{item.buttonLabel}</td>
                   <td className="p-2">{item.description}</td>
 
                   <td className="px-4 py-3 flex gap-3">
