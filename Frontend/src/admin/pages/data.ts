@@ -25,3 +25,13 @@ export const layoutOptions = [
   { label: 'Sub-Sec', value: 'Sub-Sec' },
   // { label: 'SS-Sec', value: 'SS-Sec' },
 ];
+
+export const breakPointOptions = [
+  { label: 'BP01', value: 'BP01' },
+  { label: 'BP02', value: 'bpBP0202' },
+  // { label: 'Mix-Tab', value: 'Mix-Tab' },
+  // { label: 'Mix-Sec', value: 'Mix-Sec' },
+  { label: 'BP03', value: 'BP03' },
+  { label: 'BP04', value: 'BP04' },
+  // { label: 'SS-Sec', value: 'SS-Sec' },
+];

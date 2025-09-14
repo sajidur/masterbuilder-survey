@@ -214,7 +214,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
   return (
     <div>
       <div className="bg-white shadow rounded p-4 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
@@ -313,30 +313,6 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               ))}
             </select>
           </div>
-
-          {/* Group Code */}
-          {/* <div>
-            <label className="block mb-1 font-medium">DP Group</label>
-            <input
-              type="text"
-              value={dpGroupCode}
-              onChange={(e) => {
-                const input = e.target.value;
-
-                if (!input.startsWith(dpPrefix)) return;
-
-                setDpGroupCode(input);
-              }}
-              className="w-full border px-3 py-2 rounded"
-              placeholder="Enter dp group"
-            />
-          </div> */}
-          {/* Group Code */}
-          
-
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
           <div>
             <label className="block mb-1 font-medium">FG</label>
             <select
@@ -399,8 +375,30 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               ))}
             </select>
           </div>
+          {/* Group Code */}
+          {/* <div>
+            <label className="block mb-1 font-medium">DP Group</label>
+            <input
+              type="text"
+              value={dpGroupCode}
+              onChange={(e) => {
+                const input = e.target.value;
 
-              {false && 
+                if (!input.startsWith(dpPrefix)) return;
+
+                setDpGroupCode(input);
+              }}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter dp group"
+            />
+          </div> */}
+          {/* Group Code */}
+          
+
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4">
+        { 
           <div className="flex justify-between items-center space-x-2 mt-7">
             <label className="flex items-center gap-2">
               <input
@@ -408,7 +406,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 checked={isHide}
                 onChange={(e) => setIsHide(e.target.checked)}
               />
-              Hide
+              Entry
             </label>
           {/* 
             <label className="flex items-center gap-2">
@@ -419,6 +417,100 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               />
               Required
             </label> */}
+          </div>
+          }          { 
+            <div className="flex justify-between items-center space-x-2 mt-7">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isHide}
+                  onChange={(e) => setIsHide(e.target.checked)}
+                />
+                Required
+              </label>
+            {/* 
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isRequired}
+                  onChange={(e) => setIsRequired(e.target.checked)}
+                />
+                Required
+              </label> */}
+            </div>
+            }          { 
+              <div className="flex justify-between items-center space-x-2 mt-7">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={isHide}
+                    onChange={(e) => setIsHide(e.target.checked)}
+                  />
+                  View
+                </label>
+              {/* 
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={isRequired}
+                    onChange={(e) => setIsRequired(e.target.checked)}
+                  />
+                  Required
+                </label> */}
+              </div>
+              }          { 
+                <div className="flex justify-between items-center space-x-2 mt-7">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={isHide}
+                      onChange={(e) => setIsHide(e.target.checked)}
+                    />
+                    List
+                  </label>
+                {/* 
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={isRequired}
+                      onChange={(e) => setIsRequired(e.target.checked)}
+                    />
+                    Required
+                  </label> */}
+                </div>
+                }          { 
+                  <div className="flex justify-between items-center space-x-2 mt-7">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={isHide}
+                        onChange={(e) => setIsHide(e.target.checked)}
+                      />
+                      Settings
+                    </label>
+                  {/* 
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={isRequired}
+                        onChange={(e) => setIsRequired(e.target.checked)}
+                      />
+                      Required
+                    </label> */}
+                  </div>
+                  }
+
+          { 
+          <div className="flex justify-between items-center space-x-2 mt-7">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={isHide}
+                onChange={(e) => setIsHide(e.target.checked)}
+              />
+              Hide
+            </label>
+
           </div>
           }
           <div className="">
@@ -453,6 +545,12 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
+              <th className="p-2 text-left">Entry</th>
+              <th className="p-2 text-left">Required</th>
+              <th className="p-2 text-left">View</th>
+              <th className="p-2 text-left">List</th>
+              <th className="p-2 text-left">Settings</th>
+              <th className="p-2 text-left">Hide</th>
               {/* <th className="p-2 text-left">Region</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
@@ -470,6 +568,13 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
                 <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.datapoint}</td>
+
                 {/* <td className="p-2 text-left">5</td> */}
                 {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}

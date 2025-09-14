@@ -33,6 +33,7 @@ const navItems = [
     icon: <ListTree size={18} />,
   },
   { label: 'FG - Field Map', path: '/admin/datapointmap', icon: <ListTree size={18} /> },
+  { label: 'Page', path: '/admin/page', icon: <ListChecks size={18} /> },
   { label: 'Sub Page', path: '/admin/sub-item', icon: <ListChecks size={18} /> },
   { label: 'SS Page', path: '/admin/sub-sub-item', icon: <ListPlus size={18} /> },
   { label: 'SSS Page', path: '/admin/sub-sub-sub-item', icon: <ListPlus size={18} /> },

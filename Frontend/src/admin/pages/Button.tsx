@@ -151,7 +151,18 @@ const Button: React.FC = () => {
               onChange={(e) => setButtonAction(e.target.value)}
             />
           </div>
-
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Button Label
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter button action"
+              value={buttonAction}
+              onChange={(e) => setButtonAction(e.target.value)}
+            />
+          </div>
           {/* Buttons */}
           <div className="mt-4 flex gap-4">
             <button
@@ -182,6 +193,7 @@ const Button: React.FC = () => {
                   <th className="px-4 py-3 text-left">SI</th>
                   <th className="px-4 py-3 text-left">Button</th>
                   <th className="px-4 py-3 text-left">Button Action</th>
+                  <th className="px-4 py-3 text-left">Button Label</th>
                   <th className="px-4 py-3 text-left">Action</th>
                 </tr>
               </thead>
@@ -196,6 +208,8 @@ const Button: React.FC = () => {
                     </td>
                     <td className="px-4 py-3 text-gray-800">{btn.name}</td>
                     <td className="px-4 py-3 text-gray-800">{btn.buttonAction}</td>
+                    <td className="px-4 py-3 text-gray-800">{btn.buttonAction}</td>
+
                     <td className="px-4 py-3 flex gap-3">
                       <button
                         onClick={() => {

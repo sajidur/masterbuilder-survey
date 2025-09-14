@@ -13,6 +13,7 @@ import ModuleManager from "./admin/pages/ModuleManager";
 import AppManager from "./admin/pages/AppManager";
 import MenuManager from "./admin/pages/MenuManager";
 import ItemManager from "./admin/pages/ItemManager";
+import PageManager from "./admin/pages/PageManager";
 import SubItemManager from "./admin/pages/SubItemManager";
 import FieldManager from "./admin/pages/FieldManager";
 import { ToastContainer } from "react-toastify";
@@ -70,6 +71,7 @@ function AppContent() {
             <Route path="module" element={<ModuleManager />} />
             <Route path="app" element={<AppManager />} />
             <Route path="menu" element={<MenuManager />} />
+            <Route path="page" element={<PageManager />} />
             <Route path="item" element={<ItemManager />} />
             <Route path="sub-item" element={<SubItemManager />} />
             <Route path="sub-sub-item" element={<SubSubItemManager />} />

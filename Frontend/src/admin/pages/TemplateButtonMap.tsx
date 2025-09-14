@@ -443,9 +443,6 @@ const TemplateButtonMap: React.FC = () => {
           </div>
         )}
 
-      <div></div>
-      <div></div>
-      <div></div>
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -526,7 +523,30 @@ const TemplateButtonMap: React.FC = () => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Link
+          </label>
+          <input
+            type="text"
+            value={navigationTo}
+            onChange={(e) => setNavigationTo(e.target.value)}
+            placeholder="Enter path or URL"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            Description
+          </label>
+          <input
+            type="text"
+            value={navigationTo}
+            onChange={(e) => setNavigationTo(e.target.value)}
+            placeholder="Enter path or URL"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
         {/* Field Type */}
         {/* <div>
           <label className="block mb-1 font-medium">Data Type</label>
@@ -648,6 +668,8 @@ const TemplateButtonMap: React.FC = () => {
               <th className="p-2 text-left">Button Action</th>
               <th className="p-2 text-left">Button Type</th>
               <th className="p-2 text-left">Navigation To</th>
+              <th className="p-2 text-left">Link</th>
+              <th className="p-2 text-left">Description</th>
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
@@ -673,6 +695,8 @@ const TemplateButtonMap: React.FC = () => {
                 <td className="p-2">{f.buttonNameDisplay || "-"}</td>
                 <td className="p-2">{f.buttonAction}</td>
                 <td className="p-2">{f.buttonType }</td>
+                <td className="p-2">{f.navigationTo}</td>
+                <td className="p-2">{f.navigationTo}</td>
                 <td className="p-2">{f.navigationTo}</td>
 
                 <td className="px-4 py-3 flex gap-3">

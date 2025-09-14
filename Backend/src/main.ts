@@ -77,7 +77,7 @@ async function bootstrap() {
   app.enableCors();
 
   // Start listening on the specified port (default 3000)
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.PORT ?? 3090;
   await app.listen(port);
 
   console.log(`Application is running on: http://localhost:${port}`);
