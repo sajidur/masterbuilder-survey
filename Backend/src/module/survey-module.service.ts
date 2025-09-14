@@ -78,6 +78,8 @@ import { Button } from './module.entity/button.entity';
 import { CreateTemplateDto } from 'src/Template/dtos/template.dto';
 import { TemplateButtonMap } from './module.entity/TemplateButtonMap.entity';
 import { CreateTemplateButtonMapDto, TemplateButtonMapDto } from './module.dto/templatebuttonmap.dto';
+import { Page } from './module.entity/page.entity';
+import { CreatePageDto, PageDto } from './module.dto/page.dto';
 @Injectable()
 export class SurveyModuleService {
   dataSource: any;
@@ -107,6 +109,8 @@ export class SurveyModuleService {
     private readonly buttonRepo: Repository<Button>,
     @InjectRepository(TemplateButtonMap)
     private readonly templateButtonMapRepo: Repository<TemplateButtonMap>,
+    @InjectRepository(Page)
+    private readonly pageRepo: Repository<Page>,
   ) {}
   //subsubitem
   async toSubSubItemDto(subSubItem: SubSubItem): Promise<SubSubItemDto> {
@@ -3031,4 +3035,77 @@ async findAllTemplateButton(): Promise<TemplateButtonMapDto[]> {
     };
   }
 ///////////////------template button end
+
+////////-------------page
+async createPage(dto: CreatePageDto, user: User): Promise<Page> {
+  const userId = user.id;
+
+  const module = this.pageRepo.create({
+    itemId: dto.itemId,
+    serialNumber: dto.serialNumber,
+    userId: userId,
+    createdBy: user.username,
+    updatedBy: user.username
+    // createdAt/updatedAt auto-handled by decorators
+  });
+
+  return this.pageRepo.save(module);
+}
+
+
+async updatePage(
+  id: string,
+  dto: CreatePageDto,
+  user: any,
+): Promise<Page> {
+  const existing = await this.pageRepo.findOne({ where: { id } });
+
+  if (!existing) {
+    throw new NotFoundException(`TemplateButtonMap with ID ${id} not found`);
+  }
+
+  // Manually assign only updatable fields
+  existing.itemId = dto.itemId ?? existing.itemId;
+  
+  existing.serialNumber = dto.serialNumber;
+
+  existing.userId = user?.id ?? existing.userId;
+  existing.updatedBy = user?.username ?? existing.updatedBy;
+  existing.updatedAt = new Date();
+
+  return await this.pageRepo.save(existing);
+}
+
+async findAllPage(): Promise<PageDto[]> {
+  // Call the stored procedure via raw SQL query
+  const rawResult: any[] = await this.pageRepo.manager.query('CALL GetTemplateButtonMap()');
+
+  // rawResult is an array where rawResult[0] contains the actual rows
+  const rows = rawResult[0];
+
+  if (!rows || rows.length === 0) {
+    console.log('No data points found from stored procedure.');
+    return [];
+  }
+
+  // Map each row to your DTO
+  //const dtoList = rows.map(row => this.toDataPointDto(row));
+
+  return rows;
+}
+  async deletePage(
+    id: string,
+  ): Promise<{ status: string; message: string }> {
+    const existing = await this.pageRepo.findOne({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`DataPoint with ID ${id} not found`);
+    }
+
+    await this.pageRepo.delete(id);
+    return {
+      status: 'success',
+      message: `DataPoint ${id} deleted successfully.`,
+    };
+  }
+///////-------------end page
 }

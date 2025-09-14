@@ -46,6 +46,7 @@ import { CreateDPGroupMapDto, DPGroupMapDto } from './module.dto/dpgroupmap';
 import { ButtonDto, CreateButtonDto } from './module.dto/button.dto';
 import { CreateTemplateButtonMapDto, TemplateButtonMapDto } from './module.dto/templatebuttonmap.dto';
 import { CreateTemplateDto } from 'src/Template/dtos/template.dto';
+import { CreatePageDto, PageDto } from './module.dto/page.dto';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -657,4 +658,42 @@ async GetDPGroupMapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
   console.log(user);
     return this.moduleService.findAllTemplateButton(); // no id needed
   }
+  //page
+    @Post('createPage')
+  @ApiBody({ type: CreatePageDto })
+  @ApiResponse({ status: 201, type: CreatePageDto })
+  createPage(
+    @Body() createDto: CreatePageDto,
+    @Req() req: Request,
+  ): Promise<CreatePageDto | null> {
+   const user = req['user'];
+   console.log(user);
+    return this.moduleService.createPage(createDto, user);
+  }
+
+  @Put('updatePage/:id')
+  @ApiBody({ type: CreatePageDto })
+  @ApiResponse({ status: 200, type: CreatePageDto })
+  updatePage(
+    @Param('id') id: string,
+    @Body() updateDto: CreatePageDto,
+    @Req() req: Request
+  ): Promise<CreatePageDto | null> {
+    const user = req['user'];
+    return this.moduleService.updatePage(id, updateDto, user);
+  }
+  @Delete('deletePage/:id')
+  @ApiResponse({ status: 204, description: 'Page deleted' })
+  deletePage(@Param('id') id: string): Promise<{ status: string; message: string }> {
+    return this.moduleService.deletePage(id);
+  }
+
+  @Get('allPage')
+  @ApiResponse({ status: 200, type: [ButtonDto] })
+  async allPage(@Req() req: Request): Promise<PageDto[]> {
+  const user = req['user'];
+  console.log(user);
+    return this.moduleService.findAllPage(); // no id needed
+  }
+  //page end
 }
