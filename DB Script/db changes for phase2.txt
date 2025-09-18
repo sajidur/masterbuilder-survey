@@ -7,3 +7,51 @@ ADD COLUMN viewEntry VARCHAR(255) NULL;
 
 ALTER TABLE datapointmap
 ADD COLUMN viewEntry VARCHAR(255) NULL;
+
+-------------------------------------
+CREATE TABLE `page` (
+  `id` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `tier` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `itemId` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `userId` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `serialNumber` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `viewEntry` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `createdBy` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `updatedBy` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_3968ea6e908906cbf19167614c7` (`itemId`),
+  CONSTRAINT `FK_3968ea6e908906cbf19167614c7` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-------------------------------------
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllpage`()
+BEGIN
+SELECT 
+        m.serialNumber AS moduleSerial,
+        m.name AS moduleName,
+		m.id AS moduleid,
+		app.id AS appid,
+		menu.id AS menuid,
+        i.id as itemid,
+        app.serialNumber AS appSerial,
+        app.name AS appName,
+        menu.serialNumber AS menuSerial,
+        menu.title AS menuTitle,
+        i.name as itemName,
+        pg.*
+    FROM page pg
+    left join item i on i.id=pg.itemid
+	left JOIN menu ON menu.id = i.menuId
+	left JOIN app ON app.id = menu.appId
+    left join modules m on m.id=app.moduleId
+    ORDER BY 
+        m.serialNumber,
+        app.serialNumber,
+        menu.serialNumber,
+        i.serialNumber,
+        pg.serialNumber;
+END
+----------------------------------------------
