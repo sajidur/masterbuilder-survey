@@ -942,3 +942,51 @@ export const deleteTemplateButtonMap = async (id: string) => {
   }
 };
 // Templete Button Map end
+
+//page start
+
+
+// Add Subitem
+export const addPage = async (data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string; buttonLabel: string; layout: string}) => {
+  try {
+    const response = await apiClient.post('/survey-module/createPage', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding subitem:', error);
+    throw error;
+  }
+};
+// Update Subitem
+export const updatePage = async (
+  id: string,
+  data: { name: string; itemId: string, tier: string, templateId: string, serialNumber: string, buttonType:string, navigationTo: string, description: string,buttonLabel: string; layout: string }
+) => {
+  try {
+    const response = await apiClient.put(`/survey-module/updatePage/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating sub:', error);
+    throw error;
+  }
+};
+//delete subitem
+export const deletePage = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/survey-module/deletePage/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting SubItem:", error);
+    throw error;
+  }
+};
+
+export const getAllPage  = async () => {
+  try {
+    const response = await apiClient.get('/survey-module/allPage');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all fields:', error);
+    throw error;
+  }
+};
+//page end

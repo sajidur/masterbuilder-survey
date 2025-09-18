@@ -3045,6 +3045,9 @@ async createPage(dto: CreatePageDto, user: User): Promise<Page> {
 
   const module = this.pageRepo.create({
     itemId: dto.itemId,
+    tier: dto.tier,
+    name: dto.name,
+    viewEntry: dto.viewEntry,
     serialNumber: dto.serialNumber,
     userId: userId,
     createdBy: user.username,
@@ -3081,7 +3084,7 @@ async updatePage(
 
 async findAllPage(): Promise<PageDto[]> {
   // Call the stored procedure via raw SQL query
-  const rawResult: any[] = await this.pageRepo.manager.query('CALL GetTemplateButtonMap()');
+  const rawResult: any[] = await this.pageRepo.manager.query('CALL getAllpage()');
 
   // rawResult is an array where rawResult[0] contains the actual rows
   const rows = rawResult[0];

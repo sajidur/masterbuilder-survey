@@ -97,6 +97,7 @@ class SubSubSubItemDto {
     createdBy;
     updatedBy;
     template;
+    viewEntry;
 }
 exports.SubSubSubItemDto = SubSubSubItemDto;
 //# sourceMappingURL=subsubsubitem.dto.js.map

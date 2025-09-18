@@ -25,4 +25,5 @@ export declare class SubSubSubItemDto {
     createdBy?: string;
     updatedBy?: string;
     template?: Template | null;
+    viewEntry?: string | null;
 }

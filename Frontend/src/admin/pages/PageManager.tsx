@@ -12,6 +12,10 @@ import {
   // getAllTemplates,
   deleteSubItem,
   getallsubitemBySP,
+  updatePage,
+  addPage,
+  getAllPage,
+  deletePage,
 } from "../../apiRequest/api";
 import { breakPointOptions, layoutOptions, tiers, ViewEntrys } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -99,7 +103,7 @@ const PageManager: React.FC = () => {
           getAllApps(),
           getAllMenus(),
           getAllItems(),
-          getallsubitemBySP(),
+          getAllPage(),
           // getAllTemplates(),
         ]);
 
@@ -129,12 +133,6 @@ const PageManager: React.FC = () => {
     //   return;
     // }
 
-    const trimmedName = subItemName.trim();
-    if (!trimmedName) {
-      toast.warn("Please enter subitem name.");
-      return;
-    }
-
     const itemObj = items.find((i) => i.name === selectedItem);
     if (!itemObj) {
       toast.error("Invalid item selected.");
@@ -142,27 +140,22 @@ const PageManager: React.FC = () => {
     }
 
     const payload = {
-      name: trimmedName,
+      name: itemObj.name,
       itemId: itemObj.id,
       tier: selectedTier,
-      templateId: null,
       serialNumber,
-      buttonType,
-      navigationTo,
-      description,
-      buttonLabel,
-      layout,
+      viewEntry
     };
 
     try {
       if (editSubItemId) {
-        await updateSubitem(editSubItemId, payload);
-        toast.success("SubItem updated successfully!");
+        await updatePage(editSubItemId, payload);
+        toast.success("Page updated successfully!");
         setDisabled(false);
       } else {
-        const newSubItem = await addSubitem(payload);
+        const newSubItem = await addPage(payload);
         setSubItems((prev) => [...prev, newSubItem]);
-        toast.success("SubItem added successfully!");
+        toast.success("Page added successfully!");
       }
 
       // Reset form
@@ -177,11 +170,11 @@ const PageManager: React.FC = () => {
       //setButtonLabel("");
       //setLayout("");
 
-      const updated = await getallsubitemBySP();
+      const updated = await getAllPage();
       setSubItems(updated);
     } catch (error) {
-      console.error("Subitem save error:", error);
-      toast.error("Failed to save subitem.");
+      console.error("Page save error:", error);
+      toast.error("Failed to save page.");
     }
   };
 
@@ -192,11 +185,11 @@ const PageManager: React.FC = () => {
     if (!confirm) return;
 
     try {
-      await deleteSubItem(id);
-      toast.success("SubItem deleted successfully!");
+      await deletePage(id);
+      toast.success("Page deleted successfully!");
       window.location.reload();
     } catch (error) {
-      toast.error("Failed to delete SubItem.");
+      toast.error("Failed to delete page.");
     }
   };
 
@@ -484,10 +477,9 @@ const PageManager: React.FC = () => {
                   <td className="p-2">{s.appName || "—"}</td>
                   <td className="p-2">{s.menuTitle || "—"}</td>
                   <td className="p-2">{s.tier}</td>
-                  <td className="p-2"></td>
-                  <td className="p-2"></td>
-
-                  <td className="p-2"></td>
+                  <td className="p-2">{s.serialNumber}</td>
+                  <td className="p-2">{s.name}</td>
+                  <td className="p-2">{s.viewEntry}</td>
 
 
                   {/* <td className="p-2">

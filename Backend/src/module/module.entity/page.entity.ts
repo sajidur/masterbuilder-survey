@@ -28,10 +28,6 @@ export class Page {
   serialNumber: string;
   @Column({ nullable: true })
   viewEntry?: string;
-  @Column()
-  BreakPoint: string;
-  @Column()
-  description: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
