@@ -368,7 +368,7 @@ const SubItemManager: React.FC = () => {
                   </div>
           {/* Item */}
           <div className="">
-            <label className="block font-medium text-gray-700">Item</label>
+            <label className="block font-medium text-gray-700">Page</label>
             {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedItem}
@@ -590,7 +590,7 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">iTier</th>
-                <th className="p-2 text-left">Item</th>
+                <th className="p-2 text-left">Page</th>
                 <th className="p-2 text-left">SI</th>
 
                 <th className="p-2 text-left">Sub Page</th>

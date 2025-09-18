@@ -320,7 +320,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                   </div>
         {/* Item */}
         <div className="">
-          <label className="block font-medium text-gray-700">Item</label>
+          <label className="block font-medium text-gray-700">Page</label>
           <select
             value={selectedItem}
             disabled={disabled}
@@ -545,7 +545,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Page</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SI</th>
 
