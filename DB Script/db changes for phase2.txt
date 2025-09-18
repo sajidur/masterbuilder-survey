@@ -1,0 +1,9 @@
+-- 001_add_viewEntry_column.sql
+ALTER TABLE field
+ADD COLUMN viewEntry VARCHAR(255) NULL;
+
+ALTER TABLE dpgroupmap
+ADD COLUMN viewEntry VARCHAR(255) NULL;
+
+ALTER TABLE datapointmap
+ADD COLUMN viewEntry VARCHAR(255) NULL;

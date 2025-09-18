@@ -47,6 +47,7 @@ import { ButtonDto, CreateButtonDto } from './module.dto/button.dto';
 import { CreateTemplateButtonMapDto, TemplateButtonMapDto } from './module.dto/templatebuttonmap.dto';
 import { CreateTemplateDto } from 'src/Template/dtos/template.dto';
 import { CreatePageDto, PageDto } from './module.dto/page.dto';
+import { Page } from './module.entity/page.entity';
 @ApiTags('survey-module')
 @Controller('survey-module')
 export class SurveyModuleController {
@@ -659,13 +660,13 @@ async GetDPGroupMapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
     return this.moduleService.findAllTemplateButton(); // no id needed
   }
   //page
-    @Post('createPage')
+  @Post('createPage')
   @ApiBody({ type: CreatePageDto })
   @ApiResponse({ status: 201, type: CreatePageDto })
   createPage(
     @Body() createDto: CreatePageDto,
     @Req() req: Request,
-  ): Promise<CreatePageDto | null> {
+  ): Promise<Page | null> {
    const user = req['user'];
    console.log(user);
     return this.moduleService.createPage(createDto, user);
@@ -678,7 +679,7 @@ async GetDPGroupMapsBySP(@Req() req: Request): Promise<DataPointDto[]> {
     @Param('id') id: string,
     @Body() updateDto: CreatePageDto,
     @Req() req: Request
-  ): Promise<CreatePageDto | null> {
+  ): Promise<Page | null> {
     const user = req['user'];
     return this.moduleService.updatePage(id, updateDto, user);
   }

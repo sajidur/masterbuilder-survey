@@ -20,6 +20,7 @@ class CreateSubSubSubItemDto {
     templateId;
     templateText;
     subSubItemId;
+    viewEntry;
 }
 exports.CreateSubSubSubItemDto = CreateSubSubSubItemDto;
 __decorate([
@@ -76,6 +77,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateSubSubSubItemDto.prototype, "subSubItemId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ViewEntry of the field' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSubSubSubItemDto.prototype, "viewEntry", void 0);
 class SubSubSubItemDto {
     id;
     name;

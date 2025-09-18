@@ -153,6 +153,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
       serialNumber:0,
       isHide,
       isRequired,
+      viewEntry
     };
 
 
@@ -422,8 +423,8 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={isHide}
-                  onChange={(e) => setIsHide(e.target.checked)} />
+                  checked={isRequired}
+                  onChange={(e) => setIsRequired(e.target.checked)} />
                 Required
               </label>
               {/*
@@ -504,13 +505,11 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
                 <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.datapoint}</td>
+                <td className="p-2">{dp.viewEntry}</td>
+                <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
+                <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
 
                 {/* <td className="p-2 text-left">5</td> */}
-                {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
-                {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.dataType}</td> */}
                 <td className="p-2 flex gap-2">
                   <button

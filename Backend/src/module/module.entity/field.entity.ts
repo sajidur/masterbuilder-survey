@@ -41,4 +41,6 @@ export class Field {
   displayType: string;
   @Column()
   remarks: string;
+  @Column()
+  viewEntry: string;
 }

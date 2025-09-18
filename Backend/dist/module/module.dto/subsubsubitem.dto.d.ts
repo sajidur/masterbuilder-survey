@@ -8,6 +8,7 @@ export declare class CreateSubSubSubItemDto {
     templateId?: string | null;
     templateText?: string | null;
     subSubItemId?: string;
+    viewEntry: string;
 }
 export declare class SubSubSubItemDto {
     id: string;

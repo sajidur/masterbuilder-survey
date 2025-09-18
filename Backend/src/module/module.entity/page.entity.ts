@@ -26,12 +26,8 @@ export class Page {
   userId: string;
   @Column()
   serialNumber: string;
-  @Column()
-  Entry?: boolean
-  @Column()
-  View?: boolean;
   @Column({ nullable: true })
-  Settings?: boolean;
+  viewEntry?: string;
   @Column()
   BreakPoint: string;
   @Column()

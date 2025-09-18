@@ -19,6 +19,7 @@ export class PageDto {
   item?: ItemDto | null;
   templateText?: string | null;
   template?: Template | null;
+  viewEntry?: string|null;
 }
 
 export class CreatePageDto {
@@ -42,16 +43,9 @@ export class CreatePageDto {
   @IsString()
   @IsOptional()
   serialNumber: string;
-  @ApiPropertyOptional({ description: 'Entry' })
+  @ApiProperty({ description: 'ViewEntry of the field' })
   @IsString()
-  @IsOptional()
-  Entry?: boolean
-  @ApiPropertyOptional({ description: 'View' })
-  @IsOptional()
-  View?: boolean;
-  @ApiPropertyOptional({ description: 'Settings' })
-  @IsOptional()
-  Settings?: boolean;
+  viewEntry: string;
   @ApiPropertyOptional({ description: 'BreakPoint' })
   @IsString()
   @IsOptional()

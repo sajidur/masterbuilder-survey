@@ -19,6 +19,7 @@ export class SubItemDto {
   item?: ItemDto | null;
   templateText?: string | null;
   template?: Template | null;
+  viewEntry?: string|null;
 }
 
 export class CreateSubItemDto {
@@ -70,4 +71,7 @@ export class CreateSubItemDto {
   @IsString()
   @IsOptional()
   itemId?: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }

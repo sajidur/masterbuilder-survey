@@ -14,7 +14,7 @@ export class ItemDto {
   navigationTo:string;
   description:string;
   menu: MenuDto|null;
-
+  viewEntry?: string|null;
 }
 export class CreateItemDto {
   @ApiProperty({ description: 'Name of the item' })
@@ -45,4 +45,7 @@ export class CreateItemDto {
   @IsString()
   @IsNotEmpty()
   menuId: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }

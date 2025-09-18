@@ -20,6 +20,7 @@ export class DPGroupMapDto {
   subItem?: SubItem | null;
   subSubItem?: SubSubItem | null;
   subSubSubItem?: SubSubSubItem| null;
+  viewEntry?: string|null;
 }
 export class AllDataPointDto {
   id: string;
@@ -32,6 +33,7 @@ export class AllDataPointDto {
   subItem?: SubItem | null;
   subSubItem?: SubSubItem | null;
   subSubSubItem?: SubSubSubItem | null;
+  viewEntry?: string|null;
 }
 export class CreateDPGroupMapDto {
 
@@ -72,4 +74,7 @@ export class CreateDPGroupMapDto {
    @IsString()
    @IsOptional()
    subSubSubItemId?: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }

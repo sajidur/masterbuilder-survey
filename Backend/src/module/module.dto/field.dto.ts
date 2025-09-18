@@ -19,6 +19,7 @@ export class FieldDto {
   subItem?: SubItem | null;
   subSubItem?: SubSubItem | null;
   subSubSubItem?: SubSubSubItem| null;
+  viewEntry?: string|null;
 }
 
 
@@ -39,7 +40,7 @@ export class CreateFieldDto {
   @IsString()
   @IsNotEmpty()
   displayType: string;
-   @ApiProperty({ description: 'Tier of the field' })
+  @ApiProperty({ description: 'Tier of the field' })
   @IsString()
   @IsNotEmpty()
   tier: string;
@@ -62,4 +63,7 @@ export class CreateFieldDto {
   @IsString()
   @IsOptional()
   subSubSubItemId?: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }

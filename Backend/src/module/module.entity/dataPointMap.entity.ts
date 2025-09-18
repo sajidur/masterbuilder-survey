@@ -46,4 +46,7 @@ export class DataPointMap {
 
   @Column({ nullable: true })
   updatedBy?: string;
+  
+  @Column({ nullable: true })
+  viewEntry?:string
 }

@@ -48,6 +48,9 @@ export class CreateSubSubSubItemDto {
   @IsOptional()
   @IsString()
   subSubItemId?: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }
 export class SubSubSubItemDto {
   id: string;
@@ -64,4 +67,5 @@ export class SubSubSubItemDto {
   createdBy?: string;
   updatedBy?: string;
   template?: Template | null;
+  viewEntry?: string|null;
 }

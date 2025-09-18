@@ -18,6 +18,7 @@ export class SubSubItemDto {
   subItemId?: string;
   subItem?: SubItemDto | null;
   template?: Template | null;
+  viewEntry?: string|null;
 }
 export class CreateSubSubItemDto {
   @ApiProperty({ description: 'Label of the SubSubItem' })
@@ -68,4 +69,7 @@ export class CreateSubSubItemDto {
   @IsString()
   @IsOptional()
   subItemId?: string;
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 }

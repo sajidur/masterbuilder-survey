@@ -556,6 +556,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     newField.displayType = field.displayType;
     newField.tier = field.tier;
     newField.fieldGroupCode = field.fieldGroupCode;
+    newField.viewEntry=field.viewEntry||"";
     const saved = await this.fieldRepository.save(newField);
 
     // const subSubItem = await this.subSubSubItemRepo.findOneBy({
@@ -592,7 +593,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     existing.tier = updated.tier;
     existing.userId = user.id;
     existing.fieldGroupCode = updated.fieldGroupCode;
-
+    existing.viewEntry=updated.viewEntry||"";
     const saved = await this.fieldRepository.save(existing);
 
     return await this.toFieldDto1(saved);
@@ -2564,6 +2565,8 @@ async findAllDataPoint(): Promise<DataPointDto[]> {
       dpGroupId: dto.dpGroupId,
       itemId: dto.itemId,
       isHide:dto.isHide,
+      isRequired:dto.isRequired,
+      viewEntry:dto.viewEntry,
       userId: user?.id||null,
       createdAt:Date(),
       updatedAt:Date(),

@@ -24,6 +24,8 @@ export class DataPointMapDto {
   createdBy?: string;
   updatedBy?: string;
   Item?: ItemDto | null;
+  viewEntry?: string|null;
+
 }
 export class AllDataPointDto {
   id: string;
@@ -37,6 +39,7 @@ export class AllDataPointDto {
   subSubItem?: SubSubItem | null;
   subSubSubItem?: SubSubSubItem | null;
   dataPoints?: DataPointMapDto[] | null;
+  viewEntry?: string|null;
 }
 export class CreateDataPointMapDto {
   @ApiProperty({ description: 'Item ID associated with the data point' })
@@ -69,6 +72,8 @@ export class CreateDataPointMapDto {
   @ApiProperty({ description: 'Whether the data point is required' })
   @IsBoolean()
   isRequired: boolean;
-
+  @ApiProperty({ description: 'ViewEntry of the field' })
+  @IsString()
+  viewEntry: string;
 
 }

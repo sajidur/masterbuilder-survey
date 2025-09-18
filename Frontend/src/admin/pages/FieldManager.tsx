@@ -153,6 +153,7 @@ const payload: {
   subItemId?: string | null;
   subSubItemId?: string | null;
   subSubSubItemId?: string | null;
+  viewEntry?:string|null;
 } = {
   itemId: selectedItem,
   displayType: selectedDisplayType,
@@ -163,6 +164,7 @@ const payload: {
   subItemId: selectedSubItem || null,
   subSubItemId: selectedSubSubItem || null,
   subSubSubItemId: selectedSubSubSubItem || null,
+  viewEntry:viewEntry||null,
 };
 
 
@@ -588,7 +590,7 @@ const payload: {
                 <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
-                <td className="p-2"></td>
+                <td className="p-2">{f.viewEntry}</td>
 
                 <td className="p-2">{f.tier || "—"}</td>
 
