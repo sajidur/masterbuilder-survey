@@ -15,7 +15,7 @@ import {
   getallsubsubitemBySP,
   getAllSubSubSubitemsBySP,
 } from "../../apiRequest/api";
-import { layoutOptions, tiers } from "./data";
+import { layoutOptions, tiers, ViewEntrys } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ListPlus } from "lucide-react";
 
@@ -87,6 +87,7 @@ const SubSubItemManager: React.FC = () => {
   const [buttonLabel, setButtonLabel] = useState("");
   const [navigationTo, setNavigationTo] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [viewEntry, setViewEntry] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -387,7 +388,24 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
             placeholder="Enter SS Page"
           />
         </div>
-
+             <div>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700">
+                    View/Entry
+                  </label>
+                  <select
+                    value={viewEntry}
+                    onChange={(e) => setViewEntry(e.target.value)}
+                      className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                  >
+                    <option value="">Choose</option>
+                    {ViewEntrys.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+        
+                  </select>
+                </div>
         {/* Template */}
         {/* <div>
           <label className="block mb-1 font-medium">Template</label>
@@ -532,6 +550,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">SS Page</th>
+              <th className="p-2 text-left">View/Entry</th>
               {/* <th className="p-2 text-left">Template</th> */}
               <th className="p-2 text-left">Layout</th>
               {/* <th className="p-2 text-left">P/S Button</th>
@@ -554,6 +573,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 <td className="p-2">{s.subitem|| "—"}</td>
                 <td className="p-2">{s.serialNumber}</td>
 
+                <td className="p-2">{s.name}</td>
                 <td className="p-2">{s.name}</td>
                 {/* <td className="p-2">
                   {s.template?.name}

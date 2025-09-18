@@ -17,7 +17,7 @@ import {
   getAllFieldsBySP,
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { tiers } from "./data";
+import { tiers, ViewEntrys } from "./data";
 import { ListTree } from "lucide-react";
 
 interface Module {
@@ -97,6 +97,7 @@ const FieldManager: React.FC = () => {
   const [fieldGroupPrefix, setFieldGroupPrefix] = useState("");
   const [remarks, setRemarks] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [viewEntry, setViewEntry] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["Tree", "Graph", "Table", "List"];
@@ -340,7 +341,7 @@ const payload: {
         /> */}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4 bg-white pb-4 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mb-4 bg-white pb-4 px-4">
         <div>
           <label className="block mb-1 font-medium">Serial Number</label>
           <input
@@ -383,7 +384,7 @@ const payload: {
         </div> */}
 
         {/* Tier */}
-                                      {(
+        {(
 
         <div>
           <label className="block mb-1 font-medium">fTier</label>
@@ -400,8 +401,25 @@ const payload: {
             ))}
           </select>
         </div>
-                              )}
+        )}
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            View/Entry
+          </label>
+          <select
+            value={viewEntry}
+            onChange={(e) => setViewEntry(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Choose</option>
+            {ViewEntrys.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
 
+          </select>
+        </div>
         {/* Display Type */}
         <div>
           <label className="block mb-1 font-medium">Display Type</label>
@@ -545,6 +563,7 @@ const payload: {
               <th className="p-2 text-left">SI</th>
 
               <th className="p-2 text-left">FG</th>
+              <th className="p-2 text-left">View/Entry</th>
               <th className="p-2 text-left">fTier</th>
               <th className="p-2 text-left">Display</th>
               <th className="p-2 text-left">Remarks</th>
@@ -569,6 +588,8 @@ const payload: {
                 <td className="p-2">{f.serialNumber || "—"}</td>
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
+                <td className="p-2"></td>
+
                 <td className="p-2">{f.tier || "—"}</td>
 
                 <td className="p-2">{f.displayType}</td>

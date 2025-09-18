@@ -35,3 +35,15 @@ export const breakPointOptions = [
   { label: 'BP04', value: 'BP04' },
   // { label: 'SS-Sec', value: 'SS-Sec' },
 ];
+
+
+export const ViewEntrys = [
+  { label: 'View', value: 'View' },
+  { label: 'Entry', value: 'Entry' },
+  // { label: 'Mix-Tab', value: 'Mix-Tab' },
+  // { label: 'Mix-Sec', value: 'Mix-Sec' },
+  { label: 'List', value: 'List' },
+  { label: 'Card', value: 'Card' },
+  { label: 'Settings', value: 'Settings' },
+  // { label: 'SS-Sec', value: 'SS-Sec' },
+];

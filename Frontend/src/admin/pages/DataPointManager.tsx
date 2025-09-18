@@ -416,6 +416,16 @@ const handleDelete = async (id: string) => {
               placeholder="Enter Field"
             />
           </div>
+            <div>
+            <label className="block mb-1 font-medium">Label</label>
+            <input
+              type="text"
+              value={dataPointName}
+              onChange={(e) => setDataPointName(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter Field"
+            />
+          </div>
 
         {/* regional */}
         {false &&
@@ -472,7 +482,36 @@ const handleDelete = async (id: string) => {
               ))}
             </select>
           </div>
-
+          <div>
+            <label className="block mb-1 font-medium">Size</label>
+            <input
+              type="text"
+              value={dataPointName}
+              onChange={(e) => setDataPointName(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter Field"
+            />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Format</label>
+            <input
+              type="text"
+              value={dataPointName}
+              onChange={(e) => setDataPointName(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter Field"
+            />
+          </div>
+                    <div>
+            <label className="block mb-1 font-medium">Default Value</label>
+            <input
+              type="text"
+              value={dataPointName}
+              onChange={(e) => setDataPointName(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              placeholder="Enter Field"
+            />
+          </div>
           <div>
             <button
               onClick={handleAddOrUpdate}
@@ -553,10 +592,15 @@ const handleDelete = async (id: string) => {
               {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Field</th>
+              <th className="p-2 text-left">Label</th>
               {/* <th className="p-2 text-left">Reg Fd</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
               <th className="p-2 text-left">Data Type</th>
+              <th className="p-2 text-left">Size</th>
+              <th className="p-2 text-left">Format</th>
+              <th className="p-2 text-left">Default value</th>
+
               <th className="p-2 text-left">Action</th>
             </tr>
           </thead>
@@ -567,10 +611,15 @@ const handleDelete = async (id: string) => {
                 {/* <td className="p-2">{dp.fieldgroupcode}</td> */}
                 <td className="p-2">{dp.serialNumber}</td>
                 <td className="p-2">{dp.dataPoint}</td>
+                <td className="p-2">{dp.dataPoint}</td>
                 {/* <td className="p-2 text-left">{dp.regional}</td> */}
                 {/* <td className="p-2">{dp.isHide ? "Yes" : "No"}</td> */}
                 {/* <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td> */}
                 <td className="p-2">{dp.dataType}</td>
+                <td className="p-2">{dp.dataType}</td>
+                <td className="p-2">{dp.dataType}</td>
+                <td className="p-2">{dp.dataType}</td>
+
                 <td className="p-2 flex gap-2">
                   <button
                     onClick={() => {

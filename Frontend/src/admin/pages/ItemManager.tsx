@@ -13,7 +13,7 @@ import {
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Layers } from "lucide-react";
-import { tiers } from "./data";
+import { tiers, ViewEntrys } from "./data";
 
 interface Module {
   id: string;
@@ -382,9 +382,13 @@ const ItemManager: React.FC = () => {
             onChange={(e) => setViewEntry(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select</option>
-            <option value="View">View</option>
-            <option value="Entry">Entry</option>
+            <option value="">Choose</option>
+            {ViewEntrys.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+
           </select>
         </div>
         {/* Description */}

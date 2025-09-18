@@ -13,7 +13,7 @@ import {
   deleteSubItem,
   getallsubitemBySP,
 } from "../../apiRequest/api";
-import { breakPointOptions, layoutOptions, tiers } from "./data";
+import { breakPointOptions, layoutOptions, tiers, ViewEntrys } from "./data";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ListChecks } from "lucide-react";
 
@@ -82,6 +82,7 @@ const PageManager: React.FC = () => {
   const [buttonLabel, setButtonLabel] = useState("");
   const [layout, setLayout] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [viewEntry, setViewEntry] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -403,74 +404,24 @@ const PageManager: React.FC = () => {
       ))}
   </select>
 </div>
-
-{/* Checkbox aligned with dropdown */}
-<div className="mb-4">
-<label> Is Entry? </label>
-
-  <div className="w-full border rounded-lg shadow-sm px-4 py-2 flex items-center">
-    <input
-      id="entryCheckbox"
-      type="checkbox"
-      value="Entry"
-      className="form-checkbox h-5 w-5 text-blue-600"
-    />
-    <label htmlFor="entryCheckbox" className="ml-2 text-sm text-gray-700">
-      Entry
-    </label>
-  </div>
-</div>
-<div className="mb-4">
-<label> Is View? </label>
-
-  <div className="w-full border rounded-lg shadow-sm px-4 py-2 flex items-center">
-    <input
-      id="entryCheckbox"
-      type="checkbox"
-      value="View"
-      className="form-checkbox h-5 w-5 text-blue-600"
-    />
-    <label htmlFor="entryCheckbox" className="ml-2 text-sm text-gray-700">
-    View
-    </label>
-  </div>
-</div>
-<div className="mb-2">
-<label> Is Setting? </label>
-
-  <div className="w-full border rounded-lg shadow-sm px-4 py-2 flex items-center">
-    <input
-      id="entryCheckbox"
-      type="checkbox"
-      value="Setting"
-      className="form-checkbox h-5 w-5 text-blue-600"
-    />
-    <label htmlFor="entryCheckbox" className="ml-2 text-sm text-gray-700">
-      Setting
-    </label>
-  </div>
-</div>
-
-          {/* Layout */}
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Break Point
-            </label>
-            <select
-              value={layout}
-              onChange={(e) => setLayout(e.target.value)}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${layout ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-            >
-              <option value="" disabled>
-                Select BreakPoint
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            View/Entry
+          </label>
+          <select
+            value={viewEntry}
+            onChange={(e) => setViewEntry(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Choose</option>
+            {ViewEntrys.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
-              {breakPointOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+            ))}
+
+          </select>
+        </div>
 
           <div className="flex gap-4 items-center mb-2">
             <button
@@ -517,9 +468,7 @@ const PageManager: React.FC = () => {
                 <th className="p-2 text-left">SI</th>
                 <th className="p-2 text-left">Name</th>
 
-                <th className="p-2 text-left">Entry</th>
-                <th className="p-2 text-left">View</th>
-                <th className="p-2 text-left">Settings</th>
+                <th className="p-2 text-left">View/Entry</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
 
                 {/* <th className="p-2 text-left">Button Type</th> */}
@@ -538,8 +487,6 @@ const PageManager: React.FC = () => {
                   <td className="p-2"></td>
                   <td className="p-2"></td>
 
-                  <td className="p-2"></td>
-                  <td className="p-2"></td>
                   <td className="p-2"></td>
 
 

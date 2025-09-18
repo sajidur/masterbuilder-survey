@@ -20,7 +20,7 @@ import {
   deleteDataPointMap,
 } from "../../apiRequest/api";
 import { ListTree } from "lucide-react";
-import { tiers } from "./data";
+import { tiers, ViewEntrys } from "./data";
 
 interface Module {
   id: string;
@@ -79,6 +79,7 @@ const DataPointMap: React.FC = () => {
   const [dpGroups, setDpGroups] = useState<any[]>([]);
   const [datapointMaps, setDataPointMap] = useState<any[]>([]);
   const [disabled, setDisabled] = useState(false);
+  const [viewEntry, setViewEntry] = useState("");
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -397,108 +398,46 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4">
-        { 
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4"> { 
+                    <>
+                           <div>
+                             <label className="block mb-1 text-sm font-semibold text-gray-700">
+                               View/Entry
+                             </label>
+                             <select
+                               value={viewEntry}
+                               onChange={(e) => setViewEntry(e.target.value)}
+                                 className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                             >
+                               <option value="">Choose</option>
+                               {ViewEntrys.map((option) => (
+                                 <option key={option.value} value={option.value}>
+                                   {option.label}
+                                 </option>
+                               ))}
+                   
+                             </select>
+                           </div>
           <div className="flex justify-between items-center space-x-2 mt-7">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={isHide}
-                onChange={(e) => setIsHide(e.target.checked)}
-              />
-              Entry
-            </label>
-          {/* 
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={isRequired}
-                onChange={(e) => setIsRequired(e.target.checked)}
-              />
-              Required
-            </label> */}
-          </div>
-          }          { 
-            <div className="flex justify-between items-center space-x-2 mt-7">
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   checked={isHide}
-                  onChange={(e) => setIsHide(e.target.checked)}
-                />
+                  onChange={(e) => setIsHide(e.target.checked)} />
                 Required
               </label>
-            {/* 
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={isRequired}
-                  onChange={(e) => setIsRequired(e.target.checked)}
-                />
-                Required
-              </label> */}
-            </div>
-            }          { 
-              <div className="flex justify-between items-center space-x-2 mt-7">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={isHide}
-                    onChange={(e) => setIsHide(e.target.checked)}
-                  />
-                  View
-                </label>
-              {/* 
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={isRequired}
-                    onChange={(e) => setIsRequired(e.target.checked)}
-                  />
-                  Required
-                </label> */}
-              </div>
-              }          { 
-                <div className="flex justify-between items-center space-x-2 mt-7">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={isHide}
-                      onChange={(e) => setIsHide(e.target.checked)}
-                    />
-                    List
-                  </label>
-                {/* 
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={isRequired}
-                      onChange={(e) => setIsRequired(e.target.checked)}
-                    />
-                    Required
-                  </label> */}
-                </div>
-                }          { 
-                  <div className="flex justify-between items-center space-x-2 mt-7">
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={isHide}
-                        onChange={(e) => setIsHide(e.target.checked)}
-                      />
-                      Settings
-                    </label>
-                  {/* 
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={isRequired}
-                        onChange={(e) => setIsRequired(e.target.checked)}
-                      />
-                      Required
-                    </label> */}
-                  </div>
-                  }
+              {/*
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={isRequired}
+          onChange={(e) => setIsRequired(e.target.checked)}
+        />
+        Required
+      </label> */}
+            </div></>
+            }
+                  
 
           { 
           <div className="flex justify-between items-center space-x-2 mt-7">
@@ -545,11 +484,8 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
-              <th className="p-2 text-left">Entry</th>
+              <th className="p-2 text-left">View/Entry</th>
               <th className="p-2 text-left">Required</th>
-              <th className="p-2 text-left">View</th>
-              <th className="p-2 text-left">List</th>
-              <th className="p-2 text-left">Settings</th>
               <th className="p-2 text-left">Hide</th>
               {/* <th className="p-2 text-left">Region</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
@@ -567,9 +503,6 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <td className="p-2">{dp.itemName}</td>
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
-                <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.datapoint}</td>
                 <td className="p-2">{dp.datapoint}</td>
                 <td className="p-2">{dp.datapoint}</td>
                 <td className="p-2">{dp.datapoint}</td>
