@@ -52,6 +52,8 @@ export class SubSubSubItem {
   createdBy?: string;
   @Column({ nullable: true })
   updatedBy?: string;
+  @Column({ nullable: true })
+  viewEntry?: string;
   // ✅ One-to-Many relation with DesignDefinition
   // @OneToMany(() => DesignDefinition, (definition) => definition.subSubItem)
   // designDefinitions: DesignDefinition[];

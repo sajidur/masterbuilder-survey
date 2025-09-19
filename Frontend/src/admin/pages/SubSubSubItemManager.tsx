@@ -166,6 +166,7 @@ const SubSubSubItemManager: React.FC = () => {
       // templateId: null,
       serialNumber,
       layout,
+      viewEntry,
     };
 
     try {
@@ -502,7 +503,7 @@ const SubSubSubItemManager: React.FC = () => {
                 <td className="p-2">{s.serialNumber || "—"}</td>
 
                 <td className="p-2">{s.name}</td>
-                <td className="p-2">{s.name}</td>
+                <td className="p-2">{s.viewEntry}</td>
                 <td className="p-2">{s.layout || "—"}</td>
 
                 {/* <td className="p-2">

@@ -152,6 +152,7 @@ const SubItemManager: React.FC = () => {
       description,
       buttonLabel,
       layout,
+      viewEntry
     };
 
     try {
@@ -616,7 +617,7 @@ const SubItemManager: React.FC = () => {
                   <td className="p-2">{s.serialNumber}</td>
 
                   <td className="p-2">{s.name}</td>
-                  <td className="p-2">{s.name}</td>
+                  <td className="p-2">{s.viewEntry}</td>
                   <td className="p-2">{s.layout || "—"}</td>
                   <td className="p-2">{s.description}</td>
 

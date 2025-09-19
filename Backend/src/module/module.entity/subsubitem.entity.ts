@@ -62,4 +62,6 @@ export class SubSubItem {
   // designDefinitions: DesignDefinition[];
   //@OneToMany(() => SubSubItemAnswer, (ssa) => ssa.subSubItem)
   //subSubItemAnswers: SubSubItemAnswer[];
+  @Column({ nullable: true })
+  viewEntry?: string;
 }

@@ -27,6 +27,7 @@ let SubSubSubItem = class SubSubSubItem {
     updatedAt;
     createdBy;
     updatedBy;
+    viewEntry;
 };
 exports.SubSubSubItem = SubSubSubItem;
 __decorate([
@@ -87,6 +88,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], SubSubSubItem.prototype, "updatedBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], SubSubSubItem.prototype, "viewEntry", void 0);
 exports.SubSubSubItem = SubSubSubItem = __decorate([
     (0, typeorm_1.Entity)()
 ], SubSubSubItem);

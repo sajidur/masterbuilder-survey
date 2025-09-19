@@ -150,6 +150,7 @@ const SubSubItemManager: React.FC = () => {
       buttonType,
       buttonLabel,
       navigationTo,
+      viewEntry
     };
 
     try {
@@ -574,7 +575,7 @@ const filteredSubSUbItems = subSubItems.filter((item) => {
                 <td className="p-2">{s.serialNumber}</td>
 
                 <td className="p-2">{s.name}</td>
-                <td className="p-2">{s.name}</td>
+                <td className="p-2">{s.viewEntry}</td>
                 {/* <td className="p-2">
                   {s.template?.name}
                 </td> */}

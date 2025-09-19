@@ -14,4 +14,5 @@ export declare class SubSubSubItem {
     updatedAt: Date;
     createdBy?: string;
     updatedBy?: string;
+    viewEntry?: string;
 }

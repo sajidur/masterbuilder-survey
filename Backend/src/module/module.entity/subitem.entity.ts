@@ -59,4 +59,6 @@ export class SubItem {
   createdBy?: string;
   @Column({ nullable: true })
   updatedBy?: string;
+  @Column({ nullable: true })
+  viewEntry?: string;
 }

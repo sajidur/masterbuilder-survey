@@ -143,6 +143,7 @@ export class SurveyModuleService {
       subItem: await this.toSubItemDto(subItem),
       templateText: subSubItem.templateText || null,
       template: template || null,
+      viewEntry: subSubItem.viewEntry || null,
     };
   }
 
@@ -351,7 +352,7 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     subSubItem.serialNumber = data.serialNumber;
     subSubItem.templateId = data.templateId ?? subSubItem.templateId;
     subSubItem.templateText = data.templateText ?? subSubItem.templateText;
-
+    subSubItem.viewEntry = data.viewEntry || "";
     const saved = await this.subSubItemRepository.save(subSubItem);
     return this.toSubSubItemDto(saved);
   }
@@ -377,6 +378,7 @@ async findAllSubSubItem(): Promise<SubSubItemDto[]> {
     existing.layout = data.layout;
     existing.templateId = data.templateId ?? existing.templateId;
     existing.templateText = data.templateText ?? existing.templateText;
+    existing.viewEntry = data.viewEntry || existing.viewEntry||"";
     var updatedData = await this.subSubItemRepository.save(existing);
     return this.toSubSubItemDto(updatedData);
   }
@@ -872,6 +874,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     newSubItem.navigationTo = subItem.navigationTo;
     newSubItem.layout = subItem.layout;
     newSubItem.description = subItem.description;
+    newSubItem.viewEntry = subItem.viewEntry || "";
     var data = this.subItemRepository.save(newSubItem);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -964,6 +967,7 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     existing.navigationTo = updated.navigationTo;
     existing.description = updated.description;
     existing.layout = updated.layout;
+    existing.viewEntry = updated.viewEntry || existing.viewEntry||"";
     const data = this.subItemRepository.save(existing);
     // Fetch all related data in parallel for mapping
     const [items, menus, apps, modules] = await Promise.all([
@@ -1319,12 +1323,13 @@ async findAllFieldsWithDataPoints(user:User): Promise<AllDataPointDto[]> {
     newItem.navigationTo = item.navigationTo;
     newItem.description = item.description;
     newItem.buttonLabel = item.buttonLabel;
+    
     const created = await this.itemRepository.save(newItem);
     const [menus, apps, modules] = await Promise.all([
       this.menuRepository.find(),
       this.appRepository.find(),
       this.modulesRepository.find(),
-    ]);
+    ]);  
     const appsMap = new Map(apps.map((app) => [app.id, app]));
     const modulesMap = new Map(modules.map((mod) => [mod.id, mod]));
 
@@ -2240,6 +2245,7 @@ async findAllSubSubSubItems(): Promise<SubSubSubItemDto[]> {
       updatedBy: user.username,
       createdAt: now,
       updatedAt: now,
+      viewEntrys: dto.viewEntry,
     } as Partial<SubSubSubItem>); // 👈 Ensure correct typing
     // or you can cast like this if you imported SubSubSubItem directly:
     // } as DeepPartial<SubSubSubItem>);
