@@ -315,6 +315,24 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               ))}
             </select>
           </div>
+                                     <div>
+                             <label className="block mb-1 text-sm font-semibold text-gray-700">
+                               View/Entry
+                             </label>
+                             <select
+                               value={viewEntry}
+                               onChange={(e) => setViewEntry(e.target.value)}
+                                 className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                             >
+                               <option value="">Choose</option>
+                               {ViewEntrys.map((option) => (
+                                 <option key={option.value} value={option.value}>
+                                   {option.label}
+                                 </option>
+                               ))}
+                   
+                             </select>
+                           </div>
           <div>
             <label className="block mb-1 font-medium">FG</label>
             <select
@@ -340,14 +358,14 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
                   {/* Tier */}
         <div>
-          <label className="block mb-1 font-medium">fTier</label>
+          <label className="block mb-1 font-medium">Tier</label>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             disabled
           >
-            <option value="">Choose fTier</option>
+            <option value="">Choose Tier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
@@ -355,28 +373,6 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
             ))}
           </select>
         </div>
-
-
-         <div>
-            <label className="block mb-1 font-medium">Field</label>
-            <select
-              value={selectedDataPoint}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                console.log(newValue);
-                setDataPoint(newValue);
-                console.log(selectedDataPoint);
-              }}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDataPoint ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-            >
-              <option value="">Select Field</option>
-              {filteredDP.map((dp) => (
-                <option key={dp.id} value={dp.id}>
-                  {dp.dataPoint}
-                </option>
-              ))}
-            </select>
-          </div>
           {/* Group Code */}
           {/* <div>
             <label className="block mb-1 font-medium">DP Group</label>
@@ -401,24 +397,28 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
         <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mt-4"> { 
                     <>
-                           <div>
-                             <label className="block mb-1 text-sm font-semibold text-gray-700">
-                               View/Entry
-                             </label>
-                             <select
-                               value={viewEntry}
-                               onChange={(e) => setViewEntry(e.target.value)}
-                                 className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-                             >
-                               <option value="">Choose</option>
-                               {ViewEntrys.map((option) => (
-                                 <option key={option.value} value={option.value}>
-                                   {option.label}
-                                 </option>
-                               ))}
-                   
-                             </select>
-                           </div>
+                    
+
+         <div>
+            <label className="block mb-1 font-medium">Field</label>
+            <select
+              value={selectedDataPoint}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                console.log(newValue);
+                setDataPoint(newValue);
+                console.log(selectedDataPoint);
+              }}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedDataPoint ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Field</option>
+              {filteredDP.map((dp) => (
+                <option key={dp.id} value={dp.id}>
+                  {dp.dataPoint}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="flex justify-between items-center space-x-2 mt-7">
               <label className="flex items-center gap-2">
                 <input
@@ -482,12 +482,12 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <th className="p-2 border-b text-left">App</th>
                 <th className="p-2 border-b text-left">Menu</th>
               <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">View/Entry</th>
               <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
-              <th className="p-2 text-left">View/Entry</th>
-              <th className="p-2 text-left">Required</th>
               <th className="p-2 text-left">Hide</th>
+              <th className="p-2 text-left">Required</th>
               {/* <th className="p-2 text-left">Region</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
@@ -502,12 +502,12 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                   <td className="p-2">{dp.appName}</td>
                   <td className="p-2">{dp.menuTitle}</td>
                 <td className="p-2">{dp.itemName}</td>
+                <td className="p-2">{dp.viewEntry}</td>
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
                 <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.viewEntry}</td>
-                <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
+                <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
 
                 {/* <td className="p-2 text-left">5</td> */}
                 {/* <td className="p-2">{dp.dataType}</td> */}

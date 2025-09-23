@@ -338,7 +338,24 @@ const ItemManager: React.FC = () => {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
           />
         </div>
+        <div>
+          <label className="block mb-1 text-sm font-semibold text-gray-700">
+            View/Entry
+          </label>
+          <select
+            value={viewEntry}
+            onChange={(e) => setViewEntry(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Choose</option>
+            {ViewEntrys.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
 
+          </select>
+        </div>
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
@@ -373,24 +390,6 @@ const ItemManager: React.FC = () => {
           </select>
         </div>
         }
-        <div>
-          <label className="block mb-1 text-sm font-semibold text-gray-700">
-            View/Entry
-          </label>
-          <select
-            value={viewEntry}
-            onChange={(e) => setViewEntry(e.target.value)}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-          >
-            <option value="">Choose</option>
-            {ViewEntrys.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-
-          </select>
-        </div>
         {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">

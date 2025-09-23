@@ -87,7 +87,7 @@ const PageManager: React.FC = () => {
   const [layout, setLayout] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [viewEntry, setViewEntry] = useState("");
-
+  const [AlternativeName, setAlternativeName] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -206,7 +206,7 @@ const PageManager: React.FC = () => {
     <div className="">
       <div className=" p-4 bg-white mb-4 rounded-lg">
         {/* Top Filter Row */}
-        <div className="grid grid-cols-1  md:grid-cols-6 gap-4 pb-4">
+        <div className="grid grid-cols-1  md:grid-cols-7 gap-4 pb-4">
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
@@ -341,44 +341,8 @@ const PageManager: React.FC = () => {
                 ))}
             </select>
           </div>
-                  <div>
-                    <label className="block mb-1 text-sm font-semibold text-gray-700">
-                      iTier
-                    </label>
-                    <select
-                      value={selectedTier}
-                      disabled={disabled}
-                      onChange={(e) => setSelectedTier(e.target.value)}
-                        className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-                    >
-                      <option value="">Choose iTier</option>
-                      {tiers.map((tierOption) => (
-                        <option key={tierOption.value} value={tierOption.value}>
-                          {tierOption.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-          {/* Item */}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 ">
-          {/* Serial Number */}
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Serial Number
-            </label>
-            <input
-              type="text"
-              value={serialNumber}
-              onChange={(e) => setSerialNumber(e.target.value)}
-              placeholder="Enter serial number"
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-                        {/* Dropdown */}
-<div className="mb-4">
-  <label className="block font-medium text-gray-700 mb-1">Name</label>
+          <div className="mb-4">
+  <label className="block font-medium text-gray-700 mb-1">Item</label>
   <select
     value={selectedItem}
     disabled={disabled}
@@ -415,7 +379,54 @@ const PageManager: React.FC = () => {
 
           </select>
         </div>
+                  <div>
+                    <label className="block mb-1 text-sm font-semibold text-gray-700">
+                      iTier
+                    </label>
+                    <select
+                      value={selectedTier}
+                      disabled={disabled}
+                      onChange={(e) => setSelectedTier(e.target.value)}
+                        className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                    >
+                      <option value="">Choose iTier</option>
+                      {tiers.map((tierOption) => (
+                        <option key={tierOption.value} value={tierOption.value}>
+                          {tierOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+          {/* Item */}
+        </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-8 gap-4 ">
+          {/* Serial Number */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Serial Number
+            </label>
+            <input
+              type="text"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+              placeholder="Enter serial number"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+         <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">
+              Alternative Name
+            </label>
+            <input
+              type="text"
+              value={AlternativeName}
+              onChange={(e) => setAlternativeName(e.target.value)}
+              placeholder="Enter Alternative Name"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
           <div className="flex gap-4 items-center mb-2">
             <button
               onClick={handleAddSubItem}
@@ -457,11 +468,11 @@ const PageManager: React.FC = () => {
                 <th className="p-2 text-left">Mod</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
+                <th className="p-2 text-left">Item</th>
+                <th className="p-2 text-left">View/Entry</th>
                 <th className="p-2 text-left">iTier</th>
                 <th className="p-2 text-left">SI</th>
-                <th className="p-2 text-left">Name</th>
-
-                <th className="p-2 text-left">View/Entry</th>
+                <th className="p-2 text-left">Alternative Name</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
 
                 {/* <th className="p-2 text-left">Button Type</th> */}
@@ -476,10 +487,11 @@ const PageManager: React.FC = () => {
                   <td className="p-2">{s.moduleName || "—"}</td>
                   <td className="p-2">{s.appName || "—"}</td>
                   <td className="p-2">{s.menuTitle || "—"}</td>
-                  <td className="p-2">{s.tier}</td>
-                  <td className="p-2">{s.serialNumber}</td>
                   <td className="p-2">{s.name}</td>
                   <td className="p-2">{s.viewEntry}</td>
+                  <td className="p-2">{s.tier}</td>
+                  <td className="p-2">{s.serialNumber}</td>
+                  <td className="p-2">{s.serialNumber}</td>
 
 
                   {/* <td className="p-2">

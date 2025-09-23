@@ -21,7 +21,7 @@ import {
   getAllDPGroupmapsBySP,
 } from "../../apiRequest/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { tiers } from "./data";
+import { tiers, ViewEntrys } from "./data";
 import { ListTree } from "lucide-react";
 
 interface Module {
@@ -72,7 +72,7 @@ interface Field {
   tier?: string;
 }
 
-const DPGroupMap:  React.FC = () => {
+const PageFGMap:  React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [apps, setApps] = useState<App[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
@@ -98,6 +98,7 @@ const DPGroupMap:  React.FC = () => {
   const [itier, setITier] = useState("");
   const [remarks, setRemarks] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [viewEntry, setViewEntry] = useState("");
 
   // const fieldTypes = ["text", "number", "date", "boolean", "dropdown"];
   const displayTypes = ["Tree", "Graph", "Table", "List"];
@@ -296,13 +297,6 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             setSelectedSubSubSubItem("");
           }}
         />
-          <Dropdown
-            label="iTier"
-            disabled={disabled}
-            value={itier}
-            options={tiers.map((t) => ({ label: t.label, value: t.value }))}
-            onChange={setITier}
-          />
         <Dropdown
           label="Page"
           value={selectedItem}
@@ -324,6 +318,31 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             }
           }}
         />
+                <div>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700">
+                    View/Entry
+                  </label>
+                  <select
+                    value={viewEntry}
+                    onChange={(e) => setViewEntry(e.target.value)}
+                      className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                  >
+                    <option value="">Choose</option>
+                    {ViewEntrys.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+        
+                  </select>
+                </div>
+          <Dropdown
+            label="iTier"
+            disabled={disabled}
+            value={itier}
+            options={tiers.map((t) => ({ label: t.label, value: t.value }))}
+            onChange={setITier}
+          />
         <Dropdown
           label="Sub Page"
           value={selectedSubItem}
@@ -408,14 +427,14 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
         
 
         <div>
-          <label className="block mb-1 font-medium">fTier</label>
+          <label className="block mb-1 font-medium">Tier</label>
           <select
             value={tier}
             disabled
             onChange={(e) => setTier(e.target.value)}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="">Choose fTier</option>
+            <option value="">Choose Tier</option>
             {tiers.map((tierOption) => (
               <option key={tierOption.value} value={tierOption.value}>
                 {tierOption.label}
@@ -565,8 +584,10 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
-              <th className="p-2 text-left">iTier</th>
               <th className="p-2 text-left">Page</th>
+              <th className="p-2 text-left">View/Entry</th>
+              <th className="p-2 text-left">iTier</th>
+
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SSS Page</th>
@@ -590,8 +611,10 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 </td>
                 <td className="p-2">{f.appName || "—"}</td>
                 <td className="p-2">{f.menuTitle || "—"}</td>
-                <td className="p-2">{f.itier || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
+                <td className="p-2">{f.itier || "—"}</td>
+                <td className="p-2">{f.itier || "—"}</td>
+
                 <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>
                 <td className="p-2">{f.subsubsubItemName || "—"}</td>
@@ -682,4 +705,4 @@ const Dropdown = ({
     </select>
   </div>
 );
-export default DPGroupMap;
+export default PageFGMap;

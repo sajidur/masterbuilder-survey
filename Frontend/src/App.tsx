@@ -28,10 +28,11 @@ import LoginPage from "./pages/Login";
 import DataPointManager from "./admin/pages/DataPointManager";
 import RegistrationForm from "./pages/RegistrationForm";
 import UserList from "./pages/UserList";
-import DPGroupMap from "./admin/pages/DPGroupMap";
+import DPGroupMap from "./admin/pages/PageFGMap";
 import DataPointMap from "./admin/pages/DataPointMap";
 import Button from "./admin/pages/Button";
 import TemplateButtonMap from "./admin/pages/TemplateButtonMap";
+import PageFGMap from "./admin/pages/PageFGMap";
 
 function AppContent() {
   const location = useLocation();
@@ -80,7 +81,7 @@ function AppContent() {
             <Route path="datapoint" element={<DataPointManager />} />
             <Route path="datapointmap" element={<DataPointMap />} />
             <Route path="button" element={<Button />} />
-            <Route path="dpgroupmap" element={<DPGroupMap />} />
+            <Route path="pagefgmap" element={<PageFGMap />} />
             <Route path="dpbuttonmap" element={<TemplateButtonMap />} />
 
             <Route path="template-configuration" element={<TemplateConfiguration />} />

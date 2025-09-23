@@ -38,12 +38,12 @@ export const breakPointOptions = [
 
 
 export const ViewEntrys = [
-  { label: 'View', value: 'View' },
   { label: 'Entry', value: 'Entry' },
+  { label: 'Settings', value: 'Settings' },
   // { label: 'Mix-Tab', value: 'Mix-Tab' },
   // { label: 'Mix-Sec', value: 'Mix-Sec' },
   { label: 'List', value: 'List' },
-  { label: 'Card', value: 'Card' },
-  { label: 'Settings', value: 'Settings' },
+  { label: 'Card/Profile', value: 'Card/Profile' },
+  { label: 'View', value: 'View' },
   // { label: 'SS-Sec', value: 'SS-Sec' },
 ];
