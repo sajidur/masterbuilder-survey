@@ -7,6 +7,15 @@ ADD COLUMN viewEntry VARCHAR(255) NULL;
 
 ALTER TABLE datapointmap
 ADD COLUMN viewEntry VARCHAR(255) NULL;
+ALTER TABLE sub_item
+ADD COLUMN viewEntry VARCHAR(255) NULL;
+
+
+ALTER TABLE sub_sub_item
+ADD COLUMN viewEntry VARCHAR(255) NULL;
+
+ALTER TABLE sub_sub_sub_item
+ADD COLUMN viewEntry VARCHAR(255) NULL;
 
 -------------------------------------
 CREATE TABLE `page` (
@@ -27,31 +36,37 @@ CREATE TABLE `page` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -------------------------------------
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllpage`()
+DELIMITER $$
+
+CREATE PROCEDURE `getAllpage`()
 BEGIN
-SELECT 
+    SELECT 
         m.serialNumber AS moduleSerial,
         m.name AS moduleName,
-		m.id AS moduleid,
-		app.id AS appid,
-		menu.id AS menuid,
+        m.id AS moduleid,
+        app.id AS appid,
+        menu.id AS menuid,
         i.id as itemid,
         app.serialNumber AS appSerial,
         app.name AS appName,
         menu.serialNumber AS menuSerial,
         menu.title AS menuTitle,
         i.name as itemName,
-        pg.*
+        pg.id AS pageId,
+        pg.serialNumber AS pageSerial
     FROM page pg
-    left join item i on i.id=pg.itemid
-	left JOIN menu ON menu.id = i.menuId
-	left JOIN app ON app.id = menu.appId
-    left join modules m on m.id=app.moduleId
+    LEFT JOIN item i ON i.id = pg.itemid
+    LEFT JOIN menu ON menu.id = i.menuId
+    LEFT JOIN app ON app.id = menu.appId
+    LEFT JOIN `modules` m ON m.id = app.moduleId
     ORDER BY 
         m.serialNumber,
         app.serialNumber,
         menu.serialNumber,
         i.serialNumber,
         pg.serialNumber;
-END
+END$$
+
+DELIMITER ;
+
 ----------------------------------------------

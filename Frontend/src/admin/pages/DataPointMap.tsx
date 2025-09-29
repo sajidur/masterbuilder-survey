@@ -486,8 +486,8 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>
-              <th className="p-2 text-left">Hide</th>
               <th className="p-2 text-left">Required</th>
+              <th className="p-2 text-left">Hide</th>
               {/* <th className="p-2 text-left">Region</th> */}
               {/* <th className="p-2 text-left">Hide</th> */}
               {/* <th className="p-2 text-left">Reqr</th> */}
@@ -506,8 +506,8 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
                 <td className="p-2">{dp.fieldGroupCode}</td>
                 {/* <td className="p-2">{dp.serialNumber}</td> */}
                 <td className="p-2">{dp.datapoint}</td>
-                <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
                 <td className="p-2">{dp.isRequired ? "Yes" : "No"}</td>
+                <td className="p-2">{dp.isHide ? "Yes" : "No"}</td>
 
                 {/* <td className="p-2 text-left">5</td> */}
                 {/* <td className="p-2">{dp.dataType}</td> */}

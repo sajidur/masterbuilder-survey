@@ -6,12 +6,6 @@ import {
   getAllApps,
   getAllMenus,
   getAllItems,
-  addSubitem,
-  updateSubitem,
-  // getAllSubitems,
-  // getAllTemplates,
-  deleteSubItem,
-  getallsubitemBySP,
   updatePage,
   addPage,
   getAllPage,
@@ -68,23 +62,17 @@ const PageManager: React.FC = () => {
   const [apps, setApps] = useState<AppItem[]>([]);
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [items, setItems] = useState<Item[]>([]);
-  const [subItems, setSubItems] = useState<SubItem[]>([]);
+  const [subPageData, setSubItems] = useState<SubItem[]>([]);
   // const [templates, setTemplates] = useState<Template[]>([]);
 
   const [selectedModule, setSelectedModule] = useState<string>("");
   const [selectedApp, setSelectedApp] = useState<string>("");
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [selectedItem, setSelectedItem] = useState<string>("");
-  const [subItemName, setSubItemName] = useState<string>("");
   const [selectedTier, setSelectedTier] = useState<string>("");
   // const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
   const [serialNumber, setSerialNumber] = useState("");
-  const [buttonType, setButtonType] = useState("");
-  const [navigationTo, setNavigationTo] = useState("");
-  const [description, setDescription] = useState("");
   const [editSubItemId, setEditSubItemId] = useState<string | null>(null);
-  const [buttonLabel, setButtonLabel] = useState("");
-  const [layout, setLayout] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [viewEntry, setViewEntry] = useState("");
   const [AlternativeName, setAlternativeName] = useState("");
@@ -96,7 +84,7 @@ const PageManager: React.FC = () => {
           appsData,
           menusData,
           itemsData,
-          subItemsData,
+          subPageData,
           // templatesData,
         ] = await Promise.all([
           getAllModules(),
@@ -111,7 +99,7 @@ const PageManager: React.FC = () => {
         setApps(appsData);
         setMenus(menusData);
         setItems(itemsData);
-        setSubItems(subItemsData);
+        setSubItems(subPageData);
         // setTemplates(templatesData);
       } catch (error) {
         toast.error("Failed to load data.");
@@ -133,7 +121,7 @@ const PageManager: React.FC = () => {
     //   return;
     // }
 
-    const itemObj = items.find((i) => i.name === selectedItem);
+    const itemObj = items.find((i) => i.id === selectedItem);
     if (!itemObj) {
       toast.error("Invalid item selected.");
       return;
@@ -159,13 +147,10 @@ const PageManager: React.FC = () => {
       }
 
       // Reset form
-      setSubItemName("");
       setSelectedTier("");
       // setSelectedTemplateId("");
       setSerialNumber("");
       //setButtonType("");
-      setNavigationTo("");
-      setDescription("");
       setEditSubItemId(null);
       //setButtonLabel("");
       //setLayout("");
@@ -193,7 +178,7 @@ const PageManager: React.FC = () => {
     }
   };
 
-  const filteredSubItems = subItems.filter((s) => {
+  const filteredSubItems = subPageData.filter((s) => {
     const matchModule = selectedModule ? s.moduleName === selectedModule : true;
     const matchApp = selectedApp ? s.appName === selectedApp : true;
     const matchMenu = selectedMenu ? s.menuTitle === selectedMenu : true;
@@ -424,7 +409,7 @@ const PageManager: React.FC = () => {
           </div>
          <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
-              Alternative Name
+              Page
             </label>
             <input
               type="text"
@@ -466,8 +451,8 @@ const PageManager: React.FC = () => {
 
       {/* SubItem List */}
       <div className="bg-white p-4 rounded-lg shadow">
-        {subItems.length === 0 ? (
-          <p>No subitems found.</p>
+        {subPageData.length === 0 ? (
+          <p>No page found.</p>
         ) : (
           <table className="w-full border border-gray-300">
             <thead>
@@ -479,7 +464,7 @@ const PageManager: React.FC = () => {
                 <th className="p-2 text-left">View/Entry</th>
                 <th className="p-2 text-left">iTier</th>
                 <th className="p-2 text-left">SI</th>
-                <th className="p-2 text-left">Alternative Name</th>
+                <th className="p-2 text-left">Page</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
 
                 {/* <th className="p-2 text-left">Button Type</th> */}
@@ -494,11 +479,11 @@ const PageManager: React.FC = () => {
                   <td className="p-2">{s.moduleName || "—"}</td>
                   <td className="p-2">{s.appName || "—"}</td>
                   <td className="p-2">{s.menuTitle || "—"}</td>
-                  <td className="p-2">{s.name}</td>
+                  <td className="p-2">{s.itemName}</td>
                   <td className="p-2">{s.viewEntry}</td>
                   <td className="p-2">{s.tier}</td>
                   <td className="p-2">{s.serialNumber}</td>
-                  <td className="p-2">{s.serialNumber}</td>
+                  <td className="p-2">{s.name}</td>
 
 
                   {/* <td className="p-2">
@@ -517,26 +502,12 @@ const PageManager: React.FC = () => {
                   <td className="px-4 py-3 flex gap-3">
                     <button
                       onClick={() => {
-                        const matchedItem = items.find(
-                          (itm) => itm.name === s.itemName
-                        );
-                        const matchedMenu = matchedItem?.menu;
-                        const matchedApp = matchedMenu?.app;
-                        const matchedModule = matchedApp?.Module;
-
-                        setEditSubItemId(s.id);
-                        setSubItemName(s.name);
-                        setSelectedModule(s.moduleName || "");
-                        setSelectedApp(s.appName || "");
-                        setSelectedMenu(s.menuTitle || "");
-                        setSelectedItem(s.itemName || "");
+                        setSelectedModule(s.moduleid || "");
+                        setSelectedApp(s.appid || "");
+                        setSelectedMenu(s.menuid || "");
+                        setSelectedItem(s.itemId || "");
                         setSelectedTier(s.tier || "");
                         setSerialNumber(s.serialNumber || "");
-                        setButtonType(s.buttonType || "");
-                        setNavigationTo(s.navigationTo || "");
-                        setDescription(s.description || "");
-                        setButtonLabel(s.buttonLabel || "");
-                        setLayout(s.layout || "");
                         setDisabled(true);
                       }}
                       className="text-blue-600 hover:text-blue-800"
