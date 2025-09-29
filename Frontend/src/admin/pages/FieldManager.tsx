@@ -359,6 +359,25 @@ const payload: {
 
           </select>
         </div>
+                {/* Tier */}
+        {(
+
+        <div>
+          <label className="block mb-1 font-medium">Tier</label>
+          <select
+            value={tier}
+            onChange={(e) => setTier(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+          >
+            <option value="">Choose Tier</option>
+            {tiers.map((tierOption) => (
+              <option key={tierOption.value} value={tierOption.value}>
+                {tierOption.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-8 gap-4 mb-4 bg-white pb-4 px-4">
@@ -402,26 +421,6 @@ const payload: {
             placeholder="Enter field group code"
           />
         </div> */}
-
-        {/* Tier */}
-        {(
-
-        <div>
-          <label className="block mb-1 font-medium">Tier</label>
-          <select
-            value={tier}
-            onChange={(e) => setTier(e.target.value)}
-              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${tier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
-          >
-            <option value="">Choose Tier</option>
-            {tiers.map((tierOption) => (
-              <option key={tierOption.value} value={tierOption.value}>
-                {tierOption.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        )}
 
         {/* Display Type */}
         <div>

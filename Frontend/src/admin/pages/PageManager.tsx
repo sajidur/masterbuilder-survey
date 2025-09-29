@@ -346,7 +346,14 @@ const PageManager: React.FC = () => {
   <select
     value={selectedItem}
     disabled={disabled}
-    onChange={(e) => setSelectedItem(e.target.value)}
+    onChange={(e) => {
+      setSelectedItem(e.target.value);
+      const selectedItemObj = items.find((i) => i.id === e.target.value);
+      if (selectedItemObj) {
+            const prefix = `${selectedItemObj.name}`;
+              setAlternativeName(prefix); // sets AlternativeName to the same prefix
+            }
+    }}
     className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
       selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'
     }`}
@@ -355,7 +362,7 @@ const PageManager: React.FC = () => {
     {items
       .filter((i) => i.menu?.title === selectedMenu)
       .map((i) => (
-        <option key={i.id} value={i.name}>
+        <option key={i.id} value={i.id}>
           {i.name}
         </option>
       ))}
