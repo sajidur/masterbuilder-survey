@@ -349,9 +349,45 @@ const SubItemManager: React.FC = () => {
                 ))}
             </select>
           </div>
+        <div className="">
+          <label className="block font-medium text-gray-700">Item</label>
+            <select
+              value={selectedItem}
+              disabled={disabled}
+              onChange={(e) => setSelectedItem(e.target.value)}
+              className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+            >
+              <option value="">Select Item</option>
+              {items
+                .filter((i) => i.menu?.title === selectedMenu)
+                .map((i) => (
+                  <option key={i.id} value={i.name}>
+                    {i.name}
+                  </option>
+                ))}
+            </select>
+        </div>
+             <div>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700">
+                    View/Entry
+                  </label>
+                  <select
+                    value={viewEntry}
+                    onChange={(e) => setViewEntry(e.target.value)}
+                      className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${viewEntry ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                  >
+                    <option value="">Choose</option>
+                    {ViewEntrys.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+        
+                  </select>
+                </div>
                   <div>
                     <label className="block mb-1 text-sm font-semibold text-gray-700">
-                      iTier
+                      Tier
                     </label>
                     <select
                       value={selectedTier}
@@ -359,7 +395,7 @@ const SubItemManager: React.FC = () => {
                       onChange={(e) => setSelectedTier(e.target.value)}
                         className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
                     >
-                      <option value="">Choose iTier</option>
+                      <option value="">Choose Tier</option>
                       {tiers.map((tierOption) => (
                         <option key={tierOption.value} value={tierOption.value}>
                           {tierOption.label}
@@ -431,7 +467,7 @@ const SubItemManager: React.FC = () => {
               onChange={(e) => setSubItemName(e.target.value)}
             />
           </div>
-     <div>
+     {/* <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
             View/Entry
           </label>
@@ -448,7 +484,7 @@ const SubItemManager: React.FC = () => {
             ))}
 
           </select>
-        </div>
+        </div> */}
           {/* Tier */}
           {false && (
             <div>
@@ -590,12 +626,13 @@ const SubItemManager: React.FC = () => {
                 <th className="p-2 text-left">Mod</th>
                 <th className="p-2 text-left">App</th>
                 <th className="p-2 text-left">Menu</th>
-                <th className="p-2 text-left">iTier</th>
+                <th className="p-2 text-left">Item</th>
+                <th className="p-2 text-left">View/Entry</th>
+                <th className="p-2 text-left">Tier</th>
                 <th className="p-2 text-left">Page</th>
                 <th className="p-2 text-left">SI</th>
 
                 <th className="p-2 text-left">Sub Page</th>
-                <th className="p-2 text-left">View/Entry</th>
                 <th className="p-2 text-left">Layout</th>
                 <th className="p-2 text-left">Intro</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
@@ -612,12 +649,13 @@ const SubItemManager: React.FC = () => {
                   <td className="p-2">{s.moduleName || "—"}</td>
                   <td className="p-2">{s.appName || "—"}</td>
                   <td className="p-2">{s.menuTitle || "—"}</td>
+                  <td className="p-2">{s.itemName || "—"}</td>
+                  <td className="p-2">{s.viewEntry}</td>
                   <td className="p-2">{s.tier}</td>
                   <td className="p-2">{s.itemName || "—"}</td>
                   <td className="p-2">{s.serialNumber}</td>
 
                   <td className="p-2">{s.name}</td>
-                  <td className="p-2">{s.viewEntry}</td>
                   <td className="p-2">{s.layout || "—"}</td>
                   <td className="p-2">{s.description}</td>
 

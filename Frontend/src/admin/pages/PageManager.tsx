@@ -191,7 +191,7 @@ const PageManager: React.FC = () => {
     <div className="">
       <div className=" p-4 bg-white mb-4 rounded-lg">
         {/* Top Filter Row */}
-        <div className="grid grid-cols-1  md:grid-cols-7 gap-4 pb-4">
+        <div className="grid grid-cols-1  md:grid-cols-8 gap-4 pb-4">
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
             <span className="text-blue-600 ">
@@ -373,7 +373,7 @@ const PageManager: React.FC = () => {
         </div>
                   <div>
                     <label className="block mb-1 text-sm font-semibold text-gray-700">
-                      iTier
+                      Tier
                     </label>
                     <select
                       value={selectedTier}
@@ -381,8 +381,26 @@ const PageManager: React.FC = () => {
                       onChange={(e) => setSelectedTier(e.target.value)}
                         className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
                     >
-                      <option value="">Choose iTier</option>
+                      <option value="">Choose Tier</option>
                       {tiers.map((tierOption) => (
+                        <option key={tierOption.value} value={tierOption.value}>
+                          {tierOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                    <div>
+                    <label className="block mb-1 text-sm font-semibold text-gray-700">
+                      Breakpoint
+                    </label>
+                    <select
+                      value={selectedTier}
+                      disabled={disabled}
+                      onChange={(e) => setSelectedTier(e.target.value)}
+                        className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedTier ? 'border-blue-600 border-2' : 'border-gray-300'}`}
+                    >
+                      <option value="">Choose BP</option>
+                      {breakPointOptions.map((tierOption) => (
                         <option key={tierOption.value} value={tierOption.value}>
                           {tierOption.label}
                         </option>
@@ -462,7 +480,9 @@ const PageManager: React.FC = () => {
                 <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">Item</th>
                 <th className="p-2 text-left">View/Entry</th>
-                <th className="p-2 text-left">iTier</th>
+                <th className="p-2 text-left">Tier</th>
+                <th className="p-2 text-left">Breakpoint</th>
+
                 <th className="p-2 text-left">SI</th>
                 <th className="p-2 text-left">Page</th>
                 {/* <th className="p-2 text-left">P/S Button</th> */}
@@ -482,6 +502,7 @@ const PageManager: React.FC = () => {
                   <td className="p-2">{s.itemName}</td>
                   <td className="p-2">{s.viewEntry}</td>
                   <td className="p-2">{s.tier}</td>
+                  <td className="p-2">{s.itemName}</td>
                   <td className="p-2">{s.serialNumber}</td>
                   <td className="p-2">{s.name}</td>
 

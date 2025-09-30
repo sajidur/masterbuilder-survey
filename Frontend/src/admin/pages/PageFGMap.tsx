@@ -298,7 +298,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="Page"
+          label="Item"
           value={selectedItem}
           disabled={disabled}
           options={items
@@ -337,12 +337,25 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                   </select>
                 </div>
           <Dropdown
-            label="iTier"
+            label="Tier"
             disabled={disabled}
-            value={itier}
+            value={tier}
             options={tiers.map((t) => ({ label: t.label, value: t.value }))}
             onChange={setITier}
           />
+          
+        <Dropdown
+          label="Page"
+          value={selectedSubItem}
+          options={subItems
+            .filter((s) => s.itemId === selectedItem)
+            .map((s) => ({ label: s.name, value: s.id }))}
+          onChange={(val) => {
+            setSelectedSubItem(val);
+            setSelectedSubSubItem("");
+            setSelectedSubSubSubItem("");
+          }}
+        />
         <Dropdown
           label="Sub Page"
           value={selectedSubItem}
@@ -425,7 +438,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
 
         {/* Tier */}
         
-
+{/* 
         <div>
           <label className="block mb-1 font-medium">Tier</label>
           <select
@@ -441,7 +454,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
       
 
         {/* Display Type */}
@@ -584,17 +597,17 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
               <th className="p-2 text-left">Mod</th>
               <th className="p-2 text-left">App</th>
               <th className="p-2 text-left">Menu</th>
-              <th className="p-2 text-left">Page</th>
+              <th className="p-2 text-left">Item</th>
               <th className="p-2 text-left">View/Entry</th>
-              <th className="p-2 text-left">iTier</th>
-
+              <th className="p-2 text-left">Tier</th>
+              <th className="p-2 text-left">Page</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SSS Page</th>
               {/* <th className="p-2 text-left">SI</th> */}
 
               <th className="p-2 text-left">FG</th>
-              <th className="p-2 text-left">fTier</th>
+              {/* <th className="p-2 text-left">fTier</th> */}
               <th className="p-2 text-left">Display</th>
               {/* <th className="p-2 text-left">Remarks</th> */}
               {/* <th className="p-2 text-left">Required</th> */}
@@ -612,16 +625,16 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
                 <td className="p-2">{f.appName || "—"}</td>
                 <td className="p-2">{f.menuTitle || "—"}</td>
                 <td className="p-2">{f.itemName || "—"}</td>
-                <td className="p-2">{f.itier || "—"}</td>
-                <td className="p-2">{f.itier || "—"}</td>
-
+                <td className="p-2">{f.viewEntry || "—"}</td>
+                <td className="p-2">{f.tier || "—"}</td>
+                <td className="p-2">{f.itemName || "—"}</td>
                 <td className="p-2">{f.subItemName || "—"}</td>
                 <td className="p-2">{f.subSubItemName || "—"}</td>
                 <td className="p-2">{f.subsubsubItemName || "—"}</td>
                 {/* <td className="p-2">{f.serialNumber || "—"}</td> */}
 
                 <td className="p-2">{f.fieldGroupCode || "—"}</td>
-                <td className="p-2">{f.tier || "—"}</td>
+                {/* <td className="p-2">{f.tier || "—"}</td> */}
 
                 <td className="p-2">{f.dpgroupDisplayType}</td>
 
