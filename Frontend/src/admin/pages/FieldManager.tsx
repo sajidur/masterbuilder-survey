@@ -622,7 +622,8 @@ const payload: {
 
                       setFieldGroupCode(f.fieldGroupCode || "");
                       setTier(f.tier || "");
-                      setRemarks(f.remarks || "")
+                      setRemarks(f.remarks || "");
+                      setViewEntry(f.viewEntry||"");
                       setDisabled(true); // disable hierarchy selection 
                     }}
                     className="text-blue-600 hover:text-blue-800"

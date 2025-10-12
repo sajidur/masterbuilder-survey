@@ -5,10 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import {
   getAllItems,
-  addDataPoint,
-  updateDataPoint,
-  getAllDataPoints,
-  deleteDataPoint,
   getAllModules,
   getAllApps,
   getAllMenus,
