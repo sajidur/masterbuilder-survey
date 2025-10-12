@@ -31,6 +31,7 @@ import DPGroupMap from "./admin/pages/DPGroupMap";
 import DataPointMap from "./admin/pages/DataPointMap";
 import Button from "./admin/pages/Button";
 import TemplateButtonMap from "./admin/pages/TemplateButtonMap";
+import DynamicAppCreator from "./admin/pages/DynamicAppCreator";
 
 function AppContent() {
   const location = useLocation();
@@ -86,6 +87,7 @@ function AppContent() {
             <Route path="document-upload" element={<DocumentUploader />} />
             <Route path="document-details" element={<DocumentDetails />} />
             <Route path="reports" element={<ReportsPage />} />
+            <Route path="dynamic-app" element={<DynamicAppCreator />} />
             <Route path="register" element={<RegistrationForm />} />
             <Route path="user-list" element={<UserList />} />
           </Route>

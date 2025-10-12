@@ -22,6 +22,7 @@ import { MdSmartButton } from "react-icons/md";
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
+  { label: 'Dynamic App', path: '/admin/dynamic-app', icon: <AppWindow size={18} /> },
   { label: 'Module', path: '/admin/module', icon: <Puzzle size={18} /> },
   { label: 'App', path: '/admin/app', icon: <AppWindow size={18} /> },
   { label: 'Menu', path: '/admin/menu', icon: <List size={18} /> },
