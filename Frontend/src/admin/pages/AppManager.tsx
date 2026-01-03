@@ -133,10 +133,10 @@ const filteredApps = selectedModule
           {/* Header */}
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-blue-600 "><Puzzle size={18} /></span> App
+            <span className="text-blue-600 "><Puzzle size={18} /></span> Category
           </h2>
             <p>
-          Total Apps: {filteredApps.length}
+          Total Categories: {filteredApps.length}
         </p>
           </div>
 
@@ -179,7 +179,7 @@ const filteredApps = selectedModule
           {/* App Name */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
-              App Name
+              Category Name
             </label>
             <input
               type="text"
@@ -249,7 +249,7 @@ const filteredApps = selectedModule
                   <th className="px-4 py-3 text-left">Mod</th>
                   <th className="px-4 py-3 text-left">SI</th>
 
-                  <th className="px-4 py-3 text-left">App</th>
+                  <th className="px-4 py-3 text-left">Category</th>
                   {/* <th className="px-4 py-3 text-left">Tier</th> */}
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>

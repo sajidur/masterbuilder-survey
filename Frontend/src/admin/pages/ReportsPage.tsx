@@ -318,9 +318,9 @@ const ReportsPage: React.FC = () => {
 
   const columnLabels: Record<string, string> = {
     module: "Module",
-    app: "App",
-    menu: "Menu",
-    item: "Item",
+    app: "Category",
+    menu: "App",
+    item: "Aggregate",
     subItem: "Sub Page",
     subSubItem: "SS Page",
     subSubSubItem: "SSS Page",
@@ -562,13 +562,13 @@ function groupByAndProject(data, groupFields) {
             <strong>Module:</strong> {moduleCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>App:</strong> {appsCount.length}
+            <strong>Category:</strong> {appsCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Menu:</strong> {menuCount.length}
+            <strong>App:</strong> {menuCount.length}
           </span>
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
-            <strong>Item:</strong> {itemCount.length}
+            <strong>Aggregate:</strong> {itemCount.length}
           </span>
           
           <span className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md shadow-sm">
@@ -622,7 +622,7 @@ function groupByAndProject(data, groupFields) {
                       }}
               />
               <Dropdown
-                label="App"
+                label="Category"
                 value={selectedApp}
                 options={filteredApps.map((a) => ({
                   label: a.name,
@@ -637,7 +637,7 @@ function groupByAndProject(data, groupFields) {
                           setSelectedSubSubSubItem("");
                         }}              />
               <Dropdown
-                label="Menu"
+                label="App"
                 value={selectedMenu}
                 options={filteredMenus.map((m) => ({
                   label: m.title,
@@ -661,7 +661,7 @@ function groupByAndProject(data, groupFields) {
               />
               }
               <Dropdown
-                label="Item"
+                label="Aggregate"
                 value={selectedItem}
                 options={filteredItems.map((i) => ({
                   label: i.name,
@@ -1002,7 +1002,7 @@ Distinct:
                           )}
 
                           <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"90px"}}>
-                            App
+                            Category
                           </th>
                         </>
                       )}
@@ -1016,7 +1016,7 @@ Distinct:
                           )}
 
                           <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"150px"}}>
-                            Menu
+                            App
                           </th>
                         </>
                       )}
@@ -1041,7 +1041,7 @@ Distinct:
                             </>
                           )}
                           <th className="px-1 py-2 text-left font-semibold tracking-wide" style={{width:"200px"}}>
-                            Item
+                            Aggregate
                           </th>
 
                         {/* 

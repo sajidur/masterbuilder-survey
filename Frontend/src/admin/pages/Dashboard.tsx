@@ -3,8 +3,8 @@ import React from "react";
 const Dashboard: React.FC = () => {
   const metrics = [
     { label: "Total Modules", value: 42, icon: "📦" },
-    { label: "Total Apps", value: 18, icon: "📱" },
-    { label: "Total Menus", value: 55, icon: "📋" },
+    { label: "Total Category", value: 18, icon: "📱" },
+    { label: "Total Apps", value: 55, icon: "📋" },
     { label: "New Entries Today", value: 7, icon: "🆕" },
   ];
 

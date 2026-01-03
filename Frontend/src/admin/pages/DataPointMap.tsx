@@ -251,7 +251,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
           {/* App */}
           <div>
-            <label className="block mb-1 font-medium">App</label>
+            <label className="block mb-1 font-medium">Category</label>
             <select
               value={selectedApp}
               disabled={disabled}
@@ -262,7 +262,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select App</option>
+              <option value="">Select Category</option>
               {filteredApps.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -273,7 +273,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
           {/* Menu */}
           <div>
-            <label className="block mb-1 font-medium">Menu</label>
+            <label className="block mb-1 font-medium">App</label>
             <select
               value={selectedMenu}
               disabled={disabled}
@@ -283,7 +283,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Menu</option>
+              <option value="">Select App</option>
               {filteredMenus.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.title}
@@ -294,7 +294,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
 
           {/* Item */}
           <div>
-            <label className="block mb-1 font-medium">Item</label>
+            <label className="block mb-1 font-medium">Aggregate</label>
 
             <select
               value={selectedItem}
@@ -305,7 +305,7 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Item</option>
+              <option value="">Select Aggregate</option>
               {filteredItems.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
@@ -447,9 +447,9 @@ const filteredDP = dataPoints.filter((dp) => dp.itemid === selectedItem);
           <thead className="bg-gray-100">
             <tr>
                  <th className="p-2 border-b text-left">Mod</th>
+                <th className="p-2 border-b text-left">Category</th>
                 <th className="p-2 border-b text-left">App</th>
-                <th className="p-2 border-b text-left">Menu</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Aggregate</th>
               <th className="p-2 text-left">FG</th>
               {/* <th className="p-2 text-left">Serial</th> */}
               <th className="p-2 text-left">Field</th>

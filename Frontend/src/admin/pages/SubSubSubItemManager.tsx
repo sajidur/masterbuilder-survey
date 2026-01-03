@@ -255,7 +255,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "App",
+            label: "Category",
             value: selectedApp,
             disabled: {disabled},
             setter: setSelectedApp,
@@ -271,7 +271,7 @@ const SubSubSubItemManager: React.FC = () => {
           },
           
           {
-            label: "Menu",
+            label: "App",
             value: selectedMenu,
             disabled: {disabled},
             setter: setSelectedMenu,
@@ -296,7 +296,7 @@ const SubSubSubItemManager: React.FC = () => {
             },
           },
           {
-            label: "Item",
+            label: "Aggregate",
             value: selectedItem,
             disabled: {disabled},
             setter: setSelectedItem,
@@ -446,10 +446,10 @@ const SubSubSubItemManager: React.FC = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Mod</th>
+              <th className="p-2 text-left">Category</th>
               <th className="p-2 text-left">App</th>
-              <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Aggregate</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SI</th>

@@ -255,7 +255,7 @@ const payload: {
           }}
         />
         <Dropdown
-          label="App"
+          label="Category"
           disabled={disabled} // true disables interaction completely
           value={selectedApp}
           options={apps
@@ -271,7 +271,7 @@ const payload: {
           }}
         />
         <Dropdown
-          label="Menu"
+          label="App"
           value={selectedMenu}
           disabled={disabled} // true disables interaction completely
           options={menus
@@ -536,9 +536,9 @@ const payload: {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Mod</th>
+              <th className="p-2 text-left">Category</th>
               <th className="p-2 text-left">App</th>
-              <th className="p-2 text-left">Menu</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Aggregate</th>
               {/* <th className="p-2 text-left">Sub Item</th>
               <th className="p-2 text-left">SS Item</th>
               <th className="p-2 text-left">SSS Item</th> */}
