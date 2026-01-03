@@ -101,10 +101,6 @@ const DataPointManager: React.FC = () => {
        //   getAllFields(),
         ]);
 
-        console.log("✅ Modules:", moduleData);
-        console.log("✅ Apps:", appData);
-        console.log("✅ Menus:", menuData);
-
         setModules(moduleData);
         setApps(appData);
         setMenus(menuData);
@@ -288,7 +284,7 @@ const handleDelete = async (id: string) => {
 
           {/* App */}
           <div>
-            <label className="block mb-1 font-medium">App</label>
+            <label className="block mb-1 font-medium">Category</label>
             <select
               value={selectedApp}
               disabled={disabled} // true disables interaction completely
@@ -299,7 +295,7 @@ const handleDelete = async (id: string) => {
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select App</option>
+              <option value="">Select Category</option>
               {filteredApps.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -310,7 +306,7 @@ const handleDelete = async (id: string) => {
 
           {/* Menu */}
           <div>
-            <label className="block mb-1 font-medium">Menu</label>
+            <label className="block mb-1 font-medium">App</label>
             <select
               value={selectedMenu}
               disabled={disabled} // true disables interaction completely
@@ -320,7 +316,7 @@ const handleDelete = async (id: string) => {
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Menu</option>
+              <option value="">Select App</option>
               {filteredMenus.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.title}
@@ -331,7 +327,7 @@ const handleDelete = async (id: string) => {
 
           {/* Item */}
           <div>
-            <label className="block mb-1 font-medium">Item</label>
+            <label className="block mb-1 font-medium">Aggregate</label>
 
             <select
               value={selectedItem}
@@ -549,7 +545,7 @@ const handleDelete = async (id: string) => {
         <table className="w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Aggregate</th>
               {/* <th className="p-2 text-left">DP Group</th> */}
               <th className="p-2 text-left">Serial</th>
               <th className="p-2 text-left">Field</th>

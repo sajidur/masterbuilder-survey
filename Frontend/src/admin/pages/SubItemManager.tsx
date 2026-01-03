@@ -266,7 +266,7 @@ const SubItemManager: React.FC = () => {
 
           {/* App */}
           <div className="">
-            <label className="block  font-medium text-gray-700">App</label>
+            <label className="block  font-medium text-gray-700">Category</label>
             {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedApp}
@@ -296,7 +296,7 @@ const SubItemManager: React.FC = () => {
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select App</option>
+              <option value="">Select Category</option>
               {apps
                 .filter((a) => a.Module?.name === selectedModule)
                 .map((a) => (
@@ -309,7 +309,7 @@ const SubItemManager: React.FC = () => {
 
           {/* Menu */}
           <div className="">
-            <label className="block font-medium text-gray-700">Menu</label>
+            <label className="block font-medium text-gray-700">App</label>
             {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedMenu}
@@ -337,7 +337,7 @@ const SubItemManager: React.FC = () => {
               }}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Menu</option>
+              <option value="">Select App</option>
               {menus
                 .filter((m) => m.app?.name === selectedApp)
                 .map((m) => (
@@ -367,7 +367,7 @@ const SubItemManager: React.FC = () => {
                   </div>
           {/* Item */}
           <div className="">
-            <label className="block font-medium text-gray-700">Item</label>
+            <label className="block font-medium text-gray-700">Aggregate</label>
             {/* <select
               className="w-full px-3 py-2 border rounded"
               value={selectedItem}
@@ -389,7 +389,7 @@ const SubItemManager: React.FC = () => {
               onChange={(e) => setSelectedItem(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedItem ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select Item</option>
+              <option value="">Select Aggregate</option>
               {items
                 .filter((i) => i.menu?.title === selectedMenu)
                 .map((i) => (
@@ -569,10 +569,10 @@ const SubItemManager: React.FC = () => {
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-2 text-left">Mod</th>
+                <th className="p-2 text-left">Category</th>
                 <th className="p-2 text-left">App</th>
-                <th className="p-2 text-left">Menu</th>
                 <th className="p-2 text-left">iTier</th>
-                <th className="p-2 text-left">Item</th>
+                <th className="p-2 text-left">Aggregate</th>
                 <th className="p-2 text-left">SI</th>
 
                 <th className="p-2 text-left">Sub Page</th>

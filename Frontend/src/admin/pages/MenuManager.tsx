@@ -150,10 +150,10 @@ const filteredmenu = selectedApp
         <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 ">
           <div>
           <h2 className="font-light text-gray-800 flex items-center gap-2">
-            <span className="text-green-600 "><List size={18} /></span> Menu            
+            <span className="text-green-600 "><List size={18} /></span> App            
           </h2>
           <p className="text-gray-700 font-medium mt-1">
-          Total Menu: {filteredmenu.length}
+          Total App: {filteredmenu.length}
         </p>
           </div>
           {/* Module Dropdown */}
@@ -179,7 +179,7 @@ const filteredmenu = selectedApp
           {/* App Dropdown */}
           <div className="">
             <label className="block mt-2 mr-2 font-medium text-gray-700">
-              App
+              Category
             </label>
             <select
               value={selectedApp}
@@ -187,7 +187,7 @@ const filteredmenu = selectedApp
               onChange={(e) => setSelectedApp(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
             >
-              <option value="">Select App</option>
+              <option value="">Select Category</option>
               {apps
                 .filter((app) => app.Module?.name === selectedModule)
                 .map((app) => (
@@ -218,7 +218,7 @@ const filteredmenu = selectedApp
           {/* Menu Name */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
-              Menu Name
+              App Name
             </label>
             <input
               type="text"
@@ -292,10 +292,10 @@ const filteredmenu = selectedApp
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
                   <th className="px-4 py-3 text-left">Module</th>
-                  <th className="px-4 py-3 text-left">App</th>
+                  <th className="px-4 py-3 text-left">Category</th>
                   <th className="px-4 py-3 text-left">SI</th>
 
-                  <th className="px-4 py-3 text-left">Menu</th>
+                  <th className="px-4 py-3 text-left">App</th>
                   {/* <th className="px-4 py-3 text-left">Tier</th> */}
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>

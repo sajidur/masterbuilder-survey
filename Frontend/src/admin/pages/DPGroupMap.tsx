@@ -266,7 +266,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="App"
+          label="Category"
           value={selectedApp}
           disabled={disabled}
           options={apps
@@ -282,7 +282,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           }}
         />
         <Dropdown
-          label="Menu"
+          label="App"
           value={selectedMenu}
           disabled={disabled}
           options={menus
@@ -304,7 +304,7 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
             onChange={setITier}
           />
         <Dropdown
-          label="Item"
+          label="Aggregate"
           value={selectedItem}
           disabled={disabled}
           options={items
@@ -563,10 +563,10 @@ const filteredDpGroup = fields.filter((dp) =>dp.itemid=== selectedItem);
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left">Mod</th>
+              <th className="p-2 text-left">Category</th>
               <th className="p-2 text-left">App</th>
-              <th className="p-2 text-left">Menu</th>
               <th className="p-2 text-left">iTier</th>
-              <th className="p-2 text-left">Item</th>
+              <th className="p-2 text-left">Aggregate</th>
               <th className="p-2 text-left">Sub Page</th>
               <th className="p-2 text-left">SS Page</th>
               <th className="p-2 text-left">SSS Page</th>

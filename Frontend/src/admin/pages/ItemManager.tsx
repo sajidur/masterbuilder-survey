@@ -215,10 +215,10 @@ const ItemManager: React.FC = () => {
           <span className="text-blue-600 ">
             <Layers size={18} />
           </span>{" "}
-          Item
+          Aggregate
         </h2>
               <p className="text-gray-700 font-medium mt-1">
-          Total Item: {filteredItems.length}
+          Total Aggregate: {filteredItems.length}
         </p>
         </div>
         {/* Module */}
@@ -241,7 +241,7 @@ const ItemManager: React.FC = () => {
 
         {/* App */}
         <div className="">
-          <label className="block font-medium text-gray-700">App</label>
+          <label className="block font-medium text-gray-700">Category</label>
           {/* <select
             value={selectedApp}
             onChange={(e) => setSelectedApp(e.target.value)}
@@ -261,7 +261,7 @@ const ItemManager: React.FC = () => {
             onChange={(e) => setSelectedApp(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedApp ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select App</option>
+            <option value="">Select Category</option>
             {apps
               .filter((a) => a.Module?.name === selectedModule)
               .map((a) => (
@@ -274,7 +274,7 @@ const ItemManager: React.FC = () => {
 
         {/* Menu */}
         <div className="">
-          <label className="block font-medium text-gray-700">Menu</label>
+          <label className="block font-medium text-gray-700">App</label>
           {/* <select
             value={selectedMenu}
             onChange={(e) => setSelectedMenu(e.target.value)}
@@ -294,7 +294,7 @@ const ItemManager: React.FC = () => {
             onChange={(e) => setSelectedMenu(e.target.value)}
               className={`w-full border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedMenu ? 'border-blue-600 border-2' : 'border-gray-300'}`}
           >
-            <option value="">Select Menu</option>
+            <option value="">Select App</option>
             {menus
               .filter(
                 (m) =>
@@ -328,7 +328,7 @@ const ItemManager: React.FC = () => {
         {/* Item Name */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Item Name
+            Aggregate Name
           </label>
           <input
             type="text"
@@ -342,7 +342,7 @@ const ItemManager: React.FC = () => {
         {/* Button Type */}
         <div>
           <label className="block mb-1 text-sm font-semibold text-gray-700">
-            Item Type
+            Aggregate Type
           </label>
           <select
             value={selectedItemType}
@@ -481,18 +481,18 @@ const ItemManager: React.FC = () => {
       {/* Items Table */}
       <div className="bg-white p-6 mt-6 rounded shadow">
         {filteredItems.length === 0 ? (
-          <p>No items available for selected module/app/menu.</p>
+          <p>No Aggregates available for selected module/app/menu.</p>
         ) : (
           <table className="w-full border border-gray-300 text-sm">
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-2 border-b text-left">Mod</th>
+                <th className="p-2 border-b text-left">Category</th>
                 <th className="p-2 border-b text-left">App</th>
-                <th className="p-2 border-b text-left">Menu</th>
                 <th className="p-2 border-b text-left">SI</th>
 
-                <th className="p-2 border-b text-left">Item</th>
-                <th className="p-2 border-b text-left">Item Type</th>
+                <th className="p-2 border-b text-left">Aggregate</th>
+                <th className="p-2 border-b text-left">Aggregate Type</th>
               
                 {/* <th className="p-2 border-b text-left">I Tier</th> */}
                 <th className="p-2 border-b text-left">View/Entry</th>
